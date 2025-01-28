@@ -7,6 +7,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
@@ -81,4 +82,10 @@ public class UmbrellaItem extends ArtifactItem {
     public static boolean isHoldingUmbrellaUpright(LivingEntity entity) {
         return isHoldingUmbrellaUpright(entity, InteractionHand.MAIN_HAND) || isHoldingUmbrellaUpright(entity, InteractionHand.OFF_HAND);
     }
+
+    public static boolean isHoldingUmbrellaUpright(Entity entity) {
+        return entity instanceof LivingEntity livingEntity
+            && isHoldingUmbrellaUpright(livingEntity);
+    }
+
 }
