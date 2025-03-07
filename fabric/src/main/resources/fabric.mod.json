@@ -23,9 +23,6 @@
     "client": [
       "artifacts.fabric.ArtifactsFabricClient"
     ],
-    "artifacts:compat_handlers": [
-      "artifacts.fabric.integration.ApoliCompat"
-    ],
     "modmenu": [
       "artifacts.fabric.integration.ModMenuIntegration"
     ],

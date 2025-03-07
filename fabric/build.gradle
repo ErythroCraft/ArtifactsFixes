@@ -46,7 +46,7 @@ dependencies {
     modImplementation include("be.florens:expandability-fabric:${rootProject.expandability_version}")
 
     // Compat & integration
-    modCompileOnly("io.github.apace100:apoli:2.12.0-alpha.11+mc.1.21.x")
+    modCompileOnly("io.github.apace100:apoli:2.12.0-alpha.15+mc.1.21.1")
 
     modImplementation("io.wispforest:accessories-fabric:${project.accessories_version}")
 }
