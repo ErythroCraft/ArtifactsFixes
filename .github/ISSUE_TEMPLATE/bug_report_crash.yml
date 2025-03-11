@@ -1,0 +1,83 @@
+name: Bug report or crash
+description: Something is going wrong or the game is crashing
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Bug description
+      description: "Provide a short description of the problem you're experiencing."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to reproduce
+      description: "List the exact steps to reproduce the issue, and what you expected to happen instead. If you're playing on a server, check whether the issue also occurs in a singleplayer world. If your issue only occurs with specific mods installed, try to narrow down which mods are causing the conflict before reporting. Issues are much more likely to be fixed if we know where to start looking."
+    validations:
+      required: true
+  - type: checkboxes
+    id: rar_compat
+    attributes:
+      label: RAR-Compat
+      description: "RAR-Compat makes numerous changes to Artifacts to bring it more in line with Relics' systems. Any issues encountered while playing with it should be reported [here](https://github.com/Octo-Studios/rar-compat/issues) instead."
+      options:
+        - label: I verified I do not have RAR-Compat installed
+          required: true
+  - type: input
+    id: minecraft_version
+    attributes:
+      label: Minecraft version
+      placeholder: ex. 1.21.1
+    validations:
+      required: true
+  - type: dropdown
+    id: loader
+    attributes:
+      label: Mod loader
+      options:
+        - Forge / NeoForge
+        - Fabric
+        - Quilt
+    validations:
+      required: true
+  - type: input
+    id: loader_version
+    attributes:
+      label: Mod loader version
+      placeholder: ex. 21.4.111-beta
+    validations:
+      required: true
+  - type: dropdown
+    id: accessory_mod
+    attributes:
+      label: Accessory mod
+      options:
+        - Accessories
+        - Curios API
+        - Trinkets
+    validations:
+      required: true
+  - type: input
+    id: accessory_mod_version
+    attributes:
+      label: Accessory mod version
+      placeholder: ex. 8.0.0-beta.6
+    validations:
+      required: true
+  - type: textarea
+    id: additional_details
+    attributes:
+      label: Additional Details
+      description: |
+        description: |
+          Provide extra information about the game environment if needed.
+          Log files and crash reports can be uploaded here by dragging the file into the textbox.
+          
+          - If you use any additional mods besides those required by Artifacts, list them here or attach a log file.
+          - **Forge users (1.20.1 and below):** Logs **do not include a mod list**, so attach a crash report instead.
+          - You can manually generate a crash report by holding **F3 + C** for 10 seconds.
