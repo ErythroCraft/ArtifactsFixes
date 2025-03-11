@@ -73,10 +73,9 @@ body:
     id: additional_details
     attributes:
       label: Additional Details
-      description:
+      description: |
         Provide extra information about the game environment if needed.
         Log files and crash reports can be uploaded here by dragging the file into the textbox.
-        
         - If you use any additional mods besides those required by Artifacts, list them here or attach a log file.
         - **Forge users (1.20.1 and below):** Logs **do not include a mod list**, so attach a crash report instead.
         - You can manually generate a crash report by holding **F3 + C** for 10 seconds.
