@@ -45,7 +45,7 @@ public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Valu
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource, float amount) {
         if (!entity.level().isClientSide()
-                && amount >= 1
+                && amount >= 0.1
         ) {
             AbilityHelper.forEach(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.value(), entity, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
