@@ -3,7 +3,6 @@ package artifacts.mixin.item;
 import artifacts.Artifacts;
 import artifacts.ability.ArtifactAbility;
 import artifacts.ability.AttributeModifierAbility;
-import artifacts.client.CosmeticsHelper;
 import artifacts.item.WearableArtifactItem;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModDataComponents;
@@ -58,8 +57,6 @@ public class ItemStackMixin {
             List<MutableComponent> tooltip = new ArrayList<>();
             if (AbilityHelper.isCosmetic(stack)) {
                 tooltip.add(Component.translatable("%s.tooltip.cosmetic".formatted(Artifacts.MOD_ID)).withStyle(ChatFormatting.ITALIC));
-            } else {
-                CosmeticsHelper.addCosmeticToggleTooltip(tooltip, stack);
             }
             tooltip.forEach(line -> tooltipList.add(line.withStyle(ChatFormatting.GRAY)));
         }

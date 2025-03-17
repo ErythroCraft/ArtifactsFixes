@@ -319,7 +319,7 @@ public class ModItems {
         return register(name, () -> {
             WearableArtifactItem.Builder builder = new WearableArtifactItem.Builder(name);
             consumer.accept(builder);
-            builder.properties(properties -> properties.component(ModDataComponents.COSMETICS_ENABLED.get(), true));
+            builder.properties(properties -> {});
             return builder.build();
         });
     }

@@ -1,6 +1,5 @@
 package artifacts.integration.impl.trinkets;
 
-import artifacts.client.CosmeticsHelper;
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.integration.EquipmentIntegrationConstants;
@@ -49,7 +48,6 @@ public class TrinketsClientIntegration implements ClientEquipmentIntegration {
                         hand == InteractionHand.MAIN_HAND ? "hand" : "offhand"
                 )).map(Tuple::getB)
                 .filter(stack -> stack.is(item))
-                .filter(stack -> !CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack))
                 .anyMatch(tuple -> true);
     }
 
@@ -59,9 +57,7 @@ public class TrinketsClientIntegration implements ClientEquipmentIntegration {
         TrinketsApi.getTrinketComponent(player).ifPresent(component -> {
             for (Tuple<SlotReference, ItemStack> pair : component.getAllEquipped()) {
                 ItemStack stack = pair.getB();
-                if (pair.getA().inventory().getSlotType().getGroup().equals(groupId)
-                        && stack.getItem() instanceof WearableArtifactItem // Not every trinket is an artifact
-                        && !CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack)) {
+                if (pair.getA().inventory().getSlotType().getGroup().equals(groupId) && stack.getItem() instanceof WearableArtifactItem) {
                     GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
                     if (gloveRenderer != null) {
                         gloveRenderer.renderFirstPersonArm(matrixStack, buffer, light, player, side, stack.hasFoil());
@@ -77,11 +73,9 @@ public class TrinketsClientIntegration implements ClientEquipmentIntegration {
     }
 
     public record ArtifactTrinketRenderer(ArtifactRenderer renderer) implements TrinketRenderer {
+
         @Override
         public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> entityModel, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            if (CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack)) {
-                return;
-            }
             int index = slotReference.index() + (slotReference.inventory().getSlotType().getGroup().equals("hand") ? 0 : 1);
             renderer.render(stack, entity, index, poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }

@@ -1,6 +1,5 @@
 package artifacts.neoforge.integration.curios;
 
-import artifacts.client.CosmeticsHelper;
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.integration.client.ClientEquipmentIntegration;
@@ -123,9 +122,9 @@ public class CuriosClientIntegration implements ClientEquipmentIntegration {
     }
 
     public record ArtifactCurioRenderer(ArtifactRenderer renderer) implements ICurioRenderer {
+
         @Override
         public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            if (CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack)) return;
             renderer.render(stack, slotContext.entity(), slotContext.index(), poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }
     }

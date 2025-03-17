@@ -2,9 +2,7 @@ package artifacts.registry;
 
 import artifacts.Artifacts;
 import artifacts.ability.ArtifactAbility;
-import com.mojang.serialization.Codec;
 import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -16,14 +14,6 @@ import java.util.List;
 public class ModDataComponents {
 
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(Artifacts.MOD_ID, Registries.DATA_COMPONENT_TYPE);
-
-    // TODO: [PR] Adjust to be configurable if such is enabled or disabled I guess?
-    public static final RegistrySupplier<DataComponentType<Boolean>> COSMETICS_ENABLED = DATA_COMPONENT_TYPES.register("cosmetic_toggle", () ->
-            DataComponentType.<Boolean>builder()
-                    .persistent(Codec.BOOL)
-                    .networkSynchronized(ByteBufCodecs.BOOL)
-                    .build()
-    );
 
     public static final Holder<DataComponentType<List<ArtifactAbility>>> ABILITIES = DATA_COMPONENT_TYPES.register("abilities", () ->
             DataComponentType.<List<ArtifactAbility>>builder()

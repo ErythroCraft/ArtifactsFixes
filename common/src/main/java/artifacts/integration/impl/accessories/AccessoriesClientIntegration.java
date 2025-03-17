@@ -1,6 +1,5 @@
 package artifacts.integration.impl.accessories;
 
-import artifacts.client.CosmeticsHelper;
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.integration.EquipmentIntegrationConstants;
@@ -82,7 +81,6 @@ public class AccessoriesClientIntegration implements ClientEquipmentIntegration 
     public record ArtifactAccessoryRenderer(ArtifactRenderer renderer) implements AccessoryRenderer {
         @Override
         public <M extends LivingEntity> void render(ItemStack stack, SlotReference reference, PoseStack matrices, EntityModel<M> model, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            if (CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack)) return;
             renderer.render(stack, reference.entity(), reference.slot(), matrices, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }
 
