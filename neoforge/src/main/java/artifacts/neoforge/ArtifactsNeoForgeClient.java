@@ -18,6 +18,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 
 public class ArtifactsNeoForgeClient {
@@ -38,7 +39,7 @@ public class ArtifactsNeoForgeClient {
             modBus.addListener(CuriosClientIntegration::onAddLayers);
         }
 
-        modBus.addListener((AddReloadListenerEvent event) -> {
+        NeoForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> {
             if (ModList.get().isLoaded("trinkets")) {
                 event.addListener(TrinketRenderersReloadHook.INSTANCE);
             }
