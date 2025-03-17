@@ -24,7 +24,7 @@ public class ArtifactsData {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         BlockTags blockTags = new BlockTags(packOutput, lookupProvider, existingFileHelper);
-        LootModifiers lootModifiers = new LootModifiers(packOutput);
+        LootModifiers lootModifiers = new LootModifiers(packOutput, lookupProvider);
 
         generator.addProvider(event.includeServer(), blockTags);
         generator.addProvider(event.includeServer(), new ItemTags(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));

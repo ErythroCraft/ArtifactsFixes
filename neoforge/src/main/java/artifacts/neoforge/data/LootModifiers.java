@@ -6,17 +6,12 @@ import artifacts.loot.ConfigValueChance;
 import artifacts.neoforge.loot.RollLootTableModifier;
 import artifacts.registry.ModItems;
 import artifacts.registry.ModLootTables;
-import com.google.common.collect.ImmutableList;
-import com.google.gson.*;
-import com.mojang.serialization.JsonOps;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -29,24 +24,20 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
-import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 
-import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
-public class LootModifiers implements DataProvider {
-
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+public class LootModifiers extends GlobalLootModifierProvider {
 
     protected final List<Builder> lootBuilders = new ArrayList<>();
-    private final PackOutput packOutput;
-    private final Map<String, JsonElement> toSerialize = new HashMap<>();
 
-    public LootModifiers(PackOutput packOutput) {
-        this.packOutput = packOutput;
+    public LootModifiers(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, Artifacts.MOD_ID);
     }
 
     private void addLoot() {
@@ -329,51 +320,6 @@ public class LootModifiers implements DataProvider {
         for (Builder lootBuilder : lootBuilders) {
             add("inject/" + lootBuilder.getName(), lootBuilder.build());
         }
-    }
-
-    @Override
-    public CompletableFuture<?> run(CachedOutput cache) {
-        start();
-
-        Path neoForgePath = this.packOutput.getOutputFolder(PackOutput.Target.DATA_PACK).resolve("neoforge").resolve("loot_modifiers").resolve("global_loot_modifiers.json");
-        Path modifierFolderPath = this.packOutput.getOutputFolder(PackOutput.Target.DATA_PACK).resolve(Artifacts.MOD_ID).resolve("loot_modifiers");
-        List<ResourceLocation> entries = new ArrayList<>();
-
-        ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
-
-        toSerialize.forEach((name, json) -> {
-            entries.add(Artifacts.id(name));
-            Path modifierPath = modifierFolderPath.resolve(name + ".json");
-            futuresBuilder.add(DataProvider.saveStable(cache, json, modifierPath));
-        });
-
-        JsonObject forgeJson = new JsonObject();
-        forgeJson.addProperty("replace", false);
-        forgeJson.add("entries", GSON.toJsonTree(entries.stream().map(ResourceLocation::toString).collect(Collectors.toList())));
-
-        JsonArray conditions = new JsonArray();
-        JsonObject condition = new JsonObject();
-        JsonObject modsLoaded = new JsonObject();
-        conditions.add(condition);
-        condition.addProperty("condition", "fabric:not");
-        condition.add("value", modsLoaded);
-        modsLoaded.addProperty("condition", "fabric:all_mods_loaded");
-        modsLoaded.add("values", new JsonArray());
-        forgeJson.add("fabric:load_conditions", conditions);
-
-        futuresBuilder.add(DataProvider.saveStable(cache, forgeJson, neoForgePath));
-
-        return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
-    }
-
-    public <T extends IGlobalLootModifier> void add(String modifier, T instance) {
-        JsonElement json = IGlobalLootModifier.DIRECT_CODEC.encodeStart(JsonOps.INSTANCE, instance).getOrThrow();
-        this.toSerialize.put(modifier, json);
-    }
-
-    @Override
-    public String getName() {
-        return "Global Loot Modifiers : " + Artifacts.MOD_ID;
     }
 
     @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"})

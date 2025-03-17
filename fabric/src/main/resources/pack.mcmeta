@@ -1,0 +1,16 @@
+{
+  "pack": {
+    "pack_format": 48,
+    "description": "Artifacts' resources"
+  },
+  "fabric:overlays": {
+    "entries": [
+      {
+        "directory": "overlay",
+        "condition": {
+          "condition": "fabric:true"
+        }
+      }
+    ]
+  }
+}

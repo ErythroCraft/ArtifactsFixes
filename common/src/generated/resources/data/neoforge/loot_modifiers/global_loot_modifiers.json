@@ -38,14 +38,5 @@
     "artifacts:inject/chests/bastion_hoglin_stable",
     "artifacts:inject/archaeology/ocean_ruin_warm"
   ],
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:not",
-      "value": {
-        "condition": "fabric:all_mods_loaded",
-        "values": []
-      }
-    }
-  ],
   "replace": false
 }
