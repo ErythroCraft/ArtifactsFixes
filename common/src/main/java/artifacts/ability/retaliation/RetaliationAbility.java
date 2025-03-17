@@ -41,9 +41,9 @@ public abstract class RetaliationAbility implements ArtifactAbility {
         return cooldown;
     }
 
-    public void onLivingHurt(LivingEntity entity, ItemStack stack, DamageSource damageSource, float amount) {
+    public void onLivingHurt(LivingEntity entity, ItemStack stack, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (amount >= 1 && attacker != null
+        if (attacker != null
                         && AbilityHelper.hasAbilityActive(getType(), entity)
                         && entity.getRandom().nextDouble() < strikeChance().get()
         ) {

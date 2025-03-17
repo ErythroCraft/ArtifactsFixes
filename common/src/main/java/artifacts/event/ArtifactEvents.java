@@ -55,7 +55,6 @@ public class ArtifactEvents {
     public static void register() {
         PlayerEvent.DROP_ITEM.register(AttractItemsAbility::onItemToss);
         EntityEvent.LIVING_HURT.register(ArtifactEvents::onAttackBurningLivingHurt);
-        EntityEvent.LIVING_HURT.register(ArtifactEvents::onPendantLivingHurt);
         EntityEvent.LIVING_HURT.register(ArtifactEvents::onLightningHurt);
         EntityEvent.LIVING_HURT.register(AttacksInflictMobEffectAbility::onLivingHurt);
         EntityEvent.ADD.register(ArtifactEvents::onEntityJoinWorld);
@@ -117,15 +116,14 @@ public class ArtifactEvents {
         return EventResult.pass();
     }
 
-    private static EventResult onPendantLivingHurt(LivingEntity entity, DamageSource damageSource, float amount) {
-        activateRetaliationAbility(ModAbilities.SET_ATTACKERS_ON_FIRE.value(), entity, damageSource, amount);
-        activateRetaliationAbility(ModAbilities.THORNS.value(), entity, damageSource, amount);
-
-        return EventResult.pass();
+    public static void doPostAttackEffects(LivingEntity entity, DamageSource damageSource) {
+        activateRetaliationAbility(ModAbilities.SET_ATTACKERS_ON_FIRE.value(), entity, damageSource);
+        activateRetaliationAbility(ModAbilities.THORNS.value(), entity, damageSource);
+        activateRetaliationAbility(ModAbilities.STRIKE_ATTACKERS_WITH_LIGHTNING.value(), entity, damageSource);
     }
 
-    private static void activateRetaliationAbility(ArtifactAbility.Type<? extends RetaliationAbility> type, LivingEntity entity, DamageSource damageSource, float amount) {
-        AbilityHelper.forEach(type, entity, (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource, amount), true);
+    private static void activateRetaliationAbility(ArtifactAbility.Type<? extends RetaliationAbility> type, LivingEntity entity, DamageSource damageSource) {
+        AbilityHelper.forEach(type, entity, (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource), true);
     }
 
     private static EventResult onEntityJoinWorld(Entity entity, Level level) {
