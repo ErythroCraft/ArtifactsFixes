@@ -1,4 +1,4 @@
-// 1.21	2024-06-19T11:38:36.6033453	Global Loot Modifiers : artifacts
+// 1.21.1	2025-03-17T18:10:59.8130373	Global Loot Modifiers : artifacts
 ba95f50c61a97088c58cc642890a73ba9cb9a6fc data/artifacts/loot_modifiers/inject/archaeology/desert_pyramid.json
 76a69218530b08b9cfd000933b2d6ad25708d976 data/artifacts/loot_modifiers/inject/archaeology/desert_well.json
 ea0ee3af9800b63f118a9cf5b79e109908853d72 data/artifacts/loot_modifiers/inject/archaeology/ocean_ruin_cold.json

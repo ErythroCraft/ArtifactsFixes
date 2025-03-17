@@ -1,5 +1,9 @@
 {
   "values": [
-    "#minecraft:animals_spawnable_on"
+    "minecraft:grass_block",
+    "minecraft:moss_block",
+    "minecraft:moss_carpet",
+    "minecraft:dirt_path",
+    "minecraft:podzol"
   ]
 }
