@@ -5,18 +5,26 @@ import artifacts.ability.ArtifactAbility;
 import artifacts.ability.AttributeModifierAbility;
 import artifacts.ability.IncreaseEnchantmentLevelAbility;
 import artifacts.config.value.Value;
+import artifacts.integration.EquipmentIntegrationConstants;
+import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModItems;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +47,21 @@ public class WearableArtifactItem extends Item {
 
     public float getEquipSoundPitch() {
         return equipSoundPitch;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        var integration = EquipmentIntegrationUtils.getIntegration(EquipmentIntegrationConstants.TRINKETS);
+
+        if (!stack.has(DataComponents.FOOD) && integration != null && integration.equipAccessory(player, stack)) {
+            player.playSound(getEquipSound(), 1, getEquipSoundPitch());
+
+            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+        }
+
+        return super.use(level, player, hand);
     }
 
     public static class Builder {

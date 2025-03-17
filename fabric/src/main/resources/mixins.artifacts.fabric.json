@@ -16,8 +16,7 @@
     "attribute.entityexperience.LivingEntityMixin",
     "attribute.slipresistance.LivingEntityMixin",
     "attribute.swimspeed.LivingEntityMixin",
-    "compat.apoli.condition.type.entity.ExposedToSunEntityConditionTypeMixin",
-    "item.WearableArtifactItemMixin"
+    "compat.apoli.condition.type.entity.ExposedToSunEntityConditionTypeMixin"
   ],
   "client": [
     "ability.swiminair.client.GuiMixin",
