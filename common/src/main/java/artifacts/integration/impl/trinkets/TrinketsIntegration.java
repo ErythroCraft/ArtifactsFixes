@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class TrinketIntegration implements EquipmentIntegration {
+public class TrinketsIntegration implements EquipmentIntegration {
 
     @Override
     public void setup() {

@@ -7,8 +7,8 @@ import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.integration.impl.accessories.AccessoriesClientIntegration;
 import artifacts.integration.impl.accessories.AccessoriesIntegration;
-import artifacts.integration.impl.trinkets.TrinketClientIntegration;
-import artifacts.integration.impl.trinkets.TrinketIntegration;
+import artifacts.integration.impl.trinkets.TrinketsClientIntegration;
+import artifacts.integration.impl.trinkets.TrinketsIntegration;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -48,7 +48,7 @@ public interface PlatformHelper {
 
     default void setupIntegrations() {
         if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.TRINKETS) && !PlatformServices.platformHelper.isModLoaded("tclayer")) {
-            EquipmentIntegrationUtils.registerIntegration(new TrinketIntegration());
+            EquipmentIntegrationUtils.registerIntegration(new TrinketsIntegration());
         }
 
         if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.ACCESSORIES)) {
@@ -58,7 +58,7 @@ public interface PlatformHelper {
 
     default void setupClientIntegrations() {
         if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.TRINKETS) && !PlatformServices.platformHelper.isModLoaded("tclayer")) {
-            ClientEquipmentIntegrationUtils.registerIntegration(new TrinketClientIntegration());
+            ClientEquipmentIntegrationUtils.registerIntegration(new TrinketsClientIntegration());
         }
 
         if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.ACCESSORIES)) {

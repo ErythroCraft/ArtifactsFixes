@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class TrinketClientIntegration implements ClientEquipmentIntegration {
+public class TrinketsClientIntegration implements ClientEquipmentIntegration {
     
     @Override
     public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {

@@ -13,6 +13,7 @@ import io.wispforest.accessories.api.client.AccessoryRenderer;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -86,11 +87,16 @@ public class AccessoriesClientIntegration implements ClientEquipmentIntegration 
         }
 
         @Override
-        public <M extends LivingEntity> void renderOnFirstPerson(HumanoidArm arm, ItemStack stack, SlotReference reference, PoseStack matrices, EntityModel<M> model, MultiBufferSource multiBufferSource, int light) {
+        public <M extends LivingEntity> void renderOnFirstPerson(HumanoidArm side, ItemStack stack, SlotReference reference, PoseStack matrices, EntityModel<M> model, MultiBufferSource multiBufferSource, int light) {
+            if (!(reference.entity() instanceof LocalPlayer player)) {
+                return;
+            }
+            InteractionHand hand = side == player.getMainArm() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+
             GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
 
-            if (gloveRenderer != null) {
-                gloveRenderer.renderFirstPersonArm(matrices, multiBufferSource, light, (AbstractClientPlayer) reference.entity(), arm, stack.hasFoil());
+            if (gloveRenderer != null && reference.slot() % 2 == (hand == InteractionHand.MAIN_HAND ? 0 : 1)) {
+                gloveRenderer.renderFirstPersonArm(matrices, multiBufferSource, light, (AbstractClientPlayer) reference.entity(), side, stack.hasFoil());
             }
         }
     }
