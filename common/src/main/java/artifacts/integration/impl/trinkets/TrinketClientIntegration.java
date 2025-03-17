@@ -79,7 +79,9 @@ public class TrinketClientIntegration implements ClientEquipmentIntegration {
     public record ArtifactTrinketRenderer(ArtifactRenderer renderer) implements TrinketRenderer {
         @Override
         public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> entityModel, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            if (CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack)) return;
+            if (CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack)) {
+                return;
+            }
             int index = slotReference.index() + (slotReference.inventory().getSlotType().getGroup().equals("hand") ? 0 : 1);
             renderer.render(stack, entity, index, poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }

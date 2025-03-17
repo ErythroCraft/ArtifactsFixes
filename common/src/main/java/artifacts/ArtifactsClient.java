@@ -6,7 +6,6 @@ import artifacts.client.item.ArtifactLayers;
 import artifacts.client.mimic.MimicRenderer;
 import artifacts.client.mimic.model.MimicChestLayerModel;
 import artifacts.client.mimic.model.MimicModel;
-import artifacts.platform.PlatformHelper;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModEntityTypes;
 import artifacts.registry.ModItems;
@@ -27,7 +26,7 @@ public class ArtifactsClient {
         registerRenderers();
         ClientLifecycleEvent.CLIENT_STARTED.register(clientState -> onClientStarted());
 
-        PlatformServices.platformHelper.setupClientIntegratons();
+        PlatformServices.platformHelper.setupClientIntegrations();
     }
 
     public static void onClientStarted() {

@@ -3,7 +3,6 @@ package artifacts.neoforge.client;
 import artifacts.Artifacts;
 import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.item.WearableArtifactItem;
-import artifacts.platform.PlatformServices;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

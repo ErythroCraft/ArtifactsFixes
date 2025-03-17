@@ -5,7 +5,6 @@ import artifacts.ability.ArtifactAbility;
 import artifacts.ability.AttributeModifierAbility;
 import artifacts.client.CosmeticsHelper;
 import artifacts.item.WearableArtifactItem;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;

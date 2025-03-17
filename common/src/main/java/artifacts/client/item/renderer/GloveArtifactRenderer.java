@@ -2,7 +2,6 @@ package artifacts.client.item.renderer;
 
 import artifacts.client.item.model.ArmsModel;
 import artifacts.integration.client.ClientEquipmentIntegrationUtils;
-import artifacts.platform.PlatformServices;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;

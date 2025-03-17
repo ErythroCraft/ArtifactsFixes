@@ -4,7 +4,6 @@ import artifacts.Artifacts;
 import artifacts.ArtifactsClient;
 import artifacts.client.item.ArtifactRenderers;
 import artifacts.integration.EquipmentIntegrationConstants;
-import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.integration.impl.trinkets.TrinketRenderersReloadHook;
 import artifacts.neoforge.client.ArmRenderHandler;

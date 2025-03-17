@@ -100,8 +100,8 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     }
 
     @Override
-    public void setupClientIntegratons() {
-        PlatformHelper.super.setupClientIntegratons();
+    public void setupClientIntegrations() {
+        PlatformHelper.super.setupClientIntegrations();
 
         if (PlatformServices.platformHelper.isModLoaded("curios") && !PlatformServices.platformHelper.isModLoaded("cclayer")) {
             ClientEquipmentIntegrationUtils.registerIntegration(new CuriosClientIntegration());

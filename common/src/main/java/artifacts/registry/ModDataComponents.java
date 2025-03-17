@@ -2,7 +2,6 @@ package artifacts.registry;
 
 import artifacts.Artifacts;
 import artifacts.ability.ArtifactAbility;
-import artifacts.platform.PlatformServices;
 import com.mojang.serialization.Codec;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;

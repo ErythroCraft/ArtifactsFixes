@@ -16,7 +16,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -33,16 +32,16 @@ public class AccessoriesIntegration implements EquipmentIntegration {
             }
         });
 
-        AccessoryChangeCallback.EVENT.register((prevStack, currentStack, slotReference, slotStateChange) -> {
-            ArtifactEvents.onItemChanged(slotReference.entity(), prevStack, currentStack);
-        });
+        AccessoryChangeCallback.EVENT.register(
+                (prevStack, currentStack, slotReference, slotStateChange) -> ArtifactEvents.onItemChanged(slotReference.entity(), prevStack, currentStack)
+        );
     }
 
     @Override
     public Stream<ItemStack> findAllEquippedBy(LivingEntity entity, Predicate<ItemStack> predicate) {
         AccessoriesCapability capability = AccessoriesCapability.get(entity);
 
-        Stream<ItemStack> stacks = Stream.<ItemStack>empty();
+        Stream<ItemStack> stacks = Stream.empty();
 
         if (capability != null) {
             stacks = capability.getEquipped(predicate).stream().map(SlotEntryReference::stack);
@@ -55,7 +54,7 @@ public class AccessoriesIntegration implements EquipmentIntegration {
     public void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer) {
         AccessoriesCapability capability = AccessoriesCapability.get(entity);
 
-        if(capability != null) {
+        if (capability != null) {
             capability.getAllEquipped().forEach(slotEntryReference -> consumer.accept(slotEntryReference.stack()));
         }
     }
@@ -104,7 +103,6 @@ public class AccessoriesIntegration implements EquipmentIntegration {
         }
 
         @Override
-        @Nullable
         public SoundEventData getEquipSound(ItemStack stack, SlotReference reference) {
             return new SoundEventData(Holder.direct(item.getEquipSound()), 1, item.getEquipSoundPitch());
         }

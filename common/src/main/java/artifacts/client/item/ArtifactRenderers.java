@@ -3,7 +3,6 @@ package artifacts.client.item;
 import artifacts.client.item.model.*;
 import artifacts.client.item.renderer.*;
 import artifacts.integration.client.ClientEquipmentIntegrationUtils;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;

@@ -2,7 +2,6 @@ package artifacts.mixin.item;
 
 import artifacts.Artifacts;
 import artifacts.integration.EquipmentIntegrationUtils;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModLootTables;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;

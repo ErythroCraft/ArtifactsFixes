@@ -56,7 +56,7 @@ public interface PlatformHelper {
         }
     }
 
-    default void setupClientIntegratons() {
+    default void setupClientIntegrations() {
         if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.TRINKETS) && !PlatformServices.platformHelper.isModLoaded("tclayer")) {
             ClientEquipmentIntegrationUtils.registerIntegration(new TrinketClientIntegration());
         }

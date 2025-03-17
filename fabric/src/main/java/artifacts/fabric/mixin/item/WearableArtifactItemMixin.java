@@ -1,13 +1,10 @@
 package artifacts.fabric.mixin.item;
 
 import artifacts.client.CosmeticsHelper;
-import artifacts.integration.EquipmentIntegration;
 import artifacts.integration.EquipmentIntegrationConstants;
 import artifacts.integration.EquipmentIntegrationUtils;
-import artifacts.integration.impl.trinkets.TrinketIntegration;
 import artifacts.item.WearableArtifactItem;
 import artifacts.util.AbilityHelper;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;

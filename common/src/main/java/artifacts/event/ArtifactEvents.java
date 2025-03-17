@@ -12,7 +12,6 @@ import artifacts.attribute.DynamicAttributeModifier;
 import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.item.UmbrellaItem;
 import artifacts.mixin.accessors.MobAccessor;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModAttributes;
 import artifacts.registry.ModDataComponents;

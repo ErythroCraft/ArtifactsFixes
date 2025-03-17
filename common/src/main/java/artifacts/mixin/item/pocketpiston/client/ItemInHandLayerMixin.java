@@ -2,9 +2,7 @@ package artifacts.mixin.item.pocketpiston.client;
 
 import artifacts.client.item.RendererUtil;
 import artifacts.extensions.pocketpiston.LivingEntityExtensions;
-import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.integration.client.ClientEquipmentIntegrationUtils;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;

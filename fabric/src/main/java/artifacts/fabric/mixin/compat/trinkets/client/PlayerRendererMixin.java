@@ -1,20 +1,12 @@
 package artifacts.fabric.mixin.compat.trinkets.client;
 
 import artifacts.Artifacts;
-import artifacts.client.item.renderer.GloveArtifactRenderer;
-import artifacts.client.CosmeticsHelper;
-import artifacts.integration.client.ClientEquipmentIntegration;
 import artifacts.integration.client.ClientEquipmentIntegrationUtils;
-import artifacts.item.WearableArtifactItem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

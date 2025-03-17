@@ -2,7 +2,6 @@ package artifacts.fabric.mixin.client;
 
 import artifacts.Artifacts;
 import artifacts.integration.EquipmentIntegrationUtils;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;

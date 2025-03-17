@@ -31,9 +31,9 @@ public class CuriosIntegration implements EquipmentIntegration {
                 CuriosApi.registerCurio(wearableArtifactItem, new WearableArtifactCurio(wearableArtifactItem));
             }
         });
-        NeoForge.EVENT_BUS.addListener((CurioChangeEvent event) -> {
-            ArtifactEvents.onItemChanged(event.getEntity(), event.getFrom(), event.getTo());
-        });
+        NeoForge.EVENT_BUS.addListener(
+                (CurioChangeEvent event) -> ArtifactEvents.onItemChanged(event.getEntity(), event.getFrom(), event.getTo())
+        );
     }
 
     @Override
