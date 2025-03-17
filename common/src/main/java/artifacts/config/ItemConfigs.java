@@ -198,7 +198,7 @@ public class ItemConfigs extends ConfigManager {
             shockPendantCooldown = defineDuration(createKey(ModItems.SHOCK_PENDANT, "cooldown"), 0,
                     "The amount of time in seconds the Shock Pendant goes on cooldown for " +
                             "after striking an attacker with lightning"),
-            snorkelWaterBreathingDuration = defineDuration(createKey(ModItems.SNORKEL, "waterBreathingDuration"), 15,
+            snorkelWaterBreathingDuration = defineDuration(createKey(ModItems.SNORKEL, "waterBreathingDuration"), 30,
                     "The duration of the water breathing effect that is applied by the Snorkel"),
             thornPendantCooldown = defineDuration(createKey(ModItems.THORN_PENDANT, "cooldown"), 0,
                     "The duration in seconds the Thorn Pendant goes on cooldown for after activating"),
