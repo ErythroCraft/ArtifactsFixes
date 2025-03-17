@@ -2,6 +2,7 @@ package artifacts.client.item;
 
 import artifacts.client.item.model.*;
 import artifacts.client.item.renderer.*;
+import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
@@ -78,6 +79,6 @@ public class ArtifactRenderers {
     }
 
     public static void register(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
-        PlatformServices.platformHelper.registerArtifactRenderer(item, rendererSupplier);
+        ClientEquipmentIntegrationUtils.registerArtifactRenderer(item, rendererSupplier);
     }
 }

@@ -1,6 +1,7 @@
 package artifacts.neoforge.client;
 
 import artifacts.Artifacts;
+import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
 import net.minecraft.client.DeltaTracker;
@@ -31,7 +32,7 @@ public class ArtifactCooldownOverlayRenderer {
 
         MutableInt k = new MutableInt(0);
 
-        PlatformServices.platformHelper.iterateEquippedItems(player, stack -> {
+        EquipmentIntegrationUtils.iterateEquippedAccessories(player, stack -> {
             if (!stack.isEmpty() && stack.getItem() instanceof WearableArtifactItem && player.getCooldowns().isOnCooldown(stack.getItem())) {
                 int x = start + step * k.intValue();
                 k.add(1);

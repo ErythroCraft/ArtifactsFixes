@@ -1,0 +1,134 @@
+package artifacts.neoforge.integration.curios;
+
+import artifacts.client.CosmeticsHelper;
+import artifacts.client.item.renderer.ArtifactRenderer;
+import artifacts.client.item.renderer.GloveArtifactRenderer;
+import artifacts.integration.client.ClientEquipmentIntegration;
+import artifacts.item.WearableArtifactItem;
+import artifacts.mixin.accessors.client.LivingEntityRendererAccessor;
+import artifacts.neoforge.client.ArmRenderHandler;
+import artifacts.registry.ModLootTables;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
+import top.theillusivec4.curios.api.client.ICurioRenderer;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
+import top.theillusivec4.curios.client.render.CuriosLayer;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Supplier;
+
+public class CuriosClientIntegration implements ClientEquipmentIntegration {
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
+        Set<EntityType<?>> entities = ModLootTables.ENTITY_EQUIPMENT.keySet();
+        loop:
+        for (EntityType<?> entity : entities) {
+            EntityRenderer<?> renderer = event.getRenderer(entity);
+            if (renderer == null) {
+                continue;
+            }
+            LivingEntityRenderer livingEntityRenderer = (LivingEntityRenderer<?, ?>) renderer;
+            for (RenderLayer<?, ?> layer : ((LivingEntityRendererAccessor<?, ?>) livingEntityRenderer).getLayers()) {
+                if (layer instanceof CuriosLayer<?, ?>) {
+                    continue loop;
+                }
+            }
+            livingEntityRenderer.addLayer(new CuriosLayer<>(livingEntityRenderer));
+        }
+    }
+
+    @Override
+    public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
+        CuriosRendererRegistry.register(item, () -> new ArtifactCurioRenderer(rendererSupplier.get()));
+    }
+
+    @Override
+    public @Nullable ArtifactRenderer getArtifactRenderer(Item item) {
+        Optional<ICurioRenderer> renderer = CuriosRendererRegistry.getRenderer(item);
+        if (renderer.isPresent() && renderer.get() instanceof ArtifactCurioRenderer artifactTrinketRenderer) {
+            return artifactTrinketRenderer.renderer();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isVisibleOnHand(LivingEntity entity, InteractionHand hand, Item item) {
+        return CuriosApi.getCuriosInventory(entity)
+                .flatMap(handler -> Optional.ofNullable(handler.getCurios().get("hands")))
+                .map(stacksHandler -> {
+                    int startSlot = hand == InteractionHand.MAIN_HAND ? 0 : 1;
+                    for (int slot = startSlot; slot < stacksHandler.getSlots(); slot += 2) {
+                        ItemStack stack = stacksHandler.getCosmeticStacks().getStackInSlot(slot);
+                        if (stack.isEmpty() && stacksHandler.getRenders().get(slot)) {
+                            stack = stacksHandler.getStacks().getStackInSlot(slot);
+                        }
+
+                        if (stack.getItem() == item) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }).orElse(false);
+    }
+
+    @Override
+    public void renderArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side) {
+        InteractionHand hand = side == player.getMainArm() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+
+        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
+            ICurioStacksHandler stacksHandler = handler.getCurios().get("hands");
+            if (stacksHandler != null) {
+                IDynamicStackHandler stacks = stacksHandler.getStacks();
+                IDynamicStackHandler cosmeticStacks = stacksHandler.getCosmeticStacks();
+
+                for (int slot = hand == InteractionHand.MAIN_HAND ? 0 : 1; slot < stacks.getSlots(); slot += 2) {
+                    ItemStack stack = cosmeticStacks.getStackInSlot(slot);
+                    if (stack.isEmpty() && stacksHandler.getRenders().get(slot)) {
+                        stack = stacks.getStackInSlot(slot);
+                    }
+
+                    if (stack.getItem() instanceof WearableArtifactItem) {
+                        GloveArtifactRenderer renderer = GloveArtifactRenderer.getGloveRenderer(stack);
+                        if (renderer != null) {
+                            renderer.renderFirstPersonArm(matrixStack, buffer, light, player, side, stack.hasFoil());
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public String name() {
+        return "curios";
+    }
+
+    public record ArtifactCurioRenderer(ArtifactRenderer renderer) implements ICurioRenderer {
+        @Override
+        public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+            if (CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack)) return;
+            renderer.render(stack, slotContext.entity(), slotContext.index(), poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+        }
+    }
+}

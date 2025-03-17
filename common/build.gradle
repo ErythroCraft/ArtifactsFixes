@@ -20,4 +20,12 @@ dependencies {
     modCompileOnly "be.florens:expandability-fabric:${rootProject.expandability_version}"
 
     compileOnly "com.electronwill.night-config:toml:${rootProject.night_config_version}"
+
+    modCompileOnly("io.wispforest:accessories-common:${project.accessories_version}"){
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    modCompileOnly("dev.emi:trinkets:${rootProject.trinkets_version}"){
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 }

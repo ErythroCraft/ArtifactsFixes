@@ -1,4 +1,4 @@
-package artifacts.neoforge.curio;
+package artifacts.neoforge.integration.curios;
 
 import artifacts.item.WearableArtifactItem;
 import artifacts.util.DamageSourceHelper;

@@ -1,6 +1,7 @@
 package artifacts.fabric.mixin.client;
 
 import artifacts.Artifacts;
+import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.client.DeltaTracker;
@@ -46,7 +47,7 @@ public abstract class GuiMixin {
         }
 
         MutableInt k = new MutableInt(0);
-        PlatformServices.platformHelper.iterateEquippedItems(player, stack -> {
+        EquipmentIntegrationUtils.iterateEquippedAccessories(player, stack -> {
             if (!stack.isEmpty() && stack.has(ModDataComponents.ABILITIES.value()) && player.getCooldowns().isOnCooldown(stack.getItem())) {
                 int x = start + step * k.intValue();
                 k.add(1);

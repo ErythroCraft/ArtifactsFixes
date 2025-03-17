@@ -9,6 +9,7 @@ import artifacts.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
 import artifacts.ability.mobeffect.AttacksInflictMobEffectAbility;
 import artifacts.ability.retaliation.RetaliationAbility;
 import artifacts.attribute.DynamicAttributeModifier;
+import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.item.UmbrellaItem;
 import artifacts.mixin.accessors.MobAccessor;
 import artifacts.platform.PlatformServices;
@@ -98,7 +99,7 @@ public class ArtifactEvents {
         if (entity.level().isClientSide()) {
             return;
         }
-        PlatformServices.platformHelper.findAllEquippedBy(entity, stack -> stack.has(ModDataComponents.ABILITIES.value()))
+        EquipmentIntegrationUtils.findAllEquippedBy(entity, stack -> stack.has(ModDataComponents.ABILITIES.value()))
                 .forEach(stack -> {
                     for (ArtifactAbility ability : AbilityHelper.getAbilities(stack)) {
                         boolean isActive = ability.isActive(entity);

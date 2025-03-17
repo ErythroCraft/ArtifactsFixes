@@ -4,7 +4,6 @@ import artifacts.Artifacts;
 import artifacts.config.screen.ArtifactsConfigScreen;
 import artifacts.neoforge.event.ArtifactEventsNeoForge;
 import artifacts.neoforge.event.SwimEventsNeoForge;
-import artifacts.neoforge.integration.curios.CuriosIntegration;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
 import artifacts.registry.ModAttributes;
@@ -15,7 +14,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -45,10 +43,6 @@ public class ArtifactsNeoForge {
         registerConfig();
         ArtifactEventsNeoForge.register();
         SwimEventsNeoForge.register();
-
-        if (ModList.get().isLoaded("curios")) {
-            CuriosIntegration.setup(modBus);
-        }
     }
 
     private void registerConfig() {

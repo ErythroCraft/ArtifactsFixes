@@ -2,6 +2,7 @@ package artifacts.util;
 
 import artifacts.ability.ArtifactAbility;
 import artifacts.component.AbilityToggles;
+import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModDataComponents;
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
 public class AbilityHelper {
 
     public static <A extends ArtifactAbility, T> T reduce(ArtifactAbility.Type<A> type, LivingEntity entity, boolean skipItemsOnCooldown, T init, BiFunction<A, T, T> f) {
-        return PlatformServices.platformHelper.reduceItems(entity, init, (stack, init_) -> {
+        return EquipmentIntegrationUtils.reduceAccessories(entity, init, (stack, init_) -> {
             for (ArtifactAbility ability : getAbilities(stack)) {
                 if (ability.getType() == type && (!skipItemsOnCooldown || !isOnCooldown(entity, stack))) {
                     //noinspection unchecked
@@ -124,7 +125,7 @@ public class AbilityHelper {
 
     public static void addCooldown(ArtifactAbility.Type<?> type, LivingEntity entity, int ticks) {
         if (ticks > 0 && !entity.level().isClientSide() && entity instanceof Player player) {
-            PlatformServices.platformHelper.findAllEquippedBy(entity, stack -> hasAbility(type, stack))
+            EquipmentIntegrationUtils.findAllEquippedBy(entity, stack -> hasAbility(type, stack))
                     .forEach(stack -> player.getCooldowns().addCooldown(stack.getItem(), ticks));
         }
     }
@@ -145,7 +146,7 @@ public class AbilityHelper {
     }
 
     public static <A extends ArtifactAbility> void forEach(ArtifactAbility.Type<A> type, LivingEntity entity, BiConsumer<A, ItemStack> consumer, boolean skipItemsOnCooldown) {
-        PlatformServices.platformHelper.findAllEquippedBy(entity, stack -> hasAbility(type, stack))
+        EquipmentIntegrationUtils.findAllEquippedBy(entity, stack -> hasAbility(type, stack))
                 .forEach(stack -> getAbilities(type, stack)
                         .filter(ArtifactAbility::isEnabled)
                         .filter(ability -> !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(stack.getItem()))

@@ -111,6 +111,8 @@ allprojects {
                 includeGroup "cpw.mods"
             }
         }
+        maven { url 'https://maven.wispforest.io/releases' }
+        maven { url 'https://maven.su5ed.dev/releases' }
     }
 
     tasks.withType(JavaCompile) {

@@ -44,6 +44,13 @@ dependencies {
     modCompileOnly("curse.maven:cosmetic-armor-reworked-237307:5082294")
 
     modRuntimeOnly("maven.modrinth:curious-armor-stands:${rootProject.curious_armor_stands_version}")
+
+    modImplementation("io.wispforest:accessories-neoforge:${project.accessories_version}")
+
+    // Required due to issues with JIJ dependency resolving in arch or something
+    forgeRuntimeLibrary("io.wispforest:endec:0.1.8")
+    forgeRuntimeLibrary("io.wispforest.endec:gson:0.1.5")
+    forgeRuntimeLibrary("io.wispforest.endec:netty:0.1.4")
 }
 
 processResources {

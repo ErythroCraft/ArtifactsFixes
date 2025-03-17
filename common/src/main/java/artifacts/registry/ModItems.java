@@ -318,9 +318,9 @@ public class ModItems {
 
     private static Holder<Item> wearableItem(String name, Consumer<WearableArtifactItem.Builder> consumer) {
         return register(name, () -> {
-            var builder = new WearableArtifactItem.Builder(name);
+            WearableArtifactItem.Builder builder = new WearableArtifactItem.Builder(name);
             consumer.accept(builder);
-            PlatformServices.platformHelper.processWearableArtifactBuilder(builder);
+            builder.properties(properties -> properties.component(ModDataComponents.COSMETICS_ENABLED.get(), true));
             return builder.build();
         });
     }

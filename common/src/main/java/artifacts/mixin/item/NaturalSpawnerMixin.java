@@ -1,6 +1,7 @@
 package artifacts.mixin.item;
 
 import artifacts.Artifacts;
+import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModLootTables;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -32,7 +33,7 @@ public class NaturalSpawnerMixin {
 
             LootParams lootparams = params.create(LootContextParamSets.EMPTY);
             loottable.getRandomItems(lootparams, mob.getLootTableSeed(), stack -> {
-                if (!PlatformServices.platformHelper.tryEquipInFirstSlot(mob, stack)) {
+                if (!EquipmentIntegrationUtils.equipAccessory(mob, stack)) {
                     Artifacts.LOGGER.warn("Could not equip item '{}' on spawned entity '{}'", stack, mob);
                 }
             });

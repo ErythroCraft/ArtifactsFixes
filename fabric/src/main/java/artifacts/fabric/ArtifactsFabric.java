@@ -3,7 +3,6 @@ package artifacts.fabric;
 import artifacts.Artifacts;
 import artifacts.fabric.event.SwimEventsFabric;
 import artifacts.fabric.integration.CompatHandler;
-import artifacts.fabric.integration.TrinketsIntegration;
 import artifacts.fabric.registry.ModFeatures;
 import artifacts.fabric.registry.ModLootTablesFabric;
 import artifacts.registry.ModItems;
@@ -22,10 +21,6 @@ public class ArtifactsFabric implements ModInitializer {
     public void onInitialize() {
         Artifacts.init();
         register(BuiltInRegistries.ITEM, ModItems.ITEMS);
-
-        if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-            TrinketsIntegration.setup();
-        }
 
         SwimEventsFabric.register();
         ModFeatures.register();

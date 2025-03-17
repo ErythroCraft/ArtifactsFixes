@@ -2,6 +2,7 @@ package artifacts.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
@@ -54,8 +55,7 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
             }
         }
 
-        return PlatformServices.platformHelper
-                .findAllEquippedBy(entity, stack -> AbilityHelper.hasAbility(ModAbilities.TELEPORT_ON_DEATH.value(), stack)
+        return EquipmentIntegrationUtils.findAllEquippedBy(entity, stack -> AbilityHelper.hasAbility(ModAbilities.TELEPORT_ON_DEATH.value(), stack)
                         && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem())))
                 .findFirst()
                 .orElse(ItemStack.EMPTY);

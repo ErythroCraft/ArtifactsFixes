@@ -2,7 +2,9 @@ package artifacts.fabric.mixin.compat.trinkets.client;
 
 import artifacts.Artifacts;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
-import artifacts.fabric.client.CosmeticsHelper;
+import artifacts.client.CosmeticsHelper;
+import artifacts.integration.client.ClientEquipmentIntegration;
+import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.item.WearableArtifactItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.trinkets.api.SlotReference;
@@ -38,19 +40,6 @@ public abstract class PlayerRendererMixin {
             return;
         }
 
-        String groupId = handSide == player.getMainArm() ? "hand" : "offhand";
-        TrinketsApi.getTrinketComponent(player).ifPresent(component -> {
-            for (Tuple<SlotReference, ItemStack> pair : component.getAllEquipped()) {
-                ItemStack stack = pair.getB();
-                if (pair.getA().inventory().getSlotType().getGroup().equals(groupId)
-                        && stack.getItem() instanceof WearableArtifactItem // Not every trinket is an artifact
-                        && !CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack)) {
-                    GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
-                    if (gloveRenderer != null) {
-                        gloveRenderer.renderFirstPersonArm(matrixStack, buffer, light, player, handSide, stack.hasFoil());
-                    }
-                }
-            }
-        });
+        ClientEquipmentIntegrationUtils.renderArm(matrixStack, buffer, light, player, handSide);
     }
 }

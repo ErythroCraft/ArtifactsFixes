@@ -1,6 +1,7 @@
 package artifacts.client.item.renderer;
 
 import artifacts.client.item.model.ArmsModel;
+import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -45,7 +46,7 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
 
     @Nullable
     public static GloveArtifactRenderer getGloveRenderer(ItemStack stack) {
-        if (!stack.isEmpty() && PlatformServices.platformHelper.getArtifactRenderer(stack.getItem()) instanceof GloveArtifactRenderer gloveRenderer) {
+        if (!stack.isEmpty() && ClientEquipmentIntegrationUtils.getArtifactRenderer(stack.getItem()) instanceof GloveArtifactRenderer gloveRenderer) {
             return gloveRenderer;
         }
         return null;

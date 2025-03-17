@@ -1,21 +1,21 @@
 package artifacts.neoforge.platform;
 
 import artifacts.Artifacts;
-import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
-import artifacts.item.WearableArtifactItem;
+import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.neoforge.integration.cosmeticarmor.CosmeticArmorCompat;
+import artifacts.neoforge.integration.curios.CuriosClientIntegration;
 import artifacts.neoforge.integration.curios.CuriosIntegration;
-import artifacts.neoforge.integration.curios.CuriosIntegrationClient;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.platform.PlatformHelper;
+import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAttributes;
 import artifacts.registry.RegistryHolder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
@@ -25,62 +25,14 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.registries.callback.AddCallback;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class NeoForgePlatformHelper implements PlatformHelper {
-
-    @Override
-    public Stream<ItemStack> findAllEquippedBy(LivingEntity entity, Predicate<ItemStack> predicate) {
-        Stream<ItemStack> armor = StreamSupport.stream(entity.getArmorAndBodyArmorSlots().spliterator(), false).filter(predicate);
-        if (ModList.get().isLoaded("curios")) {
-            return Stream.concat(CuriosIntegration.findAllEquippedBy(entity, predicate), armor);
-        }
-        return armor;
-    }
-
-    @Override
-    public void iterateEquippedItems(LivingEntity entity, Consumer<ItemStack> consumer) {
-        if (ModList.get().isLoaded("curios")) {
-            CuriosIntegration.iterateEquippedCurios(entity, consumer);
-        }
-        for (ItemStack item : entity.getArmorAndBodyArmorSlots()) {
-            if (!item.isEmpty()) {
-                consumer.accept(item);
-            }
-        }
-    }
-
-    @Override
-    public <T> T reduceItems(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
-        if (ModList.get().isLoaded("curios")) {
-            init = CuriosIntegration.reduceCurios(entity, init, f);
-        }
-
-        for (ItemStack item : entity.getArmorAndBodyArmorSlots()) {
-            if (!item.isEmpty()) {
-                init = f.apply(item, init);
-            }
-        }
-        return init;
-    }
-
-    @Override
-    public boolean tryEquipInFirstSlot(LivingEntity entity, ItemStack item) {
-        if (ModList.get().isLoaded("curios")) {
-            return CuriosIntegration.tryEquipInFirstSlot(entity, item);
-        }
-        return false;
-    }
 
     @Nullable
     @Override
@@ -107,31 +59,8 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     }
 
     @Override
-    public void processWearableArtifactBuilder(WearableArtifactItem.Builder builder) {
-
-    }
-
-    @Override
-    public void registerAdditionalDataComponents() {
-
-    }
-
-    @Override
-    public void addCosmeticToggleTooltip(List<MutableComponent> tooltip, ItemStack stack) {
-
-    }
-
-    @Override
     public boolean isEyeInWater(Player player) {
         return player.isEyeInFluidType(NeoForgeMod.WATER_TYPE.value());
-    }
-
-    @Override
-    public boolean isVisibleOnHand(LivingEntity entity, InteractionHand hand, Item item) {
-        if (ModList.get().isLoaded("curios")) {
-            return CuriosIntegration.isVisibleOnHand(entity, hand, item);
-        }
-        return false;
     }
 
     @Override
@@ -148,23 +77,34 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     }
 
     @Override
-    public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
-        if (ModList.get().isLoaded("curios")) {
-            CuriosIntegrationClient.registerArtifactRenderer(item, rendererSupplier);
-        }
-    }
-
-    @Nullable
-    @Override
-    public ArtifactRenderer getArtifactRenderer(Item item) {
-        if (ModList.get().isLoaded("curios")) {
-            return CuriosIntegrationClient.getArtifactRenderer(item);
-        }
-        return null;
-    }
-
-    @Override
     public Path getConfigDir() {
         return FMLPaths.CONFIGDIR.get();
+    }
+
+    @Override
+    public void registryEntryAddCallback(Consumer<Item> consumer) {
+        BuiltInRegistries.ITEM.addCallback((AddCallback<Item>) (registry, i, key, item) -> consumer.accept(item));
+    }
+
+    @Override
+    public boolean isModLoaded(String modid) {
+        return ModList.get().isLoaded(modid);
+    }
+
+    public void setupIntegrations() {
+        PlatformHelper.super.setupIntegrations();
+
+        if (PlatformServices.platformHelper.isModLoaded("curios") && !PlatformServices.platformHelper.isModLoaded("cclayer")) {
+            EquipmentIntegrationUtils.registerIntegration(new CuriosIntegration());
+        }
+    }
+
+    @Override
+    public void setupClientIntegratons() {
+        PlatformHelper.super.setupClientIntegratons();
+
+        if (PlatformServices.platformHelper.isModLoaded("curios") && !PlatformServices.platformHelper.isModLoaded("cclayer")) {
+            ClientEquipmentIntegrationUtils.registerIntegration(new CuriosClientIntegration());
+        }
     }
 }

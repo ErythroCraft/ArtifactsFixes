@@ -5,7 +5,10 @@ import artifacts.config.ConfigManager;
 import artifacts.config.ModConfig;
 import artifacts.entity.MimicEntity;
 import artifacts.event.ArtifactEvents;
+import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.VanillaEquipmentIntegration;
 import artifacts.network.NetworkHandler;
+import artifacts.platform.PlatformServices;
 import artifacts.registry.*;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
@@ -38,6 +41,8 @@ public class Artifacts {
     public static void init() {
         CONFIG = new ModConfig();
 
+        setupIntegrations();
+
         NetworkHandler.register();
 
         ModDataComponents.register();
@@ -63,5 +68,13 @@ public class Artifacts {
 
     public static void setupConfigs() {
         CONFIG.setup();
+    }
+
+    public static void setupIntegrations() {
+        PlatformServices.platformHelper.setupIntegrations();
+
+        EquipmentIntegrationUtils.registerIntegration(new VanillaEquipmentIntegration());
+
+        EquipmentIntegrationUtils.setupIntegrations();
     }
 }
