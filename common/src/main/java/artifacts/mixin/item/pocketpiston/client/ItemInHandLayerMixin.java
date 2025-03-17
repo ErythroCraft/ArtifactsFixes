@@ -2,6 +2,8 @@ package artifacts.mixin.item.pocketpiston.client;
 
 import artifacts.client.item.RendererUtil;
 import artifacts.extensions.pocketpiston.LivingEntityExtensions;
+import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,7 +27,7 @@ public class ItemInHandLayerMixin {
     private void renderArmWithItem(LivingEntity entity, ItemStack itemStack, ItemDisplayContext itemDisplayContext, HumanoidArm humanoidArm, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
         InteractionHand hand = RendererUtil.getInteractionHand(entity, humanoidArm);
         if (entity instanceof Player player
-                && PlatformServices.platformHelper.isVisibleOnHand(player, hand, ModItems.POCKET_PISTON.value())
+                && ClientEquipmentIntegrationUtils.isVisibleOnHand(player, hand, ModItems.POCKET_PISTON.value())
         ) {
             poseStack.translate(0, 0, -1.5 / 16);
             if (player.swingingArm == hand) {

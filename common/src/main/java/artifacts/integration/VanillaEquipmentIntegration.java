@@ -1,8 +1,6 @@
 package artifacts.integration;
 
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.BiFunction;
@@ -11,9 +9,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class VanillaEquipmentIntegration extends BaseEquipmentIntegration {
-
-    public static final VanillaEquipmentIntegration INSTANCE = new VanillaEquipmentIntegration();
+public class VanillaEquipmentIntegration implements EquipmentIntegration {
 
     @Override
     public void setup() {}
@@ -44,12 +40,7 @@ public class VanillaEquipmentIntegration extends BaseEquipmentIntegration {
     }
 
     @Override
-    public boolean isVisibleOnHand(LivingEntity entity, InteractionHand hand, Item item) {
-        return false;
-    }
-
-    @Override
     public String name() {
-        return "vanilla";
+        return "minecraft";
     }
 }

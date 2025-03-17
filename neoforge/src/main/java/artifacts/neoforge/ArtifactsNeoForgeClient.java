@@ -3,7 +3,11 @@ package artifacts.neoforge;
 import artifacts.Artifacts;
 import artifacts.ArtifactsClient;
 import artifacts.client.item.ArtifactRenderers;
+import artifacts.integration.EquipmentIntegrationConstants;
+import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.integration.impl.trinkets.TrinketRenderersReloadHook;
+import artifacts.neoforge.client.ArmRenderHandler;
 import artifacts.neoforge.client.ArtifactCooldownOverlayRenderer;
 import artifacts.neoforge.client.HeliumFlamingoOverlayRenderer;
 import artifacts.neoforge.client.UmbrellaArmPoseHandler;
@@ -24,6 +28,16 @@ public class ArtifactsNeoForgeClient {
 
         modBus.addListener(this::onClientSetup);
         modBus.addListener(this::onRegisterGuiOverlays);
+
+        boolean curiosLoaded = ClientEquipmentIntegrationUtils.hasIntegration(EquipmentIntegrationConstants.CURIOS);
+
+        if (ClientEquipmentIntegrationUtils.hasIntegration(EquipmentIntegrationConstants.TRINKETS) || curiosLoaded) {
+            ArmRenderHandler.setup();
+        }
+
+        if (curiosLoaded) {
+            modBus.addListener(CuriosClientIntegration::onAddLayers);
+        }
 
         modBus.addListener((AddReloadListenerEvent event) -> {
             if (ModList.get().isLoaded("trinkets")) {

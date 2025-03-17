@@ -61,7 +61,7 @@ public class ArtifactsConfigScreen {
         config.getValues().keySet().stream().sorted().forEach(key -> {
             String[] names = key.split("\\.");
             Value.ConfigValue<?> value = config.getValues().get(key);
-            var field = createField(config, config.getName(), key, value, config.getDescription(key).size());
+            AbstractConfigListEntry<?> field = createField(config, config.getName(), key, value, config.getDescription(key).size());
             if (names.length == 1) {
                 configBuilder.addEntry(field);
             } else {

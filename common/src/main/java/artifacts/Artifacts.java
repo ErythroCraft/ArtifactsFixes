@@ -73,7 +73,7 @@ public class Artifacts {
     public static void setupIntegrations() {
         PlatformServices.platformHelper.setupIntegrations();
 
-        VanillaEquipmentIntegration.INSTANCE.registerIntegration();
+        EquipmentIntegrationUtils.registerIntegration(new VanillaEquipmentIntegration());
 
         EquipmentIntegrationUtils.setupIntegrations();
     }

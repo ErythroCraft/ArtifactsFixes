@@ -1,8 +1,8 @@
 package artifacts.integration.impl.trinkets;
 
-import artifacts.client.CosmeticsHelper;
 import artifacts.event.ArtifactEvents;
-import artifacts.integration.BaseEquipmentIntegration;
+import artifacts.integration.EquipmentIntegration;
+import artifacts.integration.EquipmentIntegrationConstants;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
 import artifacts.util.DamageSourceHelper;
@@ -10,9 +10,7 @@ import dev.emi.trinkets.api.*;
 import dev.emi.trinkets.api.event.TrinketEquipCallback;
 import dev.emi.trinkets.api.event.TrinketUnequipCallback;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -23,9 +21,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class TrinketIntegration extends BaseEquipmentIntegration {
-
-    public static final TrinketIntegration INSTANCE = new TrinketIntegration();
+public class TrinketIntegration implements EquipmentIntegration {
 
     @Override
     public void setup() {
@@ -88,23 +84,11 @@ public class TrinketIntegration extends BaseEquipmentIntegration {
     }
 
     @Override
-    public boolean isVisibleOnHand(LivingEntity entity, InteractionHand hand, Item item) {
-        return TrinketsApi.getTrinketComponent(entity).stream()
-                .flatMap(component -> component.getAllEquipped().stream())
-                .filter(tuple -> tuple.getA().inventory().getSlotType().getGroup().equals(
-                        hand == InteractionHand.MAIN_HAND ? "hand" : "offhand"
-                )).map(Tuple::getB)
-                .filter(stack -> stack.is(item))
-                .filter(stack -> !CosmeticsHelper.areCosmeticsToggledOffByPlayer(stack))
-                .anyMatch(tuple -> true);
-    }
-
-    @Override
     public String name() {
-        return "trinkets";
+        return EquipmentIntegrationConstants.TRINKETS;
     }
 
-    public static record WearableArtifactTrinket(WearableArtifactItem item) implements Trinket {
+    public record WearableArtifactTrinket(WearableArtifactItem item) implements Trinket {
 
         @Override
         public TrinketEnums.DropRule getDropRule(ItemStack stack, SlotReference slot, LivingEntity entity) {

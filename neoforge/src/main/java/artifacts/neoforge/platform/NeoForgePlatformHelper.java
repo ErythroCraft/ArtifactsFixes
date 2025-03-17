@@ -3,6 +3,8 @@ package artifacts.neoforge.platform;
 import artifacts.Artifacts;
 import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
+import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.client.ClientEquipmentIntegrationUtils;
 import artifacts.neoforge.integration.cosmeticarmor.CosmeticArmorCompat;
 import artifacts.neoforge.integration.curios.CuriosClientIntegration;
 import artifacts.neoforge.integration.curios.CuriosIntegration;
@@ -93,7 +95,7 @@ public class NeoForgePlatformHelper implements PlatformHelper {
         PlatformHelper.super.setupIntegrations();
 
         if (PlatformServices.platformHelper.isModLoaded("curios") && !PlatformServices.platformHelper.isModLoaded("cclayer")) {
-            CuriosIntegration.INSTANCE.registerIntegration();
+            EquipmentIntegrationUtils.registerIntegration(new CuriosIntegration());
         }
     }
 
@@ -102,7 +104,7 @@ public class NeoForgePlatformHelper implements PlatformHelper {
         PlatformHelper.super.setupClientIntegratons();
 
         if (PlatformServices.platformHelper.isModLoaded("curios") && !PlatformServices.platformHelper.isModLoaded("cclayer")) {
-            CuriosClientIntegration.INSTANCE.registerIntegration();
+            ClientEquipmentIntegrationUtils.registerIntegration(new CuriosClientIntegration());
         }
     }
 }

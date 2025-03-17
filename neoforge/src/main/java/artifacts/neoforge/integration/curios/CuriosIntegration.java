@@ -1,12 +1,10 @@
 package artifacts.neoforge.integration.curios;
 
 import artifacts.event.ArtifactEvents;
-import artifacts.integration.BaseEquipmentIntegration;
+import artifacts.integration.EquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -24,9 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class CuriosIntegration extends BaseEquipmentIntegration {
-
-    public static final CuriosIntegration INSTANCE = new CuriosIntegration();
+public class CuriosIntegration implements EquipmentIntegration {
 
     @Override
     public void setup() {
@@ -96,26 +92,6 @@ public class CuriosIntegration extends BaseEquipmentIntegration {
             }
         }
         return false;
-    }
-
-    @Override
-    public boolean isVisibleOnHand(LivingEntity entity, InteractionHand hand, Item item) {
-        return CuriosApi.getCuriosInventory(entity)
-                .flatMap(handler -> Optional.ofNullable(handler.getCurios().get("hands")))
-                .map(stacksHandler -> {
-                    int startSlot = hand == InteractionHand.MAIN_HAND ? 0 : 1;
-                    for (int slot = startSlot; slot < stacksHandler.getSlots(); slot += 2) {
-                        ItemStack stack = stacksHandler.getCosmeticStacks().getStackInSlot(slot);
-                        if (stack.isEmpty() && stacksHandler.getRenders().get(slot)) {
-                            stack = stacksHandler.getStacks().getStackInSlot(slot);
-                        }
-
-                        if (stack.getItem() == item) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }).orElse(false);
     }
 
     @Override
