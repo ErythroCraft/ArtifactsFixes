@@ -31,7 +31,13 @@ public class BlockTags extends BlockTagsProvider {
             tag(ModTags.CAMPSITE_CHESTS).addOptional(ResourceLocation.fromNamespaceAndPath("quark", "%s_chest".formatted(chestType)));
         }
 
-        tag(ModTags.ROOTED_BOOTS_GRASS).addTag(net.minecraft.tags.BlockTags.ANIMALS_SPAWNABLE_ON);
+        tag(ModTags.ROOTED_BOOTS_GRASS).add(
+                Blocks.GRASS_BLOCK,
+                Blocks.MOSS_BLOCK,
+                Blocks.MOSS_CARPET,
+                Blocks.DIRT_PATH,
+                Blocks.PODZOL
+        );
         tag(ModTags.SNOW_LAYERS).add(Blocks.SNOW);
     }
 }

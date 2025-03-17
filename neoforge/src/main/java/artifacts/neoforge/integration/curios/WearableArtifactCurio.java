@@ -11,11 +11,11 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 public record WearableArtifactCurio(WearableArtifactItem item) implements ICurioItem {
 
     @Override
-    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
+    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, boolean recentlyHit, ItemStack stack) {
         if (DamageSourceHelper.shouldDestroyWornItemsOnDeath(slotContext.entity())) {
             return ICurio.DropRule.DESTROY;
         }
-        return ICurioItem.super.getDropRule(slotContext, source, lootingLevel, recentlyHit, stack);
+        return ICurioItem.super.getDropRule(slotContext, source, recentlyHit, stack);
     }
 
     @Override
