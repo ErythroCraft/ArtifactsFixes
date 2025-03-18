@@ -35,7 +35,6 @@
     "ability.hurtsound.client.LivingEntityMixin",
     "ability.nightvision.client.GameRendererMixin",
     "accessors.client.LivingEntityRendererAccessor",
-    "item.pocketpiston.client.ItemInHandLayerMixin",
     "item.pocketpiston.client.LivingEntityMixin",
     "item.umbrella.client.HumanoidModelMixin"
   ],

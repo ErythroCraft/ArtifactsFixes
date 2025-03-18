@@ -26,7 +26,6 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import top.theillusivec4.curios.client.render.CuriosLayer;
 
@@ -70,31 +69,10 @@ public class CuriosClientIntegration implements ClientEquipmentIntegration {
     }
 
     @Override
-    public boolean isVisibleOnHand(LivingEntity entity, InteractionHand hand, Item item) {
-        return CuriosApi.getCuriosInventory(entity)
-                .flatMap(handler -> Optional.ofNullable(handler.getCurios().get("hands")))
-                .map(stacksHandler -> {
-                    int startSlot = hand == InteractionHand.MAIN_HAND ? 0 : 1;
-                    for (int slot = startSlot; slot < stacksHandler.getSlots(); slot += 2) {
-                        ItemStack stack = stacksHandler.getCosmeticStacks().getStackInSlot(slot);
-                        if (stack.isEmpty() && stacksHandler.getRenders().get(slot)) {
-                            stack = stacksHandler.getStacks().getStackInSlot(slot);
-                        }
-
-                        if (stack.getItem() == item) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }).orElse(false);
-    }
-
-    @Override
     public void renderArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side) {
         InteractionHand hand = side == player.getMainArm() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 
-        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
-            ICurioStacksHandler stacksHandler = handler.getCurios().get("hands");
+        CuriosApi.getCuriosInventory(player).ifPresent(handler -> handler.getCurios().values().forEach(stacksHandler -> {
             if (stacksHandler != null) {
                 IDynamicStackHandler stacks = stacksHandler.getStacks();
                 IDynamicStackHandler cosmeticStacks = stacksHandler.getCosmeticStacks();
@@ -113,7 +91,7 @@ public class CuriosClientIntegration implements ClientEquipmentIntegration {
                     }
                 }
             }
-        });
+        }));
     }
 
     @Override

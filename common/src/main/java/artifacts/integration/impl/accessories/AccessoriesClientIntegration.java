@@ -5,8 +5,6 @@ import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.integration.EquipmentIntegrationConstants;
 import artifacts.integration.client.ClientEquipmentIntegration;
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.AccessoriesContainer;
 import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
 import io.wispforest.accessories.api.client.AccessoryRenderer;
 import io.wispforest.accessories.api.slot.SlotReference;
@@ -14,7 +12,6 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,34 +35,6 @@ public class AccessoriesClientIntegration implements ClientEquipmentIntegration 
             return artifactAccessoryRenderer.renderer();
         }
         return null;
-    }
-
-    @Override
-    public boolean isVisibleOnHand(LivingEntity entity, InteractionHand hand, Item item) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-
-        if (capability != null) {
-            AccessoriesContainer container = capability.getContainers().get("hand");
-
-            if (container != null) {
-                Container accessories = container.getAccessories();
-                Container cosmetics = container.getCosmeticAccessories();
-
-                int startSlot = hand == InteractionHand.MAIN_HAND ? 0 : 1;
-
-                for (int slot = startSlot; slot < container.getSize(); slot += 2) {
-                    if (container.shouldRender(slot)) continue;
-
-                    ItemStack stack = cosmetics.getItem(slot);
-
-                    if (stack.isEmpty()) stack = accessories.getItem(slot);
-
-                    if (stack.getItem() == item) return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     @Override
