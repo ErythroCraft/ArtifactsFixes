@@ -43,11 +43,13 @@ public class LootTables extends LootTableProvider {
 
     private final ExistingFileHelper existingFileHelper;
     private final LootModifiers lootModifiers;
+    private final CompletableFuture<HolderLookup.Provider> registries;
 
     public LootTables(PackOutput packOutput, ExistingFileHelper existingFileHelper, LootModifiers lootModifiers, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(packOutput, Set.of(), List.of(), lookupProvider);
         this.existingFileHelper = existingFileHelper;
         this.lootModifiers = lootModifiers;
+        this.registries = lookupProvider;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class LootTables extends LootTableProvider {
         addDrinkingHatsLootTable();
         addArtifactsLootTable();
         addChestLootTables();
-        new EntityEquipment(this).addLootTables();
+        new EntityEquipment(this).addLootTables(registries);
 
         for (LootModifiers.Builder lootBuilder : lootModifiers.lootBuilders) {
             addLootTable("inject/" + lootBuilder.getName(), provider -> lootBuilder.createLootTable(), lootBuilder.getParameterSet());

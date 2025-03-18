@@ -1,20 +1,29 @@
 package artifacts.neoforge.data;
 
 import artifacts.loot.ConfigValueChance;
+import artifacts.loot.IsAprilFools;
 import artifacts.registry.ModItems;
 import artifacts.registry.ModLootTables;
 import com.google.common.collect.Sets;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class EntityEquipment {
 
@@ -25,7 +34,7 @@ public class EntityEquipment {
         this.lootTables = lootTables;
     }
 
-    public void addLootTables() {
+    public void addLootTables(CompletableFuture<HolderLookup.Provider> lookupProvider) {
         entityTypes.clear();
 
         addItems(EntityType.ZOMBIE,
@@ -68,6 +77,29 @@ public class EntityEquipment {
                 ModItems.ONION_RING.value(),
                 ModItems.STRIDER_SHOES.value()
         );
+
+        lookupProvider.thenAccept(registries -> {
+            LootPool.Builder pool = LootPool.lootPool();
+
+            for (Item item : List.of(
+                    ModItems.PLASTIC_DRINKING_HAT.value(),
+                    ModItems.ANGLERS_HAT.value(),
+                    ModItems.COWBOY_HAT.value(),
+                    ModItems.VILLAGER_HAT.value(),
+                    ModItems.NIGHT_VISION_GOGGLES.value(),
+                    ModItems.SNORKEL.value()
+            )) {
+                pool.add(item(item));
+            }
+            pool.apply(
+                    new SetEnchantmentsFunction.Builder().withEnchantment(registries.holderOrThrow(Enchantments.VANISHING_CURSE), ConstantValue.exactly(1))
+            ).apply(
+                    SetComponentsFunction.setComponent(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false)
+            );
+            LootTable.Builder builder = LootTable.lootTable().withPool(pool.when(IsAprilFools.builder()));
+            lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(EntityType.GHAST).location().getPath(), provider -> builder, LootContextParamSets.ALL_PARAMS);
+        });
+        entityTypes.add(EntityType.GHAST);
 
         if (!entityTypes.equals(ModLootTables.ENTITY_EQUIPMENT.keySet())) {
             throw new IllegalStateException(Sets.symmetricDifference(entityTypes, ModLootTables.ENTITY_EQUIPMENT.keySet()).toString());
