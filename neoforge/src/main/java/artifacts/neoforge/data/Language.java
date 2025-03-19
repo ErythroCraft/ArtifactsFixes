@@ -235,6 +235,7 @@ public class Language extends LanguageProvider {
         tooltip("item.novelty_drinking_hat", "'Hey! I'm #1, and I let gravity do my drinking!'");
         tooltip("item.umbrella.glider", "Slows your fall when held");
         tooltip("item.umbrella.shield", "Can be used as a shield");
+        tooltip("missing_dependency", "Install Curios, Trinkets or Accessories to use this item");
         tooltip("per_food_point_restored", "For every food point restored:");
         tooltip("plus_mob_effect", "+%s");
         tooltip("toggle_keymapping", "Press %s to toggle");

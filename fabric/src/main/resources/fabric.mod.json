@@ -38,10 +38,12 @@
     "fabric": "*",
     "minecraft": ">=1.21",
     "architectury": "*",
-    "trinkets": "*",
     "cloth-config": "*"
   },
   "suggests": {
+    "trinkets": "*",
+    "accessories": "*",
+    "transmog": "*",
     "modmenu": "*"
   },
   "custom": {
