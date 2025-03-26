@@ -10,7 +10,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
@@ -19,10 +18,6 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.ArrayList;
@@ -30,85 +25,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CampsiteFeature extends Feature<NoneFeatureConfiguration> {
-
-    private static final BlockStateProvider UNLIT_CAMPFIRES = SimpleStateProvider.simple(
-            Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, false)
-    );
-
-    private static final BlockStateProvider LIT_CAMPFIRES = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-            .add(Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 9)
-            .add(Blocks.SOUL_CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 1)
-    );
-
-    private static final BlockStateProvider DECORATIONS = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-            .add(Blocks.POTTED_DEAD_BUSH.defaultBlockState(), 2)
-            .add(Blocks.POTTED_BAMBOO.defaultBlockState(), 2)
-            .add(Blocks.POTTED_RED_TULIP.defaultBlockState(), 2)
-            .add(Blocks.BREWING_STAND.defaultBlockState(), 1)
-            .add(Blocks.CANDLE_CAKE.defaultBlockState().setValue(CandleCakeBlock.LIT, true), 1)
-    );
-
-    private static final BlockStateProvider CRAFTING_STATIONS = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-            .add(Blocks.CRAFTING_TABLE.defaultBlockState(), 5)
-            .add(Blocks.SMITHING_TABLE.defaultBlockState(), 5)
-            .add(Blocks.FLETCHING_TABLE.defaultBlockState(), 5)
-            .add(Blocks.CARTOGRAPHY_TABLE.defaultBlockState(), 5)
-            .add(Blocks.ANVIL.defaultBlockState(), 2)
-            .add(Blocks.CHIPPED_ANVIL.defaultBlockState(), 2)
-            .add(Blocks.DAMAGED_ANVIL.defaultBlockState(), 1)
-    );
-
-    private static final BlockStateProvider FURNACES = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-            .add(Blocks.FURNACE.defaultBlockState().setValue(FurnaceBlock.LIT, false), 2)
-            .add(Blocks.BLAST_FURNACE.defaultBlockState().setValue(BlastFurnaceBlock.LIT, false), 1)
-            .add(Blocks.SMOKER.defaultBlockState().setValue(SmokerBlock.LIT, false), 1)
-    );
-
-    private static final BlockStateProvider FURNACE_CHIMNEYS = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-            .add(Blocks.COBBLESTONE_WALL.defaultBlockState(), 2)
-            .add(Blocks.COBBLED_DEEPSLATE_WALL.defaultBlockState(), 2)
-            .add(Blocks.STONE_BRICK_WALL.defaultBlockState(), 1)
-            .add(Blocks.DEEPSLATE_BRICK_WALL.defaultBlockState(), 1)
-    );
-
-    private static final BlockStateProvider BEDS = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-            .add(Blocks.RED_BED.defaultBlockState(), 1)
-            .add(Blocks.YELLOW_BED.defaultBlockState(), 1)
-            .add(Blocks.CYAN_BED.defaultBlockState(), 1)
-            .add(Blocks.GRAY_BED.defaultBlockState(), 1)
-            .add(Blocks.MAGENTA_BED.defaultBlockState(), 1)
-            .add(Blocks.GREEN_BED.defaultBlockState(), 1)
-    );
-
-    private static final BlockStateProvider LIGHT_SOURCES = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-            .add(Blocks.LANTERN.defaultBlockState(), 4)
-            .add(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true), 1)
-            .add(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, 2), 1)
-            .add(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, 3), 1)
-            .add(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, 4), 1)
-            .add(Blocks.SOUL_LANTERN.defaultBlockState(), 1)
-    );
-
-    private static final BlockStateProvider UNLIT_LIGHT_SOURCES = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-            .add(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, false), 1)
-            .add(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, false).setValue(CandleBlock.CANDLES, 2), 1)
-            .add(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, false).setValue(CandleBlock.CANDLES, 3), 1)
-            .add(Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, false).setValue(CandleBlock.CANDLES, 4), 1)
-    );
+public class CampsiteFeature extends Feature<CampsiteFeatureConfiguration> {
 
     public static final ResourceKey<LootTable> CHEST_LOOT = Artifacts.key(Registries.LOOT_TABLE, "chests/campsite_chest");
     public static final ResourceKey<LootTable> BARREL_LOOT = Artifacts.key(Registries.LOOT_TABLE, "chests/campsite_barrel");
 
     public CampsiteFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+        super(CampsiteFeatureConfiguration.CODEC);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+    public boolean place(FeaturePlaceContext<CampsiteFeatureConfiguration> context) {
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
         RandomSource random = context.random();
+        CampsiteFeatureConfiguration config = context.config();
 
         if (!isSufficientlyFlat(level, origin)) {
             return false;
@@ -119,8 +50,8 @@ public class CampsiteFeature extends Feature<NoneFeatureConfiguration> {
                 .filter(pos -> !level.getBlockState(pos).isAir())
                 .forEach(pos -> setBlock(level, pos, Blocks.CAVE_AIR.defaultBlockState()));
 
-        placeFloor(level, origin, random);
-        placeCampfire(level, origin, random);
+        placeFloor(config, level, origin, random);
+        placeCampfire(config, level, origin, random);
 
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         BlockPos pos = origin.relative(direction, 2);
@@ -137,11 +68,11 @@ public class CampsiteFeature extends Feature<NoneFeatureConfiguration> {
             });
         } else {
             Direction bedDirection = random.nextBoolean() ? direction.getClockWise() : direction.getCounterClockWise();
-            BlockState bedBlock = BEDS.getState(random, pos).setValue(BedBlock.FACING, bedDirection);
+            BlockState bedBlock = config.beds().getState(random, pos).setValue(BedBlock.FACING, bedDirection);
             setBlock(level, pos, bedBlock.setValue(BedBlock.PART, BedPart.HEAD));
             setBlock(level, pos.relative(bedDirection.getOpposite()), bedBlock.setValue(BedBlock.PART, BedPart.FOOT));
             placeBarrel(level, pos.relative(bedDirection), random);
-            placeLightSource(level, pos.relative(bedDirection).above(), random);
+            placeLightSource(config, level, pos.relative(bedDirection).above(), random);
         }
 
         direction = random.nextBoolean() ? direction.getClockWise() : direction.getCounterClockWise();
@@ -154,8 +85,8 @@ public class CampsiteFeature extends Feature<NoneFeatureConfiguration> {
 
         Collections.shuffle(positions);
 
-        placeCraftingStation(level, positions.removeFirst(), random, direction.getOpposite());
-        placeFurnace(level, positions.removeFirst(), random, direction.getOpposite());
+        placeCraftingStation(config, level, positions.removeFirst(), random, direction.getOpposite());
+        placeFurnace(config, level, positions.removeFirst(), random, direction.getOpposite());
         placeChest(level, positions.removeFirst(), random, direction.getOpposite());
 
         return true;
@@ -168,12 +99,12 @@ public class CampsiteFeature extends Feature<NoneFeatureConfiguration> {
                 .count() >= 6;
     }
 
-    private void placeFloor(WorldGenLevel level, BlockPos origin, RandomSource random) {
+    private void placeFloor(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos origin, RandomSource random) {
         BlockPos.betweenClosedStream(origin.offset(-2, -1, -2), origin.offset(2, -1, 2))
                 .filter(pos -> Math.abs(pos.getX() - origin.getX()) < 2 ||  Math.abs(pos.getZ() - origin.getZ()) < 2)
                 .forEach(pos -> {
                     if (!level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP)) {
-                        setBlock(level, pos, Blocks.OAK_PLANKS.defaultBlockState());
+                        setBlock(level, pos, config.floor().getState(random, pos));
                     } else if (random.nextBoolean()) {
                         if (level.getBlockState(pos).is(Blocks.DEEPSLATE)) {
                             setBlock(level, pos, Blocks.COBBLED_DEEPSLATE.defaultBlockState());
@@ -184,41 +115,41 @@ public class CampsiteFeature extends Feature<NoneFeatureConfiguration> {
                 });
     }
 
-    private void placeCampfire(WorldGenLevel level, BlockPos origin, RandomSource random) {
-        BlockState campfire = UNLIT_CAMPFIRES.getState(random, origin);
+    private void placeCampfire(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos origin, RandomSource random) {
+        BlockState campfire = config.unlitCampfires().getState(random, origin);
         if (Artifacts.CONFIG.general.campsite.allowLightSources.get() && random.nextFloat() < 0.10) {
-            campfire = LIT_CAMPFIRES.getState(random, origin);
+            campfire = config.litCampfires().getState(random, origin);
         }
         setBlock(level, origin, campfire);
     }
 
-    private void placeLightSource(WorldGenLevel level, BlockPos pos, RandomSource random) {
+    private void placeLightSource(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos pos, RandomSource random) {
         if (random.nextFloat() < 0.5) {
-            BlockState lightSource = UNLIT_LIGHT_SOURCES.getState(random, pos);
+            BlockState lightSource = config.unlitLightSources().getState(random, pos);
             if (Artifacts.CONFIG.general.campsite.allowLightSources.get() && random.nextFloat() < 0.30) {
-                lightSource = LIGHT_SOURCES.getState(random, pos);
+                lightSource = config.lightSources().getState(random, pos);
             }
             setBlock(level, pos, lightSource);
         }
     }
 
-    private void placeCraftingStation(WorldGenLevel level, BlockPos pos, RandomSource random, Direction facing) {
-        BlockState craftingStation = CRAFTING_STATIONS.getState(random, pos);
+    private void placeCraftingStation(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos pos, RandomSource random, Direction facing) {
+        BlockState craftingStation = config.craftingStations().getState(random, pos);
         if (craftingStation.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
             craftingStation = craftingStation.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
         }
         setBlock(level, pos, craftingStation);
         if (random.nextInt(3) == 0) {
-            setBlock(level, pos.above(), DECORATIONS.getState(random, pos));
+            setBlock(level, pos.above(), config.decorations().getState(random, pos));
         }
     }
 
-    private void placeFurnace(WorldGenLevel level, BlockPos pos, RandomSource random, Direction facing) {
-        BlockState furnace = FURNACES.getState(random, pos);
+    private void placeFurnace(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos pos, RandomSource random, Direction facing) {
+        BlockState furnace = config.furnaces().getState(random, pos);
         furnace = furnace.setValue(FurnaceBlock.FACING, facing);
         setBlock(level, pos, furnace);
         if (random.nextBoolean()) {
-            setBlock(level, pos.above(), FURNACE_CHIMNEYS.getState(random, pos));
+            setBlock(level, pos.above(), config.furnaceChimneys().getState(random, pos));
         }
     }
 
