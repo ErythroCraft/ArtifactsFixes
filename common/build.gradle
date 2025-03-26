@@ -28,4 +28,6 @@ dependencies {
     modCompileOnly("dev.emi:trinkets:${rootProject.trinkets_version}"){
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+    modCompileOnly "noobanidus.mods.lootr:lootr-common:${rootProject.lootr_version}"
 }

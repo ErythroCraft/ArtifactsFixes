@@ -4,6 +4,7 @@ import artifacts.Artifacts;
 import artifacts.client.mimic.model.MimicChestLayerModel;
 import artifacts.client.mimic.model.MimicModel;
 import artifacts.entity.MimicEntity;
+import artifacts.integration.lootr.LootrCompat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -44,11 +45,13 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
     private final MimicChestLayerModel chestModel;
     public final Material vanillaChestMaterial;
     public final List<Material> chestMaterials;
+    public final List<Material> lootrMaterials;
 
     public MimicChestLayer(RenderLayerParent<MimicEntity, MimicModel> entityRenderer, EntityModelSet modelSet) {
         super(entityRenderer);
         chestModel = new MimicChestLayerModel(modelSet.bakeLayer(MimicChestLayerModel.LAYER_LOCATION));
         chestMaterials = new ArrayList<>();
+        lootrMaterials = new ArrayList<>();
 
         boolean isChristmas = isChristmas();
         vanillaChestMaterial = isChristmas ? Sheets.CHEST_XMAS_LOCATION : Sheets.CHEST_LOCATION;
@@ -58,16 +61,13 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
             return;
         }
 
-        Material defaultMaterial = vanillaChestMaterial;
+        chestMaterials.add(vanillaChestMaterial);
+        addQuarkMaterials(chestMaterials, "normal");
 
         if (Platform.isModLoaded("lootr")) {
-            defaultMaterial = createMaterial("lootr", "chest");
-        } else if (Platform.isModLoaded("myloot")) {
-            defaultMaterial = createMaterial("myloot", "entity/chest/loot");
+            lootrMaterials.add(createMaterial("lootr", "chest"));
+            addQuarkMaterials(lootrMaterials, "lootr_normal");
         }
-
-        chestMaterials.add(defaultMaterial);
-        addQuarkMaterials(chestMaterials);
     }
 
     private static boolean isChristmas() {
@@ -76,9 +76,8 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
                 || calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) == 1;
     }
 
-    private static void addQuarkMaterials(List<Material> chestMaterials) {
+    private static void addQuarkMaterials(List<Material> chestMaterials, String chestVariant) {
         if (Platform.isModLoaded("quark")) {
-            String chestVariant = Platform.isModLoaded("lootr") ? "lootr_normal" : "normal";
             for (String chestMaterial : QUARK_CHEST_MATERIALS) {
                 chestMaterials.add(createMaterial("quark", String.format("quark_variant_chests/%s/%s", chestMaterial, chestVariant)));
             }
@@ -112,9 +111,10 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
         if (!Artifacts.CONFIG.client.useModdedMimicTextures.get()) {
             return vanillaChestMaterial;
         }
-        if (chestMaterials.size() == 1) {
-            return chestMaterials.getFirst();
+        List<Material> materials = !Platform.isModLoaded("lootr") || LootrCompat.useVanillaTextures() ? chestMaterials : lootrMaterials;
+        if (materials.size() == 1) {
+            return materials.getFirst();
         }
-        return chestMaterials.get((int) (Math.abs(mimic.getUUID().getMostSignificantBits()) % chestMaterials.size()));
+        return materials.get((int) (Math.abs(mimic.getUUID().getMostSignificantBits()) % materials.size()));
     }
 }
