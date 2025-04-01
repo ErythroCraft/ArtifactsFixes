@@ -111,7 +111,7 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
         if (!Artifacts.CONFIG.client.useModdedMimicTextures.get()) {
             return vanillaChestMaterial;
         }
-        List<Material> materials = !Platform.isModLoaded("lootr") || LootrCompat.useVanillaTextures() ? chestMaterials : lootrMaterials;
+        List<Material> materials = lootrMaterials.isEmpty() || LootrCompat.useVanillaTextures() ? chestMaterials : lootrMaterials;
         if (materials.size() == 1) {
             return materials.getFirst();
         }
