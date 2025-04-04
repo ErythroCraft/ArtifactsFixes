@@ -8,8 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class EquipmentIntegrationUtils {
 
@@ -32,16 +30,6 @@ public class EquipmentIntegrationUtils {
         }
 
         INTEGRATIONS.put(name, integration);
-    }
-
-    public static Stream<ItemStack> findAllEquippedBy(LivingEntity entity, Predicate<ItemStack> predicate) {
-        Stream<ItemStack> allEquippedStacks = Stream.of();
-
-        for (EquipmentIntegration integration : INTEGRATIONS.values()) {
-            allEquippedStacks = Stream.concat(allEquippedStacks, integration.findAllEquippedBy(entity, predicate));
-        }
-
-        return allEquippedStacks;
     }
 
     public static void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer) {

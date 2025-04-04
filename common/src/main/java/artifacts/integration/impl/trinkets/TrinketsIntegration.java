@@ -9,17 +9,13 @@ import artifacts.util.DamageSourceHelper;
 import dev.emi.trinkets.api.*;
 import dev.emi.trinkets.api.event.TrinketEquipCallback;
 import dev.emi.trinkets.api.event.TrinketUnequipCallback;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class TrinketsIntegration implements EquipmentIntegration {
 
@@ -33,15 +29,6 @@ public class TrinketsIntegration implements EquipmentIntegration {
 
         TrinketEquipCallback.EVENT.register((stack, slot, entity) -> ArtifactEvents.onItemChanged(entity, ItemStack.EMPTY, stack));
         TrinketUnequipCallback.EVENT.register((stack, slot, entity) -> ArtifactEvents.onItemChanged(entity, stack, ItemStack.EMPTY));
-    }
-
-    @Override
-    public Stream<ItemStack> findAllEquippedBy(LivingEntity entity, Predicate<ItemStack> predicate) {
-        return TrinketsApi.getTrinketComponent(entity)
-                .map(TrinketComponent::getAllEquipped)
-                .orElse(List.of())
-                .stream()
-                .map(Tuple::getB);
     }
 
     @Override

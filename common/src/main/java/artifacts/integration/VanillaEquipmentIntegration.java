@@ -5,19 +5,11 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class VanillaEquipmentIntegration implements EquipmentIntegration {
 
     @Override
     public void setup() {}
-
-    @Override
-    public Stream<ItemStack> findAllEquippedBy(LivingEntity entity, Predicate<ItemStack> predicate) {
-        return StreamSupport.stream(entity.getArmorAndBodyArmorSlots().spliterator(), false).filter(predicate);
-    }
 
     @Override
     public void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer) {

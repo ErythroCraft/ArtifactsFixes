@@ -5,14 +5,10 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public interface EquipmentIntegration {
 
     void setup();
-
-    Stream<ItemStack> findAllEquippedBy(LivingEntity entity, Predicate<ItemStack> predicate);
 
     void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer);
 

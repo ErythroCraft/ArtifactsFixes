@@ -19,8 +19,6 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class AccessoriesIntegration implements EquipmentIntegration {
 
@@ -35,19 +33,6 @@ public class AccessoriesIntegration implements EquipmentIntegration {
         AccessoryChangeCallback.EVENT.register(
                 (prevStack, currentStack, slotReference, slotStateChange) -> ArtifactEvents.onItemChanged(slotReference.entity(), prevStack, currentStack)
         );
-    }
-
-    @Override
-    public Stream<ItemStack> findAllEquippedBy(LivingEntity entity, Predicate<ItemStack> predicate) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-
-        Stream<ItemStack> stacks = Stream.empty();
-
-        if (capability != null) {
-            stacks = capability.getEquipped(predicate).stream().map(SlotEntryReference::stack);
-        }
-
-        return stacks;
     }
 
     @Override

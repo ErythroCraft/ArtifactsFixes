@@ -125,8 +125,11 @@ public class AbilityHelper {
 
     public static void addCooldown(ArtifactAbility.Type<?> type, LivingEntity entity, int ticks) {
         if (ticks > 0 && !entity.level().isClientSide() && entity instanceof Player player) {
-            EquipmentIntegrationUtils.findAllEquippedBy(entity, stack -> hasAbility(type, stack))
-                    .forEach(stack -> player.getCooldowns().addCooldown(stack.getItem(), ticks));
+            EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
+                if (hasAbility(type, stack)) {
+                    player.getCooldowns().addCooldown(stack.getItem(), ticks);
+                }
+            });
         }
     }
 
@@ -146,11 +149,13 @@ public class AbilityHelper {
     }
 
     public static <A extends ArtifactAbility> void forEach(ArtifactAbility.Type<A> type, LivingEntity entity, BiConsumer<A, ItemStack> consumer, boolean skipItemsOnCooldown) {
-        EquipmentIntegrationUtils.findAllEquippedBy(entity, stack -> hasAbility(type, stack))
-                .forEach(stack -> getAbilities(type, stack)
+        EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
+            if (hasAbility(type, stack)) {
+                getAbilities(type, stack)
                         .filter(ArtifactAbility::isEnabled)
                         .filter(ability -> !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(stack.getItem()))
-                        .forEach(ability -> consumer.accept(ability, stack))
-                );
+                        .forEach(ability -> consumer.accept(ability, stack));
+            }
+        });
     }
 }

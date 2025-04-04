@@ -97,14 +97,15 @@ public class ArtifactEvents {
         if (entity.level().isClientSide()) {
             return;
         }
-        EquipmentIntegrationUtils.findAllEquippedBy(entity, stack -> stack.has(ModDataComponents.ABILITIES.value()))
-                .forEach(stack -> {
-                    for (ArtifactAbility ability : AbilityHelper.getAbilities(stack)) {
-                        boolean isActive = ability.isActive(entity);
-                        boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem());
-                        ability.wornTick(entity, isOnCooldown, isActive);
-                    }
-                });
+        EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
+            if (stack.has(ModDataComponents.ABILITIES.value())) {
+                for (ArtifactAbility ability : AbilityHelper.getAbilities(stack)) {
+                    boolean isActive = ability.isActive(entity);
+                    boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem());
+                    ability.wornTick(entity, isOnCooldown, isActive);
+                }
+            }
+        });
     }
 
     public static EventResult onAttackBurningLivingHurt(LivingEntity entity, DamageSource damageSource, float amount) {

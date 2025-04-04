@@ -22,6 +22,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse) implements ArtifactAbility {
 
@@ -54,10 +55,18 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
             }
         }
 
-        return EquipmentIntegrationUtils.findAllEquippedBy(entity, stack -> AbilityHelper.hasAbility(ModAbilities.TELEPORT_ON_DEATH.value(), stack)
-                        && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem())))
-                .findFirst()
-                .orElse(ItemStack.EMPTY);
+        AtomicReference<ItemStack> result = new AtomicReference<>(ItemStack.EMPTY);
+
+        EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
+            if (result.get().isEmpty()
+                    && AbilityHelper.hasAbility(ModAbilities.TELEPORT_ON_DEATH.value(), stack)
+                    && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem()))
+            ) {
+                result.set(stack);
+            }
+        });
+
+        return result.get();
     }
 
     public static void teleport(LivingEntity entity, ServerLevel level) {
