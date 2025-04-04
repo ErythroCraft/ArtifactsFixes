@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.*;
-import java.util.stream.Stream;
 
 public class AbilityHelper {
 
@@ -83,13 +82,13 @@ public class AbilityHelper {
         return List.of();
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends ArtifactAbility> Stream<T> getAbilities(ArtifactAbility.Type<T> type, ItemStack stack) {
-        return getAbilities(stack)
-                .stream()
-                .filter(ability -> ability.getType() == type)
-                .filter(ArtifactAbility::isEnabled)
-                .map(ability -> (T) ability);
+    public static <A extends ArtifactAbility> void iterateAbilities(ArtifactAbility.Type<A> type, ItemStack stack, Consumer<A> consumer) {
+        for (ArtifactAbility ability : getAbilities(stack)) {
+            if (ability.getType() == type && ability.isEnabled()) {
+                // noinspection unchecked
+                consumer.accept((A) ability);
+            }
+        }
     }
 
     public static boolean isCosmetic(ItemStack stack) {
@@ -151,10 +150,11 @@ public class AbilityHelper {
     public static <A extends ArtifactAbility> void forEach(ArtifactAbility.Type<A> type, LivingEntity entity, BiConsumer<A, ItemStack> consumer, boolean skipItemsOnCooldown) {
         EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
             if (hasAbility(type, stack)) {
-                getAbilities(type, stack)
-                        .filter(ArtifactAbility::isEnabled)
-                        .filter(ability -> !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(stack.getItem()))
-                        .forEach(ability -> consumer.accept(ability, stack));
+                iterateAbilities(type, stack, ability -> {
+                    if (!skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(stack.getItem())) {
+                        consumer.accept(ability, stack);
+                    }
+                });
             }
         });
     }

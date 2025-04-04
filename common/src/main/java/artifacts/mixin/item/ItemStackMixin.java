@@ -106,9 +106,15 @@ public class ItemStackMixin {
 
     @Unique
     private static void artifacts$addAbilityAttributeTooltips(ItemStack stack, Consumer<Component> tooltip) {
-        AbilityHelper.getAbilities(ModAbilities.ATTRIBUTE_MODIFIER.value(), stack).forEach(ability -> artifacts$addAbilityAttributeTooltip(tooltip, ability));
-        AbilityHelper.getAbilities(ModAbilities.MOB_EFFECT.value(), stack).forEach(ability -> artifacts$addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite()));
-        AbilityHelper.getAbilities(ModAbilities.LIMITED_WATER_BREATHING.value(), stack).forEach(ability -> artifacts$addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite()));
+        AbilityHelper.iterateAbilities(ModAbilities.ATTRIBUTE_MODIFIER.value(), stack, ability ->
+                artifacts$addAbilityAttributeTooltip(tooltip, ability)
+        );
+        AbilityHelper.iterateAbilities(ModAbilities.MOB_EFFECT.value(), stack, ability ->
+                artifacts$addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
+        );
+        AbilityHelper.iterateAbilities(ModAbilities.LIMITED_WATER_BREATHING.value(), stack, ability ->
+                artifacts$addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
+        );
     }
 
     @Unique
@@ -141,14 +147,14 @@ public class ItemStackMixin {
     private static void artifacts$addWhenHurtTooltips(Consumer<Component> tooltip, ItemStack stack) {
         MutableBoolean flag = new MutableBoolean(false);
         List<TagKey<DamageType>> list = new ArrayList<>();
-        AbilityHelper.getAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.value(), stack).forEach(ability -> {
+        AbilityHelper.iterateAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.value(), stack, ability -> {
             if (ability.tag().isEmpty()) {
                 flag.setTrue();
             } else if (!list.contains(ability.tag().get())) {
                 list.add(ability.tag().get());
             }
         });
-        AbilityHelper.getAbilities(ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.value(), stack).forEach(ability -> {
+        AbilityHelper.iterateAbilities(ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.value(), stack, ability -> {
             if (ability.tag().isEmpty()) {
                 flag.setTrue();
             } else if (!list.contains(ability.tag().get())) {
@@ -175,14 +181,12 @@ public class ItemStackMixin {
 
     @Unique
     private static void artifacts$addWhenHurtTooltip(Consumer<Component> tooltip, ItemStack stack, @Nullable TagKey<DamageType> tag) {
-        AbilityHelper.getAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.value(), stack)
-                .forEach(ability -> {
+        AbilityHelper.iterateAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.value(), stack, ability -> {
                     if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                         artifacts$addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false);
                     }
                 });
-        AbilityHelper.getAbilities(ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.value(), stack)
-                .forEach(ability -> {
+        AbilityHelper.iterateAbilities(ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.value(), stack, ability -> {
                     if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                         tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", artifacts$formatDurationSeconds(ability.cooldown().get())).withStyle(ChatFormatting.GOLD));
                     }
@@ -194,7 +198,7 @@ public class ItemStackMixin {
         if (AbilityHelper.hasAbility(ModAbilities.APPLY_MOB_EFFECT_AFTER_EATING.value(), stack)) {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.per_food_point_restored").withStyle(ChatFormatting.GRAY));
-            AbilityHelper.getAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_EATING.value(), stack).forEach(ability ->
+            AbilityHelper.iterateAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_EATING.value(), stack, ability ->
                     artifacts$addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false)
             );
         }
@@ -207,7 +211,7 @@ public class ItemStackMixin {
         )) {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.attacks_inflict." + (chance ? "chance" : "constant")).withStyle(ChatFormatting.GRAY));
-            AbilityHelper.getAbilities(ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.value(), stack).forEach(ability -> {
+            AbilityHelper.iterateAbilities(ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.value(), stack, ability -> {
                 artifacts$addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false);
                 if (ability.cooldown().get() > 0) {
                     tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", artifacts$formatDurationSeconds(ability.cooldown().get())).withStyle(ChatFormatting.GOLD));

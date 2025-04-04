@@ -1,5 +1,6 @@
 package artifacts.mixin.ability.teleportondeath;
 
+import artifacts.ability.ArtifactAbility;
 import artifacts.ability.TeleportOnDeathAbility;
 import artifacts.network.ChorusTotemUsedPacket;
 import artifacts.registry.ModAbilities;
@@ -31,7 +32,12 @@ public class LivingEntityMixin {
                 && entity.level() instanceof ServerLevel level
                 && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
         ) {
-            AbilityHelper.getAbilities(ModAbilities.TELEPORT_ON_DEATH.value(), totem).findFirst().ifPresent(ability -> {
+            AbilityHelper.getAbilities(totem).stream()
+                    .filter(ability -> ability.getType() == ModAbilities.TELEPORT_ON_DEATH.value())
+                    .filter(ArtifactAbility::isEnabled)
+                    .map(ability -> (TeleportOnDeathAbility) ability)
+                    .findFirst()
+                    .ifPresent(ability -> {
                 if (ability.teleportationChance().get() > entity.getRandom().nextDouble()) {
                     TeleportOnDeathAbility.teleport(entity, level);
                     if (ability.consumedOnUse().get()) {
