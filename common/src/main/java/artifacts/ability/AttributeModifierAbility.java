@@ -103,6 +103,11 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
     }
 
     @Override
+    public boolean shouldTick() {
+        return true;
+    }
+
+    @Override
     public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
         AttributeInstance attributeInstance = entity.getAttribute(attribute());
         if (attributeInstance == null) {

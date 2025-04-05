@@ -41,6 +41,11 @@ public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Intege
     }
 
     @Override
+    public boolean shouldTick() {
+        return true;
+    }
+
+    @Override
     public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
         if (isActive && entity instanceof ServerPlayer player
                 && player.onGround()

@@ -13,7 +13,6 @@ public abstract class EntityMixin {
     @SuppressWarnings({"UnreachableCode", "ConstantValue"})
     @ModifyReturnValue(method = "isInRain", at = @At("RETURN"))
     private boolean blockRain(boolean original) {
-        boolean umbrellaBlockingRain = (Object) this instanceof LivingEntity entity && UmbrellaItem.isHoldingUmbrellaUpright(entity);
-        return original && !umbrellaBlockingRain;
+        return original && !((Object) this instanceof LivingEntity entity && UmbrellaItem.isHoldingUmbrellaUpright(entity));
     }
 }

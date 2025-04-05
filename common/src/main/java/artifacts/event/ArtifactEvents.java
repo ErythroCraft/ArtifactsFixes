@@ -9,6 +9,7 @@ import artifacts.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
 import artifacts.ability.mobeffect.AttacksInflictMobEffectAbility;
 import artifacts.ability.retaliation.RetaliationAbility;
 import artifacts.attribute.DynamicAttributeModifier;
+import artifacts.extensions.ability.LivingEntityExtensions;
 import artifacts.integration.EquipmentIntegrationUtils;
 import artifacts.item.UmbrellaItem;
 import artifacts.mixin.accessors.MobAccessor;
@@ -63,8 +64,10 @@ public class ArtifactEvents {
 
     public static void livingUpdate(LivingEntity entity) {
         onItemTick(entity);
-        UmbrellaItem.onLivingUpdate(entity);
         DynamicAttributeModifier.tickModifiers(entity);
+        if (!entity.onGround()) {
+            UmbrellaItem.onLivingUpdate(entity);
+        }
     }
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource source, float amount) {
@@ -77,12 +80,14 @@ public class ArtifactEvents {
         if (entity.level().isClientSide()) {
             return;
         }
-        List<ArtifactAbility> oldAbilities = oldStack.get(ModDataComponents.ABILITIES.value());
-        List<ArtifactAbility> newAbilities = newStack.get(ModDataComponents.ABILITIES.value());
-        if (oldAbilities == null || oldAbilities.equals(newAbilities)) {
+        List<ArtifactAbility> oldAbilities = oldStack.getOrDefault(ModDataComponents.ABILITIES.value(), List.of());
+        List<ArtifactAbility> newAbilities = newStack.getOrDefault(ModDataComponents.ABILITIES.value(), List.of());
+
+        if (!oldAbilities.isEmpty() || !newAbilities.isEmpty()) {
+            refreshTickingAbilities(entity);
+        }
+        if (oldAbilities.isEmpty() || oldAbilities.equals(newAbilities)) {
             return;
-        } else if (newAbilities == null) {
-            newAbilities = List.of();
         }
 
         for (ArtifactAbility ability : oldAbilities) {
@@ -93,8 +98,18 @@ public class ArtifactEvents {
         }
     }
 
+    public static void refreshTickingAbilities(LivingEntity entity) {
+        boolean shouldTick = EquipmentIntegrationUtils.reduceAccessories(entity, false, (stack, init_) -> {
+            for (ArtifactAbility ability : AbilityHelper.getAbilities(stack)) {
+                init_ = init_ || ability.shouldTick();
+            }
+            return init_;
+        });
+        ((LivingEntityExtensions) entity).artifacts$setTickingAbilities(shouldTick);
+    }
+
     public static void onItemTick(LivingEntity entity) {
-        if (entity.level().isClientSide()) {
+        if (entity.level().isClientSide() || !((LivingEntityExtensions) entity).artifacts$hasTickingAbilities()) {
             return;
         }
         EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
@@ -128,6 +143,9 @@ public class ArtifactEvents {
     }
 
     private static EventResult onEntityJoinWorld(Entity entity, Level level) {
+        if (entity instanceof LivingEntity livingEntity) {
+            refreshTickingAbilities(livingEntity);
+        }
         if (entity instanceof PathfinderMob creeper && creeper.getType().is(ModTags.CREEPERS)) {
             Predicate<LivingEntity> predicate = target -> AbilityHelper.hasAbilityActive(ModAbilities.SCARE_CREEPERS.value(), target);
             ((MobAccessor) creeper).getGoalSelector().addGoal(3,
@@ -223,9 +241,7 @@ public class ArtifactEvents {
     }
 
     public static float getModifiedFriction(float friction, LivingEntity entity, Block block) {
-        if (ModTags.isInTag(block, BlockTags.ICE)
-                && friction > 0.6F
-        ) {
+        if (friction > 0.6F && ModTags.isInTag(block, BlockTags.ICE)) {
             double slipperinessReduction = entity.getAttributeValue(ModAttributes.SLIP_RESISTANCE);
             return Mth.lerp(((float) slipperinessReduction), friction, 0.6F);
         }

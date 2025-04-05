@@ -58,6 +58,11 @@ public abstract class ConstantMobEffectAbility implements MobEffectAbility {
     }
 
     @Override
+    public boolean shouldTick() {
+        return true;
+    }
+
+    @Override
     public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
         if (!entity.level().isClientSide() && isActive && shouldApplyMobEffect(entity)) {
             LivingEntity target = getTarget(entity);

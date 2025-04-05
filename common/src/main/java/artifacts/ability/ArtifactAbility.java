@@ -74,6 +74,10 @@ public interface ArtifactAbility {
         return Component.translatable("%s.tooltip.ability.%s.%s".formatted(id.getNamespace(), id.getPath(), abilityName), args);
     }
 
+    default boolean shouldTick() {
+        return false;
+    }
+
     default void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
 
     }

@@ -42,6 +42,11 @@ public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> max
     }
 
     @Override
+    public boolean shouldTick() {
+        return true;
+    }
+
+    @Override
     public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
         if (!isActive) {
             return;

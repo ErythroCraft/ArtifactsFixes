@@ -67,11 +67,11 @@ public class UmbrellaItem extends ArtifactItem {
     }
 
     public static boolean shouldGlide(LivingEntity entity) {
-        boolean isInWater = entity.isInWater() && !AbilityHelper.hasAbilityActive(ModAbilities.SINKING.value(), entity);
-        return Artifacts.CONFIG.items.umbrellaIsGlider.get()
-                && !entity.onGround() && !isInWater
+        return !entity.onGround()
                 && entity.getDeltaMovement().y < 0
                 && !entity.hasEffect(MobEffects.SLOW_FALLING)
+                && Artifacts.CONFIG.items.umbrellaIsGlider.get()
+                && !(entity.isInWater() && !AbilityHelper.hasAbilityActive(ModAbilities.SINKING.value(), entity))
                 && UmbrellaItem.isHoldingUmbrellaUpright(entity);
     }
 

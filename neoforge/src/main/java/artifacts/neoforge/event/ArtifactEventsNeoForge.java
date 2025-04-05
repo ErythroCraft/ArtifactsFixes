@@ -9,7 +9,6 @@ import artifacts.registry.ModTags;
 import artifacts.util.AbilityHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.common.NeoForge;
@@ -40,7 +39,7 @@ public class ArtifactEventsNeoForge {
 
     private static void onPlayerTick(PlayerTickEvent.Post event) {
         AbilityToggles abilityToggles = PlatformServices.platformHelper.getAbilityToggles(event.getEntity());
-        if (event.getEntity() instanceof ServerPlayer serverPlayer && abilityToggles != null) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer && abilityToggles != null && serverPlayer.tickCount % 40 == 0) {
             abilityToggles.sendToClient(serverPlayer);
         }
     }
@@ -68,16 +67,16 @@ public class ArtifactEventsNeoForge {
 
     private static void onKittySlippersChangeTarget(LivingChangeTargetEvent event) {
         LivingEntity target = event.getNewAboutToBeSetTarget();
-        if (AbilityHelper.hasAbilityActive(ModAbilities.SCARE_CREEPERS.value(), target)
-                && event.getEntity() instanceof Mob creeper
-                && creeper.getType().is(ModTags.CREEPERS)
+        if (event.getEntity().getType().is(ModTags.CREEPERS)
+                && AbilityHelper.hasAbilityActive(ModAbilities.SCARE_CREEPERS.value(), target)
         ) {
             event.setCanceled(true);
         }
     }
 
     private static void onKittySlippersLivingUpdate(LivingEntity entity) {
-        if (AbilityHelper.hasAbilityActive(ModAbilities.SCARE_CREEPERS.value(), entity.getLastHurtByMob())
+        if (entity.getLastHurtByMob() != null
+                && AbilityHelper.hasAbilityActive(ModAbilities.SCARE_CREEPERS.value(), entity.getLastHurtByMob())
                 && entity.getType().is(ModTags.CREEPERS)
         ) {
             entity.setLastHurtByMob(null);

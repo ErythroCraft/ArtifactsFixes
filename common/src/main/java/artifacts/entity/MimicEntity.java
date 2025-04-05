@@ -33,10 +33,13 @@ public class MimicEntity extends Mob implements Enemy {
 
     public static final ResourceKey<LootTable> LOOT_TABLE = Artifacts.key(Registries.LOOT_TABLE, "entities/mimic");
 
+    private static final int DORMANT_TICK_RATE = 20;
+
     public int ticksInAir;
     public int attackCooldown;
     public boolean isDormant;
     public Direction facing;
+    private int tickRate = 1;
 
     public MimicEntity(EntityType<? extends MimicEntity> type, Level world) {
         super(type, world);
@@ -112,13 +115,24 @@ public class MimicEntity extends Mob implements Enemy {
 
     @Override
     public void tick() {
+        if (tickCount % 20 == 0) {
+            if (!isDormant || level().isClientSide()
+                    || !onGround() || isDeadOrDying()
+                    || isPassenger() || !getPassengers().isEmpty()
+                    || level().getNearestPlayer(this, 32) != null) {
+                tickRate = 1;
+            } else {
+                tickRate = DORMANT_TICK_RATE;
+            }
+        }
+
+        if (tickCount % tickRate != 0) {
+            return;
+        }
         super.tick();
 
         if (isInWater()) {
             ticksInAir = 0;
-            if (isDormant) {
-                setDormant(false);
-            }
         } else if (!onGround()) {
             ticksInAir++;
         } else {
@@ -156,6 +170,16 @@ public class MimicEntity extends Mob implements Enemy {
     public void setTarget(LivingEntity entity) {
         setDormant(false);
         super.setTarget(entity);
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
+        return !isDormant;
+    }
+
+    @Override
+    protected int decreaseAirSupply(int i) {
+        return isDormant ? i : super.decreaseAirSupply(i);
     }
 
     @Override
