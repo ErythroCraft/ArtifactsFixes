@@ -1,7 +1,7 @@
 package artifacts.neoforge.client;
 
 import artifacts.Artifacts;
-import artifacts.integration.client.ClientEquipmentIntegrationUtils;
+import artifacts.integration.equipment.client.ClientEquipmentIntegrationUtils;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.client.event.RenderArmEvent;
 import net.neoforged.neoforge.common.NeoForge;

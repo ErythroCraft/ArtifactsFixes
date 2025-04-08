@@ -5,8 +5,8 @@ import artifacts.ability.ArtifactAbility;
 import artifacts.ability.AttributeModifierAbility;
 import artifacts.ability.IncreaseEnchantmentLevelAbility;
 import artifacts.config.value.Value;
-import artifacts.integration.EquipmentIntegrationConstants;
-import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModItems;
@@ -56,9 +56,9 @@ public class WearableArtifactItem extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         if (Artifacts.CONFIG.client.showTooltips.get()
-                && !PlatformServices.platformHelper.isModLoaded("curios")
-                && !PlatformServices.platformHelper.isModLoaded("trinkets")
-                && !PlatformServices.platformHelper.isModLoaded("accessories")
+                && !PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS)
+                && !PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS)
+                && !PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)
         ) {
             list.add(Component.translatable("%s.tooltip.missing_dependency".formatted(Artifacts.MOD_ID)).withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
         } else {
@@ -70,7 +70,7 @@ public class WearableArtifactItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        var integration = EquipmentIntegrationUtils.getIntegration(EquipmentIntegrationConstants.TRINKETS);
+        var integration = EquipmentIntegrationUtils.getIntegration(ModCompat.TRINKETS);
 
         if (!stack.has(DataComponents.FOOD) && integration != null && integration.equipAccessory(player, stack)) {
             player.playSound(getEquipSound(), 1, getEquipSoundPitch());

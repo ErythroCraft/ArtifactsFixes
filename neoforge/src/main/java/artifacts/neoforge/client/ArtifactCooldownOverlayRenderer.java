@@ -1,7 +1,7 @@
 package artifacts.neoforge.client;
 
 import artifacts.Artifacts;
-import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.item.WearableArtifactItem;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;

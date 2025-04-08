@@ -1,4 +1,4 @@
-package artifacts.integration.client;
+package artifacts.integration.equipment.client;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;

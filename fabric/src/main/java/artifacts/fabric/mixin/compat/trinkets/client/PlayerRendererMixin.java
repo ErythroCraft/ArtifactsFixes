@@ -1,7 +1,7 @@
 package artifacts.fabric.mixin.compat.trinkets.client;
 
 import artifacts.Artifacts;
-import artifacts.integration.client.ClientEquipmentIntegrationUtils;
+import artifacts.integration.equipment.client.ClientEquipmentIntegrationUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;

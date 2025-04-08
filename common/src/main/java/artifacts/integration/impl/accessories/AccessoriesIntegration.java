@@ -1,8 +1,8 @@
 package artifacts.integration.impl.accessories;
 
 import artifacts.event.ArtifactEvents;
-import artifacts.integration.EquipmentIntegration;
-import artifacts.integration.EquipmentIntegrationConstants;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.EquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
 import artifacts.util.DamageSourceHelper;
@@ -75,7 +75,7 @@ public class AccessoriesIntegration implements EquipmentIntegration {
 
     @Override
     public String name() {
-        return EquipmentIntegrationConstants.ACCESSORIES;
+        return ModCompat.ACCESSORIES;
     }
 
     public record WearableArtifactAccessory(WearableArtifactItem item) implements Accessory {

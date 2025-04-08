@@ -2,9 +2,9 @@ package artifacts.platform;
 
 import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
-import artifacts.integration.EquipmentIntegrationConstants;
-import artifacts.integration.EquipmentIntegrationUtils;
-import artifacts.integration.client.ClientEquipmentIntegrationUtils;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.EquipmentIntegrationUtils;
+import artifacts.integration.equipment.client.ClientEquipmentIntegrationUtils;
 import artifacts.integration.impl.accessories.AccessoriesClientIntegration;
 import artifacts.integration.impl.accessories.AccessoriesIntegration;
 import artifacts.integration.impl.trinkets.TrinketsClientIntegration;
@@ -47,21 +47,21 @@ public interface PlatformHelper {
     boolean isModLoaded(String modid);
 
     default void setupIntegrations() {
-        if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.TRINKETS) && !PlatformServices.platformHelper.isModLoaded("tclayer")) {
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS) && !PlatformServices.platformHelper.isModLoaded(ModCompat.TCLAYER)) {
             EquipmentIntegrationUtils.registerIntegration(new TrinketsIntegration());
         }
 
-        if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.ACCESSORIES)) {
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)) {
             EquipmentIntegrationUtils.registerIntegration(new AccessoriesIntegration());
         }
     }
 
     default void setupClientIntegrations() {
-        if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.TRINKETS) && !PlatformServices.platformHelper.isModLoaded("tclayer")) {
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS) && !PlatformServices.platformHelper.isModLoaded(ModCompat.TCLAYER)) {
             ClientEquipmentIntegrationUtils.registerIntegration(new TrinketsClientIntegration());
         }
 
-        if (PlatformServices.platformHelper.isModLoaded(EquipmentIntegrationConstants.ACCESSORIES)) {
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)) {
             ClientEquipmentIntegrationUtils.registerIntegration(new AccessoriesClientIntegration());
         }
     }

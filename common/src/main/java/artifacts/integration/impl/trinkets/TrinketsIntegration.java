@@ -1,8 +1,8 @@
 package artifacts.integration.impl.trinkets;
 
 import artifacts.event.ArtifactEvents;
-import artifacts.integration.EquipmentIntegration;
-import artifacts.integration.EquipmentIntegrationConstants;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.EquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
 import artifacts.util.DamageSourceHelper;
@@ -72,7 +72,7 @@ public class TrinketsIntegration implements EquipmentIntegration {
 
     @Override
     public String name() {
-        return EquipmentIntegrationConstants.TRINKETS;
+        return ModCompat.TRINKETS;
     }
 
     public record WearableArtifactTrinket(WearableArtifactItem item) implements Trinket {

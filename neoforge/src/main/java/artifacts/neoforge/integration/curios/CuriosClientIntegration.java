@@ -2,7 +2,8 @@ package artifacts.neoforge.integration.curios;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
-import artifacts.integration.client.ClientEquipmentIntegration;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.client.ClientEquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
 import artifacts.mixin.accessors.client.LivingEntityRendererAccessor;
 import artifacts.registry.ModLootTables;
@@ -96,7 +97,7 @@ public class CuriosClientIntegration implements ClientEquipmentIntegration {
 
     @Override
     public String name() {
-        return "curios";
+        return ModCompat.CURIOS;
     }
 
     public record ArtifactCurioRenderer(ArtifactRenderer renderer) implements ICurioRenderer {

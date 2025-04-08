@@ -1,5 +1,6 @@
-package artifacts.integration;
+package artifacts.integration.equipment;
 
+import artifacts.integration.ModCompat;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -33,6 +34,6 @@ public class VanillaEquipmentIntegration implements EquipmentIntegration {
 
     @Override
     public String name() {
-        return "minecraft";
+        return ModCompat.MINECRAFT;
     }
 }

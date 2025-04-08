@@ -10,7 +10,7 @@ import artifacts.ability.mobeffect.AttacksInflictMobEffectAbility;
 import artifacts.ability.retaliation.RetaliationAbility;
 import artifacts.attribute.DynamicAttributeModifier;
 import artifacts.extensions.ability.LivingEntityExtensions;
-import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.item.UmbrellaItem;
 import artifacts.mixin.accessors.MobAccessor;
 import artifacts.registry.ModAbilities;

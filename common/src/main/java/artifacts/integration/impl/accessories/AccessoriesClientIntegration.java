@@ -2,8 +2,8 @@ package artifacts.integration.impl.accessories;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
-import artifacts.integration.EquipmentIntegrationConstants;
-import artifacts.integration.client.ClientEquipmentIntegration;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.client.ClientEquipmentIntegration;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
 import io.wispforest.accessories.api.client.AccessoryRenderer;
@@ -44,7 +44,7 @@ public class AccessoriesClientIntegration implements ClientEquipmentIntegration 
 
     @Override
     public String name() {
-        return EquipmentIntegrationConstants.ACCESSORIES;
+        return ModCompat.ACCESSORIES;
     }
 
     public record ArtifactAccessoryRenderer(ArtifactRenderer renderer) implements AccessoryRenderer {

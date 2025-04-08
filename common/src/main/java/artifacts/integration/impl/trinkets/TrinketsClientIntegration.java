@@ -2,8 +2,8 @@ package artifacts.integration.impl.trinkets;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
-import artifacts.integration.EquipmentIntegrationConstants;
-import artifacts.integration.client.ClientEquipmentIntegration;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.client.ClientEquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.trinkets.api.SlotReference;
@@ -57,7 +57,7 @@ public class TrinketsClientIntegration implements ClientEquipmentIntegration {
 
     @Override
     public String name() {
-        return EquipmentIntegrationConstants.TRINKETS;
+        return ModCompat.TRINKETS;
     }
 
     public record ArtifactTrinketRenderer(ArtifactRenderer renderer) implements TrinketRenderer {

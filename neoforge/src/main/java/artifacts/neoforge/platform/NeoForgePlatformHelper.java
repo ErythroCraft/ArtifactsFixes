@@ -3,8 +3,9 @@ package artifacts.neoforge.platform;
 import artifacts.Artifacts;
 import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
-import artifacts.integration.EquipmentIntegrationUtils;
-import artifacts.integration.client.ClientEquipmentIntegrationUtils;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.EquipmentIntegrationUtils;
+import artifacts.integration.equipment.client.ClientEquipmentIntegrationUtils;
 import artifacts.neoforge.integration.cosmeticarmor.CosmeticArmorCompat;
 import artifacts.neoforge.integration.curios.CuriosClientIntegration;
 import artifacts.neoforge.integration.curios.CuriosIntegration;
@@ -94,7 +95,7 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     public void setupIntegrations() {
         PlatformHelper.super.setupIntegrations();
 
-        if (PlatformServices.platformHelper.isModLoaded("curios") && !PlatformServices.platformHelper.isModLoaded("cclayer")) {
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS) && !PlatformServices.platformHelper.isModLoaded(ModCompat.CCLAYER)) {
             EquipmentIntegrationUtils.registerIntegration(new CuriosIntegration());
         }
     }
@@ -103,7 +104,7 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     public void setupClientIntegrations() {
         PlatformHelper.super.setupClientIntegrations();
 
-        if (PlatformServices.platformHelper.isModLoaded("curios") && !PlatformServices.platformHelper.isModLoaded("cclayer")) {
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS) && !PlatformServices.platformHelper.isModLoaded(ModCompat.CCLAYER)) {
             ClientEquipmentIntegrationUtils.registerIntegration(new CuriosClientIntegration());
         }
     }

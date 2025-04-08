@@ -1,7 +1,7 @@
 package artifacts.mixin.debug;
 
 import artifacts.Artifacts;
-import artifacts.integration.EquipmentIntegrationConstants;
+import artifacts.integration.ModCompat;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +28,7 @@ public class TagLoaderMixin {
     private void detectClear(ResourceManager resourceManager, CallbackInfoReturnable<Map<ResourceLocation, List<TagLoader.EntryWithSource>>> cir, Map<ResourceLocation, List<TagLoader.EntryWithSource>> map, FileToIdConverter fileToIdConverter, Iterator var4, Map.Entry<ResourceLocation, List<Resource>> entry, ResourceLocation resourceLocation, ResourceLocation resourceLocation2, Iterator var8, Resource resource, Reader reader, JsonElement jsonElement, List<TagLoader.EntryWithSource> list, TagFile tagFile) {
         String namespace = resourceLocation.getNamespace();
 
-        if (namespace.equals(EquipmentIntegrationConstants.TRINKETS) || namespace.equals(EquipmentIntegrationConstants.CURIOS) || namespace.equals(EquipmentIntegrationConstants.ACCESSORIES) || namespace.equals("artifacts")) {
+        if (namespace.equals(ModCompat.TRINKETS) || namespace.equals(ModCompat.CURIOS) || namespace.equals(ModCompat.ACCESSORIES) || namespace.equals("artifacts")) {
             Artifacts.LOGGER.warn("Tag entries for {} cleared by {}", resourceLocation, resource.sourcePackId());
         }
     }

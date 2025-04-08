@@ -2,7 +2,7 @@ package artifacts.util;
 
 import artifacts.ability.ArtifactAbility;
 import artifacts.component.AbilityToggles;
-import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModDataComponents;

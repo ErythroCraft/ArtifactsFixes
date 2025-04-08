@@ -4,6 +4,7 @@ import artifacts.Artifacts;
 import artifacts.client.mimic.model.MimicChestLayerModel;
 import artifacts.client.mimic.model.MimicModel;
 import artifacts.entity.MimicEntity;
+import artifacts.integration.ModCompat;
 import artifacts.integration.lootr.LootrCompat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -64,8 +65,8 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
         chestMaterials.add(vanillaChestMaterial);
         addQuarkMaterials(chestMaterials, "normal");
 
-        if (Platform.isModLoaded("lootr")) {
-            lootrMaterials.add(createMaterial("lootr", "chest"));
+        if (Platform.isModLoaded(ModCompat.LOOTR)) {
+            lootrMaterials.add(createMaterial(ModCompat.LOOTR, "chest"));
             addQuarkMaterials(lootrMaterials, "lootr_normal");
         }
     }
@@ -77,9 +78,9 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
     }
 
     private static void addQuarkMaterials(List<Material> chestMaterials, String chestVariant) {
-        if (Platform.isModLoaded("quark")) {
+        if (Platform.isModLoaded(ModCompat.QUARK)) {
             for (String chestMaterial : QUARK_CHEST_MATERIALS) {
-                chestMaterials.add(createMaterial("quark", String.format("quark_variant_chests/%s/%s", chestMaterial, chestVariant)));
+                chestMaterials.add(createMaterial(ModCompat.QUARK, String.format("quark_variant_chests/%s/%s", chestMaterial, chestVariant)));
             }
         }
     }

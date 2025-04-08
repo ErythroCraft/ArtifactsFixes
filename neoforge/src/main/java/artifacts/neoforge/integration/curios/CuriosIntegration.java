@@ -1,7 +1,8 @@
 package artifacts.neoforge.integration.curios;
 
 import artifacts.event.ArtifactEvents;
-import artifacts.integration.EquipmentIntegration;
+import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.EquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
 import net.minecraft.world.entity.LivingEntity;
@@ -84,6 +85,6 @@ public class CuriosIntegration implements EquipmentIntegration {
 
     @Override
     public String name() {
-        return "curios";
+        return ModCompat.CURIOS;
     }
 }

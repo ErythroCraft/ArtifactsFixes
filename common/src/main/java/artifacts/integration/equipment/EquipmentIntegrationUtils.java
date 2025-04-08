@@ -1,4 +1,4 @@
-package artifacts.integration;
+package artifacts.integration.equipment;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;

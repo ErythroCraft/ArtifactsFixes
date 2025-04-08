@@ -2,7 +2,7 @@ package artifacts.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.integration.EquipmentIntegrationUtils;
+import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
 import com.mojang.serialization.MapCodec;

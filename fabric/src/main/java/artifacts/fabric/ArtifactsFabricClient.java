@@ -2,6 +2,7 @@ package artifacts.fabric;
 
 import artifacts.ArtifactsClient;
 import artifacts.fabric.client.UmbrellaModelLoadingPlugin;
+import artifacts.integration.ModCompat;
 import artifacts.integration.impl.trinkets.TrinketRenderersReloadHook;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -18,7 +19,7 @@ public class ArtifactsFabricClient implements ClientModInitializer {
     public void onInitializeClient() {
         ArtifactsClient.init();
 
-        if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+        if (FabricLoader.getInstance().isModLoaded(ModCompat.TRINKETS)) {
             ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
                 @Override
                 public ResourceLocation getFabricId() {
