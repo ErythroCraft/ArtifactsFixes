@@ -1,5 +1,7 @@
 package artifacts.integration;
 
+import artifacts.platform.PlatformServices;
+
 public class ModCompat {
 
     public static final String MINECRAFT = "minecraft";
@@ -10,6 +12,6 @@ public class ModCompat {
     public static final String TCLAYER = "tclayer";
     public static final String LOOTR = "lootr";
     public static final String QUARK = "quark";
-    public static final String CLOTH_CONFIG = "cloth_config";
+    public static final String CLOTH_CONFIG = PlatformServices.platformHelper.isModLoaded("neoforge") ? "cloth_config" : "cloth-config";
 
 }
