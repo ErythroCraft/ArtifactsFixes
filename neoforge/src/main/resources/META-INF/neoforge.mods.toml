@@ -32,12 +32,6 @@ config="mixins.artifacts.neoforge.json"
     side = "BOTH"
 
 [[dependencies.artifacts]]
-    modId = "cloth_config"
-    type="required"
-    ordering = "NONE"
-    side = "BOTH"
-
-[[dependencies.artifacts]]
     modId = "architectury"
     type="required"
     ordering="NONE"

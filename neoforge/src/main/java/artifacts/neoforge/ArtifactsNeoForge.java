@@ -2,10 +2,12 @@ package artifacts.neoforge;
 
 import artifacts.Artifacts;
 import artifacts.config.screen.ArtifactsConfigScreen;
+import artifacts.integration.ModCompat;
 import artifacts.neoforge.event.ArtifactEventsNeoForge;
 import artifacts.neoforge.event.SwimEventsNeoForge;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
+import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAttributes;
 import artifacts.registry.ModItems;
 import artifacts.registry.RegistryHolder;
@@ -46,10 +48,12 @@ public class ArtifactsNeoForge {
     }
 
     private void registerConfig() {
-        ModLoadingContext.get().registerExtensionPoint(
-                IConfigScreenFactory.class,
-                () -> (client, parent) -> new ArtifactsConfigScreen(parent).build()
-        );
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CLOTH_CONFIG)) {
+            ModLoadingContext.get().registerExtensionPoint(
+                    IConfigScreenFactory.class,
+                    () -> (client, parent) -> new ArtifactsConfigScreen(parent).build()
+            );
+        }
     }
 
     private <R> void register(IEventBus modBus, ResourceKey<Registry<R>> registry, List<RegistryHolder<R, ?>> holders) {

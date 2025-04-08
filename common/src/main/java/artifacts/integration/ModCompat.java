@@ -10,5 +10,6 @@ public class ModCompat {
     public static final String TCLAYER = "tclayer";
     public static final String LOOTR = "lootr";
     public static final String QUARK = "quark";
+    public static final String CLOTH_CONFIG = "cloth_config";
 
 }
