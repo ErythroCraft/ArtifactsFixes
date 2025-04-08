@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[2,)"
+loaderVersion="*"
 license="MIT"
 issueTrackerURL="https://github.com/ochotonida/artifacts/issues"
 
@@ -27,7 +27,7 @@ config="mixins.artifacts.neoforge.json"
 [[dependencies.artifacts]]
     modId = "minecraft"
     type="required"
-    versionRange = "[1.21,1.22)"
+    versionRange = "1.21.1"
     ordering = "NONE"
     side = "BOTH"
 
