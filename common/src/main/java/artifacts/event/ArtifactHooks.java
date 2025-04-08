@@ -22,7 +22,6 @@ import artifacts.util.DamageSourceHelper;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.PlayerEvent;
-import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -41,7 +40,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -51,18 +49,20 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class ArtifactEvents {
+public class ArtifactHooks {
 
     public static void register() {
         PlayerEvent.DROP_ITEM.register(AttractItemsAbility::onItemToss);
-        EntityEvent.LIVING_HURT.register(ArtifactEvents::onAttackBurningLivingHurt);
-        EntityEvent.LIVING_HURT.register(ArtifactEvents::onLightningHurt);
-        EntityEvent.LIVING_HURT.register(AttacksInflictMobEffectAbility::onLivingHurt);
-        EntityEvent.ADD.register(ArtifactEvents::onEntityJoinWorld);
-        TickEvent.PLAYER_PRE.register(SwimInAirAbility::onHeliumFlamingoTick);
+        EntityEvent.ADD.register((entity, level) -> {
+            onEntityJoinWorld(entity);
+            return EventResult.pass();
+        });
     }
 
     public static void livingUpdate(LivingEntity entity) {
+        if (entity instanceof Player player) {
+            SwimInAirAbility.onHeliumFlamingoTick(player);
+        }
         onItemTick(entity);
         DynamicAttributeModifier.tickModifiers(entity);
         if (!entity.onGround()) {
@@ -71,7 +71,7 @@ public class ArtifactEvents {
     }
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource source, float amount) {
-        ArtifactEvents.absorbDamage(entity, source, amount);
+        ArtifactHooks.absorbDamage(entity, source, amount);
         ApplyMobEffectAfterDamageAbility.onLivingDamaged(entity, source, amount);
         ApplyCooldownAfterDamageAbility.onLivingDamaged(entity, source);
     }
@@ -123,26 +123,27 @@ public class ArtifactEvents {
         });
     }
 
-    public static EventResult onAttackBurningLivingHurt(LivingEntity entity, DamageSource damageSource, float amount) {
+    public static void onAttackBurningLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.fireImmune()) {
             int duration = (int) attacker.getAttributeValue(ModAttributes.ATTACK_BURNING_DURATION);
             entity.igniteForSeconds(duration);
         }
-        return EventResult.pass();
     }
 
     public static void doPostAttackEffects(LivingEntity entity, DamageSource damageSource) {
         activateRetaliationAbility(ModAbilities.SET_ATTACKERS_ON_FIRE.value(), entity, damageSource);
         activateRetaliationAbility(ModAbilities.THORNS.value(), entity, damageSource);
         activateRetaliationAbility(ModAbilities.STRIKE_ATTACKERS_WITH_LIGHTNING.value(), entity, damageSource);
+        AttacksInflictMobEffectAbility.onLivingHurt(entity, damageSource);
+        onAttackBurningLivingHurt(entity, damageSource);
     }
 
     private static void activateRetaliationAbility(ArtifactAbility.Type<? extends RetaliationAbility> type, LivingEntity entity, DamageSource damageSource) {
         AbilityHelper.forEach(type, entity, (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource), true);
     }
 
-    private static EventResult onEntityJoinWorld(Entity entity, Level level) {
+    private static void onEntityJoinWorld(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             refreshTickingAbilities(livingEntity);
         }
@@ -152,23 +153,12 @@ public class ArtifactEvents {
                     new AvoidEntityGoal<>(creeper, Player.class, predicate, 6, 1, 1.3, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test)
             );
         }
-        return EventResult.pass();
     }
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
         if (Artifacts.CONFIG.general.modifyHurtSounds.get()) {
             AbilityHelper.forEach(ModAbilities.MODIFY_HURT_SOUND.value(), entity, ability -> entity.playSound(ability.soundEvent().value(), volume, pitch));
         }
-    }
-
-    private static EventResult onLightningHurt(LivingEntity entity, DamageSource damageSource, float amount) {
-        if (!entity.level().isClientSide()
-                && amount > 0
-                && AbilityHelper.hasAbilityActive(ModAbilities.DAMAGE_IMMUNITY.value(), entity, ability -> damageSource.is(ability.tag()))
-        ) {
-            return EventResult.interruptFalse();
-        }
-        return EventResult.pass();
     }
 
     public static ItemStack applySmeltOresAbility(ItemStack original, @Nullable Entity entity, @Nullable BlockState state, Consumer<Integer> experienceConsumer) {

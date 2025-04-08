@@ -7,7 +7,6 @@ import artifacts.util.AbilityHelper;
 import artifacts.util.DamageSourceHelper;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.architectury.event.EventResult;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -52,8 +51,7 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
             AttacksInflictMobEffectAbility::new
     );
 
-    @SuppressWarnings("unused")
-    public static EventResult onLivingHurt(LivingEntity entity, DamageSource damageSource, float amount) {
+    public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
             AbilityHelper.forEach(ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.value(), attacker, (ability, stack) -> {
@@ -65,7 +63,6 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
                 }
             }, true);
         }
-        return EventResult.pass();
     }
 
     @Override

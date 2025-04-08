@@ -1,6 +1,6 @@
 package artifacts.mixin.ability;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import artifacts.extensions.ability.LivingEntityExtensions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -55,7 +55,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
             ItemStack oldStack = getLastArmorItem(slot);
             ItemStack newStack = getItemBySlot(slot);
 
-            ArtifactEvents.onItemChanged((LivingEntity) (Object) this, oldStack, newStack);
+            ArtifactHooks.onItemChanged((LivingEntity) (Object) this, oldStack, newStack);
         }
     }
 }

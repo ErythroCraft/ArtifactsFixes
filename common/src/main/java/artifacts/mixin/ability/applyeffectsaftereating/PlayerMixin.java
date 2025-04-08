@@ -1,7 +1,7 @@
 package artifacts.mixin.ability.applyeffectsaftereating;
 
 import artifacts.ability.mobeffect.ApplyMobEffectAfterEatingAbility;
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +24,6 @@ public abstract class PlayerMixin extends LivingEntity {
     @Inject(method = "eat", at = @At("HEAD"))
     public void eat(Level level, ItemStack stack, FoodProperties properties, CallbackInfoReturnable<ItemStack> cir) {
         ApplyMobEffectAfterEatingAbility.applyEffects(this, properties);
-        ArtifactEvents.applyBoneMealAfterEating(this, properties);
+        ArtifactHooks.applyBoneMealAfterEating(this, properties);
     }
 }

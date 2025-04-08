@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.hurtsound;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,6 +28,6 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "playHurtSound", at = @At("HEAD"))
     private void onServerPlayHurtSound(CallbackInfo info) {
         //noinspection ConstantConditions
-        ArtifactEvents.onPlaySoundAtEntity((LivingEntity) (Object) this, this.getSoundVolume(), this.getVoicePitch());
+        ArtifactHooks.onPlaySoundAtEntity((LivingEntity) (Object) this, this.getSoundVolume(), this.getVoicePitch());
     }
 }

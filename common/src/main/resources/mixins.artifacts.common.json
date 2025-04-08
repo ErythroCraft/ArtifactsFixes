@@ -6,6 +6,7 @@
   "mixins": [
     "ability.LivingEntityMixin",
     "ability.applyeffectsaftereating.PlayerMixin",
+    "ability.damageimmunity.EntityMixin",
     "ability.enchantment.ApplyBonusCountMixin",
     "ability.enchantment.EnchantedCountIncreaseFunctionMixin",
     "ability.enchantment.EnchantmentHelperMixin",

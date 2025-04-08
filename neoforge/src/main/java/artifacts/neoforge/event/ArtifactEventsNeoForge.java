@@ -2,7 +2,7 @@ package artifacts.neoforge.event;
 
 import artifacts.ability.UpgradeToolTierAbility;
 import artifacts.component.AbilityToggles;
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModTags;
@@ -45,23 +45,23 @@ public class ArtifactEventsNeoForge {
     }
 
     private static void onLivingDamage(LivingDamageEvent.Post event) {
-        ArtifactEvents.onLivingDamaged(event.getEntity(), event.getSource(), event.getNewDamage());
+        ArtifactHooks.onLivingDamaged(event.getEntity(), event.getSource(), event.getNewDamage());
     }
 
     private static void onLivingUpdate(EntityTickEvent.Pre event) {
         if (event.getEntity() instanceof LivingEntity entity) {
             onKittySlippersLivingUpdate(entity);
-            ArtifactEvents.livingUpdate(entity);
+            ArtifactHooks.livingUpdate(entity);
         }
     }
 
     private static void onDrinkingHatItemUse(LivingEntityUseItemEvent.Start event) {
-        event.setDuration(ArtifactEvents.modifyUseDuration(event.getDuration(), event.getItem(), event.getEntity()));
+        event.setDuration(ArtifactHooks.modifyUseDuration(event.getDuration(), event.getItem(), event.getEntity()));
     }
 
     private static void onGoldenHookExperienceDrop(LivingExperienceDropEvent event) {
         int droppedXp = event.getDroppedExperience();
-        int modifiedXp = ArtifactEvents.modifyExperience(droppedXp, event.getEntity(), event.getAttackingPlayer());
+        int modifiedXp = ArtifactHooks.modifyExperience(droppedXp, event.getEntity(), event.getAttackingPlayer());
         event.setDroppedExperience(modifiedXp);
     }
 
@@ -90,7 +90,7 @@ public class ArtifactEventsNeoForge {
     private static void onBlockDrops(BlockDropsEvent event) {
         List<ItemEntity> drops = event.getDrops();
         MutableInt experience = new MutableInt(0);
-        drops.forEach(itemEntity -> itemEntity.setItem(ArtifactEvents.applySmeltOresAbility(
+        drops.forEach(itemEntity -> itemEntity.setItem(ArtifactHooks.applySmeltOresAbility(
                 itemEntity.getItem(),
                 event.getBreaker(),
                 event.getState(),

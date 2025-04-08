@@ -1,6 +1,6 @@
 package artifacts.integration.impl.trinkets;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
 import artifacts.integration.equipment.EquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
@@ -27,8 +27,8 @@ public class TrinketsIntegration implements EquipmentIntegration {
             }
         });
 
-        TrinketEquipCallback.EVENT.register((stack, slot, entity) -> ArtifactEvents.onItemChanged(entity, ItemStack.EMPTY, stack));
-        TrinketUnequipCallback.EVENT.register((stack, slot, entity) -> ArtifactEvents.onItemChanged(entity, stack, ItemStack.EMPTY));
+        TrinketEquipCallback.EVENT.register((stack, slot, entity) -> ArtifactHooks.onItemChanged(entity, ItemStack.EMPTY, stack));
+        TrinketUnequipCallback.EVENT.register((stack, slot, entity) -> ArtifactHooks.onItemChanged(entity, stack, ItemStack.EMPTY));
     }
 
     @Override

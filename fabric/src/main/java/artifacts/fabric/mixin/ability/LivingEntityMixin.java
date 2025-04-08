@@ -1,6 +1,6 @@
 package artifacts.fabric.mixin.ability;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +17,6 @@ public abstract class LivingEntityMixin {
         if (entity.isRemoved()) {
             return;
         }
-        ArtifactEvents.livingUpdate(entity);
+        ArtifactHooks.livingUpdate(entity);
     }
 }

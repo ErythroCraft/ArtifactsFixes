@@ -1,6 +1,6 @@
 package artifacts.fabric.mixin.ability;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +26,7 @@ public abstract class LivingEntitiesMixin extends Entity {
     private void onEntityDamaged(DamageSource source, float amount, CallbackInfo info) {
         if (!this.isInvulnerableTo(source)) {
             LivingEntity self = (LivingEntity) (Object) this;
-            ArtifactEvents.onLivingDamaged(self, source, amount);
+            ArtifactHooks.onLivingDamaged(self, source, amount);
         }
     }
 }

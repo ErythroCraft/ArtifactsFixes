@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.retaliation;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +18,7 @@ public class EnchantmentHelperMixin {
     @Inject(method = "doPostAttackEffectsWithItemSource", at = @At("HEAD"))
     private static void doPostAttackEffects(ServerLevel serverLevel, Entity entity, DamageSource damageSource, ItemStack itemStack, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity) {
-            ArtifactEvents.doPostAttackEffects(livingEntity, damageSource);
+            ArtifactHooks.doPostAttackEffects(livingEntity, damageSource);
         }
     }
 }

@@ -1,6 +1,6 @@
 package artifacts.fabric.mixin.ability.smeltores;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -23,7 +23,7 @@ public class LootTableMixin {
             MutableInt experience = new MutableInt(0);
             ObjectArrayList<ItemStack> result = new ObjectArrayList<>(original.size());
             for (ItemStack stack : original) {
-                result.add(ArtifactEvents.applySmeltOresAbility(
+                result.add(ArtifactHooks.applySmeltOresAbility(
                         stack,
                         context.getParamOrNull(LootContextParams.THIS_ENTITY),
                         context.getParamOrNull(LootContextParams.BLOCK_STATE),

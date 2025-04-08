@@ -1,6 +1,6 @@
 package artifacts.integration.impl.accessories;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
 import artifacts.integration.equipment.EquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
@@ -31,7 +31,7 @@ public class AccessoriesIntegration implements EquipmentIntegration {
         });
 
         AccessoryChangeCallback.EVENT.register(
-                (prevStack, currentStack, slotReference, slotStateChange) -> ArtifactEvents.onItemChanged(slotReference.entity(), prevStack, currentStack)
+                (prevStack, currentStack, slotReference, slotStateChange) -> ArtifactHooks.onItemChanged(slotReference.entity(), prevStack, currentStack)
         );
     }
 

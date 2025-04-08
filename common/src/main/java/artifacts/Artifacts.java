@@ -4,7 +4,7 @@ import artifacts.component.SwimEvents;
 import artifacts.config.ConfigManager;
 import artifacts.config.ModConfig;
 import artifacts.entity.MimicEntity;
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.integration.equipment.VanillaEquipmentIntegration;
 import artifacts.network.NetworkHandler;
@@ -63,7 +63,7 @@ public class Artifacts {
         PlayerEvent.PLAYER_JOIN.register(Artifacts.CONFIG.items::sendToClient);
 
         SwimEvents.register();
-        ArtifactEvents.register();
+        ArtifactHooks.register();
     }
 
     public static void setupConfigs() {

@@ -1,6 +1,6 @@
 package artifacts.fabric.mixin.attribute.entityexperience;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,6 +27,6 @@ public abstract class LivingEntityMixin extends Entity {
     @ModifyArg(method = "dropExperience", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ExperienceOrb;award(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)V"))
     private int modifyXp(int originalXp) {
         //noinspection ConstantConditions
-        return ArtifactEvents.modifyExperience(originalXp, (LivingEntity) (Object) this, lastHurtByPlayer);
+        return ArtifactHooks.modifyExperience(originalXp, (LivingEntity) (Object) this, lastHurtByPlayer);
     }
 }

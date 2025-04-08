@@ -1,6 +1,6 @@
 package artifacts.neoforge.integration.curios;
 
-import artifacts.event.ArtifactEvents;
+import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
 import artifacts.integration.equipment.EquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
@@ -29,7 +29,7 @@ public class CuriosIntegration implements EquipmentIntegration {
             }
         });
         NeoForge.EVENT_BUS.addListener(
-                (CurioChangeEvent event) -> ArtifactEvents.onItemChanged(event.getEntity(), event.getFrom(), event.getTo())
+                (CurioChangeEvent event) -> ArtifactHooks.onItemChanged(event.getEntity(), event.getFrom(), event.getTo())
         );
     }
 
