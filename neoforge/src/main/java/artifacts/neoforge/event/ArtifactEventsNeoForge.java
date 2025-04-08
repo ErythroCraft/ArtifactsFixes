@@ -7,10 +7,12 @@ import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModTags;
 import artifacts.util.AbilityHelper;
+import artifacts.util.TooltipHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.bus.api.EventPriority;
+import net.neoforged.neoforge.client.event.AddAttributeTooltipsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -35,6 +37,7 @@ public class ArtifactEventsNeoForge {
         NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onDiggingClawsHarvestCheck);
         NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onBlockDrops);
+        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::addAttributeTooltips);
     }
 
     private static void onPlayerTick(PlayerTickEvent.Post event) {
@@ -97,5 +100,9 @@ public class ArtifactEventsNeoForge {
                 experience::add
         )));
         event.setDroppedExperience(event.getDroppedExperience() + experience.getValue());
+    }
+
+    private static void addAttributeTooltips(AddAttributeTooltipsEvent event) {
+        TooltipHelper.addAttributeTooltips(event::addTooltipLines, event.getStack());
     }
 }
