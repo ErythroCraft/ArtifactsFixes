@@ -1,6 +1,5 @@
 package artifacts.neoforge.platform;
 
-import artifacts.Artifacts;
 import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
 import artifacts.integration.ModCompat;
@@ -10,20 +9,25 @@ import artifacts.neoforge.integration.cosmeticarmor.CosmeticArmorCompat;
 import artifacts.neoforge.integration.curios.CuriosClientIntegration;
 import artifacts.neoforge.integration.curios.CuriosIntegration;
 import artifacts.neoforge.registry.ModAttachmentTypes;
+import artifacts.neoforge.registry.NeoForgeRegister;
 import artifacts.platform.PlatformHelper;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAttributes;
-import artifacts.registry.RegistryHolder;
+import artifacts.registry.ModEntityTypes;
+import artifacts.registry.Register;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.callback.AddCallback;
@@ -31,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class NeoForgePlatformHelper implements PlatformHelper {
 
@@ -50,13 +53,6 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public Holder<Attribute> getSwimSpeedAttribute() {
         return NeoForgeMod.SWIM_SPEED;
-    }
-
-    @Override
-    public Holder<Attribute> registerAttribute(String name, Supplier<? extends Attribute> supplier) {
-        RegistryHolder<Attribute, ?> holder = new RegistryHolder<>(Artifacts.key(Registries.ATTRIBUTE, name), supplier);
-        ModAttributes.ATTRIBUTES.add(holder);
-        return holder;
     }
 
     @Override
@@ -90,6 +86,21 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public boolean isModLoaded(String modid) {
         return ModList.get().isLoaded(modid);
+    }
+
+    @Override
+    public boolean isDedicatedServer() {
+        return !FMLEnvironment.dist.isClient();
+    }
+
+    @Override
+    public <R> Register<R> createRegister(ResourceKey<Registry<R>> registry) {
+        return new NeoForgeRegister<>(registry);
+    }
+
+    @Override
+    public SpawnEggItem createMimicSpawnEgg(Item.Properties properties) {
+        return new DeferredSpawnEggItem(ModEntityTypes.MIMIC, 0xFFFFFF, 0xFFFFFF, properties);
     }
 
     public void setupIntegrations() {

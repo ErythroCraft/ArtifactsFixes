@@ -80,8 +80,8 @@ public class ArtifactHooks {
         if (entity.level().isClientSide()) {
             return;
         }
-        List<ArtifactAbility> oldAbilities = oldStack.getOrDefault(ModDataComponents.ABILITIES.value(), List.of());
-        List<ArtifactAbility> newAbilities = newStack.getOrDefault(ModDataComponents.ABILITIES.value(), List.of());
+        List<ArtifactAbility> oldAbilities = oldStack.getOrDefault(ModDataComponents.ABILITIES.get(), List.of());
+        List<ArtifactAbility> newAbilities = newStack.getOrDefault(ModDataComponents.ABILITIES.get(), List.of());
 
         if (!oldAbilities.isEmpty() || !newAbilities.isEmpty()) {
             refreshTickingAbilities(entity);

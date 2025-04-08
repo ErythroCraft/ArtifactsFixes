@@ -34,6 +34,10 @@ public class RegistryHolder<R, V extends R> implements Holder<R>, Supplier<V> {
         this.holder = holder;
     }
 
+    public Holder<R> holder() {
+        return holder;
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public V get() {

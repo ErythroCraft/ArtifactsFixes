@@ -51,7 +51,7 @@ public class ArtifactsClient {
     }
 
     public static void registerRenderers() {
-        EntityRendererRegistry.register(ModEntityTypes.MIMIC::value, MimicRenderer::new);
+        EntityRendererRegistry.register(ModEntityTypes.MIMIC, MimicRenderer::new);
     }
 
     @Nullable

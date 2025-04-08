@@ -166,7 +166,7 @@ public class CampsiteFeature extends Feature<CampsiteFeatureConfiguration> {
 
     public void placeChest(WorldGenLevel level, BlockPos pos, RandomSource random, Direction facing) {
         if (random.nextFloat() < Artifacts.CONFIG.general.campsite.mimicChance.get()) {
-            MimicEntity mimic = ModEntityTypes.MIMIC.value().create(level.getLevel());
+            MimicEntity mimic = ModEntityTypes.MIMIC.get().create(level.getLevel());
             if (mimic != null) {
                 mimic.setDormant(true);
                 mimic.setFacing(facing);

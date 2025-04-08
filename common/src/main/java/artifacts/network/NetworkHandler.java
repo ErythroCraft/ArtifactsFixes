@@ -1,8 +1,7 @@
 package artifacts.network;
 
+import artifacts.platform.PlatformServices;
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -25,10 +24,10 @@ public class NetworkHandler {
     }
 
     private static <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.NetworkReceiver<T> receiver) {
-        if (Platform.getEnvironment() == Env.CLIENT) {
-            NetworkManager.registerReceiver(NetworkManager.s2c(), type, codec, receiver);
-        } else {
+        if (PlatformServices.platformHelper.isDedicatedServer()) {
             NetworkManager.registerS2CPayloadType(type, codec);
+        } else {
+            NetworkManager.registerReceiver(NetworkManager.s2c(), type, codec, receiver);
         }
     }
 }

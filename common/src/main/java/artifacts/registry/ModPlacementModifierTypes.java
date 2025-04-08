@@ -1,11 +1,9 @@
 package artifacts.registry;
 
-import artifacts.Artifacts;
+import artifacts.platform.PlatformServices;
 import artifacts.world.placement.CampsiteCountPlacement;
 import artifacts.world.placement.CampsiteHeightRangePlacement;
 import artifacts.world.placement.CeilingHeightFilter;
-import dev.architectury.registry.registries.DeferredRegister;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
@@ -13,13 +11,13 @@ import java.util.function.Supplier;
 
 public class ModPlacementModifierTypes {
 
-    public static final DeferredRegister<PlacementModifierType<?>> PLACEMENT_MODIFIERS = DeferredRegister.create(Artifacts.MOD_ID, Registries.PLACEMENT_MODIFIER_TYPE);
+    public static final Register<PlacementModifierType<?>> PLACEMENT_MODIFIER_TYPES = PlatformServices.platformHelper.createRegister(Registries.PLACEMENT_MODIFIER_TYPE);
 
-    public static final Holder<PlacementModifierType<CeilingHeightFilter>> CEILING_HEIGHT_FILTER = register("ceiling_height_filter", () -> () -> CeilingHeightFilter.CODEC);
-    public static final Holder<PlacementModifierType<CampsiteCountPlacement>> CAMPSITE_COUNT = register("campsite_count", () -> () -> CampsiteCountPlacement.CODEC);
-    public static final Holder<PlacementModifierType<CampsiteHeightRangePlacement>> CAMPSITE_HEIGHT_RANGE = register("campsite_height_range", () -> () -> CampsiteHeightRangePlacement.CODEC);
+    public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<CeilingHeightFilter>> CEILING_HEIGHT_FILTER = register("ceiling_height_filter", () -> () -> CeilingHeightFilter.CODEC);
+    public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<CampsiteCountPlacement>> CAMPSITE_COUNT = register("campsite_count", () -> () -> CampsiteCountPlacement.CODEC);
+    public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<CampsiteHeightRangePlacement>> CAMPSITE_HEIGHT_RANGE = register("campsite_height_range", () -> () -> CampsiteHeightRangePlacement.CODEC);
 
-    private static <T extends PlacementModifierType<?>> Holder<T> register(String name, Supplier<T> supplier) {
-        return PLACEMENT_MODIFIERS.register(name, supplier);
+    private static <T extends PlacementModifierType<?>> RegistryHolder<PlacementModifierType<?>, T> register(String name, Supplier<T> supplier) {
+        return PLACEMENT_MODIFIER_TYPES.register(name, supplier);
     }
 }

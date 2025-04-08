@@ -45,17 +45,19 @@ public class Artifacts {
 
         NetworkHandler.register();
 
-        ModDataComponents.register();
+        ModDataComponents.DATA_COMPONENT_TYPES.register();
         ModSoundEvents.SOUND_EVENTS.register();
-        ModLootConditions.LOOT_CONDITIONS.register();
-        ModLootFunctions.LOOT_FUNCTIONS.register();
-        ModPlacementModifierTypes.PLACEMENT_MODIFIERS.register();
-        ModItems.CREATIVE_MODE_TABS.register();
+        ModLootConditions.LOOT_CONDITION_TYPES.register();
+        ModLootFunctions.LOOT_FUNCTION_TYPES.register();
+        ModPlacementModifierTypes.PLACEMENT_MODIFIER_TYPES.register();
+        ModAttributes.ATTRIBUTES.register();
         ModEntityTypes.ENTITY_TYPES.register();
+        ModItems.ITEMS.register();
+        ModItems.CREATIVE_MODE_TABS.register();
         ModFeatures.FEATURES.register();
         ModAbilities.register();
 
-        EntityAttributeRegistry.register(ModEntityTypes.MIMIC::value, MimicEntity::createMobAttributes);
+        EntityAttributeRegistry.register(ModEntityTypes.MIMIC, MimicEntity::createMobAttributes);
 
         LifecycleEvent.SETUP.register(Artifacts::setupConfigs);
 

@@ -1,14 +1,14 @@
 package artifacts.registry;
 
 import artifacts.Artifacts;
-import dev.architectury.registry.registries.DeferredRegister;
+import artifacts.platform.PlatformServices;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 
 public class ModSoundEvents {
 
-    public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Artifacts.MOD_ID, Registries.SOUND_EVENT);
+    public static final Register<SoundEvent> SOUND_EVENTS = PlatformServices.platformHelper.createRegister(Registries.SOUND_EVENT);
 
     public static final Holder<SoundEvent>
             POP = register("generic.pop"),

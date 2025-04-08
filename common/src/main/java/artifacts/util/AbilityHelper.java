@@ -77,7 +77,7 @@ public class AbilityHelper {
 
     public static List<ArtifactAbility> getAbilities(ItemStack stack) {
         if (stack.has(ModDataComponents.ABILITIES.value())) {
-            return stack.get(ModDataComponents.ABILITIES.value());
+            return stack.get(ModDataComponents.ABILITIES.get());
         }
         return List.of();
     }

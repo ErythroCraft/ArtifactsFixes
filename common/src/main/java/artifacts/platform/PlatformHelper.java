@@ -9,17 +9,20 @@ import artifacts.integration.impl.accessories.AccessoriesClientIntegration;
 import artifacts.integration.impl.accessories.AccessoriesIntegration;
 import artifacts.integration.impl.trinkets.TrinketsClientIntegration;
 import artifacts.integration.impl.trinkets.TrinketsIntegration;
+import artifacts.registry.Register;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public interface PlatformHelper {
 
@@ -30,9 +33,6 @@ public interface PlatformHelper {
     SwimData getSwimData(LivingEntity entity);
 
     Holder<Attribute> getSwimSpeedAttribute();
-
-    // TODO register attributes properly
-    Holder<Attribute> registerAttribute(String name, Supplier<? extends Attribute> supplier);
 
     boolean isEyeInWater(Player player);
 
@@ -45,6 +45,12 @@ public interface PlatformHelper {
     void registryEntryAddCallback(Consumer<Item> consumer);
 
     boolean isModLoaded(String modid);
+
+    boolean isDedicatedServer();
+
+    <R> Register<R> createRegister(ResourceKey<Registry<R>> registry);
+
+    SpawnEggItem createMimicSpawnEgg(Item.Properties properties);
 
     default void setupIntegrations() {
         if (PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS) && !PlatformServices.platformHelper.isModLoaded(ModCompat.TCLAYER)) {

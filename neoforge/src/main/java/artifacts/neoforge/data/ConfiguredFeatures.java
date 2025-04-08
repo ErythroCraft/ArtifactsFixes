@@ -18,7 +18,7 @@ public class ConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> CAMPSITE = Artifacts.key(Registries.CONFIGURED_FEATURE, "campsite");
 
     public static void create(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        ConfiguredFeature<?, ?> campsite = new ConfiguredFeature<>(ModFeatures.CAMPSITE.value(), new CampsiteFeatureConfiguration(
+        ConfiguredFeature<?, ?> campsite = new ConfiguredFeature<>(ModFeatures.CAMPSITE.get(), new CampsiteFeatureConfiguration(
                 new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
                         .add(Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 9)
                         .add(Blocks.SOUL_CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 1)

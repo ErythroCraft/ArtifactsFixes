@@ -6,7 +6,6 @@ import artifacts.config.ConfigManager;
 import artifacts.neoforge.data.tags.ItemTags;
 import artifacts.registry.*;
 import com.google.common.base.CaseFormat;
-import dev.architectury.registry.registries.RegistrySupplier;
 import joptsimple.internal.Strings;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -139,15 +138,15 @@ public class Language extends LanguageProvider {
     }
 
     private void addAttributes() {
-        for (RegistryHolder<Attribute, ?> attribute : ModAttributes.ATTRIBUTES) {
+        for (RegistryHolder<Attribute, ?> attribute : ModAttributes.ATTRIBUTES.getEntries()) {
             add(attribute.get().getDescriptionId(), fromSnakeCasedString(attribute.unwrapKey().orElseThrow().location().getPath().split("\\.")[1]));
         }
         add("generic.swim_speed", "Swim Speed");
     }
 
     private void addEntities() {
-        for (RegistrySupplier<EntityType<?>> entityType : ModEntityTypes.ENTITY_TYPES) {
-            add(entityType.get().getDescriptionId(), fromSnakeCasedString(entityType.getId().getPath()));
+        for (RegistryHolder<EntityType<?>, ?> entityType : ModEntityTypes.ENTITY_TYPES.getEntries()) {
+            add(entityType.get().getDescriptionId(), fromSnakeCasedString(entityType.unwrapKey().orElseThrow().location().getPath()));
         }
         add(ModSoundEvents.MIMIC_CLOSE.value(), "Mimic closes");
         add(ModSoundEvents.MIMIC_DEATH.value(), "Mimic dies");
@@ -200,7 +199,7 @@ public class Language extends LanguageProvider {
     }
 
     private void addItems() {
-        for (Holder<Item> item : ModItems.ITEMS) {
+        for (Holder<Item> item : ModItems.ITEMS.getEntries()) {
             add(item.value(), fromSnakeCasedString(item.unwrapKey().orElseThrow().location().getPath()));
         }
         override(ModItems.ANGLERS_HAT.value().getDescriptionId(), "Angler's Hat");
@@ -260,8 +259,7 @@ public class Language extends LanguageProvider {
 
     private void addAbilityTooltip(Holder<? extends ArtifactAbility.Type<?>> type, Holder<?> holder, String... s) {
         List<String> list = new java.util.ArrayList<>(List.of(s));
-        //noinspection OptionalGetWithoutIsPresent
-        list.addFirst(holder.unwrapKey().get().location().getPath());
+        list.addFirst(holder.unwrapKey().orElseThrow().location().getPath());
         addAbilityTooltip(type, list.toArray(String[]::new));
     }
 

@@ -32,7 +32,7 @@ public class ReplaceWithLootTableFunction extends LootItemConditionalFunction {
 
     @Override
     public LootItemFunctionType<ReplaceWithLootTableFunction> getType() {
-        return ModLootFunctions.REPLACE_WITH_LOOT_TABLE.value();
+        return ModLootFunctions.REPLACE_WITH_LOOT_TABLE.get();
     }
 
     @Override

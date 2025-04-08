@@ -2,6 +2,7 @@ package artifacts.registry;
 
 import artifacts.platform.PlatformServices;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
@@ -11,8 +12,7 @@ import java.util.function.Supplier;
 
 public class ModAttributes {
 
-    // TODO unused on Fabric
-    public static final List<RegistryHolder<Attribute, ?>> ATTRIBUTES = new ArrayList<>();
+    public static final Register<Attribute> ATTRIBUTES = PlatformServices.platformHelper.createRegister(Registries.ATTRIBUTE);
 
     public static final List<Holder<Attribute>> PLAYER_ATTRIBUTES = new ArrayList<>();
     public static final List<Holder<Attribute>> GENERIC_ATTRIBUTES = new ArrayList<>();
@@ -51,6 +51,6 @@ public class ModAttributes {
     }
 
     private static Holder<Attribute> register(String name, Supplier<? extends Attribute> supplier) {
-        return PlatformServices.platformHelper.registerAttribute(name, supplier);
+        return ATTRIBUTES.register(name, supplier).holder();
     }
 }

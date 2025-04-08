@@ -9,7 +9,6 @@ import artifacts.integration.ModCompat;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
-import artifacts.registry.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -129,10 +128,8 @@ public class WearableArtifactItem extends Item {
             return this;
         }
 
-        @SuppressWarnings("UnstableApiUsage")
         public WearableArtifactItem build() {
-            properties.arch$tab(ModItems.CREATIVE_TAB);
-            properties.component(ModDataComponents.ABILITIES.value(), abilities);
+            properties.component(ModDataComponents.ABILITIES.get(), abilities);
             properties.stacksTo(1).rarity(Rarity.RARE).fireResistant();
             return new WearableArtifactItem(properties, equipSound, equipSoundPitch);
         }

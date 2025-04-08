@@ -10,10 +10,7 @@ import artifacts.config.value.Value;
 import artifacts.item.EverlastingFoodItem;
 import artifacts.item.UmbrellaItem;
 import artifacts.item.WearableArtifactItem;
-import dev.architectury.core.item.ArchitecturySpawnEggItem;
-import dev.architectury.registry.CreativeTabRegistry;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import artifacts.platform.PlatformServices;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -30,26 +27,25 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@SuppressWarnings("UnstableApiUsage")
 public class ModItems {
 
-    public static final List<RegistryHolder<Item, ?>> ITEMS = new ArrayList<>();
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Artifacts.MOD_ID, Registries.CREATIVE_MODE_TAB);
+    public static final Register<Item> ITEMS = PlatformServices.platformHelper.createRegister(Registries.ITEM);
+    public static final Register<CreativeModeTab> CREATIVE_MODE_TABS = PlatformServices.platformHelper.createRegister(Registries.CREATIVE_MODE_TAB);
 
-    public static final RegistrySupplier<CreativeModeTab> CREATIVE_TAB = CREATIVE_MODE_TABS.register("main", () ->
-            CreativeTabRegistry.create(
-                    Component.translatable("%s.creative_tab".formatted(Artifacts.MOD_ID)),
-                    () -> new ItemStack(ModItems.BUNNY_HOPPERS.value())
-            )
-    );
+    static {
+        CREATIVE_MODE_TABS.register("main", () -> new CreativeModeTab.Builder(null, 0)
+                .title(Component.translatable("%s.creative_tab".formatted(Artifacts.MOD_ID)))
+                .icon(() -> new ItemStack(ModItems.BUNNY_HOPPERS.value()))
+                .displayItems((parameters, output) -> ITEMS.forEach(output::accept)
+                ).build()
+        );
+    }
 
-    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", () -> new ArchitecturySpawnEggItem(ModEntityTypes.MIMIC, 0x805113, 0x212121, new Item.Properties().arch$tab(CREATIVE_TAB)));
+    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", () -> PlatformServices.platformHelper.createMimicSpawnEgg(new Item.Properties()));
     public static final Holder<Item> UMBRELLA = register("umbrella", UmbrellaItem::new);
     public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", () -> new EverlastingFoodItem(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build(), Artifacts.CONFIG.items.everlastingBeefCooldown, Artifacts.CONFIG.items.everlastingBeefEnabled));
     public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", () -> new EverlastingFoodItem(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build(), Artifacts.CONFIG.items.eternalSteakCooldown, Artifacts.CONFIG.items.eternalSteakEnabled));
@@ -325,8 +321,6 @@ public class ModItems {
     }
 
     private static Holder<Item> register(String name, Supplier<? extends Item> supplier) {
-        RegistryHolder<Item, ?> holder = new RegistryHolder<>(Artifacts.key(Registries.ITEM, name), supplier);
-        ITEMS.add(holder);
-        return holder;
+        return ITEMS.register(name, supplier);
     }
 }
