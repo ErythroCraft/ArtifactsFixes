@@ -28,7 +28,7 @@ public interface ArtifactAbility {
     );
 
     StreamCodec<RegistryFriendlyByteBuf, ArtifactAbility> STREAM_CODEC = ModCodecs.lazyStreamCodec(() ->
-            ByteBufCodecs.registry(ModAbilities.REGISTRY.key()).dispatch(ArtifactAbility::getType, Type::streamCodec)
+            ByteBufCodecs.registry(ModAbilities.REGISTRY_KEY).dispatch(ArtifactAbility::getType, Type::streamCodec)
     );
 
     Type<?> getType();
@@ -52,7 +52,7 @@ public interface ArtifactAbility {
 
     @SuppressWarnings("ConstantConditions")
     default void addAbilityTooltip(List<MutableComponent> tooltip) {
-        ResourceLocation id = ModAbilities.REGISTRY.getId(getType());
+        ResourceLocation id = ModAbilities.getRegistry().getKey(getType());
         tooltip.add(Component.translatable("%s.tooltip.ability.%s".formatted(id.getNamespace(), id.getPath())));
     }
 
@@ -70,7 +70,7 @@ public interface ArtifactAbility {
 
     @SuppressWarnings("ConstantConditions")
     default MutableComponent tooltipLine(String abilityName, Object... args) {
-        ResourceLocation id = ModAbilities.REGISTRY.getId(getType());
+        ResourceLocation id = ModAbilities.getRegistry().getKey(getType());
         return Component.translatable("%s.tooltip.ability.%s.%s".formatted(id.getNamespace(), id.getPath(), abilityName), args);
     }
 

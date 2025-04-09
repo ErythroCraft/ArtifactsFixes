@@ -54,7 +54,7 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
     public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
-            AbilityHelper.forEach(ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.value(), attacker, (ability, stack) -> {
+            AbilityHelper.forEach(ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.get(), attacker, (ability, stack) -> {
                 if (entity.getRandom().nextDouble() < ability.chance().get()) {
                     entity.addEffect(ability.createEffect(attacker), attacker);
                     if (attacker instanceof Player player) {

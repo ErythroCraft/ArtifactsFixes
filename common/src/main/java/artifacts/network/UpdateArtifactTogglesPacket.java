@@ -22,7 +22,7 @@ public record UpdateArtifactTogglesPacket(List<ArtifactAbility.Type<?>> toggles)
 
     public static final StreamCodec<FriendlyByteBuf, UpdateArtifactTogglesPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.<ByteBuf, ArtifactAbility.Type<?>>list().apply(
-                    ResourceLocation.STREAM_CODEC.map(ModAbilities.REGISTRY::get, ModAbilities.REGISTRY::getId)
+                    ResourceLocation.STREAM_CODEC.map(id -> ModAbilities.getRegistry().get(id), type -> ModAbilities.getRegistry().getKey(type))
             ),
             UpdateArtifactTogglesPacket::toggles,
             UpdateArtifactTogglesPacket::new

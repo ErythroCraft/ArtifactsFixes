@@ -19,14 +19,14 @@ public class AbilityToggles {
             list -> {
                 Set<ArtifactAbility.Type<?>> toggles = new HashSet<>();
                 for (ResourceLocation id : list) {
-                    toggles.add(ModAbilities.REGISTRY.get(id));
+                    toggles.add(ModAbilities.getRegistry().get(id));
                 }
                 return new AbilityToggles(toggles);
             },
             abilityToggles -> {
                 List<ResourceLocation> list = new ArrayList<>();
                 for (ArtifactAbility.Type<?> toggle : abilityToggles.toggles) {
-                    ResourceLocation id = ModAbilities.REGISTRY.getId(toggle);
+                    ResourceLocation id = ModAbilities.getRegistry().getKey(toggle);
                     list.add(id);
                 }
                 return list;

@@ -38,9 +38,7 @@ public class Artifacts {
         return ResourceKey.create(registry, id(path));
     }
 
-    public static void init() {
-        CONFIG = new ModConfig();
-
+    public static void setup() {
         setupIntegrations();
 
         NetworkHandler.register();
@@ -55,7 +53,7 @@ public class Artifacts {
         ModItems.ITEMS.register();
         ModItems.CREATIVE_MODE_TABS.register();
         ModFeatures.FEATURES.register();
-        ModAbilities.register();
+        ModAbilities.ABILITIES.register();
 
         EntityAttributeRegistry.register(ModEntityTypes.MIMIC, MimicEntity::createMobAttributes);
 
@@ -66,6 +64,10 @@ public class Artifacts {
 
         SwimEvents.register();
         ArtifactHooks.register();
+    }
+
+    public static void initConfigs() {
+        CONFIG = new ModConfig();
     }
 
     public static void setupConfigs() {

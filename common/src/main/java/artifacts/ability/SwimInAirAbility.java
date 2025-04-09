@@ -66,16 +66,16 @@ public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rec
     }
 
     public static int getFlightDuration(LivingEntity entity) {
-        return AbilityHelper.maxInt(ModAbilities.SWIM_IN_AIR.value(), entity, ability -> ability.flightDuration().get() * 20, false);
+        return AbilityHelper.maxInt(ModAbilities.SWIM_IN_AIR.get(), entity, ability -> ability.flightDuration().get() * 20, false);
     }
 
     public static int getRechargeDuration(LivingEntity entity) {
-        return Math.max(20, AbilityHelper.maxInt(ModAbilities.SWIM_IN_AIR.value(), entity, ability -> ability.rechargeDuration().get() * 20, false));
+        return Math.max(20, AbilityHelper.maxInt(ModAbilities.SWIM_IN_AIR.get(), entity, ability -> ability.rechargeDuration().get() * 20, false));
     }
 
     @Override
     public Type<?> getType() {
-        return ModAbilities.SWIM_IN_AIR.value();
+        return ModAbilities.SWIM_IN_AIR.get();
     }
 
     @Override

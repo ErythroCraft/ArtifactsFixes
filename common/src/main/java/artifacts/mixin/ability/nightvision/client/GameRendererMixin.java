@@ -21,7 +21,7 @@ public class GameRendererMixin {
         if (effect == null || !effect.endsWithin(60)) {
             return original;
         }
-        double scale = AbilityHelper.maxDouble(ModAbilities.NIGHT_VISION.value(), entity, ability -> ability.strength().get(), false);
+        double scale = AbilityHelper.maxDouble(ModAbilities.NIGHT_VISION.get(), entity, ability -> ability.strength().get(), false);
         if (scale == 0) {
             return original;
         }

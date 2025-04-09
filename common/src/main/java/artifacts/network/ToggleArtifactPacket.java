@@ -17,7 +17,7 @@ public record ToggleArtifactPacket(ArtifactAbility.Type<?> toggle) implements Cu
     public static final Type<ToggleArtifactPacket> TYPE = new Type<>(Artifacts.id("toggle_artifacts"));
 
     public static final StreamCodec<FriendlyByteBuf, ToggleArtifactPacket> CODEC = StreamCodec.composite(
-            ResourceLocation.STREAM_CODEC.map(ModAbilities.REGISTRY::get, ModAbilities.REGISTRY::getId),
+            ResourceLocation.STREAM_CODEC.map(id -> ModAbilities.getRegistry().get(id), type -> ModAbilities.getRegistry().getKey(type)),
             ToggleArtifactPacket::toggle,
             ToggleArtifactPacket::new
     );

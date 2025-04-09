@@ -21,7 +21,7 @@ public class AbilityTogglesComponent extends AbilityToggles implements AutoSynce
         ListTag list = tag.getList("toggles", Tag.TAG_STRING);
         Set<ArtifactAbility.Type<?>> toggles = new HashSet<>();
         for (Tag stringTag : list) {
-            toggles.add(ModAbilities.REGISTRY.get(ResourceLocation.parse(stringTag.getAsString())));
+            toggles.add(ModAbilities.getRegistry().get(ResourceLocation.parse(stringTag.getAsString())));
         }
         this.toggles.clear();
         this.toggles.addAll(toggles);
@@ -32,7 +32,7 @@ public class AbilityTogglesComponent extends AbilityToggles implements AutoSynce
         ListTag list = new ListTag();
         for (ArtifactAbility.Type<?> toggle : toggles) {
             // noinspection ConstantConditions
-            list.add(StringTag.valueOf(ModAbilities.REGISTRY.getId(toggle).toString()));
+            list.add(StringTag.valueOf(ModAbilities.getRegistry().getKey(toggle).toString()));
         }
         tag.put("toggles", list);
     }

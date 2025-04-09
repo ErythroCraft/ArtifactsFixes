@@ -132,9 +132,9 @@ public class ArtifactHooks {
     }
 
     public static void doPostAttackEffects(LivingEntity entity, DamageSource damageSource) {
-        activateRetaliationAbility(ModAbilities.SET_ATTACKERS_ON_FIRE.value(), entity, damageSource);
-        activateRetaliationAbility(ModAbilities.THORNS.value(), entity, damageSource);
-        activateRetaliationAbility(ModAbilities.STRIKE_ATTACKERS_WITH_LIGHTNING.value(), entity, damageSource);
+        activateRetaliationAbility(ModAbilities.SET_ATTACKERS_ON_FIRE.get(), entity, damageSource);
+        activateRetaliationAbility(ModAbilities.THORNS.get(), entity, damageSource);
+        activateRetaliationAbility(ModAbilities.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), entity, damageSource);
         AttacksInflictMobEffectAbility.onLivingHurt(entity, damageSource);
         onAttackBurningLivingHurt(entity, damageSource);
     }
@@ -157,7 +157,7 @@ public class ArtifactHooks {
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
         if (Artifacts.CONFIG.general.modifyHurtSounds.get()) {
-            AbilityHelper.forEach(ModAbilities.MODIFY_HURT_SOUND.value(), entity, ability -> entity.playSound(ability.soundEvent().value(), volume, pitch));
+            AbilityHelper.forEach(ModAbilities.MODIFY_HURT_SOUND.get(), entity, ability -> entity.playSound(ability.soundEvent().value(), volume, pitch));
         }
     }
 
@@ -216,7 +216,7 @@ public class ArtifactHooks {
     public static void absorbDamage(LivingEntity entity, DamageSource damageSource, float amount) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
-            AbilityHelper.forEach(ModAbilities.ATTACKS_ABSORB_DAMAGE.value(), attacker, ability -> {
+            AbilityHelper.forEach(ModAbilities.ATTACKS_ABSORB_DAMAGE.get(), attacker, ability -> {
                 double absorptionRatio = ability.absorptionRatio().get();
                 double maxHealthAbsorbed = ability.maxDamageAbsorbed().get();
 

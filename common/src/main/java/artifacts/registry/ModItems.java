@@ -134,7 +134,7 @@ public class ModItems {
             ))
     );
     public static final Holder<Item> CHARM_OF_SINKING = wearableItem("charm_of_sinking", builder -> builder
-            .addAbility(new SimpleAbility(ModAbilities.SINKING::value, Artifacts.CONFIG.items.charmOfSinkingEnabled))
+            .addAbility(new SimpleAbility(ModAbilities.SINKING, Artifacts.CONFIG.items.charmOfSinkingEnabled))
     );
     public static final Holder<Item> CHARM_OF_SHRINKING = wearableItem("charm_of_shrinking", builder -> builder
             .addAttributeModifier(Attributes.SCALE, Artifacts.CONFIG.items.charmOfShrinkingScaleModifier, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
@@ -202,7 +202,7 @@ public class ModItems {
                     Artifacts.CONFIG.items.warpDriveCooldown
             ))
             .addAbility(new SimpleAbility(
-                    ModAbilities.NULLIFY_ENDER_PEARL_DAMAGE::value,
+                    ModAbilities.NULLIFY_ENDER_PEARL_DAMAGE,
                     Artifacts.CONFIG.items.warpDriveNullifyEnderPearlDamage
             ))
     );
@@ -249,7 +249,7 @@ public class ModItems {
     );
     public static final Holder<Item> PICKAXE_HEATER = wearableItem("pickaxe_heater", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
-            .addAbility(new SimpleAbility(ModAbilities.SMELT_ORES::value, Artifacts.CONFIG.items.pickaxeHeaterEnabled))
+            .addAbility(new SimpleAbility(ModAbilities.SMELT_ORES, Artifacts.CONFIG.items.pickaxeHeaterEnabled))
     );
     public static final Holder<Item> WITHERED_BRACELET = wearableItem("withered_bracelet", builder -> builder
             .addAbility(new AttacksInflictMobEffectAbility(
@@ -263,7 +263,7 @@ public class ModItems {
 
     // feet
     public static final Holder<Item> AQUA_DASHERS = wearableItem("aqua_dashers", builder -> builder
-            .addAbility(new CollideWithFluidsAbility(ModAbilities.SPRINT_ON_FLUIDS::value, Artifacts.CONFIG.items.aquaDashersEnabled, Optional.empty()))
+            .addAbility(new CollideWithFluidsAbility(ModAbilities.SPRINT_ON_FLUIDS, Artifacts.CONFIG.items.aquaDashersEnabled, Optional.empty()))
     );
     public static final Holder<Item> BUNNY_HOPPERS = wearableItem("bunny_hoppers", builder -> builder
             .addAttributeModifier(Attributes.JUMP_STRENGTH, Artifacts.CONFIG.items.bunnyHoppersJumpStrengthBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
@@ -273,7 +273,7 @@ public class ModItems {
     );
     public static final Holder<Item> KITTY_SLIPPERS = wearableItem("kitty_slippers", builder -> builder
             .equipSound(SoundEvents.CAT_AMBIENT)
-            .addAbility(new SimpleAbility(ModAbilities.SCARE_CREEPERS::value, Artifacts.CONFIG.items.kittySlippersEnabled))
+            .addAbility(new SimpleAbility(ModAbilities.SCARE_CREEPERS, Artifacts.CONFIG.items.kittySlippersEnabled))
             .addAbility(new ModifyHurtSoundAbility(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT)))
     );
     public static final Holder<Item> RUNNING_SHOES = wearableItem("running_shoes", builder -> builder
@@ -281,7 +281,7 @@ public class ModItems {
             .addAttributeModifier(ModAttributes.SPRINTING_STEP_HEIGHT, Artifacts.CONFIG.items.runningShoesSprintingStepHeightBonus, AttributeModifier.Operation.ADD_VALUE)
     );
     public static final Holder<Item> SNOWSHOES = wearableItem("snowshoes", builder -> builder
-            .addAbility(new SimpleAbility(ModAbilities.WALK_ON_POWDER_SNOW::value, Artifacts.CONFIG.items.snowshoesAllowWalkingOnPowderedSnow))
+            .addAbility(new SimpleAbility(ModAbilities.WALK_ON_POWDER_SNOW, Artifacts.CONFIG.items.snowshoesAllowWalkingOnPowderedSnow))
             .addAttributeModifier(ModAttributes.MOVEMENT_SPEED_ON_SNOW, Artifacts.CONFIG.items.snowshoesMovementSpeedOnSnowBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
     public static final Holder<Item> STEADFAST_SPIKES = wearableItem("steadfast_spikes", builder -> builder
@@ -297,11 +297,11 @@ public class ModItems {
                     Artifacts.CONFIG.items.rootedBootsEnabled,
                     Artifacts.CONFIG.items.rootedBootsHungerReplenishingDuration
             ))
-            .addAbility(new SimpleAbility(ModAbilities.GROW_PLANTS_AFTER_EATING::value, Artifacts.CONFIG.items.rootedBootsGrowPlantsAfterEating))
+            .addAbility(new SimpleAbility(ModAbilities.GROW_PLANTS_AFTER_EATING, Artifacts.CONFIG.items.rootedBootsGrowPlantsAfterEating))
     );
     public static final Holder<Item> STRIDER_SHOES = wearableItem("strider_shoes", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
-            .addAbility(new CollideWithFluidsAbility(ModAbilities.SNEAK_ON_FLUIDS::value, Artifacts.CONFIG.items.striderShoesEnabled, Optional.of(FluidTags.LAVA)))
+            .addAbility(new CollideWithFluidsAbility(ModAbilities.SNEAK_ON_FLUIDS, Artifacts.CONFIG.items.striderShoesEnabled, Optional.of(FluidTags.LAVA)))
             .addAbility(new DamageImmunityAbility(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR))
     );
 

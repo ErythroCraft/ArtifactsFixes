@@ -8,6 +8,7 @@ import artifacts.neoforge.event.SwimEventsNeoForge;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
 import artifacts.platform.PlatformServices;
+import artifacts.registry.ModAbilities;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
@@ -15,8 +16,9 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
+import net.neoforged.neoforge.registries.RegistryBuilder;
 
-@SuppressWarnings("unused")
 @Mod(Artifacts.MOD_ID)
 public class ArtifactsNeoForge {
 
@@ -25,7 +27,8 @@ public class ArtifactsNeoForge {
     public ArtifactsNeoForge(IEventBus modBus) {
         ArtifactsNeoForge.modBus = modBus;
 
-        Artifacts.init();
+        Artifacts.initConfigs();
+        Artifacts.setup();
         if (FMLEnvironment.dist == Dist.CLIENT) {
             new ArtifactsNeoForgeClient(modBus);
         }
@@ -34,6 +37,7 @@ public class ArtifactsNeoForge {
         ModAttachmentTypes.ATTACHMENT_TYPES.register(modBus);
 
         modBus.addListener(ArtifactsData::gatherData);
+        modBus.addListener(this::createRegistries);
 
         registerConfig();
         ArtifactEventsNeoForge.register();
@@ -49,6 +53,10 @@ public class ArtifactsNeoForge {
                     () -> (client, parent) -> new ArtifactsConfigScreen(parent).build()
             );
         }
+    }
+
+    private void createRegistries(NewRegistryEvent event) {
+        event.create(new RegistryBuilder<>(ModAbilities.REGISTRY_KEY).sync(true));
     }
 
     public static void addDeferredRegister(DeferredRegister<?> register) {

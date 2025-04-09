@@ -34,7 +34,7 @@ public record ApplyCooldownAfterDamageAbility(Value<Integer> cooldown, Optional<
     );
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
-        AbilityHelper.applyCooldowns(ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.value(), entity, ability -> {
+        AbilityHelper.applyCooldowns(ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.get(), entity, ability -> {
             if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                 return ability.cooldown().get();
             }
@@ -44,7 +44,7 @@ public record ApplyCooldownAfterDamageAbility(Value<Integer> cooldown, Optional<
 
     @Override
     public Type<?> getType() {
-        return ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.value();
+        return ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.get();
     }
 
     @Override

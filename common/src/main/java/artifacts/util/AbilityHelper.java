@@ -101,7 +101,7 @@ public class AbilityHelper {
     }
 
     public static int getEnchantmentSum(ResourceKey<Enchantment> enchantment, LivingEntity entity) {
-        return sumInt(ModAbilities.INCREASE_ENCHANTMENT_LEVEL.value(), entity, ability ->
+        return sumInt(ModAbilities.INCREASE_ENCHANTMENT_LEVEL.get(), entity, ability ->
                 ability.enchantment().equals(enchantment) ? ability.getAmount() : 0, false
         );
     }

@@ -55,14 +55,14 @@ public class SwimEvents {
     }
 
     private static boolean canSprintOnFluid(LivingEntity entity, FluidState fluidState) {
-        return canCollideWithFluid(entity, fluidState, ModAbilities.SPRINT_ON_FLUIDS.value())
+        return canCollideWithFluid(entity, fluidState, ModAbilities.SPRINT_ON_FLUIDS.get())
                 && entity.isSprinting()
                 && !entity.isUsingItem()
                 && !entity.isCrouching();
     }
 
     private static boolean canSneakOnFluid(LivingEntity entity, FluidState fluidState) {
-        return entity.isCrouching() && canCollideWithFluid(entity, fluidState, ModAbilities.SNEAK_ON_FLUIDS.value());
+        return entity.isCrouching() && canCollideWithFluid(entity, fluidState, ModAbilities.SNEAK_ON_FLUIDS.get());
     }
 
     private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState, ArtifactAbility.Type<CollideWithFluidsAbility> type) {

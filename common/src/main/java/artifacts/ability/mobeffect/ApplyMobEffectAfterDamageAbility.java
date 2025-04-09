@@ -47,7 +47,7 @@ public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Valu
         if (!entity.level().isClientSide()
                 && amount >= 0.1
         ) {
-            AbilityHelper.forEach(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.value(), entity, (ability, stack) -> {
+            AbilityHelper.forEach(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     entity.addEffect(ability.createEffect(entity));
                 }
