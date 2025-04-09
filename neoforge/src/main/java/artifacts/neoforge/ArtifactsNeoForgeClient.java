@@ -2,7 +2,6 @@ package artifacts.neoforge;
 
 import artifacts.Artifacts;
 import artifacts.ArtifactsClient;
-import artifacts.HeliumFlamingoInputEventHandler;
 import artifacts.client.item.ArtifactRenderers;
 import artifacts.client.mimic.MimicRenderer;
 import artifacts.integration.ModCompat;
@@ -15,6 +14,7 @@ import artifacts.neoforge.client.UmbrellaArmPoseHandler;
 import artifacts.neoforge.integration.curios.CuriosClientIntegration;
 import artifacts.registry.ModEntityTypes;
 import artifacts.registry.ModItems;
+import artifacts.registry.ModKeyMappings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.neoforged.bus.api.IEventBus;
@@ -23,6 +23,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
@@ -36,6 +37,7 @@ public class ArtifactsNeoForgeClient {
         modBus.addListener(this::registerGuiLayers);
         modBus.addListener(this::registerLayerDefinitions);
         modBus.addListener(this::registerEntityRenderers);
+        modBus.addListener((RegisterKeyMappingsEvent event) -> ModKeyMappings.register(event::register));
 
         boolean curiosLoaded = ClientEquipmentIntegrationUtils.hasIntegration(ModCompat.CURIOS);
 
@@ -48,7 +50,7 @@ public class ArtifactsNeoForgeClient {
 
         NeoForge.EVENT_BUS.addListener(this::addReloadListeners);
 
-        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> HeliumFlamingoInputEventHandler.onClientTick(Minecraft.getInstance()));
+        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> ArtifactsClient.onClientTick(Minecraft.getInstance()));
     }
 
     public void onClientSetup(FMLClientSetupEvent event) {
@@ -62,6 +64,7 @@ public class ArtifactsNeoForgeClient {
         event.enqueueWork(ArtifactsClient::onClientStarted);
         ArtifactRenderers.register();
         UmbrellaArmPoseHandler.setup();
+        ArtifactsClient.registerItemPropertyFunctions(ItemProperties::register);
     }
 
     public void addReloadListeners(AddReloadListenerEvent event) {

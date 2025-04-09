@@ -1,9 +1,7 @@
 package artifacts;
 
-import artifacts.component.SwimmingHooks;
 import artifacts.config.ConfigManager;
 import artifacts.config.ModConfig;
-import artifacts.event.ArtifactHooks;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.integration.equipment.VanillaEquipmentIntegration;
 import artifacts.network.NetworkHandler;
@@ -12,9 +10,11 @@ import artifacts.registry.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 public class Artifacts {
 
@@ -22,6 +22,9 @@ public class Artifacts {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static ModConfig CONFIG;
+
+    @Nullable
+    private static MinecraftServer currentServer;
 
     public static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
@@ -33,6 +36,10 @@ public class Artifacts {
 
     public static <T> ResourceKey<T> key(ResourceKey<? extends Registry<T>> registry, String path) {
         return ResourceKey.create(registry, id(path));
+    }
+
+    public static @Nullable MinecraftServer getCurrentServer() {
+        return currentServer;
     }
 
     public static void setup() {
@@ -51,9 +58,6 @@ public class Artifacts {
         ModItems.CREATIVE_MODE_TABS.register();
         ModFeatures.FEATURES.register();
         ModAbilities.ABILITIES.register();
-
-        SwimmingHooks.register();
-        ArtifactHooks.register();
     }
 
     public static void initConfigs() {
@@ -68,10 +72,15 @@ public class Artifacts {
         EquipmentIntegrationUtils.setupIntegrations();
     }
 
-    public static void onServerStarting() {
+    public static void onServerStarting(MinecraftServer server) {
+        currentServer = server;
         for (ConfigManager config : CONFIG.configs) {
             config.readValuesFromConfig();
         }
+    }
+
+    public static void onServerStopping() {
+        currentServer = null;
     }
 
     public static void onCommonSetup() {

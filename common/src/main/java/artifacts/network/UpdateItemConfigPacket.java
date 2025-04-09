@@ -29,6 +29,7 @@ public record UpdateItemConfigPacket(Value.ConfigValue<?> value) implements Cust
     }
 
     private <T> void apply(String key, Value.ConfigValue<T> value) {
+        Artifacts.LOGGER.debug("Received updated config value for {} from server", key);
         Artifacts.CONFIG.items.getValues(value.type()).get(key).set(value.get());
     }
 

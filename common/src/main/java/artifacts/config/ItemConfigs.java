@@ -1,12 +1,12 @@
 package artifacts.config;
 
+import artifacts.Artifacts;
 import artifacts.ability.UpgradeToolTierAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.network.NetworkHandler;
 import artifacts.network.UpdateItemConfigPacket;
 import artifacts.registry.ModItems;
-import dev.architectury.utils.GameInstance;
 import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -241,9 +241,10 @@ public class ItemConfigs extends ConfigManager {
 
     @Override
     public void onConfigChanged() {
-        if (GameInstance.getServer() != null) {
+        if (Artifacts.getCurrentServer() != null) {
+            Artifacts.LOGGER.info("Sending updated item configs to connected clients");
             readValuesFromConfig();
-            sendToClients(GameInstance.getServer());
+            sendToClients(Artifacts.getCurrentServer());
         }
     }
 
@@ -252,6 +253,7 @@ public class ItemConfigs extends ConfigManager {
     }
 
     public void sendToClient(ServerPlayer player) {
+        Artifacts.LOGGER.info("Sending item configs to client");
         getValues().forEach((key, value) -> NetworkHandler.sendToPlayer(player, new UpdateItemConfigPacket(value)));
     }
 }

@@ -1,18 +1,20 @@
 package artifacts;
 
 import artifacts.client.CloudInABottleInputHandler;
-import artifacts.client.ToggleKeyHandler;
+import artifacts.client.ToggleKeyHandlers;
 import artifacts.client.item.ArtifactLayers;
 import artifacts.client.mimic.model.MimicChestLayerModel;
 import artifacts.client.mimic.model.MimicModel;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModItems;
-import artifacts.registry.ModKeyMappings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
@@ -21,9 +23,13 @@ import java.util.function.Supplier;
 public class ArtifactsClient {
 
     public static void init() {
-        ModKeyMappings.register();
-
         PlatformServices.platformHelper.setupClientIntegrations();
+    }
+
+    public static void onClientTick(Minecraft instance) {
+        HeliumFlamingoInputEventHandler.onClientTick(instance);
+        CloudInABottleInputHandler.onClientTick(instance);
+        ToggleKeyHandlers.onClientTick();
     }
 
     public static void onClientStarted() {
@@ -31,13 +37,11 @@ public class ArtifactsClient {
             Artifacts.LOGGER.error("Detected broken mod state, skipping input registration");
             return;
         }
-        ToggleKeyHandler.register();
-        CloudInABottleInputHandler.register();
-        registerItemPropertyFunctions();
+        ToggleKeyHandlers.init();
     }
 
-    public static void registerItemPropertyFunctions() {
-        ItemProperties.register(
+    public static void registerItemPropertyFunctions(TriConsumer<Item, ResourceLocation, ClampedItemPropertyFunction> registration) {
+        registration.accept(
                 ModItems.UMBRELLA.value(),
                 Artifacts.id("blocking"),
                 (stack, level, entity, i) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0

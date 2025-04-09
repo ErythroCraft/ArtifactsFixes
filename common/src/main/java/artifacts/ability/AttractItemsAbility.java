@@ -6,7 +6,6 @@ import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.architectury.event.EventResult;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,11 +29,10 @@ public record AttractItemsAbility(Value<Boolean> enabled) implements ArtifactAbi
     );
 
     @SuppressWarnings("unused")
-    public static EventResult onItemToss(Player player, ItemEntity entity) {
+    public static void onItemToss(Player player, ItemEntity entity) {
         if (AbilityHelper.hasAbilityActive(ModAbilities.ATTRACT_ITEMS.value(), player, true)) {
             AbilityHelper.addCooldown(ModAbilities.ATTRACT_ITEMS.value(), player, 5 * 20);
         }
-        return EventResult.pass();
     }
     
     @Override

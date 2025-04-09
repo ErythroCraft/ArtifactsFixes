@@ -6,7 +6,6 @@ import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
 import be.florens.expandability.api.EventResult;
-import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -14,11 +13,7 @@ import net.minecraft.world.level.material.FluidState;
 
 public class SwimmingHooks {
 
-    public static void register() {
-        TickEvent.PLAYER_PRE.register(SwimmingHooks::onPlayerTick);
-    }
-
-    private static void onPlayerTick(Player player) {
+    public static void onPlayerTick(Player player) {
         SwimData swimData = PlatformServices.platformHelper.getSwimData(player);
         if (swimData != null) {
             if (player.isInWater() || player.isInLava() || player.fallDistance > 6) {

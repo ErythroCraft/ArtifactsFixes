@@ -23,6 +23,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
@@ -48,7 +49,8 @@ public class ArtifactsNeoForge {
         modBus.addListener(this::createRegistries);
         modBus.addListener(NeoForgeNetworkHandler::registerPayloadHandlers);
         modBus.addListener((FMLCommonSetupEvent event) -> Artifacts.onCommonSetup());
-        NeoForge.EVENT_BUS.addListener((ServerStartingEvent event) -> Artifacts.onServerStarting());
+        NeoForge.EVENT_BUS.addListener((ServerStartingEvent event) -> Artifacts.onServerStarting(event.getServer()));
+        NeoForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> Artifacts.onServerStopping());
         NeoForge.EVENT_BUS.addListener(this::onPlayerLoggedIn);
         modBus.addListener((EntityAttributeCreationEvent event) -> ModEntityTypes.registerMobAttributes(event::put));
 

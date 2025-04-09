@@ -7,20 +7,28 @@ import artifacts.network.ToggleArtifactPacket;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModKeyMappings;
-import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class ToggleKeyHandler {
+public class ToggleKeyHandlers {
 
     private static final Map<ArtifactAbility.Type<?>, KeyMapping> TOGGLE_KEY_MAPPINGS = new HashMap<>();
+    private static final List<ToggleInputHandler> INPUT_HANDLERS = new ArrayList<>();
 
-    public static void register() {
+    public static void init() {
         addToggleInputHandler(ModAbilities.NIGHT_VISION.value(), ModKeyMappings.TOGGLE_NIGHT_VISION_GOGGLES);
         addToggleInputHandler(ModAbilities.ATTRACT_ITEMS.value(), ModKeyMappings.TOGGLE_UNIVERSAL_ATTRACTOR);
+    }
+
+    public static void onClientTick() {
+        for (ToggleInputHandler inputHandler : INPUT_HANDLERS) {
+            inputHandler.onClientTick();
+        }
     }
 
     public static KeyMapping getToggleKey(ArtifactAbility.Type<?> ability) {
@@ -30,7 +38,7 @@ public class ToggleKeyHandler {
     private static void addToggleInputHandler(ArtifactAbility.Type<?> ability, KeyMapping toggleKey) {
         TOGGLE_KEY_MAPPINGS.put(ability, toggleKey);
         ToggleInputHandler handler = new ToggleInputHandler(ability);
-        ClientTickEvent.CLIENT_PRE.register(instance -> handler.onClientTick());
+        INPUT_HANDLERS.add(handler);
     }
 
     private static class ToggleInputHandler {

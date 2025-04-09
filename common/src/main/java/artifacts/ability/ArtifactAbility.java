@@ -2,7 +2,7 @@ package artifacts.ability;
 
 import artifacts.Artifacts;
 import artifacts.ArtifactsClient;
-import artifacts.client.ToggleKeyHandler;
+import artifacts.client.ToggleKeyHandlers;
 import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
 import artifacts.util.ModCodecs;
@@ -57,7 +57,7 @@ public interface ArtifactAbility {
     }
 
     default void addToggleKeyTooltip(List<MutableComponent> tooltip) {
-        KeyMapping key = ToggleKeyHandler.getToggleKey(this.getType());
+        KeyMapping key = ToggleKeyHandlers.getToggleKey(this.getType());
         Player player = null;
         // noinspection ConstantValue
         if (Minecraft.getInstance() != null) {

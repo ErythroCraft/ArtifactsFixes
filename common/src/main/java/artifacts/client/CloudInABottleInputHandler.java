@@ -5,7 +5,6 @@ import artifacts.network.DoubleJumpPacket;
 import artifacts.network.NetworkHandler;
 import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
-import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
@@ -14,11 +13,7 @@ public class CloudInABottleInputHandler {
     private static boolean canDoubleJump;
     private static boolean hasReleasedJumpKey;
 
-    public static void register() {
-        ClientTickEvent.CLIENT_POST.register(CloudInABottleInputHandler::onClientTick);
-    }
-
-    private static void onClientTick(Minecraft instance) {
+    public static void onClientTick(Minecraft instance) {
         LocalPlayer player = instance.player;
         // noinspection ConstantValue
         if (player != null && player.input != null) {

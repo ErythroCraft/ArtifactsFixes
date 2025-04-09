@@ -1,9 +1,10 @@
 package artifacts.registry;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+
+import java.util.function.Consumer;
 
 public class ModKeyMappings {
 
@@ -22,9 +23,9 @@ public class ModKeyMappings {
         return Minecraft.getInstance().options.keySprint;
     }
 
-    public static void register() {
-        KeyMappingRegistry.register(ACTIVATE_HELIUM_FLAMINGO);
-        KeyMappingRegistry.register(TOGGLE_NIGHT_VISION_GOGGLES);
-        KeyMappingRegistry.register(TOGGLE_UNIVERSAL_ATTRACTOR);
+    public static void register(Consumer<KeyMapping> registration) {
+        registration.accept(ACTIVATE_HELIUM_FLAMINGO);
+        registration.accept(TOGGLE_NIGHT_VISION_GOGGLES);
+        registration.accept(TOGGLE_UNIVERSAL_ATTRACTOR);
     }
 }

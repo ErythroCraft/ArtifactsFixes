@@ -3,12 +3,12 @@ package artifacts.event;
 import artifacts.Artifacts;
 import artifacts.ability.ApplyCooldownAfterDamageAbility;
 import artifacts.ability.ArtifactAbility;
-import artifacts.ability.AttractItemsAbility;
 import artifacts.ability.SwimInAirAbility;
 import artifacts.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
 import artifacts.ability.mobeffect.AttacksInflictMobEffectAbility;
 import artifacts.ability.retaliation.RetaliationAbility;
 import artifacts.attribute.DynamicAttributeModifier;
+import artifacts.component.SwimmingHooks;
 import artifacts.extensions.ability.LivingEntityExtensions;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.item.UmbrellaItem;
@@ -19,9 +19,6 @@ import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.AbilityHelper;
 import artifacts.util.DamageSourceHelper;
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.EntityEvent;
-import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -51,17 +48,10 @@ import java.util.function.Predicate;
 
 public class ArtifactHooks {
 
-    public static void register() {
-        PlayerEvent.DROP_ITEM.register(AttractItemsAbility::onItemToss);
-        EntityEvent.ADD.register((entity, level) -> {
-            onEntityJoinWorld(entity);
-            return EventResult.pass();
-        });
-    }
-
     public static void livingUpdate(LivingEntity entity) {
         if (entity instanceof Player player) {
             SwimInAirAbility.onHeliumFlamingoTick(player);
+            SwimmingHooks.onPlayerTick(player);
         }
         onItemTick(entity);
         DynamicAttributeModifier.tickModifiers(entity);
@@ -143,7 +133,7 @@ public class ArtifactHooks {
         AbilityHelper.forEach(type, entity, (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource), true);
     }
 
-    private static void onEntityJoinWorld(Entity entity) {
+    public static void onEntityAdded(Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             refreshTickingAbilities(livingEntity);
         }
