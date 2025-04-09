@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "plugin": "artifacts.fabric.ArtifactsMixinPlugin",
   "mixins": [
+    "PlayerListMixin",
     "ability.LivingEntitiesMixin",
     "ability.LivingEntityMixin",
     "ability.scarecreepers.HurtByTargetGoalMixin",

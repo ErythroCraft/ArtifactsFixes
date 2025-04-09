@@ -6,10 +6,13 @@ import artifacts.fabric.network.FabricNetworkHandler;
 import artifacts.fabric.registry.ModFeaturesFabric;
 import artifacts.fabric.registry.ModLootTablesFabric;
 import artifacts.registry.ModAbilities;
+import artifacts.registry.ModEntityTypes;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 
 public class ArtifactsFabric implements ModInitializer {
 
@@ -18,12 +21,15 @@ public class ArtifactsFabric implements ModInitializer {
         Artifacts.initConfigs();
         createRegistries();
         Artifacts.setup();
+        Artifacts.onCommonSetup();
         SwimEventsFabric.register();
         ModFeaturesFabric.register();
         FabricNetworkHandler.registerClientboundPayloads();
         FabricNetworkHandler.registerServerboundPayloads();
         FabricNetworkHandler.registerServerboundReceivers();
+        ModEntityTypes.registerMobAttributes(FabricDefaultAttributeRegistry::register);
 
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> Artifacts.onServerStarting());
         LootTableEvents.MODIFY.register((key, builder, source, registries) -> ModLootTablesFabric.onLootTableLoad(key, builder, source));
     }
 

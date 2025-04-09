@@ -30,7 +30,7 @@ public class Language extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        Artifacts.setupConfigs();
+        Artifacts.CONFIG.setup();
 
         addMiscTranslations();
         addAbilities();

@@ -3,19 +3,16 @@ package artifacts;
 import artifacts.component.SwimEvents;
 import artifacts.config.ConfigManager;
 import artifacts.config.ModConfig;
-import artifacts.entity.MimicEntity;
 import artifacts.event.ArtifactHooks;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.integration.equipment.VanillaEquipmentIntegration;
 import artifacts.network.NetworkHandler;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.*;
-import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.event.events.common.PlayerEvent;
-import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,13 +52,6 @@ public class Artifacts {
         ModFeatures.FEATURES.register();
         ModAbilities.ABILITIES.register();
 
-        EntityAttributeRegistry.register(ModEntityTypes.MIMIC, MimicEntity::createMobAttributes);
-
-        LifecycleEvent.SETUP.register(Artifacts::setupConfigs);
-
-        LifecycleEvent.SERVER_STARTING.register(server -> CONFIG.configs.forEach(ConfigManager::readValuesFromConfig));
-        PlayerEvent.PLAYER_JOIN.register(Artifacts.CONFIG.items::sendToClient);
-
         SwimEvents.register();
         ArtifactHooks.register();
     }
@@ -70,15 +60,25 @@ public class Artifacts {
         CONFIG = new ModConfig();
     }
 
-    public static void setupConfigs() {
-        CONFIG.setup();
-    }
-
     public static void setupIntegrations() {
         PlatformServices.platformHelper.setupIntegrations();
 
         EquipmentIntegrationUtils.registerIntegration(new VanillaEquipmentIntegration());
 
         EquipmentIntegrationUtils.setupIntegrations();
+    }
+
+    public static void onServerStarting() {
+        for (ConfigManager config : CONFIG.configs) {
+            config.readValuesFromConfig();
+        }
+    }
+
+    public static void onCommonSetup() {
+        CONFIG.setup();
+    }
+
+    public static void onPlayerJoin(ServerPlayer player) {
+        CONFIG.items.sendToClient(player);
     }
 }

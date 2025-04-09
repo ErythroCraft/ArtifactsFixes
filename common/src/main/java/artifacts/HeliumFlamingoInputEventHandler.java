@@ -5,7 +5,6 @@ import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModKeyMappings;
 import artifacts.util.AbilityHelper;
-import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -16,11 +15,7 @@ public class HeliumFlamingoInputEventHandler {
     private static boolean wasSprintingOnGround;
     private static boolean hasTouchedGround;
 
-    public static void register() {
-        ClientTickEvent.CLIENT_POST.register(HeliumFlamingoInputEventHandler::onClientTick);
-    }
-
-    private static void onClientTick(Minecraft instance) {
+    public static void onClientTick(Minecraft instance) {
         LocalPlayer player = instance.player;
         // noinspection ConstantValue
         if (player != null && player.input != null) {

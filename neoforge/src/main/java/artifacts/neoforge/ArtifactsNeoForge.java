@@ -10,12 +10,19 @@ import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
+import artifacts.registry.ModEntityTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
@@ -40,6 +47,10 @@ public class ArtifactsNeoForge {
         modBus.addListener(ArtifactsData::gatherData);
         modBus.addListener(this::createRegistries);
         modBus.addListener(NeoForgeNetworkHandler::registerPayloadHandlers);
+        modBus.addListener((FMLCommonSetupEvent event) -> Artifacts.onCommonSetup());
+        NeoForge.EVENT_BUS.addListener((ServerStartingEvent event) -> Artifacts.onServerStarting());
+        NeoForge.EVENT_BUS.addListener(this::onPlayerLoggedIn);
+        modBus.addListener((EntityAttributeCreationEvent event) -> ModEntityTypes.registerMobAttributes(event::put));
 
         registerConfig();
         ArtifactEventsNeoForge.register();
@@ -54,6 +65,12 @@ public class ArtifactsNeoForge {
                     IConfigScreenFactory.class,
                     () -> (client, parent) -> new ArtifactsConfigScreen(parent).build()
             );
+        }
+    }
+
+    private void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            Artifacts.onPlayerJoin(player);
         }
     }
 
