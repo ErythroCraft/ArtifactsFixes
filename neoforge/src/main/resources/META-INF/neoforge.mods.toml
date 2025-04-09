@@ -30,9 +30,3 @@ config="mixins.artifacts.neoforge.json"
     versionRange = "1.21.1"
     ordering = "NONE"
     side = "BOTH"
-
-[[dependencies.artifacts]]
-    modId = "architectury"
-    type="required"
-    ordering="NONE"
-    side="BOTH"
