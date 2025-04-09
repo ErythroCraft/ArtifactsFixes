@@ -12,10 +12,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FluidState;
 
-public class SwimEvents {
+public class SwimmingHooks {
 
     public static void register() {
-        TickEvent.PLAYER_PRE.register(SwimEvents::onPlayerTick);
+        TickEvent.PLAYER_PRE.register(SwimmingHooks::onPlayerTick);
     }
 
     private static void onPlayerTick(Player player) {

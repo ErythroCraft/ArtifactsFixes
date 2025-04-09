@@ -26,18 +26,18 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.util.List;
 
-public class ArtifactEventsNeoForge {
+public class ArtifactHooksNeoForge {
 
     public static void register() {
-        NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ArtifactEventsNeoForge::onLivingDamage);
-        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onLivingUpdate);
-        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onDrinkingHatItemUse);
-        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onGoldenHookExperienceDrop);
-        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onKittySlippersChangeTarget);
-        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onDiggingClawsHarvestCheck);
-        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onPlayerTick);
-        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::onBlockDrops);
-        NeoForge.EVENT_BUS.addListener(ArtifactEventsNeoForge::addAttributeTooltips);
+        NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ArtifactHooksNeoForge::onLivingDamage);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onLivingUpdate);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onDrinkingHatItemUse);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onGoldenHookExperienceDrop);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onKittySlippersChangeTarget);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onDiggingClawsHarvestCheck);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onBlockDrops);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::addAttributeTooltips);
     }
 
     private static void onPlayerTick(PlayerTickEvent.Post event) {

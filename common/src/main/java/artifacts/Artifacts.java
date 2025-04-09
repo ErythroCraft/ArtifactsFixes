@@ -1,6 +1,6 @@
 package artifacts;
 
-import artifacts.component.SwimEvents;
+import artifacts.component.SwimmingHooks;
 import artifacts.config.ConfigManager;
 import artifacts.config.ModConfig;
 import artifacts.event.ArtifactHooks;
@@ -52,7 +52,7 @@ public class Artifacts {
         ModFeatures.FEATURES.register();
         ModAbilities.ABILITIES.register();
 
-        SwimEvents.register();
+        SwimmingHooks.register();
         ArtifactHooks.register();
     }
 

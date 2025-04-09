@@ -3,8 +3,8 @@ package artifacts.neoforge;
 import artifacts.Artifacts;
 import artifacts.config.screen.ArtifactsConfigScreen;
 import artifacts.integration.ModCompat;
-import artifacts.neoforge.event.ArtifactEventsNeoForge;
-import artifacts.neoforge.event.SwimEventsNeoForge;
+import artifacts.neoforge.event.ArtifactHooksNeoForge;
+import artifacts.neoforge.event.SwimmingHooksNeoForge;
 import artifacts.neoforge.network.NeoForgeNetworkHandler;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
@@ -53,8 +53,8 @@ public class ArtifactsNeoForge {
         modBus.addListener((EntityAttributeCreationEvent event) -> ModEntityTypes.registerMobAttributes(event::put));
 
         registerConfig();
-        ArtifactEventsNeoForge.register();
-        SwimEventsNeoForge.register();
+        ArtifactHooksNeoForge.register();
+        SwimmingHooksNeoForge.register();
 
         ArtifactsNeoForge.modBus = null;
     }
