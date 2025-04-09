@@ -1,6 +1,5 @@
 package artifacts.neoforge.event;
 
-import artifacts.ability.AttractItemsAbility;
 import artifacts.ability.UpgradeToolTierAbility;
 import artifacts.component.AbilityToggles;
 import artifacts.event.ArtifactHooks;
@@ -16,7 +15,6 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.client.event.AddAttributeTooltipsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
@@ -42,7 +40,6 @@ public class ArtifactHooksNeoForge {
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onBlockDrops);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::addAttributeTooltips);
-        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onItemToss);
     }
 
     private static void onEntityAdded(EntityJoinLevelEvent event) {
@@ -113,9 +110,5 @@ public class ArtifactHooksNeoForge {
 
     private static void addAttributeTooltips(AddAttributeTooltipsEvent event) {
         TooltipHelper.addAttributeTooltips(event::addTooltipLines, event.getStack());
-    }
-
-    private static void onItemToss(ItemTossEvent event) {
-        AttractItemsAbility.onItemToss(event.getPlayer(), event.getEntity());
     }
 }

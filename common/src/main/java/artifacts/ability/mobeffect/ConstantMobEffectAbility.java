@@ -36,12 +36,17 @@ public abstract class ConstantMobEffectAbility implements MobEffectAbility {
     }
 
     @Override
+    public boolean shouldShowIcon() {
+        return true;
+    }
+
+    @Override
     public int getDuration(LivingEntity entity) {
         return MobEffectAbility.super.getDuration(entity) + getAdditionalDuration(entity) + 19;
     }
 
     public Value<Integer> duration() {
-        return Value.of(1);
+        return Value.of(10);
     }
 
     protected int getAdditionalDuration(LivingEntity target) {

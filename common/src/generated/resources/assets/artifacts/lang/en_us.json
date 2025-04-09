@@ -322,6 +322,7 @@
   "artifacts.tooltip.when_hurt.is_fire": "When hurt by Fire:",
   "curios.identifier.feet": "Feet",
   "curios.modifiers.feet": "When on feet:",
+  "effect.artifacts.magnetism": "Magnetism",
   "entity.artifacts.mimic": "Mimic",
   "generic.attack_burning_duration": "Attack Burning Duration",
   "generic.drinking_speed": "Drinking Speed",

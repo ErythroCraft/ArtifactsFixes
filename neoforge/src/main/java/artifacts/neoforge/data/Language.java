@@ -40,6 +40,7 @@ public class Language extends LanguageProvider {
         addItems();
         addTags();
         addTooltips();
+        addEffects();
         Advancements.TRANSLATIONS.forEach(this::add);
     }
 
@@ -271,6 +272,10 @@ public class Language extends LanguageProvider {
         // TODO use holder.unwrapKey
         // noinspection ConstantConditions
         add(key.toString(), ModAbilities.getRegistry().getKey(type.value()), s[s.length - 1]);
+    }
+
+    private void addEffects() {
+        addEffect(ModMobEffects.MAGNETISM::value, "Magnetism");
     }
 
     private void tooltip(String key, String value) {

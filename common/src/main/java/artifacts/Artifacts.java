@@ -47,6 +47,7 @@ public class Artifacts {
 
         NetworkHandler.initPayloads();
 
+        ModMobEffects.MOB_EFFECTS.register();
         ModDataComponents.DATA_COMPONENT_TYPES.register();
         ModSoundEvents.SOUND_EVENTS.register();
         ModLootConditions.LOOT_CONDITION_TYPES.register();

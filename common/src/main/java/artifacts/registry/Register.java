@@ -32,7 +32,7 @@ public abstract class Register<R> implements Iterable<R> {
     public <T extends R> RegistryHolder<R, T> register(String name, Supplier<T> supplier) {
         RegistryHolder<R, T> holder = new RegistryHolder<>(Artifacts.key(registry, name), supplier);
         entries.add(holder);
-        if (getRegistry().equals(Registries.ATTRIBUTE)) {
+        if (getRegistry().equals(Registries.ATTRIBUTE) || getRegistry().equals(Registries.MOB_EFFECT)) {
             bind(holder);
         }
         return holder;
@@ -45,7 +45,7 @@ public abstract class Register<R> implements Iterable<R> {
     }
 
     public void register() {
-        if (!getRegistry().equals(Registries.ATTRIBUTE)) {
+        if (!getRegistry().equals(Registries.ATTRIBUTE) && !getRegistry().equals(Registries.MOB_EFFECT)) {
             for (RegistryHolder<R, ?> holder : getEntries()) {
                 bind(holder);
             }

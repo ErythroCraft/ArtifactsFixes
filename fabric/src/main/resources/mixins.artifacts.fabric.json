@@ -8,7 +8,6 @@
     "PlayerListMixin",
     "ability.LivingEntitiesMixin",
     "ability.LivingEntityMixin",
-    "ability.attractitems.PlayerMixin",
     "ability.scarecreepers.HurtByTargetGoalMixin",
     "ability.scarecreepers.NearestAttackableTargetGoalMixin",
     "ability.sinking.PlayerMixin",
