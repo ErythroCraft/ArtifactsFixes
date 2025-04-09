@@ -2,12 +2,12 @@ package artifacts.client;
 
 import artifacts.ability.ArtifactAbility;
 import artifacts.component.AbilityToggles;
+import artifacts.network.NetworkHandler;
 import artifacts.network.ToggleArtifactPacket;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
 import artifacts.registry.ModKeyMappings;
 import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 
@@ -48,7 +48,7 @@ public class ToggleKeyHandler {
                 AbilityToggles abilityToggles = PlatformServices.platformHelper.getAbilityToggles(Minecraft.getInstance().player);
                 if (abilityToggles != null) {
                     abilityToggles.toggle(ability, Minecraft.getInstance().player);
-                    NetworkManager.sendToServer(new ToggleArtifactPacket(ability));
+                    NetworkHandler.sendToServer(new ToggleArtifactPacket(ability));
                 }
             }
             wasToggleKeyDown = isToggleKeyDown;

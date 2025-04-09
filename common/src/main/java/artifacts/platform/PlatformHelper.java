@@ -46,8 +46,6 @@ public interface PlatformHelper {
 
     boolean isModLoaded(String modid);
 
-    boolean isDedicatedServer();
-
     <R> Register<R> createRegister(ResourceKey<Registry<R>> registry);
 
     SpawnEggItem createMimicSpawnEgg(Item.Properties properties);

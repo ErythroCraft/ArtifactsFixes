@@ -3,9 +3,9 @@ package artifacts.config;
 import artifacts.ability.UpgradeToolTierAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.network.NetworkHandler;
 import artifacts.network.UpdateItemConfigPacket;
 import artifacts.registry.ModItems;
-import dev.architectury.networking.NetworkManager;
 import dev.architectury.utils.GameInstance;
 import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
@@ -248,10 +248,10 @@ public class ItemConfigs extends ConfigManager {
     }
 
     private void sendToClients(MinecraftServer server) {
-        getValues().forEach((key, value) -> NetworkManager.sendToPlayers(server.getPlayerList().getPlayers(), new UpdateItemConfigPacket(value)));
+        getValues().forEach((key, value) -> NetworkHandler.sendToPlayers(server.getPlayerList().getPlayers(), new UpdateItemConfigPacket(value)));
     }
 
     public void sendToClient(ServerPlayer player) {
-        getValues().forEach((key, value) -> NetworkManager.sendToPlayer(player, new UpdateItemConfigPacket(value)));
+        getValues().forEach((key, value) -> NetworkHandler.sendToPlayer(player, new UpdateItemConfigPacket(value)));
     }
 }

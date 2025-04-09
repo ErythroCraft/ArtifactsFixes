@@ -2,7 +2,6 @@ package artifacts.network;
 
 import artifacts.Artifacts;
 import artifacts.config.value.Value;
-import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -25,7 +24,7 @@ public record UpdateItemConfigPacket(Value.ConfigValue<?> value) implements Cust
         return (Value.ConfigValue<T>) value;
     }
 
-    void apply(@SuppressWarnings("unused") NetworkManager.PacketContext context) {
+    void apply(@SuppressWarnings("unused") NetworkHandler.PayloadContext context) {
         apply(value.getId(), value);
     }
 

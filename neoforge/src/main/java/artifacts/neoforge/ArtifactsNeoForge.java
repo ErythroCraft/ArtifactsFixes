@@ -5,6 +5,7 @@ import artifacts.config.screen.ArtifactsConfigScreen;
 import artifacts.integration.ModCompat;
 import artifacts.neoforge.event.ArtifactEventsNeoForge;
 import artifacts.neoforge.event.SwimEventsNeoForge;
+import artifacts.neoforge.network.NeoForgeNetworkHandler;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
 import artifacts.platform.PlatformServices;
@@ -38,6 +39,7 @@ public class ArtifactsNeoForge {
 
         modBus.addListener(ArtifactsData::gatherData);
         modBus.addListener(this::createRegistries);
+        modBus.addListener(NeoForgeNetworkHandler::registerPayloadHandlers);
 
         registerConfig();
         ArtifactEventsNeoForge.register();

@@ -1,12 +1,12 @@
 package artifacts.component;
 
 import artifacts.ability.ArtifactAbility;
+import artifacts.network.NetworkHandler;
 import artifacts.network.UpdateArtifactTogglesPacket;
 import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -65,6 +65,6 @@ public class AbilityToggles {
     }
 
     public void sendToClient(ServerPlayer player) {
-        NetworkManager.sendToPlayer(player, new UpdateArtifactTogglesPacket(List.copyOf(toggles)));
+        NetworkHandler.sendToPlayer(player, new UpdateArtifactTogglesPacket(List.copyOf(toggles)));
     }
 }

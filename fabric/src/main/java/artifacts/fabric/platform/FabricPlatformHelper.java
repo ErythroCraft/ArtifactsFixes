@@ -8,7 +8,6 @@ import artifacts.fabric.registry.ModComponents;
 import artifacts.platform.PlatformHelper;
 import artifacts.registry.ModEntityTypes;
 import artifacts.registry.Register;
-import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Holder;
@@ -76,11 +75,6 @@ public class FabricPlatformHelper implements PlatformHelper {
     @Override
     public boolean isModLoaded(String modid) {
         return FabricLoader.getInstance().isModLoaded(modid);
-    }
-
-    @Override
-    public boolean isDedicatedServer() {
-        return FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER;
     }
 
     @Override

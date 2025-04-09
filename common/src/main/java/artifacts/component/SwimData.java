@@ -1,8 +1,8 @@
 package artifacts.component;
 
 import artifacts.ability.SwimInAirAbility;
+import artifacts.network.NetworkHandler;
 import artifacts.network.SwimPacket;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SwimData {
@@ -43,6 +43,6 @@ public class SwimData {
     }
 
     public void syncSwimming() {
-        NetworkManager.sendToServer(new SwimPacket(shouldSwim));
+        NetworkHandler.sendToServer(new SwimPacket(shouldSwim));
     }
 }

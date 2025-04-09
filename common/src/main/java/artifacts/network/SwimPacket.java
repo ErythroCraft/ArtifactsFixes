@@ -3,7 +3,6 @@ package artifacts.network;
 import artifacts.Artifacts;
 import artifacts.component.SwimData;
 import artifacts.platform.PlatformServices;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -20,8 +19,8 @@ public record SwimPacket(boolean shouldSwim) implements CustomPacketPayload {
             SwimPacket::new
     );
 
-    void apply(NetworkManager.PacketContext context) {
-        Player player = context.getPlayer();
+    void apply(NetworkHandler.PayloadContext context) {
+        Player player = context.player();
         if (player != null) {
             context.queue(() -> {
                 SwimData swimData = PlatformServices.platformHelper.getSwimData(player);

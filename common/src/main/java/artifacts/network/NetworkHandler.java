@@ -1,33 +1,71 @@
 package artifacts.network;
 
-import artifacts.platform.PlatformServices;
-import dev.architectury.networking.NetworkManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class NetworkHandler {
 
-    public static void register() {
-        registerS2C(ChorusTotemUsedPacket.TYPE, ChorusTotemUsedPacket.CODEC, ChorusTotemUsedPacket::apply);
-        registerS2C(PlaySoundAtPlayerPacket.TYPE, PlaySoundAtPlayerPacket.CODEC, PlaySoundAtPlayerPacket::apply);
-        registerS2C(UpdateArtifactTogglesPacket.TYPE, UpdateArtifactTogglesPacket.CODEC, UpdateArtifactTogglesPacket::apply);
-        registerS2C(UpdateItemConfigPacket.TYPE, UpdateItemConfigPacket.CODEC, UpdateItemConfigPacket::apply);
+    public static final List<PayloadHandler<?>> SERVERBOUND_HANDLERS = new ArrayList<>();
+    public static final List<PayloadHandler<?>> CLIENTBOUND_HANDLERS = new ArrayList<>();
 
-        registerC2S(DoubleJumpPacket.TYPE, DoubleJumpPacket.CODEC, DoubleJumpPacket::apply);
-        registerC2S(SwimPacket.TYPE, SwimPacket.CODEC, SwimPacket::apply);
-        registerC2S(ToggleArtifactPacket.TYPE, ToggleArtifactPacket.CODEC, ToggleArtifactPacket::apply);
+    public static void initPayloads() {
+        registerClientbound(ChorusTotemUsedPacket.TYPE, ChorusTotemUsedPacket.CODEC, ChorusTotemUsedPacket::apply);
+        registerClientbound(PlaySoundAtPlayerPacket.TYPE, PlaySoundAtPlayerPacket.CODEC, PlaySoundAtPlayerPacket::apply);
+        registerClientbound(UpdateArtifactTogglesPacket.TYPE, UpdateArtifactTogglesPacket.CODEC, UpdateArtifactTogglesPacket::apply);
+        registerClientbound(UpdateItemConfigPacket.TYPE, UpdateItemConfigPacket.CODEC, UpdateItemConfigPacket::apply);
+
+        registerServerbound(DoubleJumpPacket.TYPE, DoubleJumpPacket.CODEC, DoubleJumpPacket::apply);
+        registerServerbound(SwimPacket.TYPE, SwimPacket.CODEC, SwimPacket::apply);
+        registerServerbound(ToggleArtifactPacket.TYPE, ToggleArtifactPacket.CODEC, ToggleArtifactPacket::apply);
     }
 
-    private static <T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.NetworkReceiver<T> receiver) {
-        NetworkManager.registerReceiver(NetworkManager.c2s(), type, codec, receiver);
+    private static <T extends CustomPacketPayload> void registerServerbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Receiver<T> receiver) {
+        SERVERBOUND_HANDLERS.add(new PayloadHandler<>(type, codec, receiver));
     }
 
-    private static <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.NetworkReceiver<T> receiver) {
-        if (PlatformServices.platformHelper.isDedicatedServer()) {
-            NetworkManager.registerS2CPayloadType(type, codec);
-        } else {
-            NetworkManager.registerReceiver(NetworkManager.s2c(), type, codec, receiver);
+    private static <T extends CustomPacketPayload> void registerClientbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Receiver<T> receiver) {
+        CLIENTBOUND_HANDLERS.add(new PayloadHandler<>(type, codec, receiver));
+    }
+
+    public static void sendToServer(CustomPacketPayload payload) {
+        ClientPacketListener listener = Objects.requireNonNull(Minecraft.getInstance().getConnection());
+        listener.send(new ServerboundCustomPayloadPacket(payload));
+    }
+
+    public static void sendToPlayers(Iterable<ServerPlayer> players, CustomPacketPayload payload) {
+        for (ServerPlayer player : players) {
+            sendToPlayer(player, payload);
         }
+    }
+
+    public static void sendToPlayer(ServerPlayer player, CustomPacketPayload payload) {
+        player.connection.send(new ClientboundCustomPayloadPacket(payload));
+    }
+
+    public record PayloadHandler<T extends CustomPacketPayload>(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Receiver<T> receiver) {
+
+    }
+
+    public interface PayloadContext {
+
+        Player player();
+
+        void queue(Runnable runnable);
+    }
+
+    @FunctionalInterface
+    public interface Receiver<T extends CustomPacketPayload> {
+        void receive(T value, PayloadContext context);
     }
 }

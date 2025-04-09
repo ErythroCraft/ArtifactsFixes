@@ -41,7 +41,7 @@ public class Artifacts {
     public static void setup() {
         setupIntegrations();
 
-        NetworkHandler.register();
+        NetworkHandler.initPayloads();
 
         ModDataComponents.DATA_COMPONENT_TYPES.register();
         ModSoundEvents.SOUND_EVENTS.register();

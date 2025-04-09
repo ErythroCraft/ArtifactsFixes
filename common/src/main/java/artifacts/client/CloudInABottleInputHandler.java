@@ -2,10 +2,10 @@ package artifacts.client;
 
 import artifacts.ability.DoubleJumpAbility;
 import artifacts.network.DoubleJumpPacket;
+import artifacts.network.NetworkHandler;
 import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
 import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
@@ -35,7 +35,7 @@ public class CloudInABottleInputHandler {
         } else if (!player.getAbilities().flying && canDoubleJump && hasReleasedJumpKey) {
             canDoubleJump = false;
             if (AbilityHelper.hasAbilityActive(ModAbilities.DOUBLE_JUMP.value(), player)) {
-                NetworkManager.sendToServer(new DoubleJumpPacket());
+                NetworkHandler.sendToServer(new DoubleJumpPacket());
                 DoubleJumpAbility.jump(player);
             }
         }

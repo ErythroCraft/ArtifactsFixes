@@ -1,7 +1,6 @@
 package artifacts.network;
 
 import artifacts.Artifacts;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -31,12 +30,12 @@ public record PlaySoundAtPlayerPacket(Holder<SoundEvent> soundEvent, float volum
 
     public static void sendSound(ServerPlayer player, Holder<SoundEvent> soundEvent, float volume, float pitch) {
         long seed = player.level().random.nextLong();
-        NetworkManager.sendToPlayer(player, new PlaySoundAtPlayerPacket(soundEvent, volume, pitch, seed));
+        NetworkHandler.sendToPlayer(player, new PlaySoundAtPlayerPacket(soundEvent, volume, pitch, seed));
         player.level().playSeededSound(player, player, soundEvent, SoundSource.PLAYERS, volume, pitch, seed);
     }
 
-    void apply(NetworkManager.PacketContext context) {
-        Player player = context.getPlayer();
+    void apply(NetworkHandler.PayloadContext context) {
+        Player player = context.player();
         player.level().playSeededSound(player, player, soundEvent, SoundSource.PLAYERS, volume, pitch, seed);
     }
 

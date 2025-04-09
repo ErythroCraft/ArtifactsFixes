@@ -4,7 +4,6 @@ import artifacts.Artifacts;
 import artifacts.ability.DoubleJumpAbility;
 import artifacts.registry.ModAbilities;
 import artifacts.util.AbilityHelper;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,8 +17,8 @@ public record DoubleJumpPacket() implements CustomPacketPayload {
 
     public static final StreamCodec<FriendlyByteBuf, DoubleJumpPacket> CODEC = StreamCodec.unit(new DoubleJumpPacket());
 
-    void apply(NetworkManager.PacketContext context) {
-        if (context.getPlayer() instanceof ServerPlayer player && AbilityHelper.hasAbilityActive(ModAbilities.DOUBLE_JUMP.value(), player)) {
+    void apply(NetworkHandler.PayloadContext context) {
+        if (context.player() instanceof ServerPlayer player && AbilityHelper.hasAbilityActive(ModAbilities.DOUBLE_JUMP.value(), player)) {
             context.queue(() -> {
                 DoubleJumpAbility.jump(player);
 

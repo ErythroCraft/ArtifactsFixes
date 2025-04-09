@@ -2,6 +2,7 @@ package artifacts.fabric;
 
 import artifacts.Artifacts;
 import artifacts.fabric.event.SwimEventsFabric;
+import artifacts.fabric.network.FabricNetworkHandler;
 import artifacts.fabric.registry.ModFeaturesFabric;
 import artifacts.fabric.registry.ModLootTablesFabric;
 import artifacts.registry.ModAbilities;
@@ -19,6 +20,9 @@ public class ArtifactsFabric implements ModInitializer {
         Artifacts.setup();
         SwimEventsFabric.register();
         ModFeaturesFabric.register();
+        FabricNetworkHandler.registerClientboundPayloads();
+        FabricNetworkHandler.registerServerboundPayloads();
+        FabricNetworkHandler.registerServerboundReceivers();
 
         LootTableEvents.MODIFY.register((key, builder, source, registries) -> ModLootTablesFabric.onLootTableLoad(key, builder, source));
     }

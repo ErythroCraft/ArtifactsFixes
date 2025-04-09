@@ -5,7 +5,6 @@ import artifacts.ability.ArtifactAbility;
 import artifacts.component.AbilityToggles;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAbilities;
-import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -28,12 +27,12 @@ public record UpdateArtifactTogglesPacket(List<ArtifactAbility.Type<?>> toggles)
             UpdateArtifactTogglesPacket::new
     );
 
-    void apply(NetworkManager.PacketContext context) {
-        Player player = context.getPlayer();
+    void apply(NetworkHandler.PayloadContext context) {
+        Player player = context.player();
         if (player != null) {
             AbilityToggles abilityToggles = PlatformServices.platformHelper.getAbilityToggles(player);
             if (abilityToggles != null) {
-                abilityToggles.applyToggles(toggles, context.getPlayer());
+                abilityToggles.applyToggles(toggles, context.player());
             }
         }
     }

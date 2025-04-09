@@ -3,7 +3,6 @@ package artifacts.network;
 import artifacts.Artifacts;
 import artifacts.ability.TeleportOnDeathAbility;
 import artifacts.registry.ModItems;
-import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -19,14 +18,14 @@ public record ChorusTotemUsedPacket() implements CustomPacketPayload {
 
     public static final StreamCodec<FriendlyByteBuf, ChorusTotemUsedPacket> CODEC = StreamCodec.unit(new ChorusTotemUsedPacket());
 
-    void apply(NetworkManager.PacketContext context) {
-        Player player = context.getPlayer();
+    void apply(NetworkHandler.PayloadContext context) {
+        Player player = context.player();
         ItemStack totem = TeleportOnDeathAbility.findTotem(player);
         if (totem.isEmpty()) {
             totem = new ItemStack(ModItems.CHORUS_TOTEM.value());
         }
         Minecraft.getInstance().gameRenderer.displayItemActivation(totem);
-        player.level().playSound(context.getPlayer(), context.getPlayer(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 1, 1);
+        player.level().playSound(context.player(), context.player(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 1, 1);
     }
 
     @Override
