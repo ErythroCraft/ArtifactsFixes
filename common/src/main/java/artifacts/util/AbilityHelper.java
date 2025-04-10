@@ -122,16 +122,6 @@ public class AbilityHelper {
         return reduce(type, entity, skipItemsOnCooldown, init, (ability, d) -> Math.min(d, f.apply(ability)));
     }
 
-    public static void addCooldown(ArtifactAbility.Type<?> type, LivingEntity entity, int ticks) {
-        if (ticks > 0 && !entity.level().isClientSide() && entity instanceof Player player) {
-            EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
-                if (hasAbility(type, stack)) {
-                    player.getCooldowns().addCooldown(stack.getItem(), ticks);
-                }
-            });
-        }
-    }
-
     public static <A extends ArtifactAbility> void applyCooldowns(ArtifactAbility.Type<A> type, LivingEntity entity, Function<A, Integer> cooldown) {
         if (entity instanceof Player player && !player.level().isClientSide()) {
             forEach(type, entity, (ability, stack) -> {
