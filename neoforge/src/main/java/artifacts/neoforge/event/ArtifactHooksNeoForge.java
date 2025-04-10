@@ -4,7 +4,7 @@ import artifacts.ability.UpgradeToolTierAbility;
 import artifacts.component.AbilityToggles;
 import artifacts.event.ArtifactHooks;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.AbilityHelper;
 import artifacts.util.TooltipHelper;
@@ -77,7 +77,7 @@ public class ArtifactHooksNeoForge {
     private static void onKittySlippersChangeTarget(LivingChangeTargetEvent event) {
         LivingEntity target = event.getNewAboutToBeSetTarget();
         if (event.getEntity().getType().is(ModTags.CREEPERS)
-                && AbilityHelper.hasAbilityActive(ModAbilities.SCARE_CREEPERS.value(), target)
+                && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), target)
         ) {
             event.setCanceled(true);
         }
@@ -85,7 +85,7 @@ public class ArtifactHooksNeoForge {
 
     private static void onKittySlippersLivingUpdate(LivingEntity entity) {
         if (entity.getLastHurtByMob() != null
-                && AbilityHelper.hasAbilityActive(ModAbilities.SCARE_CREEPERS.value(), entity.getLastHurtByMob())
+                && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity.getLastHurtByMob())
                 && entity.getType().is(ModTags.CREEPERS)
         ) {
             entity.setLastHurtByMob(null);

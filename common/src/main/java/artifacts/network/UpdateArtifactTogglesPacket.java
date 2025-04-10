@@ -4,8 +4,9 @@ import artifacts.Artifacts;
 import artifacts.ability.ArtifactAbility;
 import artifacts.component.AbilityToggles;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAbilities;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -15,13 +16,17 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-public record UpdateArtifactTogglesPacket(List<ArtifactAbility.Type<?>> toggles) implements CustomPacketPayload {
+public record UpdateArtifactTogglesPacket(List<DataComponentType<? extends ArtifactAbility>> toggles) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<UpdateArtifactTogglesPacket> TYPE = new CustomPacketPayload.Type<>(Artifacts.id("update_artifact_toggles"));
 
+    @SuppressWarnings("unchecked")
     public static final StreamCodec<FriendlyByteBuf, UpdateArtifactTogglesPacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.<ByteBuf, ArtifactAbility.Type<?>>list().apply(
-                    ResourceLocation.STREAM_CODEC.map(id -> ModAbilities.getRegistry().get(id), type -> ModAbilities.getRegistry().getKey(type))
+            ByteBufCodecs.<ByteBuf, DataComponentType<? extends ArtifactAbility>>list().apply(
+                    ResourceLocation.STREAM_CODEC.map(
+                            resourceLocation -> (DataComponentType<? extends ArtifactAbility>) BuiltInRegistries.DATA_COMPONENT_TYPE.get(resourceLocation),
+                            BuiltInRegistries.DATA_COMPONENT_TYPE::getKey
+                    )
             ),
             UpdateArtifactTogglesPacket::toggles,
             UpdateArtifactTogglesPacket::new

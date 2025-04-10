@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.enderpearlscosthunger;
 
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -23,8 +23,8 @@ public abstract class EnderPearlItemMixin extends Item {
 
     @WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V"))
     private void shouldConsumeEnderPearl(ItemStack stack, int amount, LivingEntity entity, Operation<Void> operation) {
-        if (AbilityHelper.hasAbilityActive(ModAbilities.ENDER_PEARLS_COST_HUNGER.get(), entity) && entity instanceof Player player) {
-            int cost = AbilityHelper.minInt(ModAbilities.ENDER_PEARLS_COST_HUNGER.get(), player, 20, ability -> ability.cost().get(), false);
+        if (AbilityHelper.hasAbilityActive(ModDataComponents.ENDER_PEARLS_COST_HUNGER.get(), entity) && entity instanceof Player player) {
+            int cost = AbilityHelper.minInt(ModDataComponents.ENDER_PEARLS_COST_HUNGER.get(), player, 20, ability -> ability.cost().get(), false);
             if (player.getFoodData().getFoodLevel() >= cost) {
                 if (cost > 0 && !player.isCreative()) {
                     player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() - cost);
@@ -39,7 +39,7 @@ public abstract class EnderPearlItemMixin extends Item {
                             0.8F + entity.getRandom().nextFloat() * 0.4F
                     );
                 }
-                int cooldown = AbilityHelper.maxInt(ModAbilities.ENDER_PEARLS_COST_HUNGER.get(), player, ability -> ability.cooldown().get(), false);
+                int cooldown = AbilityHelper.maxInt(ModDataComponents.ENDER_PEARLS_COST_HUNGER.get(), player, ability -> ability.cooldown().get(), false);
                 if (!player.isCreative()) {
                     player.getCooldowns().addCooldown(this, cooldown * 20);
                 }

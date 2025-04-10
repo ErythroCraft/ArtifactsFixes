@@ -2,10 +2,10 @@ package artifacts.ability.mobeffect;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import artifacts.util.DamageSourceHelper;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,7 +30,7 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
             MobEffects.WITHER
     );
 
-    public static final MapCodec<AttacksInflictMobEffectAbility> CODEC = RecordCodecBuilder.mapCodec(
+    public static final Codec<AttacksInflictMobEffectAbility> CODEC = RecordCodecBuilder.create(
             instance -> MobEffectAbility.codecStartWithDuration(instance)
                     .and(ValueTypes.cooldownField().forGetter(AttacksInflictMobEffectAbility::cooldown))
                     .and(ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(AttacksInflictMobEffectAbility::chance))
@@ -54,7 +54,7 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
     public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
-            AbilityHelper.forEach(ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.get(), attacker, (ability, stack) -> {
+            AbilityHelper.forEach(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), attacker, (ability, stack) -> {
                 if (entity.getRandom().nextDouble() < ability.chance().get()) {
                     entity.addEffect(ability.createEffect(attacker), attacker);
                     if (attacker instanceof Player player) {
@@ -68,11 +68,6 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
     @Override
     public boolean isVisible() {
         return true;
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.value();
     }
 
     @Override

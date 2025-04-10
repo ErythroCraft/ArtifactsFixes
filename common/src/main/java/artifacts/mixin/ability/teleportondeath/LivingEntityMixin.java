@@ -1,11 +1,9 @@
 package artifacts.mixin.ability.teleportondeath;
 
-import artifacts.ability.ArtifactAbility;
 import artifacts.ability.TeleportOnDeathAbility;
 import artifacts.network.ChorusTotemUsedPacket;
 import artifacts.network.NetworkHandler;
-import artifacts.registry.ModAbilities;
-import artifacts.util.AbilityHelper;
+import artifacts.registry.ModDataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -32,12 +30,7 @@ public class LivingEntityMixin {
                 && entity.level() instanceof ServerLevel level
                 && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
         ) {
-            AbilityHelper.getAbilities(totem).stream()
-                    .filter(ability -> ability.getType() == ModAbilities.TELEPORT_ON_DEATH.value())
-                    .filter(ArtifactAbility::isEnabled)
-                    .map(ability -> (TeleportOnDeathAbility) ability)
-                    .findFirst()
-                    .ifPresent(ability -> {
+            if (totem.get(ModDataComponents.TELEPORT_ON_DEATH.get()) instanceof TeleportOnDeathAbility ability) {
                 if (ability.teleportationChance().get() > entity.getRandom().nextDouble()) {
                     TeleportOnDeathAbility.teleport(entity, level);
                     if (ability.consumedOnUse().get()) {
@@ -52,7 +45,7 @@ public class LivingEntityMixin {
                     }
                     cir.setReturnValue(true); // early return intended!
                 }
-            });
+            }
         }
     }
 }

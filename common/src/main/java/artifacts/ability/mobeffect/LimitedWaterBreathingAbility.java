@@ -2,8 +2,7 @@ package artifacts.ability.mobeffect;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,7 +19,7 @@ import java.util.Objects;
 
 public class LimitedWaterBreathingAbility extends ConstantMobEffectAbility {
 
-    public static final MapCodec<LimitedWaterBreathingAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<LimitedWaterBreathingAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.DURATION.codec().fieldOf("duration").forGetter(LimitedWaterBreathingAbility::duration),
             ValueTypes.BOOLEAN.codec().optionalFieldOf("infinite", Value.of(false)).forGetter(ability -> ability.isInfinite)
     ).apply(instance, LimitedWaterBreathingAbility::new));
@@ -49,11 +48,6 @@ public class LimitedWaterBreathingAbility extends ConstantMobEffectAbility {
     @Override
     public Value<Integer> duration() {
         return duration;
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.LIMITED_WATER_BREATHING.value();
     }
 
     @Override

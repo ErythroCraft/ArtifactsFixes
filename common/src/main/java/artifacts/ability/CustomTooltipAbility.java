@@ -1,7 +1,6 @@
 package artifacts.ability;
 
-import artifacts.registry.ModAbilities;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public record CustomTooltipAbility(Component tooltip) implements ArtifactAbility {
 
-    public static final MapCodec<CustomTooltipAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<CustomTooltipAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ComponentSerialization.FLAT_CODEC.fieldOf("tooltip").forGetter(CustomTooltipAbility::tooltip)
     ).apply(instance, CustomTooltipAbility::new));
 
@@ -23,11 +22,6 @@ public record CustomTooltipAbility(Component tooltip) implements ArtifactAbility
             CustomTooltipAbility::tooltip,
             CustomTooltipAbility::new
     );
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.CUSTOM_TOOLTIP.value();
-    }
 
     @Override
     public boolean isNonCosmetic() {

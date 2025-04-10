@@ -9,7 +9,6 @@ import artifacts.neoforge.network.NeoForgeNetworkHandler;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAbilities;
 import artifacts.registry.ModEntityTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.api.distmarker.Dist;
@@ -25,8 +24,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.RegistryBuilder;
 
 @Mod(Artifacts.MOD_ID)
 public class ArtifactsNeoForge {
@@ -46,7 +43,6 @@ public class ArtifactsNeoForge {
         ModAttachmentTypes.ATTACHMENT_TYPES.register(modBus);
 
         modBus.addListener(ArtifactsData::gatherData);
-        modBus.addListener(this::createRegistries);
         modBus.addListener(NeoForgeNetworkHandler::registerPayloadHandlers);
         modBus.addListener((FMLCommonSetupEvent event) -> Artifacts.onCommonSetup());
         NeoForge.EVENT_BUS.addListener((ServerStartingEvent event) -> Artifacts.onServerStarting(event.getServer()));
@@ -74,10 +70,6 @@ public class ArtifactsNeoForge {
         if (event.getEntity() instanceof ServerPlayer player) {
             Artifacts.onPlayerJoin(player);
         }
-    }
-
-    private void createRegistries(NewRegistryEvent event) {
-        event.create(new RegistryBuilder<>(ModAbilities.REGISTRY_KEY).sync(true));
     }
 
     public static void addDeferredRegister(DeferredRegister<?> register) {

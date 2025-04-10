@@ -2,9 +2,8 @@ package artifacts.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -25,7 +24,7 @@ public record IncreaseEnchantmentLevelAbility(ResourceKey<Enchantment> enchantme
             Enchantments.LUCK_OF_THE_SEA
     );
 
-    public static final MapCodec<IncreaseEnchantmentLevelAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<IncreaseEnchantmentLevelAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceKey.codec(Registries.ENCHANTMENT)
                     .validate(enchantment -> ALLOWED_ENCHANTMENTS.contains(enchantment)
                             ? DataResult.success(enchantment)
@@ -44,11 +43,6 @@ public record IncreaseEnchantmentLevelAbility(ResourceKey<Enchantment> enchantme
 
     public int getAmount() {
         return amount.get();
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.INCREASE_ENCHANTMENT_LEVEL.value();
     }
 
     @Override

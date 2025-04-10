@@ -37,7 +37,8 @@ public class ModItems {
     public static final Register<CreativeModeTab> CREATIVE_MODE_TABS = PlatformServices.platformHelper.createRegister(Registries.CREATIVE_MODE_TAB);
 
     static {
-        CREATIVE_MODE_TABS.register("main", () -> new CreativeModeTab.Builder(null, 0)
+        @SuppressWarnings({"ConstantConditions", "unused"})
+        RegistryHolder<CreativeModeTab, CreativeModeTab> tab = CREATIVE_MODE_TABS.register("main", () -> new CreativeModeTab.Builder(null, 0)
                 .title(Component.translatable("%s.creative_tab".formatted(Artifacts.MOD_ID)))
                 .icon(() -> new ItemStack(ModItems.BUNNY_HOPPERS.value()))
                 .displayItems((parameters, output) -> ITEMS.forEach(output::accept)
@@ -58,15 +59,19 @@ public class ModItems {
     );
     public static final Holder<Item> NOVELTY_DRINKING_HAT = wearableItem("novelty_drinking_hat", builder -> builder
             .equipSound(SoundEvents.BOTTLE_FILL)
-            .addAbility(new CustomTooltipAbility(Component.translatable("artifacts.tooltip.item.novelty_drinking_hat")))
+            .properties(properties -> properties.component(ModDataComponents.CUSTOM_TOOLTIP.get(),
+                    new CustomTooltipAbility(Component.translatable("artifacts.tooltip.item.novelty_drinking_hat"))
+            ))
             .addAttributeModifier(ModAttributes.DRINKING_SPEED, Artifacts.CONFIG.items.noveltyDrinkingHatDrinkingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(ModAttributes.EATING_SPEED, Artifacts.CONFIG.items.noveltyDrinkingHatEatingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
     public static final Holder<Item> SNORKEL = wearableItem("snorkel", builder -> builder
-            .addAbility(new LimitedWaterBreathingAbility(Artifacts.CONFIG.items.snorkelWaterBreathingDuration, Artifacts.CONFIG.items.snorkelIsInfinite))
+            .component(ModDataComponents.LIMITED_WATER_BREATHING.get(), new LimitedWaterBreathingAbility(Artifacts.CONFIG.items.snorkelWaterBreathingDuration, Artifacts.CONFIG.items.snorkelIsInfinite))
     );
     public static final Holder<Item> NIGHT_VISION_GOGGLES = wearableItem("night_vision_goggles", builder -> builder
-            .addAbility(new NightVisionAbility(Artifacts.CONFIG.items.nightVisionGogglesStrength))
+            .properties(properties -> properties.component(
+                    ModDataComponents.NIGHT_VISION.get(), new NightVisionAbility(Artifacts.CONFIG.items.nightVisionGogglesStrength)
+            ))
     );
     public static final Holder<Item> VILLAGER_HAT = wearableItem("villager_hat", builder -> builder
             .addAttributeModifier(ModAttributes.VILLAGER_REPUTATION, Artifacts.CONFIG.items.villagerHatReputationBonus, AttributeModifier.Operation.ADD_VALUE)
@@ -89,36 +94,37 @@ public class ModItems {
             .increasesEnchantment(Enchantments.FORTUNE, Artifacts.CONFIG.items.luckScarfFortuneBonus)
     );
     public static final Holder<Item> SCARF_OF_INVISIBILITY = wearableItem("scarf_of_invisibility", builder -> builder
-            .addAbility(new PermanentMobEffectAbility(MobEffects.INVISIBILITY, Value.of(1), Artifacts.CONFIG.items.scarfOfInvisibilityEnabled))
+            .component(ModDataComponents.MOB_EFFECT.get(), new PermanentMobEffectAbility(MobEffects.INVISIBILITY, Value.of(1), Artifacts.CONFIG.items.scarfOfInvisibilityEnabled))
     );
     public static final Holder<Item> CROSS_NECKLACE = wearableItem("cross_necklace", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
-            .addAbility(MakePiglinsNeutralAbility.INSTANCE)
-            .addAbility(new ApplyCooldownAfterDamageAbility(Artifacts.CONFIG.items.crossNecklaceCooldown, Optional.empty()))
+            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), MakePiglinsNeutralAbility.INSTANCE)
+            .component(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), new ApplyCooldownAfterDamageAbility(Artifacts.CONFIG.items.crossNecklaceCooldown, Optional.empty()))
             .addAttributeModifier(ModAttributes.INVINCIBILITY_TICKS, Artifacts.CONFIG.items.crossNecklaceBonusInvincibilityTicks, AttributeModifier.Operation.ADD_VALUE, false)
     );
     public static final Holder<Item> PANIC_NECKLACE = wearableItem("panic_necklace", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
-            .addAbility(new ApplyMobEffectAfterDamageAbility(
+            .component(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), new ApplyMobEffectAfterDamageAbility(
                     MobEffects.MOVEMENT_SPEED,
                     Artifacts.CONFIG.items.panicNecklaceSpeedLevel,
                     Artifacts.CONFIG.items.panicNecklaceSpeedDuration,
                     Optional.empty()
             ))
-            .addAbility(new ApplyCooldownAfterDamageAbility(
+            .component(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), new ApplyCooldownAfterDamageAbility(
                     Artifacts.CONFIG.items.panicNecklaceCooldown,
                     Optional.empty()
             ))
     );
     public static final Holder<Item> SHOCK_PENDANT = wearableItem("shock_pendant", builder -> builder
-            .addAbility(new StrikeAttackersWithLightningAbility(
+            .component(ModDataComponents.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), new StrikeAttackersWithLightningAbility(
                     Artifacts.CONFIG.items.shockPendantStrikeChance,
                     Artifacts.CONFIG.items.shockPendantCooldown
+            )).properties(properties -> properties.component(ModDataComponents.DAMAGE_IMMUNITY.get(),
+                    new DamageImmunityAbility(Artifacts.CONFIG.items.shockPendantCancelLightningDamage, DamageTypeTags.IS_LIGHTNING)
             ))
-            .addAbility(new DamageImmunityAbility(Artifacts.CONFIG.items.shockPendantCancelLightningDamage, DamageTypeTags.IS_LIGHTNING))
     );
     public static final Holder<Item> FLAME_PENDANT = wearableItem("flame_pendant", builder -> builder
-            .addAbility(new SetAttackersOnFireAbility(
+            .component(ModDataComponents.SET_ATTACKERS_ON_FIRE.get(), new SetAttackersOnFireAbility(
                     Artifacts.CONFIG.items.flamePendantStrikeChance,
                     Artifacts.CONFIG.items.flamePendantCooldown,
                     Artifacts.CONFIG.items.flamePendantFireDuration,
@@ -126,7 +132,7 @@ public class ModItems {
             ))
     );
     public static final Holder<Item> THORN_PENDANT = wearableItem("thorn_pendant", builder -> builder
-            .addAbility(new ThornsAbility(
+            .component(ModDataComponents.THORNS.get(), new ThornsAbility(
                     Artifacts.CONFIG.items.thornPendantStrikeChance,
                     Artifacts.CONFIG.items.thornPendantCooldown,
                     Artifacts.CONFIG.items.thornPendantMinDamage,
@@ -134,7 +140,7 @@ public class ModItems {
             ))
     );
     public static final Holder<Item> CHARM_OF_SINKING = wearableItem("charm_of_sinking", builder -> builder
-            .addAbility(new SimpleAbility(ModAbilities.SINKING, Artifacts.CONFIG.items.charmOfSinkingEnabled))
+            .properties(properties -> properties.component(ModDataComponents.SINKING.get(), new SimpleAbility(Artifacts.CONFIG.items.charmOfSinkingEnabled)))
     );
     public static final Holder<Item> CHARM_OF_SHRINKING = wearableItem("charm_of_shrinking", builder -> builder
             .addAttributeModifier(Attributes.SCALE, Artifacts.CONFIG.items.charmOfShrinkingScaleModifier, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
@@ -143,37 +149,38 @@ public class ModItems {
     // belt
     public static final Holder<Item> CLOUD_IN_A_BOTTLE = wearableItem("cloud_in_a_bottle", builder -> builder
             .equipSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH)
-            .addAbility(new DoubleJumpAbility(
+            .properties(properties -> properties.component(ModDataComponents.DOUBLE_JUMP.get(), new DoubleJumpAbility(
                     Artifacts.CONFIG.items.cloudInABottleEnabled,
                     Artifacts.CONFIG.items.cloudInABottleSprintJumpHorizontalVelocity,
                     Artifacts.CONFIG.items.cloudInABottleSprintJumpVerticalVelocity
-            ))
+            )))
             .addAttributeModifier(Attributes.SAFE_FALL_DISTANCE, Artifacts.CONFIG.items.cloudInABottleSafeFallDistanceBonus, AttributeModifier.Operation.ADD_VALUE)
     );
     public static final Holder<Item> OBSIDIAN_SKULL = wearableItem("obsidian_skull", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
-            .addAbility(new ApplyMobEffectAfterDamageAbility(
+            .component(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), new ApplyMobEffectAfterDamageAbility(
                     MobEffects.FIRE_RESISTANCE,
                     Value.of(1),
                     Artifacts.CONFIG.items.obsidianSkullFireResistanceDuration,
                     Optional.of(DamageTypeTags.IS_FIRE)
             ))
-            .addAbility(new ApplyCooldownAfterDamageAbility(
+            .component(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), new ApplyCooldownAfterDamageAbility(
                     Artifacts.CONFIG.items.obsidianSkullCooldown,
                     Optional.of(DamageTypeTags.IS_FIRE)
             ))
     );
     public static final Holder<Item> ANTIDOTE_VESSEL = wearableItem("antidote_vessel", builder -> builder
             .equipSound(SoundEvents.BOTTLE_FILL)
-            .addAbility(MakePiglinsNeutralAbility.INSTANCE)
-            .addAbility(new RemoveBadEffectsAbility(
+            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), MakePiglinsNeutralAbility.INSTANCE)
+            .component(ModDataComponents.REMOVE_BAD_EFFECTS.get(), new RemoveBadEffectsAbility(
                     Artifacts.CONFIG.items.antidoteVesselEnabled,
                     Artifacts.CONFIG.items.antidoteVesselMaxEffectDuration
             ))
     );
     public static final Holder<Item> UNIVERSAL_ATTRACTOR = wearableItem("universal_attractor", builder -> builder
-            .addAbility(MakePiglinsNeutralAbility.INSTANCE)
-            .addAbility(new AttractItemsAbility(Artifacts.CONFIG.items.universalAttractorEnabled))
+            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), MakePiglinsNeutralAbility.INSTANCE)
+            .properties(properties -> properties.component(ModDataComponents.ATTRACT_ITEMS.get(), new AttractItemsAbility(Artifacts.CONFIG.items.universalAttractorEnabled)))
+            .component(ModDataComponents.ATTRACT_ITEMS.get(), new AttractItemsAbility(Artifacts.CONFIG.items.universalAttractorEnabled))
     );
     public static final Holder<Item> CRYSTAL_HEART = wearableItem("crystal_heart", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
@@ -182,13 +189,13 @@ public class ModItems {
     public static final Holder<Item> HELIUM_FLAMINGO = wearableItem("helium_flamingo", builder -> builder
             .equipSound(ModSoundEvents.POP)
             .equipSoundPitch(0.7F)
-            .addAbility(new SwimInAirAbility(
+            .component(ModDataComponents.SWIM_IN_AIR.get(), new SwimInAirAbility(
                     Artifacts.CONFIG.items.heliumFlamingoFlightDuration,
                     Artifacts.CONFIG.items.heliumFlamingoRechargeDuration
             ))
     );
     public static final Holder<Item> CHORUS_TOTEM = wearableItem("chorus_totem", builder -> builder
-            .addAbility(new TeleportOnDeathAbility(
+            .component(ModDataComponents.TELEPORT_ON_DEATH.get(), new TeleportOnDeathAbility(
                     Artifacts.CONFIG.items.chorusTotemTeleportationChance,
                     Artifacts.CONFIG.items.chorusTotemHealthRestored,
                     Artifacts.CONFIG.items.chorusTotemCooldown,
@@ -196,14 +203,13 @@ public class ModItems {
             ))
     );
     public static final Holder<Item> WARP_DRIVE = wearableItem("warp_drive", builder -> builder
-            .addAbility(new EnderPearlsCostHungerAbility(
+            .properties(properties -> properties.component(ModDataComponents.ENDER_PEARLS_COST_HUNGER.get(), new EnderPearlsCostHungerAbility(
                     Artifacts.CONFIG.items.warpDriveEnabled,
                     Artifacts.CONFIG.items.warpDriveHungerCost,
                     Artifacts.CONFIG.items.warpDriveCooldown
-            ))
-            .addAbility(new SimpleAbility(
-                    ModAbilities.NULLIFY_ENDER_PEARL_DAMAGE,
-                    Artifacts.CONFIG.items.warpDriveNullifyEnderPearlDamage
+            )))
+            .properties(properties -> properties.component(ModDataComponents.NULLIFY_ENDER_PEARL_DAMAGE.get(),
+                    new SimpleAbility(Artifacts.CONFIG.items.warpDriveNullifyEnderPearlDamage)
             ))
     );
 
@@ -211,7 +217,7 @@ public class ModItems {
     public static final Holder<Item> DIGGING_CLAWS = wearableItem("digging_claws", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
             .addAttributeModifier(Attributes.BLOCK_BREAK_SPEED, Artifacts.CONFIG.items.diggingClawsBlockBreakSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-            .addAbility(new UpgradeToolTierAbility(Artifacts.CONFIG.items.diggingClawsToolTier))
+            .component(ModDataComponents.UPGRADE_TOOL_TIER.get(), new UpgradeToolTierAbility(Artifacts.CONFIG.items.diggingClawsToolTier))
     );
     public static final Holder<Item> FERAL_CLAWS = wearableItem("feral_claws", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
@@ -229,7 +235,7 @@ public class ModItems {
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, Artifacts.CONFIG.items.pocketPistonAttackKnockbackBonus, AttributeModifier.Operation.ADD_VALUE)
     );
     public static final Holder<Item> VAMPIRIC_GLOVE = wearableItem("vampiric_glove", builder -> builder
-            .addAbility(new AttacksAbsorbDamageAbility(
+            .component(ModDataComponents.ATTACKS_ABSORB_DAMAGE.get(), new AttacksAbsorbDamageAbility(
                     Artifacts.CONFIG.items.vampiricGloveAbsorptionRatio,
                     Artifacts.CONFIG.items.vampiricGloveAbsorptionChance,
                     Artifacts.CONFIG.items.vampiricGloveMaxHealingPerHit
@@ -237,11 +243,11 @@ public class ModItems {
     );
     public static final Holder<Item> GOLDEN_HOOK = wearableItem("golden_hook", builder -> builder
             .addAttributeModifier(ModAttributes.ENTITY_EXPERIENCE, Artifacts.CONFIG.items.goldenHookEntityExperienceBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-            .addAbility(MakePiglinsNeutralAbility.INSTANCE)
+            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), MakePiglinsNeutralAbility.INSTANCE)
     );
     public static final Holder<Item> ONION_RING = wearableItem("onion_ring", builder -> builder
             .properties(properties -> properties.food(new FoodProperties.Builder().nutrition(2).build()))
-            .addAbility(new ApplyMobEffectAfterEatingAbility(
+            .component(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), new ApplyMobEffectAfterEatingAbility(
                     MobEffects.DIG_SPEED,
                     Artifacts.CONFIG.items.onionRingHasteLevel,
                     Artifacts.CONFIG.items.onionRingHasteDurationPerFoodPoint
@@ -249,10 +255,10 @@ public class ModItems {
     );
     public static final Holder<Item> PICKAXE_HEATER = wearableItem("pickaxe_heater", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
-            .addAbility(new SimpleAbility(ModAbilities.SMELT_ORES, Artifacts.CONFIG.items.pickaxeHeaterEnabled))
+            .properties(properties -> properties.component(ModDataComponents.SMELT_ORES.get(), new SimpleAbility(Artifacts.CONFIG.items.pickaxeHeaterEnabled)))
     );
     public static final Holder<Item> WITHERED_BRACELET = wearableItem("withered_bracelet", builder -> builder
-            .addAbility(new AttacksInflictMobEffectAbility(
+            .component(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), new AttacksInflictMobEffectAbility(
                     MobEffects.WITHER,
                     Artifacts.CONFIG.items.witheredBraceletWitherLevel,
                     Artifacts.CONFIG.items.witheredBraceletWitherDuration,
@@ -263,25 +269,32 @@ public class ModItems {
 
     // feet
     public static final Holder<Item> AQUA_DASHERS = wearableItem("aqua_dashers", builder -> builder
-            .addAbility(new CollideWithFluidsAbility(ModAbilities.SPRINT_ON_FLUIDS, Artifacts.CONFIG.items.aquaDashersEnabled, Optional.empty()))
+            .properties(properties -> properties.component(
+                    ModDataComponents.SPRINT_ON_FLUIDS.get(),
+                    new CollideWithFluidsAbility(Artifacts.CONFIG.items.aquaDashersEnabled, Optional.empty(), Optional.empty()))
+            )
     );
     public static final Holder<Item> BUNNY_HOPPERS = wearableItem("bunny_hoppers", builder -> builder
             .addAttributeModifier(Attributes.JUMP_STRENGTH, Artifacts.CONFIG.items.bunnyHoppersJumpStrengthBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(Attributes.FALL_DAMAGE_MULTIPLIER, Artifacts.CONFIG.items.bunnyHoppersFallDamageMultiplier, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(Attributes.SAFE_FALL_DISTANCE, Artifacts.CONFIG.items.bunnyHoppersSafeFallDistanceBonus, AttributeModifier.Operation.ADD_VALUE)
-            .addAbility(new ModifyHurtSoundAbility(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.RABBIT_HURT)))
+            .component(ModDataComponents.MODIFY_HURT_SOUND.get(), new ModifyHurtSoundAbility(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.RABBIT_HURT)))
     );
     public static final Holder<Item> KITTY_SLIPPERS = wearableItem("kitty_slippers", builder -> builder
             .equipSound(SoundEvents.CAT_AMBIENT)
-            .addAbility(new SimpleAbility(ModAbilities.SCARE_CREEPERS, Artifacts.CONFIG.items.kittySlippersEnabled))
-            .addAbility(new ModifyHurtSoundAbility(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT)))
+            .properties(properties -> properties.component(ModDataComponents.SCARE_CREEPERS.get(),
+                    new SimpleAbility(Artifacts.CONFIG.items.kittySlippersEnabled)
+            ))
+            .component(ModDataComponents.MODIFY_HURT_SOUND.get(), new ModifyHurtSoundAbility(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT)))
     );
     public static final Holder<Item> RUNNING_SHOES = wearableItem("running_shoes", builder -> builder
             .addAttributeModifier(ModAttributes.SPRINTING_SPEED, Artifacts.CONFIG.items.runningShoesSprintingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(ModAttributes.SPRINTING_STEP_HEIGHT, Artifacts.CONFIG.items.runningShoesSprintingStepHeightBonus, AttributeModifier.Operation.ADD_VALUE)
     );
     public static final Holder<Item> SNOWSHOES = wearableItem("snowshoes", builder -> builder
-            .addAbility(new SimpleAbility(ModAbilities.WALK_ON_POWDER_SNOW, Artifacts.CONFIG.items.snowshoesAllowWalkingOnPowderedSnow))
+            .properties(properties -> properties.component(ModDataComponents.WALK_ON_POWDER_SNOW.get(),
+                    new SimpleAbility(Artifacts.CONFIG.items.snowshoesAllowWalkingOnPowderedSnow)
+            ))
             .addAttributeModifier(ModAttributes.MOVEMENT_SPEED_ON_SNOW, Artifacts.CONFIG.items.snowshoesMovementSpeedOnSnowBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
     public static final Holder<Item> STEADFAST_SPIKES = wearableItem("steadfast_spikes", builder -> builder
@@ -293,16 +306,21 @@ public class ModItems {
     );
     public static final Holder<Item> ROOTED_BOOTS = wearableItem("rooted_boots", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
-            .addAbility(new ReplenishHungerOnGrassAbility(
+            .component(ModDataComponents.REPLENISH_HUNGER_ON_GRASS.get(), new ReplenishHungerOnGrassAbility(
                     Artifacts.CONFIG.items.rootedBootsEnabled,
                     Artifacts.CONFIG.items.rootedBootsHungerReplenishingDuration
             ))
-            .addAbility(new SimpleAbility(ModAbilities.GROW_PLANTS_AFTER_EATING, Artifacts.CONFIG.items.rootedBootsGrowPlantsAfterEating))
+            .component(ModDataComponents.GROW_PLANTS_AFTER_EATING.get(),
+                    new SimpleAbility(Artifacts.CONFIG.items.rootedBootsGrowPlantsAfterEating)
+            )
     );
     public static final Holder<Item> STRIDER_SHOES = wearableItem("strider_shoes", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
-            .addAbility(new CollideWithFluidsAbility(ModAbilities.SNEAK_ON_FLUIDS, Artifacts.CONFIG.items.striderShoesEnabled, Optional.of(FluidTags.LAVA)))
-            .addAbility(new DamageImmunityAbility(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR))
+            .component(ModDataComponents.SNEAK_ON_FLUIDS.get(),
+                    new CollideWithFluidsAbility(Artifacts.CONFIG.items.striderShoesEnabled, Optional.of(FluidTags.LAVA), Optional.empty())
+            ).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
+                    new DamageImmunityAbility(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR)
+            )
     );
 
     // curio

@@ -2,8 +2,7 @@ package artifacts.ability.mobeffect;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,7 +24,7 @@ public class PermanentMobEffectAbility extends ConstantMobEffectAbility {
             MobEffects.INVISIBILITY
     );
 
-    public static final MapCodec<PermanentMobEffectAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> MobEffectAbility.codecStart(instance)
+    public static final Codec<PermanentMobEffectAbility> CODEC = RecordCodecBuilder.create(instance -> MobEffectAbility.codecStart(instance)
             .and(ValueTypes.enabledField().forGetter(ability -> ability.enabled))
             .apply(instance, PermanentMobEffectAbility::new)
     );
@@ -52,11 +51,7 @@ public class PermanentMobEffectAbility extends ConstantMobEffectAbility {
         return enabled.get() ? super.level() : Value.of(0);
     }
 
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.MOB_EFFECT.value();
-    }
-
+    // TODO move tooltips to separate handler class
     @Override
     public void addAbilityTooltip(List<MutableComponent> tooltip) {
         for (Holder<MobEffect> mobEffect : CUSTOM_TOOLTIP_MOB_EFFECTS) {

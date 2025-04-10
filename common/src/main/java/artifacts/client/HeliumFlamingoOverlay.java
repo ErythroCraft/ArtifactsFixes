@@ -4,7 +4,7 @@ import artifacts.Artifacts;
 import artifacts.ability.SwimInAirAbility;
 import artifacts.component.SwimData;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -19,7 +19,7 @@ public class HeliumFlamingoOverlay {
 
     public static boolean renderOverlay(int height, GuiGraphics guiGraphics, int screenWidth, int screenHeight) {
         if (!(Minecraft.getInstance().getCameraEntity() instanceof LivingEntity player)
-                || !AbilityHelper.hasAbilityActive(ModAbilities.SWIM_IN_AIR.value(), player)
+                || !AbilityHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player)
         ) {
             return false;
         }

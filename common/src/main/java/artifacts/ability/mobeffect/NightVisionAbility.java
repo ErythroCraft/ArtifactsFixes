@@ -2,8 +2,7 @@ package artifacts.ability.mobeffect;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.MutableComponent;
@@ -16,7 +15,7 @@ import java.util.Objects;
 
 public class NightVisionAbility extends ConstantMobEffectAbility {
 
-    public static final MapCodec<NightVisionAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<NightVisionAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.FRACTION.codec().optionalFieldOf("strength", Value.of(1D)).forGetter(NightVisionAbility::strength)
     ).apply(instance, NightVisionAbility::new));
 
@@ -35,11 +34,6 @@ public class NightVisionAbility extends ConstantMobEffectAbility {
 
     public Value<Double> strength() {
         return strength;
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.NIGHT_VISION.value();
     }
 
     @Override

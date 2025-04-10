@@ -2,10 +2,10 @@ package artifacts.ability.mobeffect;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import artifacts.util.ModCodecs;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -26,7 +26,7 @@ import java.util.Optional;
 
 public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration, Optional<TagKey<DamageType>> tag) implements MobEffectAbility {
 
-    public static final MapCodec<ApplyMobEffectAfterDamageAbility> CODEC = RecordCodecBuilder.mapCodec(
+    public static final Codec<ApplyMobEffectAfterDamageAbility> CODEC = RecordCodecBuilder.create(
             instance -> MobEffectAbility.codecStartWithDuration(instance)
                     .and(TagKey.codec(Registries.DAMAGE_TYPE).optionalFieldOf("tag").forGetter(ApplyMobEffectAfterDamageAbility::tag))
                     .apply(instance, ApplyMobEffectAfterDamageAbility::new));
@@ -47,7 +47,7 @@ public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Valu
         if (!entity.level().isClientSide()
                 && amount >= 0.1
         ) {
-            AbilityHelper.forEach(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, (ability, stack) -> {
+            AbilityHelper.forEach(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     entity.addEffect(ability.createEffect(entity));
                 }
@@ -58,11 +58,6 @@ public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Valu
     @Override
     public boolean isVisible() {
         return true;
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.value();
     }
 
     @Override

@@ -3,10 +3,10 @@ package artifacts.ability;
 import artifacts.Artifacts;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.AbilityHelper;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public record UpgradeToolTierAbility(Value<Tier> tier) implements ArtifactAbility {
 
-    public static final MapCodec<UpgradeToolTierAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<UpgradeToolTierAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.TOOL_TIER.codec().fieldOf("tier").forGetter(UpgradeToolTierAbility::tier)
     ).apply(instance, UpgradeToolTierAbility::new));
 
@@ -35,7 +35,7 @@ public record UpgradeToolTierAbility(Value<Tier> tier) implements ArtifactAbilit
     public static boolean canHarvestWithTier(LivingEntity entity, BlockState state) {
         if (state.is(ModTags.MINEABLE_WITH_DIGGING_CLAWS)) {
             Tier tier = Tier.fromLevel(AbilityHelper.maxInt(
-                    ModAbilities.UPGRADE_TOOL_TIER.get(), entity,
+                    ModDataComponents.UPGRADE_TOOL_TIER.get(), entity,
                     ability -> ability.tier().get().getLevel(), false
             ));
             return isCorrectTierForDrops(tier, state);
@@ -60,11 +60,6 @@ public record UpgradeToolTierAbility(Value<Tier> tier) implements ArtifactAbilit
     }
 
     @Override
-    public Type<?> getType() {
-        return ModAbilities.UPGRADE_TOOL_TIER.value();
-    }
-
-    @Override
     public boolean isNonCosmetic() {
         return tier().get() != Tier.NONE;
     }
@@ -72,7 +67,7 @@ public record UpgradeToolTierAbility(Value<Tier> tier) implements ArtifactAbilit
     @SuppressWarnings("ConstantConditions")
     @Override
     public void addAbilityTooltip(List<MutableComponent> tooltip) {
-        ResourceLocation id = ModAbilities.getRegistry().getKey(getType());
+        ResourceLocation id = Artifacts.id(""); // TODO ModAbilities.getRegistry().getKey(getType());
         tooltip.add(
                 Component.translatable(
                         "%s.tooltip.ability.%s".formatted(id.getNamespace(), id.getPath()),

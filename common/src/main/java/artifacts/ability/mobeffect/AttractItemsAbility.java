@@ -2,9 +2,8 @@ package artifacts.ability.mobeffect;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
 import artifacts.registry.ModMobEffects;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,7 +12,7 @@ import java.util.Objects;
 
 public final class AttractItemsAbility extends ConstantMobEffectAbility {
 
-    public static final MapCodec<AttractItemsAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<AttractItemsAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(AttractItemsAbility::enabled)
     ).apply(instance, AttractItemsAbility::new));
 
@@ -28,11 +27,6 @@ public final class AttractItemsAbility extends ConstantMobEffectAbility {
     public AttractItemsAbility(Value<Boolean> enabled) {
         super(ModMobEffects.MAGNETISM);
         this.enabled = enabled;
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.ATTRACT_ITEMS.value();
     }
 
     @Override

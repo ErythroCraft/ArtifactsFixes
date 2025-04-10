@@ -3,9 +3,9 @@ package artifacts.ability;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.MutableComponent;
@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse) implements ArtifactAbility {
 
-    public static final MapCodec<TeleportOnDeathAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<TeleportOnDeathAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(TeleportOnDeathAbility::teleportationChance),
             ValueTypes.NON_NEGATIVE_INT.codec().optionalFieldOf("health_restored", Value.of(10)).forGetter(TeleportOnDeathAbility::healthRestored),
             ValueTypes.cooldownField().forGetter(TeleportOnDeathAbility::cooldown),
@@ -48,7 +48,7 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
     public static ItemStack findTotem(LivingEntity entity) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack handItem = entity.getItemInHand(hand);
-            if (AbilityHelper.hasAbility(ModAbilities.TELEPORT_ON_DEATH.value(), handItem)
+            if (AbilityHelper.hasAbility(ModDataComponents.TELEPORT_ON_DEATH.get(), handItem)
                     && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(handItem.getItem()))
             ) {
                 return handItem;
@@ -59,7 +59,7 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
 
         EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
             if (result.get().isEmpty()
-                    && AbilityHelper.hasAbility(ModAbilities.TELEPORT_ON_DEATH.value(), stack)
+                    && AbilityHelper.hasAbility(ModDataComponents.TELEPORT_ON_DEATH.get(), stack)
                     && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem()))
             ) {
                 result.set(stack);
@@ -95,11 +95,6 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
                 break;
             }
         }
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.TELEPORT_ON_DEATH.value();
     }
 
     @Override

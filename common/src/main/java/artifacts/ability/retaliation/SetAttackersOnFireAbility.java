@@ -2,8 +2,7 @@ package artifacts.ability.retaliation;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.MutableComponent;
@@ -16,7 +15,7 @@ import java.util.List;
 
 public class SetAttackersOnFireAbility extends RetaliationAbility {
 
-    public static final MapCodec<SetAttackersOnFireAbility> CODEC = RecordCodecBuilder.mapCodec(
+    public static final Codec<SetAttackersOnFireAbility> CODEC = RecordCodecBuilder.create(
             instance -> codecStart(instance)
                     .and(ValueTypes.DURATION.codec().fieldOf("duration").forGetter(SetAttackersOnFireAbility::fireDuration))
                     .and(ValueTypes.BOOLEAN.codec().optionalFieldOf("grant_fire_resistance", Value.of(true)).forGetter(SetAttackersOnFireAbility::grantsFireResistance))
@@ -53,11 +52,6 @@ public class SetAttackersOnFireAbility extends RetaliationAbility {
     }
 
     @Override
-    public Type<?> getType() {
-        return ModAbilities.SET_ATTACKERS_ON_FIRE.value();
-    }
-
-    @Override
     public boolean isNonCosmetic() {
         return super.isNonCosmetic() && fireDuration().get() > 0;
     }
@@ -78,5 +72,22 @@ public class SetAttackersOnFireAbility extends RetaliationAbility {
         if (grantsFireResistance().get()) {
             tooltip.add(tooltipLine("fire_resistance"));
         }
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SetAttackersOnFireAbility that)) return false;
+        if (!super.equals(o)) return false;
+
+        return fireDuration.equals(that.fireDuration) && grantsFireResistance.equals(that.grantsFireResistance);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + fireDuration.hashCode();
+        result = 31 * result + grantsFireResistance.hashCode();
+        return result;
     }
 }

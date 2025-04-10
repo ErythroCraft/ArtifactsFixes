@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.walkonpowdersnow;
 
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.Entity;
@@ -14,6 +14,6 @@ public abstract class PowderSnowBlockMixin {
 
     @ModifyReturnValue(method = "canEntityWalkOnPowderSnow", at = @At("RETURN"))
     private static boolean canEntityWalkOnPowderSnow(boolean original, Entity entity) {
-        return original || (entity instanceof LivingEntity livingEntity && AbilityHelper.hasAbilityActive(ModAbilities.WALK_ON_POWDER_SNOW.value(), livingEntity));
+        return original || (entity instanceof LivingEntity livingEntity && AbilityHelper.hasAbilityActive(ModDataComponents.WALK_ON_POWDER_SNOW.get(), livingEntity));
     }
 }

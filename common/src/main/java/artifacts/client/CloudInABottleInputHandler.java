@@ -3,7 +3,7 @@ package artifacts.client;
 import artifacts.ability.DoubleJumpAbility;
 import artifacts.network.DoubleJumpPacket;
 import artifacts.network.NetworkHandler;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -22,14 +22,14 @@ public class CloudInABottleInputHandler {
     }
 
     private static void handleCloudInABottleInput(LocalPlayer player) {
-        if ((player.onGround() || player.onClimbable()) && (!player.isInWater() || AbilityHelper.hasAbilityActive(ModAbilities.SINKING.value(), player))) {
+        if ((player.onGround() || player.onClimbable()) && (!player.isInWater() || AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player))) {
             hasReleasedJumpKey = false;
             canDoubleJump = true;
         } else if (!player.input.jumping) {
             hasReleasedJumpKey = true;
         } else if (!player.getAbilities().flying && canDoubleJump && hasReleasedJumpKey) {
             canDoubleJump = false;
-            if (AbilityHelper.hasAbilityActive(ModAbilities.DOUBLE_JUMP.value(), player)) {
+            if (AbilityHelper.hasAbilityActive(ModDataComponents.DOUBLE_JUMP.get(), player)) {
                 NetworkHandler.sendToServer(new DoubleJumpPacket());
                 DoubleJumpAbility.jump(player);
             }

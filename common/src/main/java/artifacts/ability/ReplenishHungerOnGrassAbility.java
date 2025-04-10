@@ -4,9 +4,8 @@ import artifacts.ability.mobeffect.ApplyMobEffectAfterEatingAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.network.PlaySoundAtPlayerPacket;
-import artifacts.registry.ModAbilities;
 import artifacts.registry.ModTags;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Integer> replenishingDuration) implements ArtifactAbility {
 
-    public static final MapCodec<ReplenishHungerOnGrassAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<ReplenishHungerOnGrassAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(ReplenishHungerOnGrassAbility::enabled),
             ValueTypes.DURATION.codec().fieldOf("duration").forGetter(ReplenishHungerOnGrassAbility::replenishingDuration)
     ).apply(instance, ReplenishHungerOnGrassAbility::new));
@@ -29,11 +28,6 @@ public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Intege
             ReplenishHungerOnGrassAbility::replenishingDuration,
             ReplenishHungerOnGrassAbility::new
     );
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.REPLENISH_HUNGER_ON_GRASS.value();
-    }
 
     @Override
     public boolean isNonCosmetic() {

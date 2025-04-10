@@ -2,7 +2,7 @@ package artifacts;
 
 import artifacts.component.SwimData;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModKeyMappings;
 import artifacts.util.AbilityHelper;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,7 @@ public class HeliumFlamingoInputEventHandler {
     }
 
     private static void handleHeliumFlamingoInput(Player player) {
-        if (!AbilityHelper.hasAbilityActive(ModAbilities.SWIM_IN_AIR.value(), player)) {
+        if (!AbilityHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player)) {
             return;
         }
 
@@ -60,7 +60,7 @@ public class HeliumFlamingoInputEventHandler {
     private static boolean canActivateHeliumFlamingo(SwimData swimData, Player player, boolean isSprintKeyDown) {
         if (swimData.isSwimming()
                 || swimData.getSwimTime() < 0
-                || !AbilityHelper.hasAbilityActive(ModAbilities.SWIM_IN_AIR.value(), player)) {
+                || !AbilityHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player)) {
             return false;
         }
         if (player.isSwimming()) {
@@ -71,7 +71,7 @@ public class HeliumFlamingoInputEventHandler {
                 && !wasSprintingOnGround
                 && hasTouchedGround
                 && !player.onGround()
-                && (!player.isInWater() || AbilityHelper.hasAbilityActive(ModAbilities.SINKING.value(), player))
+                && (!player.isInWater() || AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player))
                 && !player.isFallFlying()
                 && !player.getAbilities().flying
                 && !player.isPassenger();

@@ -2,7 +2,7 @@ package artifacts.mixin.ability.sprintonfluids;
 
 import artifacts.component.SwimData;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModSoundEvents;
 import artifacts.util.AbilityHelper;
 import net.minecraft.core.BlockPos;
@@ -91,7 +91,7 @@ public abstract class EntityMixin {
         }
         SwimData swimData = PlatformServices.platformHelper.getSwimData(entity);
         return swimData != null
-                && AbilityHelper.hasAbilityActive(ModAbilities.SPRINT_ON_FLUIDS.value(), entity)
+                && AbilityHelper.hasAbilityActive(ModDataComponents.SPRINT_ON_FLUIDS.get(), entity)
                 && entity.isSprinting()
                 && !swimData.isWet();
     }

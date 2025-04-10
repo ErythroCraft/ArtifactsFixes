@@ -2,8 +2,9 @@ package artifacts.fabric.component;
 
 import artifacts.ability.ArtifactAbility;
 import artifacts.component.AbilityToggles;
-import artifacts.registry.ModAbilities;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -19,9 +20,11 @@ public class AbilityTogglesComponent extends AbilityToggles implements AutoSynce
     @Override
     public void readFromNbt(CompoundTag tag, HolderLookup.Provider provider) {
         ListTag list = tag.getList("toggles", Tag.TAG_STRING);
-        Set<ArtifactAbility.Type<?>> toggles = new HashSet<>();
+        Set<DataComponentType<? extends ArtifactAbility>> toggles = new HashSet<>();
         for (Tag stringTag : list) {
-            toggles.add(ModAbilities.getRegistry().get(ResourceLocation.parse(stringTag.getAsString())));
+            @SuppressWarnings("unchecked")
+            var t = (DataComponentType<? extends ArtifactAbility>) BuiltInRegistries.DATA_COMPONENT_TYPE.get(ResourceLocation.parse(stringTag.getAsString()));
+            toggles.add(t);
         }
         this.toggles.clear();
         this.toggles.addAll(toggles);
@@ -30,9 +33,9 @@ public class AbilityTogglesComponent extends AbilityToggles implements AutoSynce
     @Override
     public void writeToNbt(CompoundTag tag, HolderLookup.Provider provider) {
         ListTag list = new ListTag();
-        for (ArtifactAbility.Type<?> toggle : toggles) {
+        for (DataComponentType<? extends ArtifactAbility> toggle : toggles) {
             // noinspection ConstantConditions
-            list.add(StringTag.valueOf(ModAbilities.getRegistry().getKey(toggle).toString()));
+            list.add(StringTag.valueOf(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(toggle).toString()));
         }
         tag.put("toggles", list);
     }

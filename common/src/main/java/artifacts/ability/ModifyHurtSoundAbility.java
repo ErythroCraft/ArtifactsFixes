@@ -1,7 +1,6 @@
 package artifacts.ability;
 
-import artifacts.registry.ModAbilities;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -13,7 +12,7 @@ import net.minecraft.sounds.SoundEvent;
 
 public record ModifyHurtSoundAbility(Holder<SoundEvent> soundEvent) implements TooltiplessAbility {
 
-    public static final MapCodec<ModifyHurtSoundAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<ModifyHurtSoundAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BuiltInRegistries.SOUND_EVENT.holderByNameCodec().fieldOf("sound").forGetter(ModifyHurtSoundAbility::soundEvent)
     ).apply(instance, ModifyHurtSoundAbility::new));
 
@@ -22,11 +21,6 @@ public record ModifyHurtSoundAbility(Holder<SoundEvent> soundEvent) implements T
             ModifyHurtSoundAbility::soundEvent,
             ModifyHurtSoundAbility::new
     );
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.MODIFY_HURT_SOUND.value();
-    }
 
     @Override
     public boolean isNonCosmetic() {

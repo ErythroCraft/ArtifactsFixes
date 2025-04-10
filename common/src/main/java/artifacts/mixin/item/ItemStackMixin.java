@@ -3,10 +3,10 @@ package artifacts.mixin.item;
 import artifacts.Artifacts;
 import artifacts.ability.ArtifactAbility;
 import artifacts.item.WearableArtifactItem;
-import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import artifacts.util.TooltipHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -45,15 +45,13 @@ public abstract class ItemStackMixin {
             tooltip.forEach(line -> tooltipList.add(line.withStyle(ChatFormatting.GRAY)));
         }
 
-        if (stack.has(ModDataComponents.ABILITIES.value())) {
-            List<MutableComponent> tooltip = new ArrayList<>();
-            if (!AbilityHelper.isCosmetic(stack)) {
-                for (ArtifactAbility ability : AbilityHelper.getAbilities(stack)) {
-                    ability.addTooltipIfNonCosmetic(tooltip);
-                }
+        List<MutableComponent> tooltip = new ArrayList<>();
+        for (TypedDataComponent<?> component : stack.getComponents()) {
+            if (component.value() instanceof ArtifactAbility ability) {
+                ability.addTooltipIfNonCosmetic(tooltip);
             }
-            tooltip.forEach(line -> tooltipList.add(line.withStyle(ChatFormatting.GRAY)));
         }
+        tooltip.forEach(line -> tooltipList.add(line.withStyle(ChatFormatting.GRAY)));
     }
 
     // this no longer gets called on NeoForge

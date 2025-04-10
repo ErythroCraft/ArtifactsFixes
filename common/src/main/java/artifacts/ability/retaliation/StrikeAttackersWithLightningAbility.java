@@ -2,8 +2,7 @@ package artifacts.ability.retaliation;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
@@ -16,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class StrikeAttackersWithLightningAbility extends RetaliationAbility {
 
-    public static final MapCodec<StrikeAttackersWithLightningAbility> CODEC = RecordCodecBuilder.mapCodec(
+    public static final Codec<StrikeAttackersWithLightningAbility> CODEC = RecordCodecBuilder.create(
             instance -> codecStart(instance).apply(instance, StrikeAttackersWithLightningAbility::new)
     );
 
@@ -30,11 +29,6 @@ public class StrikeAttackersWithLightningAbility extends RetaliationAbility {
 
     public StrikeAttackersWithLightningAbility(Value<Double> strikeChance, Value<Integer> cooldown) {
         super(strikeChance, cooldown);
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.STRIKE_ATTACKERS_WITH_LIGHTNING.value();
     }
 
     @Override

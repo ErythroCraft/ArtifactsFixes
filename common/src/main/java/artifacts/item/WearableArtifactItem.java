@@ -1,7 +1,6 @@
 package artifacts.item;
 
 import artifacts.Artifacts;
-import artifacts.ability.ArtifactAbility;
 import artifacts.ability.AttributeModifierAbility;
 import artifacts.ability.IncreaseEnchantmentLevelAbility;
 import artifacts.config.value.Value;
@@ -11,6 +10,7 @@ import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -29,7 +29,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -85,7 +84,6 @@ public class WearableArtifactItem extends Item {
         private final String itemName;
         private Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GENERIC;
         private float equipSoundPitch = 1;
-        private final List<ArtifactAbility> abilities = new ArrayList<>();
         private final Item.Properties properties = new Item.Properties();
 
         public Builder(String itemName) {
@@ -111,15 +109,15 @@ public class WearableArtifactItem extends Item {
         }
 
         public Builder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, boolean ignoreCooldown) {
-            return addAbility(new AttributeModifierAbility(attribute, amount, operation, Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().location().getPath()), ignoreCooldown));
+            return component(ModDataComponents.ATTRIBUTE_MODIFIER.get(), new AttributeModifierAbility(attribute, amount, operation, Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().location().getPath()), ignoreCooldown));
         }
 
         public Builder increasesEnchantment(ResourceKey<Enchantment> enchantment, Value<Integer> amount) {
-            return addAbility(new IncreaseEnchantmentLevelAbility(enchantment, amount));
+            return component(ModDataComponents.INCREASE_ENCHANTMENT_LEVEL.get(), new IncreaseEnchantmentLevelAbility(enchantment, amount));
         }
 
-        public Builder addAbility(ArtifactAbility ability) {
-            this.abilities.add(ability);
+        public <T> Builder component(DataComponentType<T> type, T component) {
+            properties.component(type, component);
             return this;
         }
 
@@ -129,7 +127,6 @@ public class WearableArtifactItem extends Item {
         }
 
         public WearableArtifactItem build() {
-            properties.component(ModDataComponents.ABILITIES.get(), abilities);
             properties.stacksTo(1).rarity(Rarity.RARE).fireResistant();
             return new WearableArtifactItem(properties, equipSound, equipSoundPitch);
         }

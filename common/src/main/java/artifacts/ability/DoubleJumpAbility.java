@@ -2,11 +2,11 @@ package artifacts.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
 import artifacts.registry.ModAttributes;
+import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModSoundEvents;
 import artifacts.util.AbilityHelper;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 
 public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHorizontalVelocity, Value<Double> sprintVerticalVelocity) implements ArtifactAbility {
 
-    public static final MapCodec<DoubleJumpAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<DoubleJumpAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(DoubleJumpAbility::enabled),
             ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_horizontal_velocity", Value.of(0D)).forGetter(DoubleJumpAbility::sprintHorizontalVelocity),
             ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_vertical_velocity", Value.of(0D)).forGetter(DoubleJumpAbility::sprintVerticalVelocity)
@@ -47,7 +47,7 @@ public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHori
         }
         if (player.isSprinting()) {
             upwardsMotion *= 1 + AbilityHelper.maxDouble(
-                    ModAbilities.DOUBLE_JUMP.get(), player,
+                    ModDataComponents.DOUBLE_JUMP.get(), player,
                     ability -> ability.sprintVerticalVelocity().get(), false
             );
         }
@@ -56,7 +56,7 @@ public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHori
         double motionMultiplier = 0;
         if (player.isSprinting()) {
             motionMultiplier = AbilityHelper.maxDouble(
-                    ModAbilities.DOUBLE_JUMP.get(), player,
+                    ModDataComponents.DOUBLE_JUMP.get(), player,
                     ability -> ability.sprintHorizontalVelocity().get(), false
             );
         }
@@ -84,11 +84,6 @@ public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHori
                 player.level().playSound(null, player, SoundEvents.WOOL_FALL, SoundSource.PLAYERS, 1, 0.9F + player.getRandom().nextFloat() * 0.2F);
             }
         }
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.DOUBLE_JUMP.value();
     }
 
     @Override

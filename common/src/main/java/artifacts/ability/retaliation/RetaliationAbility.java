@@ -3,7 +3,6 @@ package artifacts.ability.retaliation;
 import artifacts.ability.ArtifactAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.util.AbilityHelper;
 import artifacts.util.DamageSourceHelper;
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -43,10 +42,7 @@ public abstract class RetaliationAbility implements ArtifactAbility {
 
     public void onLivingHurt(LivingEntity entity, ItemStack stack, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (attacker != null
-                        && AbilityHelper.hasAbilityActive(getType(), entity)
-                        && entity.getRandom().nextDouble() < strikeChance().get()
-        ) {
+        if (attacker != null && isActive(entity) && entity.getRandom().nextDouble() < strikeChance().get()) {
             applyEffect(entity, attacker);
             if (entity instanceof Player player && cooldown().get() > 0) {
                 player.getCooldowns().addCooldown(stack.getItem(), cooldown().get() * 20);
@@ -68,5 +64,20 @@ public abstract class RetaliationAbility implements ArtifactAbility {
         } else {
             tooltip.add(tooltipLine("chance"));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RetaliationAbility that)) return false;
+
+        return strikeChance.equals(that.strikeChance) && cooldown.equals(that.cooldown);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = strikeChance.hashCode();
+        result = 31 * result + cooldown.hashCode();
+        return result;
     }
 }

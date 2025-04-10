@@ -1,7 +1,7 @@
 package artifacts.util;
 
 import artifacts.ability.AttributeModifierAbility;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.CommonComponents;
@@ -43,9 +43,9 @@ public class TooltipHelper {
             }
         }
         if (!hasSlotTooltip) {
-            if (AbilityHelper.hasAbility(ModAbilities.ATTRIBUTE_MODIFIER.value(), stack)
-                    || AbilityHelper.hasAbility(ModAbilities.MOB_EFFECT.value(), stack)
-                    || AbilityHelper.hasAbility(ModAbilities.LIMITED_WATER_BREATHING.value(), stack)
+            if (AbilityHelper.hasAbility(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack)
+                    || AbilityHelper.hasAbility(ModDataComponents.MOB_EFFECT.get(), stack)
+                    || AbilityHelper.hasAbility(ModDataComponents.LIMITED_WATER_BREATHING.get(), stack)
             ) {
                 consumer.accept(CommonComponents.EMPTY);
                 consumer.accept(Component.translatable("item.modifiers.body").withStyle(ChatFormatting.GRAY));
@@ -60,13 +60,13 @@ public class TooltipHelper {
 
     @Unique
     private static void artifacts$addAbilityAttributeTooltips(ItemStack stack, Consumer<Component> tooltip) {
-        AbilityHelper.iterateAbilities(ModAbilities.ATTRIBUTE_MODIFIER.get(), stack, ability ->
+        AbilityHelper.iterateAbilities(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack, ability ->
                 artifacts$addAbilityAttributeTooltip(tooltip, ability)
         );
-        AbilityHelper.iterateAbilities(ModAbilities.MOB_EFFECT.get(), stack, ability ->
+        AbilityHelper.iterateAbilities(ModDataComponents.MOB_EFFECT.get(), stack, ability ->
                 addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
         );
-        AbilityHelper.iterateAbilities(ModAbilities.LIMITED_WATER_BREATHING.get(), stack, ability ->
+        AbilityHelper.iterateAbilities(ModDataComponents.LIMITED_WATER_BREATHING.get(), stack, ability ->
                 addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
         );
     }
@@ -101,14 +101,14 @@ public class TooltipHelper {
     private static void addWhenHurtTooltips(Consumer<Component> tooltip, ItemStack stack) {
         MutableBoolean flag = new MutableBoolean(false);
         List<TagKey<DamageType>> list = new ArrayList<>();
-        AbilityHelper.iterateAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack, ability -> {
+        AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack, ability -> {
             if (ability.tag().isEmpty()) {
                 flag.setTrue();
             } else if (!list.contains(ability.tag().get())) {
                 list.add(ability.tag().get());
             }
         });
-        AbilityHelper.iterateAbilities(ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack, ability -> {
+        AbilityHelper.iterateAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack, ability -> {
             if (ability.tag().isEmpty()) {
                 flag.setTrue();
             } else if (!list.contains(ability.tag().get())) {
@@ -134,12 +134,12 @@ public class TooltipHelper {
     }
 
     private static void addWhenHurtTooltip(Consumer<Component> tooltip, ItemStack stack, @Nullable TagKey<DamageType> tag) {
-        AbilityHelper.iterateAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack, ability -> {
+        AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack, ability -> {
             if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                 addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false);
             }
         });
-        AbilityHelper.iterateAbilities(ModAbilities.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack, ability -> {
+        AbilityHelper.iterateAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack, ability -> {
             if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                 tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(ability.cooldown().get())).withStyle(ChatFormatting.GOLD));
             }
@@ -147,22 +147,22 @@ public class TooltipHelper {
     }
 
     private static void addPerFoodPointEatenTooltip(Consumer<Component> tooltip, ItemStack stack) {
-        if (AbilityHelper.hasAbility(ModAbilities.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack)) {
+        if (AbilityHelper.hasAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack)) {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.per_food_point_restored").withStyle(ChatFormatting.GRAY));
-            AbilityHelper.iterateAbilities(ModAbilities.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack, ability ->
+            AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack, ability ->
                     addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false)
             );
         }
     }
 
     private static void addAttacksInflictTooltip(Consumer<Component> tooltip, ItemStack stack, boolean chance) {
-        if (AbilityHelper.hasAbility(ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.get(), stack,
+        if (AbilityHelper.hasAbility(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), stack,
                 ability -> chance ^ Mth.equal(ability.chance().get(), 1)
         )) {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.attacks_inflict." + (chance ? "chance" : "constant")).withStyle(ChatFormatting.GRAY));
-            AbilityHelper.iterateAbilities(ModAbilities.ATTACKS_INFLICT_MOB_EFFECT.get(), stack, ability -> {
+            AbilityHelper.iterateAbilities(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), stack, ability -> {
                 addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false);
                 if (ability.cooldown().get() > 0) {
                     tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(ability.cooldown().get())).withStyle(ChatFormatting.GOLD));

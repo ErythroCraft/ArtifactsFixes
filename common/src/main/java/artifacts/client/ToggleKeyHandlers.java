@@ -5,10 +5,11 @@ import artifacts.component.AbilityToggles;
 import artifacts.network.NetworkHandler;
 import artifacts.network.ToggleArtifactPacket;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModKeyMappings;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponentType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +18,12 @@ import java.util.Map;
 
 public class ToggleKeyHandlers {
 
-    private static final Map<ArtifactAbility.Type<?>, KeyMapping> TOGGLE_KEY_MAPPINGS = new HashMap<>();
+    private static final Map<DataComponentType<?>, KeyMapping> TOGGLE_KEY_MAPPINGS = new HashMap<>();
     private static final List<ToggleInputHandler> INPUT_HANDLERS = new ArrayList<>();
 
     public static void init() {
-        addToggleInputHandler(ModAbilities.NIGHT_VISION.value(), ModKeyMappings.TOGGLE_NIGHT_VISION_GOGGLES);
-        addToggleInputHandler(ModAbilities.ATTRACT_ITEMS.value(), ModKeyMappings.TOGGLE_UNIVERSAL_ATTRACTOR);
+        addToggleInputHandler(ModDataComponents.NIGHT_VISION.get(), ModKeyMappings.TOGGLE_NIGHT_VISION_GOGGLES);
+        addToggleInputHandler(ModDataComponents.ATTRACT_ITEMS.get(), ModKeyMappings.TOGGLE_UNIVERSAL_ATTRACTOR);
     }
 
     public static void onClientTick() {
@@ -31,11 +32,11 @@ public class ToggleKeyHandlers {
         }
     }
 
-    public static KeyMapping getToggleKey(ArtifactAbility.Type<?> ability) {
+    public static KeyMapping getToggleKey(DataComponentType<?> ability) {
         return TOGGLE_KEY_MAPPINGS.get(ability);
     }
 
-    private static void addToggleInputHandler(ArtifactAbility.Type<?> ability, KeyMapping toggleKey) {
+    private static void addToggleInputHandler(DataComponentType<? extends ArtifactAbility> ability, KeyMapping toggleKey) {
         TOGGLE_KEY_MAPPINGS.put(ability, toggleKey);
         ToggleInputHandler handler = new ToggleInputHandler(ability);
         INPUT_HANDLERS.add(handler);
@@ -44,9 +45,9 @@ public class ToggleKeyHandlers {
     private static class ToggleInputHandler {
 
         private boolean wasToggleKeyDown;
-        private final ArtifactAbility.Type<?> ability;
+        private final DataComponentType<? extends ArtifactAbility> ability;
 
-        public ToggleInputHandler(ArtifactAbility.Type<?> ability) {
+        public ToggleInputHandler(DataComponentType<? extends ArtifactAbility> ability) {
             this.ability = ability;
         }
 

@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.makepiglinsneutral;
 
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +13,6 @@ public abstract class PiglinAiMixin {
 
     @ModifyReturnValue(method = "isWearingGold", at = @At("RETURN"))
     private static boolean isWearingGold(boolean original, LivingEntity entity) {
-        return original || AbilityHelper.hasAbilityActive(ModAbilities.MAKE_PIGLINS_NEUTRAL.value(), entity);
+        return original || AbilityHelper.hasAbilityActive(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), entity);
     }
 }

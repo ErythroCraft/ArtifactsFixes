@@ -1,11 +1,11 @@
 package artifacts.component;
 
-import artifacts.ability.ArtifactAbility;
 import artifacts.ability.CollideWithFluidsAbility;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import be.florens.expandability.api.EventResult;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +31,7 @@ public class SwimmingHooks {
         if (swimData != null) {
             if (swimData.isSwimming()) {
                 return EventResult.SUCCESS;
-            } else if (AbilityHelper.hasAbilityActive(ModAbilities.SINKING.value(), player)) {
+            } else if (AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player)) {
                 return EventResult.FAIL;
             }
         }
@@ -50,17 +50,17 @@ public class SwimmingHooks {
     }
 
     private static boolean canSprintOnFluid(LivingEntity entity, FluidState fluidState) {
-        return canCollideWithFluid(entity, fluidState, ModAbilities.SPRINT_ON_FLUIDS.get())
+        return canCollideWithFluid(entity, fluidState, ModDataComponents.SPRINT_ON_FLUIDS.get())
                 && entity.isSprinting()
                 && !entity.isUsingItem()
                 && !entity.isCrouching();
     }
 
     private static boolean canSneakOnFluid(LivingEntity entity, FluidState fluidState) {
-        return entity.isCrouching() && canCollideWithFluid(entity, fluidState, ModAbilities.SNEAK_ON_FLUIDS.get());
+        return entity.isCrouching() && canCollideWithFluid(entity, fluidState, ModDataComponents.SNEAK_ON_FLUIDS.get());
     }
 
-    private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState, ArtifactAbility.Type<CollideWithFluidsAbility> type) {
+    private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState, DataComponentType<CollideWithFluidsAbility> type) {
         return AbilityHelper.hasAbilityActive(type, entity, ability -> ability.tag().isEmpty() || fluidState.is(ability.tag().get()));
     }
 

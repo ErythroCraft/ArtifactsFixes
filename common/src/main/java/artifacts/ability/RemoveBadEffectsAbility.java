@@ -2,9 +2,8 @@ package artifacts.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
 import artifacts.registry.ModTags;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Holder;
@@ -18,7 +17,7 @@ import java.util.Map;
 
 public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> maxEffectDuration) implements ArtifactAbility {
 
-    public static final MapCodec<RemoveBadEffectsAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<RemoveBadEffectsAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(RemoveBadEffectsAbility::enabled),
             ValueTypes.DURATION.codec().fieldOf("duration").forGetter(RemoveBadEffectsAbility::maxEffectDuration)
     ).apply(instance, RemoveBadEffectsAbility::new));
@@ -30,11 +29,6 @@ public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> max
             RemoveBadEffectsAbility::maxEffectDuration,
             RemoveBadEffectsAbility::new
     );
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.REMOVE_BAD_EFFECTS.value();
-    }
 
     @Override
     public boolean isNonCosmetic() {

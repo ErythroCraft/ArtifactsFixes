@@ -58,7 +58,6 @@ public class Artifacts {
         ModItems.ITEMS.register();
         ModItems.CREATIVE_MODE_TABS.register();
         ModFeatures.FEATURES.register();
-        ModAbilities.ABILITIES.register();
     }
 
     public static void initConfigs() {

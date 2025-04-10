@@ -2,10 +2,9 @@ package artifacts.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
 import artifacts.registry.ModTags;
 import artifacts.util.ModCodecs;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.Registries;
@@ -25,7 +24,7 @@ public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> t
             ModTags.IS_HOT_FLOOR
     );
 
-    public static final MapCodec<DamageImmunityAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<DamageImmunityAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(DamageImmunityAbility::enabled),
             TagKey.codec(Registries.DAMAGE_TYPE).fieldOf("tag").forGetter(DamageImmunityAbility::tag)
     ).apply(instance, DamageImmunityAbility::new));
@@ -37,11 +36,6 @@ public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> t
             DamageImmunityAbility::tag,
             DamageImmunityAbility::new
     );
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.DAMAGE_IMMUNITY.value();
-    }
 
     @Override
     public boolean isNonCosmetic() {

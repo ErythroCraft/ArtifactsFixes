@@ -2,10 +2,8 @@ package artifacts.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
 import artifacts.registry.ModAttributes;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -51,7 +49,7 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
         ));
     }
 
-    public static final MapCodec<AttributeModifierAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<AttributeModifierAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BuiltInRegistries.ATTRIBUTE.holderByNameCodec().fieldOf("attribute").forGetter(AttributeModifierAbility::attribute),
             ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT.codec().fieldOf("amount").forGetter(AttributeModifierAbility::amount),
             AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(AttributeModifierAbility::operation),
@@ -81,11 +79,6 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
         if (attribute() == Attributes.MAX_HEALTH && entity.getHealth() > entity.getMaxHealth()) {
             entity.setHealth(entity.getMaxHealth());
         }
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.ATTRIBUTE_MODIFIER.value();
     }
 
     @Override

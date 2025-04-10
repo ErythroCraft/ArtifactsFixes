@@ -2,9 +2,9 @@ package artifacts.ability.mobeffect;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.registry.ModAbilities;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration) implements MobEffectAbility {
 
-    public static final MapCodec<ApplyMobEffectAfterEatingAbility> CODEC = RecordCodecBuilder.mapCodec(
+    public static final Codec<ApplyMobEffectAfterEatingAbility> CODEC = RecordCodecBuilder.create(
             instance -> MobEffectAbility.codecStartWithDuration(instance)
                     .apply(instance, ApplyMobEffectAfterEatingAbility::new)
     );
@@ -45,7 +45,7 @@ public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Valu
 
     public static void applyEffects(LivingEntity entity, int foodPointsRestored) {
         if (foodPointsRestored > 0) {
-            AbilityHelper.forEach(ModAbilities.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity,
+            AbilityHelper.forEach(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity,
                     ability -> entity.addEffect(ability.createEffect(ability.duration().get() * 20 * foodPointsRestored))
             );
         }
@@ -54,11 +54,6 @@ public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Valu
     @Override
     public boolean isVisible() {
         return true;
-    }
-
-    @Override
-    public Type<?> getType() {
-        return ModAbilities.APPLY_MOB_EFFECT_AFTER_EATING.value();
     }
 
     @Override
