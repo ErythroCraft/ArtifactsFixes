@@ -2,6 +2,7 @@ package artifacts.ability.mobeffect;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.registry.ModMobEffects;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -21,7 +22,8 @@ import java.util.Set;
 public class PermanentMobEffectAbility extends ConstantMobEffectAbility {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
-            MobEffects.INVISIBILITY
+            MobEffects.INVISIBILITY,
+            ModMobEffects.MAGNETISM // TODO add different magnetism strengths
     );
 
     public static final Codec<PermanentMobEffectAbility> CODEC = RecordCodecBuilder.create(instance -> MobEffectAbility.codecStart(instance)
@@ -41,6 +43,7 @@ public class PermanentMobEffectAbility extends ConstantMobEffectAbility {
 
     private final Value<Boolean> enabled;
 
+    // TODO add if/else -> number value, remove enabled parameter
     public PermanentMobEffectAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Boolean> enabled) {
         super(mobEffect, level);
         this.enabled = enabled;
@@ -74,6 +77,6 @@ public class PermanentMobEffectAbility extends ConstantMobEffectAbility {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), isEnabled());
+        return Objects.hash(super.hashCode(), enabled);
     }
 }

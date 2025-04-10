@@ -87,29 +87,29 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
     }
 
     @Override
-    public void onUnequip(LivingEntity entity, boolean wasActive) {
+    public void onUnequip(LivingEntity entity) {
         AttributeInstance attributeInstance = entity.getAttribute(attribute());
-        if (attributeInstance != null && wasActive) {
+        if (attributeInstance != null && attributeInstance.hasModifier(id())) {
             attributeInstance.removeModifier(id());
             onAttributeUpdated(entity);
         }
     }
 
     @Override
-    public boolean shouldTick() {
+    public boolean isTickingAbility() {
         return true;
     }
 
     @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
+    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
         AttributeInstance attributeInstance = entity.getAttribute(attribute());
         if (attributeInstance == null) {
             return;
         }
         AttributeModifier existingModifier = attributeInstance.getModifier(id());
         if (!ignoreCooldown() && isOnCooldown) {
-            if (isActive) {
-                onUnequip(entity, true);
+            if (!isDisabled && isNonCosmetic()) {
+                onUnequip(entity);
             }
         } else {
             if (existingModifier == null || !Mth.equal(amount().get(), existingModifier.amount())) {

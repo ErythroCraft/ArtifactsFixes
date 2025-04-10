@@ -1,6 +1,5 @@
 package artifacts.fabric.platform;
 
-import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
 import artifacts.fabric.registry.FabricRegister;
 import artifacts.fabric.registry.ModAttributesFabric;
@@ -28,12 +27,6 @@ import java.nio.file.Path;
 import java.util.function.Consumer;
 
 public class FabricPlatformHelper implements PlatformHelper {
-
-    @Nullable
-    @Override
-    public AbilityToggles getAbilityToggles(LivingEntity entity) {
-        return ModComponents.ABILITY_TOGGLES.getNullable(entity);
-    }
 
     @Nullable
     @Override

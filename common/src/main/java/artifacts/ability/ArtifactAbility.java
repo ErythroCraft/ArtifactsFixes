@@ -12,14 +12,6 @@ public interface ArtifactAbility {
 
     boolean isNonCosmetic();
 
-    default boolean isEnabled() {
-        return isNonCosmetic();
-    }
-
-    default boolean isActive(LivingEntity entity) {
-        return isEnabled() && true; // TODO AbilityHelper.isToggledOn(getType(), entity);
-    }
-
     default void addTooltipIfNonCosmetic(List<MutableComponent> tooltip) {
         if (isNonCosmetic()) {
             addAbilityTooltip(tooltip);
@@ -33,6 +25,7 @@ public interface ArtifactAbility {
         tooltip.add(Component.translatable("%s.tooltip.ability.%s".formatted(id.getNamespace(), id.getPath())));
     }
 
+    // TODO look at how minecraft handles component tooltips
     default void addToggleKeyTooltip(List<MutableComponent> tooltip) {
         // TODO
         /*
@@ -54,15 +47,15 @@ public interface ArtifactAbility {
         return Component.translatable("%s.tooltip.ability.%s.%s".formatted(id.getNamespace(), id.getPath(), abilityName), args);
     }
 
-    default boolean shouldTick() {
+    default boolean isTickingAbility() {
         return false;
     }
 
-    default void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
+    default void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
 
     }
 
-    default void onUnequip(LivingEntity entity, boolean wasActive) {
+    default void onUnequip(LivingEntity entity) {
 
     }
 }

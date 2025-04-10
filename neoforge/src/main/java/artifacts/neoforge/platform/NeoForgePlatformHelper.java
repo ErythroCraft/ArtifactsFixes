@@ -1,6 +1,5 @@
 package artifacts.neoforge.platform;
 
-import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
 import artifacts.integration.ModCompat;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
@@ -36,12 +35,6 @@ import java.nio.file.Path;
 import java.util.function.Consumer;
 
 public class NeoForgePlatformHelper implements PlatformHelper {
-
-    @Nullable
-    @Override
-    public AbilityToggles getAbilityToggles(LivingEntity entity) {
-        return entity.getData(ModAttachmentTypes.ABILITY_TOGGLES);
-    }
 
     @Nullable
     @Override

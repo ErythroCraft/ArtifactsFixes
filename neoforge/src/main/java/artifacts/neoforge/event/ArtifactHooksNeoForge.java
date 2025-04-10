@@ -1,14 +1,11 @@
 package artifacts.neoforge.event;
 
 import artifacts.ability.UpgradeToolTierAbility;
-import artifacts.component.AbilityToggles;
 import artifacts.event.ArtifactHooks;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.AbilityHelper;
 import artifacts.util.TooltipHelper;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.bus.api.EventPriority;
@@ -22,7 +19,6 @@ import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.util.List;
@@ -37,20 +33,12 @@ public class ArtifactHooksNeoForge {
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onGoldenHookExperienceDrop);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onKittySlippersChangeTarget);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onDiggingClawsHarvestCheck);
-        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onPlayerTick);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onBlockDrops);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::addAttributeTooltips);
     }
 
     private static void onEntityAdded(EntityJoinLevelEvent event) {
         ArtifactHooks.onEntityAdded(event.getEntity());
-    }
-
-    private static void onPlayerTick(PlayerTickEvent.Post event) {
-        AbilityToggles abilityToggles = PlatformServices.platformHelper.getAbilityToggles(event.getEntity());
-        if (event.getEntity() instanceof ServerPlayer serverPlayer && abilityToggles != null && serverPlayer.tickCount % 40 == 0) {
-            abilityToggles.sendToClient(serverPlayer);
-        }
     }
 
     private static void onLivingDamage(LivingDamageEvent.Post event) {
@@ -77,7 +65,7 @@ public class ArtifactHooksNeoForge {
     private static void onKittySlippersChangeTarget(LivingChangeTargetEvent event) {
         LivingEntity target = event.getNewAboutToBeSetTarget();
         if (event.getEntity().getType().is(ModTags.CREEPERS)
-                && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), target)
+                && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), target, true)
         ) {
             event.setCanceled(true);
         }
@@ -85,7 +73,7 @@ public class ArtifactHooksNeoForge {
 
     private static void onKittySlippersLivingUpdate(LivingEntity entity) {
         if (entity.getLastHurtByMob() != null
-                && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity.getLastHurtByMob())
+                && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity.getLastHurtByMob(), true)
                 && entity.getType().is(ModTags.CREEPERS)
         ) {
             entity.setLastHurtByMob(null);

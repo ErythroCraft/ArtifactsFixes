@@ -48,7 +48,7 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
     public static ItemStack findTotem(LivingEntity entity) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack handItem = entity.getItemInHand(hand);
-            if (AbilityHelper.hasAbility(ModDataComponents.TELEPORT_ON_DEATH.get(), handItem)
+            if (AbilityHelper.hasNonCosmeticAbility(ModDataComponents.TELEPORT_ON_DEATH.get(), handItem)
                     && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(handItem.getItem()))
             ) {
                 return handItem;
@@ -57,9 +57,9 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
 
         AtomicReference<ItemStack> result = new AtomicReference<>(ItemStack.EMPTY);
 
-        EquipmentIntegrationUtils.iterateEquippedAccessories(entity, stack -> {
+        EquipmentIntegrationUtils.iterateEquipment(entity, stack -> {
             if (result.get().isEmpty()
-                    && AbilityHelper.hasAbility(ModDataComponents.TELEPORT_ON_DEATH.get(), stack)
+                    && AbilityHelper.hasNonCosmeticAbility(ModDataComponents.TELEPORT_ON_DEATH.get(), stack)
                     && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem()))
             ) {
                 result.set(stack);

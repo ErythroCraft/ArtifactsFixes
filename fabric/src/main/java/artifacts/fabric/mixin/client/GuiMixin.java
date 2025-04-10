@@ -45,7 +45,7 @@ public abstract class GuiMixin {
         }
 
         MutableInt k = new MutableInt(0);
-        EquipmentIntegrationUtils.iterateEquippedAccessories(player, stack -> {
+        EquipmentIntegrationUtils.iterateEquipment(player, stack -> {
             if (!stack.isEmpty() && player.getCooldowns().isOnCooldown(stack.getItem())) { // TODO && stack.has(ModDataComponents.ABILITIES.get())
                 int x = start + step * k.intValue();
                 k.add(1);

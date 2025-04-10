@@ -19,7 +19,7 @@ public class HeliumFlamingoOverlay {
 
     public static boolean renderOverlay(int height, GuiGraphics guiGraphics, int screenWidth, int screenHeight) {
         if (!(Minecraft.getInstance().getCameraEntity() instanceof LivingEntity player)
-                || !AbilityHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player)
+                || !AbilityHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player, false)
         ) {
             return false;
         }

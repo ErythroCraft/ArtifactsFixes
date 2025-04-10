@@ -50,5 +50,22 @@ public interface Value<T> extends Supplier<T> {
         public ValueType<T, ?> type() {
             return type;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ConfigValue<?> that)) return false;
+
+            return type.equals(that.type) && getId().equals(that.getId()) && getDefaultValue().equals(that.getDefaultValue()) && value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = type.hashCode();
+            result = 31 * result + getId().hashCode();
+            result = 31 * result + getDefaultValue().hashCode();
+            result = 31 * result + value.hashCode();
+            return result;
+        }
     }
 }

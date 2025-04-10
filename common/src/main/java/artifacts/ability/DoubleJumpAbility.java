@@ -48,7 +48,7 @@ public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHori
         if (player.isSprinting()) {
             upwardsMotion *= 1 + AbilityHelper.maxDouble(
                     ModDataComponents.DOUBLE_JUMP.get(), player,
-                    ability -> ability.sprintVerticalVelocity().get(), false
+                    ability -> ability.sprintVerticalVelocity().get(), true
             );
         }
 
@@ -57,7 +57,7 @@ public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHori
         if (player.isSprinting()) {
             motionMultiplier = AbilityHelper.maxDouble(
                     ModDataComponents.DOUBLE_JUMP.get(), player,
-                    ability -> ability.sprintHorizontalVelocity().get(), false
+                    ability -> ability.sprintHorizontalVelocity().get(), true
             );
         }
         float direction = (float) (player.getYRot() * Math.PI / 180);

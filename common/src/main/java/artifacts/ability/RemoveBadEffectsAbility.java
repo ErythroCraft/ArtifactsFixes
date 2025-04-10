@@ -36,13 +36,13 @@ public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> max
     }
 
     @Override
-    public boolean shouldTick() {
+    public boolean isTickingAbility() {
         return true;
     }
 
     @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
-        if (!isActive) {
+    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        if (isDisabled || !isNonCosmetic()) {
             return;
         }
         Map<Holder<MobEffect>, MobEffectInstance> effects = new HashMap<>();

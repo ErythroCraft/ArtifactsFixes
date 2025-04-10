@@ -1,7 +1,6 @@
 package artifacts.neoforge.registry;
 
 import artifacts.Artifacts;
-import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -15,8 +14,5 @@ public class ModAttachmentTypes {
 
     public static final Supplier<AttachmentType<SwimData>> SWIM_DATA = ATTACHMENT_TYPES.register("swim_data", () ->
             AttachmentType.builder(SwimData::new).build()
-    );
-    public static final Supplier<AttachmentType<AbilityToggles>> ABILITY_TOGGLES = ATTACHMENT_TYPES.register("ability_toggles", () ->
-            AttachmentType.builder((Supplier<AbilityToggles>) AbilityToggles::new).serialize(AbilityToggles.CODEC).copyOnDeath().build()
     );
 }

@@ -1,6 +1,5 @@
 package artifacts.platform;
 
-import artifacts.component.AbilityToggles;
 import artifacts.component.SwimData;
 import artifacts.integration.ModCompat;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
@@ -25,9 +24,6 @@ import java.nio.file.Path;
 import java.util.function.Consumer;
 
 public interface PlatformHelper {
-
-    @Nullable
-    AbilityToggles getAbilityToggles(LivingEntity entity);
 
     @Nullable
     SwimData getSwimData(LivingEntity entity);

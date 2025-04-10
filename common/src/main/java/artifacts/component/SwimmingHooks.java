@@ -31,7 +31,7 @@ public class SwimmingHooks {
         if (swimData != null) {
             if (swimData.isSwimming()) {
                 return EventResult.SUCCESS;
-            } else if (AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player)) {
+            } else if (AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true)) {
                 return EventResult.FAIL;
             }
         }
@@ -61,7 +61,7 @@ public class SwimmingHooks {
     }
 
     private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState, DataComponentType<CollideWithFluidsAbility> type) {
-        return AbilityHelper.hasAbilityActive(type, entity, ability -> ability.tag().isEmpty() || fluidState.is(ability.tag().get()));
+        return AbilityHelper.hasAbilityActive(type, entity, true, ability -> ability.tag().isEmpty() || fluidState.is(ability.tag().get()));
     }
 
     private static void dealLavaDamage(LivingEntity entity, FluidState fluidState) {

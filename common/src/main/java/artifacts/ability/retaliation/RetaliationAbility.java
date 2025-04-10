@@ -3,6 +3,7 @@ package artifacts.ability.retaliation;
 import artifacts.ability.ArtifactAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.DamageSourceHelper;
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -42,7 +43,7 @@ public abstract class RetaliationAbility implements ArtifactAbility {
 
     public void onLivingHurt(LivingEntity entity, ItemStack stack, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (attacker != null && isActive(entity) && entity.getRandom().nextDouble() < strikeChance().get()) {
+        if (attacker != null && !stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()) && entity.getRandom().nextDouble() < strikeChance().get()) {
             applyEffect(entity, attacker);
             if (entity instanceof Player player && cooldown().get() > 0) {
                 player.getCooldowns().addCooldown(stack.getItem(), cooldown().get() * 20);

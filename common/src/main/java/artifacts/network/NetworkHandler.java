@@ -22,12 +22,11 @@ public class NetworkHandler {
     public static void initPayloads() {
         registerClientbound(ChorusTotemUsedPacket.TYPE, ChorusTotemUsedPacket.CODEC, ChorusTotemUsedPacket::apply);
         registerClientbound(PlaySoundAtPlayerPacket.TYPE, PlaySoundAtPlayerPacket.CODEC, PlaySoundAtPlayerPacket::apply);
-        registerClientbound(UpdateArtifactTogglesPacket.TYPE, UpdateArtifactTogglesPacket.CODEC, UpdateArtifactTogglesPacket::apply);
         registerClientbound(UpdateItemConfigPacket.TYPE, UpdateItemConfigPacket.CODEC, UpdateItemConfigPacket::apply);
 
         registerServerbound(DoubleJumpPacket.TYPE, DoubleJumpPacket.CODEC, DoubleJumpPacket::apply);
         registerServerbound(SwimPacket.TYPE, SwimPacket.CODEC, SwimPacket::apply);
-        registerServerbound(ToggleArtifactPacket.TYPE, ToggleArtifactPacket.CODEC, ToggleArtifactPacket::apply);
+        registerServerbound(ToggleKeyPressedPacket.TYPE, ToggleKeyPressedPacket.CODEC, ToggleKeyPressedPacket::apply);
     }
 
     private static <T extends CustomPacketPayload> void registerServerbound(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Receiver<T> receiver) {

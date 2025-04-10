@@ -13,6 +13,6 @@ public abstract class PiglinAiMixin {
 
     @ModifyReturnValue(method = "isWearingGold", at = @At("RETURN"))
     private static boolean isWearingGold(boolean original, LivingEntity entity) {
-        return original || AbilityHelper.hasAbilityActive(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), entity);
+        return original || AbilityHelper.hasAbilityActive(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), entity, true);
     }
 }

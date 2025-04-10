@@ -31,7 +31,7 @@ public class ArtifactCooldownOverlayRenderer {
 
         MutableInt k = new MutableInt(0);
 
-        EquipmentIntegrationUtils.iterateEquippedAccessories(player, stack -> {
+        EquipmentIntegrationUtils.iterateEquipment(player, stack -> {
             if (!stack.isEmpty() && stack.getItem() instanceof WearableArtifactItem && player.getCooldowns().isOnCooldown(stack.getItem())) {
                 int x = start + step * k.intValue();
                 k.add(1);

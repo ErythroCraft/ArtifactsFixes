@@ -18,6 +18,8 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
+// TODO add short cooldown after stopping swimming, remove full recharge requirement
+// TODO allow cancelling flight
 public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rechargeDuration) implements ArtifactAbility {
 
     public static final Codec<SwimInAirAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -39,7 +41,7 @@ public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rec
             return;
         }
         int maxFlightTime = getFlightDuration(player);
-        boolean shouldSink = AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player);
+        boolean shouldSink = AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true);
         boolean canFly = maxFlightTime > 0;
         if (swimData.isSwimming()) {
             if (swimData.getSwimTime() > maxFlightTime

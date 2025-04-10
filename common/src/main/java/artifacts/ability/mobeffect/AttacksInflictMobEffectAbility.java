@@ -61,7 +61,7 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
                         player.getCooldowns().addCooldown(stack.getItem(), ability.cooldown().get() * 20);
                     }
                 }
-            }, true);
+            }, true, true);
         }
     }
 

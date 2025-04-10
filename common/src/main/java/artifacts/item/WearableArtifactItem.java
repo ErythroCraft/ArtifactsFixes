@@ -5,6 +5,7 @@ import artifacts.ability.AttributeModifierAbility;
 import artifacts.ability.IncreaseEnchantmentLevelAbility;
 import artifacts.config.value.Value;
 import artifacts.integration.ModCompat;
+import artifacts.integration.equipment.EquipmentIntegration;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.function.Consumer;
 
+// TODO equip sound as item component
 public class WearableArtifactItem extends Item {
 
     private final Holder<SoundEvent> equipSound;
@@ -68,7 +70,7 @@ public class WearableArtifactItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        var integration = EquipmentIntegrationUtils.getIntegration(ModCompat.TRINKETS);
+        EquipmentIntegration integration = EquipmentIntegrationUtils.getIntegration(ModCompat.TRINKETS);
 
         if (!stack.has(DataComponents.FOOD) && integration != null && integration.equipAccessory(player, stack)) {
             player.playSound(getEquipSound(), 1, getEquipSoundPitch());

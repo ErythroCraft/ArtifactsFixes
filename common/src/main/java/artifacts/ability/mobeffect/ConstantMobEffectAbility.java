@@ -63,13 +63,13 @@ public abstract class ConstantMobEffectAbility implements MobEffectAbility {
     }
 
     @Override
-    public boolean shouldTick() {
+    public boolean isTickingAbility() {
         return true;
     }
 
     @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
-        if (!entity.level().isClientSide() && isActive && shouldApplyMobEffect(entity)) {
+    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        if (!entity.level().isClientSide() && !isDisabled && !isOnCooldown && isNonCosmetic() && shouldApplyMobEffect(entity)) {
             LivingEntity target = getTarget(entity);
             if (target != null) {
                 target.addEffect(createEffect(entity));
@@ -78,8 +78,8 @@ public abstract class ConstantMobEffectAbility implements MobEffectAbility {
     }
 
     @Override
-    public void onUnequip(LivingEntity entity, boolean wasActive) {
-        if (!entity.level().isClientSide() && getTarget(entity) == entity && wasActive) {
+    public void onUnequip(LivingEntity entity) {
+        if (!entity.level().isClientSide() && getTarget(entity) == entity) {
             MobEffectInstance instance = entity.getEffect(mobEffect());
             if (instance != null
                     && instance.getAmplifier() == getAmplifier()

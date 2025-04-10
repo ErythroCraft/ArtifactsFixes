@@ -38,19 +38,19 @@ public class TooltipHelper {
                 stack.forEachModifier(slot, (holder, attributeModifier) -> b.setTrue());
                 if (b.booleanValue()) {
                     hasSlotTooltip = true;
-                    artifacts$addAbilityAttributeTooltips(stack, consumer);
+                    addAbilityAttributeTooltips(stack, consumer);
                 }
             }
         }
         if (!hasSlotTooltip) {
-            if (AbilityHelper.hasAbility(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack)
-                    || AbilityHelper.hasAbility(ModDataComponents.MOB_EFFECT.get(), stack)
-                    || AbilityHelper.hasAbility(ModDataComponents.LIMITED_WATER_BREATHING.get(), stack)
+            if (AbilityHelper.hasNonCosmeticAbility(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack)
+                    || AbilityHelper.hasNonCosmeticAbility(ModDataComponents.MOB_EFFECT.get(), stack)
+                    || AbilityHelper.hasNonCosmeticAbility(ModDataComponents.LIMITED_WATER_BREATHING.get(), stack)
             ) {
                 consumer.accept(CommonComponents.EMPTY);
                 consumer.accept(Component.translatable("item.modifiers.body").withStyle(ChatFormatting.GRAY));
             }
-            artifacts$addAbilityAttributeTooltips(stack, consumer);
+            addAbilityAttributeTooltips(stack, consumer);
         }
         addWhenHurtTooltips(consumer, stack);
         addPerFoodPointEatenTooltip(consumer, stack);
@@ -59,20 +59,20 @@ public class TooltipHelper {
     }
 
     @Unique
-    private static void artifacts$addAbilityAttributeTooltips(ItemStack stack, Consumer<Component> tooltip) {
-        AbilityHelper.iterateAbilities(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack, ability ->
-                artifacts$addAbilityAttributeTooltip(tooltip, ability)
+    private static void addAbilityAttributeTooltips(ItemStack stack, Consumer<Component> tooltip) {
+        AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack, ability ->
+                addAbilityAttributeTooltip(tooltip, ability)
         );
-        AbilityHelper.iterateAbilities(ModDataComponents.MOB_EFFECT.get(), stack, ability ->
+        AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.MOB_EFFECT.get(), stack, ability ->
                 addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
         );
-        AbilityHelper.iterateAbilities(ModDataComponents.LIMITED_WATER_BREATHING.get(), stack, ability ->
+        AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.LIMITED_WATER_BREATHING.get(), stack, ability ->
                 addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
         );
     }
 
     @Unique
-    private static void artifacts$addAbilityAttributeTooltip(Consumer<Component> tooltip, AttributeModifierAbility ability) {
+    private static void addAbilityAttributeTooltip(Consumer<Component> tooltip, AttributeModifierAbility ability) {
         double amount = ability.amount().get();
 
         if (ability.operation() != AttributeModifier.Operation.ADD_VALUE) {
@@ -101,14 +101,14 @@ public class TooltipHelper {
     private static void addWhenHurtTooltips(Consumer<Component> tooltip, ItemStack stack) {
         MutableBoolean flag = new MutableBoolean(false);
         List<TagKey<DamageType>> list = new ArrayList<>();
-        AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack, ability -> {
+        AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack, ability -> {
             if (ability.tag().isEmpty()) {
                 flag.setTrue();
             } else if (!list.contains(ability.tag().get())) {
                 list.add(ability.tag().get());
             }
         });
-        AbilityHelper.iterateAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack, ability -> {
+        AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack, ability -> {
             if (ability.tag().isEmpty()) {
                 flag.setTrue();
             } else if (!list.contains(ability.tag().get())) {
@@ -134,12 +134,12 @@ public class TooltipHelper {
     }
 
     private static void addWhenHurtTooltip(Consumer<Component> tooltip, ItemStack stack, @Nullable TagKey<DamageType> tag) {
-        AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack, ability -> {
+        AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack, ability -> {
             if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                 addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false);
             }
         });
-        AbilityHelper.iterateAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack, ability -> {
+        AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack, ability -> {
             if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                 tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(ability.cooldown().get())).withStyle(ChatFormatting.GOLD));
             }
@@ -147,22 +147,22 @@ public class TooltipHelper {
     }
 
     private static void addPerFoodPointEatenTooltip(Consumer<Component> tooltip, ItemStack stack) {
-        if (AbilityHelper.hasAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack)) {
+        if (AbilityHelper.hasNonCosmeticAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack)) {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.per_food_point_restored").withStyle(ChatFormatting.GRAY));
-            AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack, ability ->
+            AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack, ability ->
                     addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false)
             );
         }
     }
 
     private static void addAttacksInflictTooltip(Consumer<Component> tooltip, ItemStack stack, boolean chance) {
-        if (AbilityHelper.hasAbility(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), stack,
+        if (AbilityHelper.hasNonCosmeticAbility(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), stack,
                 ability -> chance ^ Mth.equal(ability.chance().get(), 1)
         )) {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.attacks_inflict." + (chance ? "chance" : "constant")).withStyle(ChatFormatting.GRAY));
-            AbilityHelper.iterateAbilities(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), stack, ability -> {
+            AbilityHelper.iterateNonCosmeticAbilities(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), stack, ability -> {
                 addMobEffectTooltip(tooltip, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false);
                 if (ability.cooldown().get() > 0) {
                     tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(ability.cooldown().get())).withStyle(ChatFormatting.GOLD));

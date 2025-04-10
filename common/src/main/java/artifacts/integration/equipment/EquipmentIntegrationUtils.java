@@ -32,13 +32,13 @@ public class EquipmentIntegrationUtils {
         INTEGRATIONS.put(name, integration);
     }
 
-    public static void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer) {
+    public static void iterateEquipment(LivingEntity entity, Consumer<ItemStack> consumer) {
         for (EquipmentIntegration integration : INTEGRATIONS.values()) {
             integration.iterateEquippedAccessories(entity, consumer);
         }
     }
 
-    public static <T> T reduceAccessories(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    public static <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
         for (EquipmentIntegration integration : INTEGRATIONS.values()) {
             init = integration.reduceAccessories(entity, init, f);
         }

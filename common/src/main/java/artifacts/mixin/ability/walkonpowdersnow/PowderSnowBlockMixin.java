@@ -14,6 +14,6 @@ public abstract class PowderSnowBlockMixin {
 
     @ModifyReturnValue(method = "canEntityWalkOnPowderSnow", at = @At("RETURN"))
     private static boolean canEntityWalkOnPowderSnow(boolean original, Entity entity) {
-        return original || (entity instanceof LivingEntity livingEntity && AbilityHelper.hasAbilityActive(ModDataComponents.WALK_ON_POWDER_SNOW.get(), livingEntity));
+        return original || (entity instanceof LivingEntity livingEntity && AbilityHelper.hasAbilityActive(ModDataComponents.WALK_ON_POWDER_SNOW.get(), livingEntity, true));
     }
 }

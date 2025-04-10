@@ -35,13 +35,13 @@ public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Intege
     }
 
     @Override
-    public boolean shouldTick() {
+    public boolean isTickingAbility() {
         return true;
     }
 
     @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isActive) {
-        if (isActive && entity instanceof ServerPlayer player
+    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        if (!isDisabled && !isOnCooldown && isNonCosmetic() && entity instanceof ServerPlayer player
                 && player.onGround()
                 && player.getFoodData().needsFood()
                 && entity.tickCount % (Math.max(1, replenishingDuration().get()) * 20) == 0

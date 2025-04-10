@@ -22,14 +22,14 @@ public class CloudInABottleInputHandler {
     }
 
     private static void handleCloudInABottleInput(LocalPlayer player) {
-        if ((player.onGround() || player.onClimbable()) && (!player.isInWater() || AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player))) {
+        if ((player.onGround() || player.onClimbable()) && (!player.isInWater() || AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true))) {
             hasReleasedJumpKey = false;
             canDoubleJump = true;
         } else if (!player.input.jumping) {
             hasReleasedJumpKey = true;
         } else if (!player.getAbilities().flying && canDoubleJump && hasReleasedJumpKey) {
             canDoubleJump = false;
-            if (AbilityHelper.hasAbilityActive(ModDataComponents.DOUBLE_JUMP.get(), player)) {
+            if (AbilityHelper.hasAbilityActive(ModDataComponents.DOUBLE_JUMP.get(), player, true)) {
                 NetworkHandler.sendToServer(new DoubleJumpPacket());
                 DoubleJumpAbility.jump(player);
             }

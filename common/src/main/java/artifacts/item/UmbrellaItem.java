@@ -71,7 +71,7 @@ public class UmbrellaItem extends ArtifactItem {
                 && entity.getDeltaMovement().y < 0
                 && !entity.hasEffect(MobEffects.SLOW_FALLING)
                 && Artifacts.CONFIG.items.umbrellaIsGlider.get()
-                && !(entity.isInWater() && !AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), entity))
+                && !(entity.isInWater() && !AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), entity, true))
                 && UmbrellaItem.isHoldingUmbrellaUpright(entity);
     }
 

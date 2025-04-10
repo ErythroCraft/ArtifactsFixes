@@ -72,7 +72,6 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.ATTACKS_ABSORB_DAMAGE.get(), "constant", "Causes the wearer's melee attacks to absorb health");
         addAbilityTooltip(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), MobEffects.WITHER, "chance", "Melee attacks have a chance to inflict a wither effect");
         addAbilityTooltip(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), MobEffects.WITHER, "constant", "Causes the wearer's melee attacks to inflict a wither effect");
-        addAbilityTooltip(ModDataComponents.ATTRACT_ITEMS.get(), "Attracts nearby items");
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIER.get(), ModAttributes.ATTACK_BURNING_DURATION, "Causes the wearer's melee attacks to deal fire damage");
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIER.get(), Attributes.ATTACK_DAMAGE, "Increases damage dealt by the wearer");
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIER.get(), Attributes.ATTACK_KNOCKBACK, "Increases knockback dealt by the wearer");
@@ -113,6 +112,7 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.LIMITED_WATER_BREATHING.get(), "infinite", "Allows the wearer to breathe underwater");
         addAbilityTooltip(ModDataComponents.LIMITED_WATER_BREATHING.get(), "limited", "Allows the wearer to breathe underwater for a limited amount of time");
         addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "invisibility", "Turns the wearer invisible");
+        addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "magnetism", "Attracts nearby items"); // TODO gen data
         addAbilityTooltip(ModDataComponents.NIGHT_VISION.get(), "full", "Allows the wearer to see in the dark");
         addAbilityTooltip(ModDataComponents.NIGHT_VISION.get(), "partial", "Allows the wearer to see in the dark slightly");
         addAbilityTooltip(ModDataComponents.NULLIFY_ENDER_PEARL_DAMAGE.get(), "Ender Pearls deal no damage");

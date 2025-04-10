@@ -22,7 +22,8 @@ import java.util.function.Predicate;
 public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> extends TargetGoal {
 
     @Unique
-    private static final Predicate<LivingEntity> NOT_WEARING_KITTY_SLIPPERS = entity -> !AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity);
+    private static final Predicate<LivingEntity> NOT_WEARING_KITTY_SLIPPERS = entity ->
+            !AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity, true);
 
     @Shadow
     @Final

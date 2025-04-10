@@ -36,7 +36,7 @@ public record UpgradeToolTierAbility(Value<Tier> tier) implements ArtifactAbilit
         if (state.is(ModTags.MINEABLE_WITH_DIGGING_CLAWS)) {
             Tier tier = Tier.fromLevel(AbilityHelper.maxInt(
                     ModDataComponents.UPGRADE_TOOL_TIER.get(), entity,
-                    ability -> ability.tier().get().getLevel(), false
+                    ability -> ability.tier().get().getLevel(), true
             ));
             return isCorrectTierForDrops(tier, state);
         }

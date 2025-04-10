@@ -23,7 +23,7 @@ public abstract class HurtByTargetGoalMixin extends TargetGoal {
     @Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
     private void cancelRevenge(CallbackInfoReturnable<Boolean> info) {
         LivingEntity attacker = mob.getLastHurtByMob();
-        if (ModTags.isInTag(mob.getType(), ModTags.CREEPERS) && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), attacker)) {
+        if (ModTags.isInTag(mob.getType(), ModTags.CREEPERS) && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), attacker, true)) {
             info.setReturnValue(false); // early return intended!
         }
     }

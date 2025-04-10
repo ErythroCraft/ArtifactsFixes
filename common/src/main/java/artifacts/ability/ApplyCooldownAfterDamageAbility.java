@@ -15,6 +15,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
@@ -34,12 +35,16 @@ public record ApplyCooldownAfterDamageAbility(Value<Integer> cooldown, Optional<
     );
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
-        AbilityHelper.applyCooldowns(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), entity, ability -> {
-            if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
-                return ability.cooldown().get();
-            }
-            return 0;
-        });
+        if (entity instanceof Player player && !player.level().isClientSide()) {
+            AbilityHelper.forEach(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), entity, (ability, stack) -> {
+                if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
+                    int c = ability.cooldown().get() * 20;
+                    if (c > 0) {
+                        player.getCooldowns().addCooldown(stack.getItem(), c);
+                    }
+                }
+            }, true, true);
+        }
     }
 
     @Override
