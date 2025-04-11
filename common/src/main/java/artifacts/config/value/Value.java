@@ -56,7 +56,7 @@ public interface Value<T> extends Supplier<T> {
             if (this == o) return true;
             if (!(o instanceof ConfigValue<?> that)) return false;
 
-            return type.equals(that.type) && getId().equals(that.getId()) && getDefaultValue().equals(that.getDefaultValue()) && value.equals(that.value);
+            return type.equals(that.type) && getId().equals(that.getId()) && getDefaultValue().equals(that.getDefaultValue());
         }
 
         @Override
@@ -64,7 +64,6 @@ public interface Value<T> extends Supplier<T> {
             int result = type.hashCode();
             result = 31 * result + getId().hashCode();
             result = 31 * result + getDefaultValue().hashCode();
-            result = 31 * result + value.hashCode();
             return result;
         }
     }
