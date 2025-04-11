@@ -111,7 +111,7 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
             if (!isDisabled && isNonCosmetic()) {
                 onUnequip(entity);
             }
-        } else {
+        } else if (!isDisabled) {
             if (existingModifier == null || !Mth.equal(amount().get(), existingModifier.amount())) {
                 attributeInstance.removeModifier(id());
                 attributeInstance.addPermanentModifier(createModifier());

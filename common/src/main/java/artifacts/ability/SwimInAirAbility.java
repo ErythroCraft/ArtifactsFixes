@@ -83,10 +83,6 @@ public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rec
     @Override
     public void addAbilityTooltip(List<MutableComponent> tooltip) {
         tooltip.add(tooltipLine("swimming"));
-    }
-
-    @Override
-    public void addToggleKeyTooltip(List<MutableComponent> tooltip) {
         tooltip.add(tooltipLine("keymapping", ModKeyMappings.getHeliumFlamingoKey().getTranslatedKeyMessage()));
     }
 }

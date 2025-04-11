@@ -56,8 +56,11 @@ public class Language extends LanguageProvider {
     private void addMiscTranslations() {
         add("artifacts.creative_tab", "Artifacts");
         add("artifacts.key.helium_flamingo.activate", "Activate Helium Flamingo");
+        add("artifacts.key.charm_of_shrinking.toggle", "Toggle Charm of Shrinking");
+        add("artifacts.key.charm_of_sinking.toggle", "Toggle Charm of Sinking");
         add("artifacts.key.night_vision_goggles.toggle", "Toggle Night Vision Goggles");
         add("artifacts.key.universal_attractor.toggle", "Toggle Universal Attractor");
+        add("artifacts.key.scarf_of_invisibility.toggle", "Toggle Scarf of Invisibility");
         add("artifacts.key_category", "Artifacts");
         add(ModSoundEvents.FART.value(), "Fart");
         add("curios.identifier.feet", "Feet");

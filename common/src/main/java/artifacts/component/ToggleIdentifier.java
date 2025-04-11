@@ -10,8 +10,11 @@ import net.minecraft.util.StringRepresentable;
 import java.util.function.IntFunction;
 
 public enum ToggleIdentifier implements StringRepresentable {
-    NIGHT_VISION_GOGGLES(0, "night_vision_goggles"),
-    UNIVERSAL_ATTRACTOR(1, "universal_attractor");
+    CHARM_OF_SHRINKING(0, "charm_of_shrinking"),
+    CHARM_OF_SINKING(1, "charm_of_sinking"),
+    NIGHT_VISION_GOGGLES(2, "night_vision_goggles"),
+    SCARF_OF_INVISIBILITY(3, "scarf_of_invisibility"),
+    UNIVERSAL_ATTRACTOR(4, "universal_attractor");
 
     private final int id;
     private final String name;

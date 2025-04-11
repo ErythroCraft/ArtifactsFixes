@@ -95,6 +95,7 @@ public class ModItems {
     );
     public static final Holder<Item> SCARF_OF_INVISIBILITY = wearableItem("scarf_of_invisibility", builder -> builder
             .component(ModDataComponents.MOB_EFFECT.get(), new PermanentMobEffectAbility(MobEffects.INVISIBILITY, Value.of(1), Artifacts.CONFIG.items.scarfOfInvisibilityEnabled))
+            .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.SCARF_OF_INVISIBILITY)
     );
     public static final Holder<Item> CROSS_NECKLACE = wearableItem("cross_necklace", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
@@ -141,9 +142,11 @@ public class ModItems {
     );
     public static final Holder<Item> CHARM_OF_SINKING = wearableItem("charm_of_sinking", builder -> builder
             .component(ModDataComponents.SINKING.get(), new SimpleAbility(Artifacts.CONFIG.items.charmOfSinkingEnabled))
+            .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SINKING)
     );
     public static final Holder<Item> CHARM_OF_SHRINKING = wearableItem("charm_of_shrinking", builder -> builder
             .addAttributeModifier(Attributes.SCALE, Artifacts.CONFIG.items.charmOfShrinkingScaleModifier, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SHRINKING)
     );
 
     // belt

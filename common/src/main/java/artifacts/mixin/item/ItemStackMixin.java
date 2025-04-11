@@ -2,10 +2,14 @@ package artifacts.mixin.item;
 
 import artifacts.Artifacts;
 import artifacts.ability.ArtifactAbility;
+import artifacts.client.ToggleKeyHandlers;
+import artifacts.component.ToggleIdentifier;
 import artifacts.item.WearableArtifactItem;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import artifacts.util.TooltipHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -49,6 +53,13 @@ public abstract class ItemStackMixin {
         for (TypedDataComponent<?> component : stack.getComponents()) {
             if (component.value() instanceof ArtifactAbility ability) {
                 ability.addTooltipIfNonCosmetic(tooltip);
+            }
+        }
+        ToggleIdentifier toggleKey = stack.get(ModDataComponents.TOGGLE_KEY.get());
+        if (toggleKey != null) {
+            KeyMapping key = ToggleKeyHandlers.getKeyMapping(toggleKey);
+            if (key != null && player != null && (!key.isUnbound() || stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()))) {
+                tooltip.add(Component.translatable("%s.tooltip.toggle_keymapping".formatted(Artifacts.MOD_ID), key.getTranslatedKeyMessage()));
             }
         }
         tooltip.forEach(line -> tooltipList.add(line.withStyle(ChatFormatting.GRAY)));

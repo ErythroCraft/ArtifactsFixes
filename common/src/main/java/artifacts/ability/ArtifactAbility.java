@@ -15,7 +15,6 @@ public interface ArtifactAbility {
     default void addTooltipIfNonCosmetic(List<MutableComponent> tooltip) {
         if (isNonCosmetic()) {
             addAbilityTooltip(tooltip);
-            addToggleKeyTooltip(tooltip);
         }
     }
 
@@ -23,22 +22,6 @@ public interface ArtifactAbility {
     default void addAbilityTooltip(List<MutableComponent> tooltip) {
         ResourceLocation id = Artifacts.id(""); // TODO
         tooltip.add(Component.translatable("%s.tooltip.ability.%s".formatted(id.getNamespace(), id.getPath())));
-    }
-
-    // TODO look at how minecraft handles component tooltips
-    default void addToggleKeyTooltip(List<MutableComponent> tooltip) {
-        // TODO
-        /*
-        KeyMapping key = ToggleKeyHandlers.getToggleKey(this.getType());
-        Player player = null;
-        // noinspection ConstantValue
-        if (Minecraft.getInstance() != null) {
-            player = ArtifactsClient.getLocalPlayer();
-        }
-        if (key != null && player != null && (!key.isUnbound() || !AbilityHelper.isToggledOn(getType(), player))) {
-            tooltip.add(Component.translatable("%s.tooltip.toggle_keymapping".formatted(Artifacts.MOD_ID), key.getTranslatedKeyMessage()));
-        }
-        */
     }
 
     @SuppressWarnings("ConstantConditions")
