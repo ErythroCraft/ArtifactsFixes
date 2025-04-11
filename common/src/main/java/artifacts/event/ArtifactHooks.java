@@ -3,8 +3,8 @@ package artifacts.event;
 import artifacts.Artifacts;
 import artifacts.ability.ApplyCooldownAfterDamageAbility;
 import artifacts.ability.CollideWithFluidsAbility;
-import artifacts.ability.EquipmentAbility;
 import artifacts.ability.SwimInAirAbility;
+import artifacts.ability.TickingAbility;
 import artifacts.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
 import artifacts.ability.mobeffect.AttacksInflictMobEffectAbility;
 import artifacts.ability.retaliation.RetaliationAbility;
@@ -22,7 +22,6 @@ import artifacts.util.AbilityHelper;
 import artifacts.util.DamageSourceHelper;
 import be.florens.expandability.api.EventResult;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -47,7 +46,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -77,42 +75,33 @@ public class ArtifactHooks {
             return;
         }
 
-        List<EquipmentAbility> oldAbilities = AbilityHelper.getAbilities(oldStack);
-        List<EquipmentAbility> newAbilities = AbilityHelper.getAbilities(newStack);
-
         boolean wasDisabled = oldStack.has(ModDataComponents.DISABLED_BY_TOGGLE.get());
         boolean isDisabled = newStack.has(ModDataComponents.DISABLED_BY_TOGGLE.get());
+        boolean wasToggledOff = wasDisabled ^ isDisabled && isDisabled;
 
-        if (!oldAbilities.isEmpty() || !newAbilities.isEmpty()) {
-            // mark the entity as having ticking abilities if needed
-            refreshTickingAbilities(entity);
-        }
-
-        if (wasDisabled ^ isDisabled && isDisabled) {
-            // item was manually toggled off, unequip all abilities
-            for (EquipmentAbility ability : oldAbilities) {
-                if (ability.isNonCosmetic()) {
-                    ability.onUnequip(entity);
-                }
-            }
-        } else if (!oldAbilities.isEmpty() && !oldAbilities.equals(newAbilities)) {
-            // some abilities may have been removed
-            for (EquipmentAbility ability : oldAbilities) {
-                if (!newAbilities.contains(ability)) {
-                    if (ability.isNonCosmetic()) {
-                        ability.onUnequip(entity);
-                    }
-                }
+        for (var type : ModDataComponents.TICKING_COMPONENTS) {
+            TickingAbility oldAbility = oldStack.get(type.get());
+            // Item was toggled off, does not have the ability, or the new ability is different
+            if (oldAbility != null && oldAbility.isNonCosmetic()
+                    && (wasToggledOff || !oldAbility.equals(newStack.get(type.get())))
+            ) {
+                oldAbility.onUnequip(entity);
             }
         }
+
+        refreshTickingAbilities(entity);
     }
 
     public static void refreshTickingAbilities(LivingEntity entity) {
-        boolean shouldTick = EquipmentIntegrationUtils.reduceEquipment(entity, false, (stack, init_) -> {
-            for (EquipmentAbility ability : AbilityHelper.getAbilities(stack)) {
-                init_ = init_ || ability.isTickingAbility();
+        boolean shouldTick = EquipmentIntegrationUtils.reduceEquipment(entity, false, (stack, hasTickingAbilities) -> {
+            for (var type : ModDataComponents.TICKING_COMPONENTS) {
+                // abilities are tracked as ticking even when they're cosmetic,
+                // since updating the config does not trigger onItemChanged
+                if (stack.has(type.get())) {
+                    return true;
+                }
             }
-            return init_;
+            return hasTickingAbilities;
         });
         ((LivingEntityExtensions) entity).artifacts$setTickingAbilities(shouldTick);
     }
@@ -121,14 +110,12 @@ public class ArtifactHooks {
         if (entity.level().isClientSide() || !((LivingEntityExtensions) entity).artifacts$hasTickingAbilities()) {
             return;
         }
-        EquipmentIntegrationUtils.iterateEquipment(entity, stack -> {
-            for (TypedDataComponent<?> component : stack.getComponents()) {
-                if (component.value() instanceof EquipmentAbility ability) {
-                    boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem());
-                    ability.wornTick(entity, isOnCooldown, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
-                }
-            }
-        });
+        for (var type : ModDataComponents.TICKING_COMPONENTS) {
+            AbilityHelper.iterateAbilities(type.get(), entity, false, false, (ability, stack) -> {
+                boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem());
+                ability.wornTick(entity, isOnCooldown, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
+            });
+        }
     }
 
     public static void onAttackBurningLivingHurt(LivingEntity entity, DamageSource damageSource) {

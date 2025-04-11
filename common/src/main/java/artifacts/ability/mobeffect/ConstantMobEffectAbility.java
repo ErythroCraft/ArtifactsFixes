@@ -1,5 +1,6 @@
 package artifacts.ability.mobeffect;
 
+import artifacts.ability.TickingAbility;
 import artifacts.config.value.Value;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
@@ -7,7 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class ConstantMobEffectAbility implements MobEffectAbility {
+public abstract class ConstantMobEffectAbility implements MobEffectAbility, TickingAbility {
 
     private final Holder<MobEffect> mobEffect;
     protected final Value<Integer> level;
@@ -59,11 +60,6 @@ public abstract class ConstantMobEffectAbility implements MobEffectAbility {
     }
 
     protected boolean shouldApplyMobEffect(LivingEntity entity) {
-        return true;
-    }
-
-    @Override
-    public boolean isTickingAbility() {
         return true;
     }
 

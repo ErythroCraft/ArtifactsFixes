@@ -24,7 +24,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, ResourceLocation id, boolean ignoreCooldown) implements EquipmentAbility {
+public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation,
+                                       ResourceLocation id, boolean ignoreCooldown) implements EquipmentAbility, TickingAbility {
 
     private static final Set<Holder<Attribute>> POSITIVE_ATTRIBUTES_WITH_TOOLTIP;
     private static final Set<Holder<Attribute>> NEGATIVE_ATTRIBUTES_WITH_TOOLTIP = Set.of(
@@ -93,11 +94,6 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
             attributeInstance.removeModifier(id());
             onAttributeUpdated(entity);
         }
-    }
-
-    @Override
-    public boolean isTickingAbility() {
-        return true;
     }
 
     @Override

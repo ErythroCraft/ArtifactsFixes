@@ -4,7 +4,6 @@ import artifacts.Artifacts;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
 
@@ -28,17 +27,5 @@ public interface EquipmentAbility {
     default MutableComponent tooltipLine(String abilityName, Object... args) {
         ResourceLocation id = Artifacts.id(""); // TODO ModAbilities.getRegistry().getKey(getType());
         return Component.translatable("%s.tooltip.ability.%s.%s".formatted(id.getNamespace(), id.getPath(), abilityName), args);
-    }
-
-    default boolean isTickingAbility() {
-        return false;
-    }
-
-    default void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
-
-    }
-
-    default void onUnequip(LivingEntity entity) {
-
     }
 }

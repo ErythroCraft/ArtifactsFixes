@@ -18,12 +18,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Unit;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class ModDataComponents {
 
     public static final Register<DataComponentType<?>> DATA_COMPONENT_TYPES = PlatformServices.platformHelper.createRegister(Registries.DATA_COMPONENT_TYPE);
+
+    public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
 
     public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
     public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE = registerSynced("disabled_by_toggle", Codec.unit(Unit.INSTANCE), StreamCodec.unit(Unit.INSTANCE));
@@ -99,6 +103,15 @@ public class ModDataComponents {
             registerSynced("upgrade_tool_tier", UpgradeToolTierAbility.CODEC, UpgradeToolTierAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<SimpleAbility>> WALK_ON_POWDER_SNOW =
             registerSimpleAbility("walk_on_powdered_snow");
+
+    static {
+        TICKING_COMPONENTS.add(ModDataComponents.ATTRIBUTE_MODIFIER);
+        TICKING_COMPONENTS.add(ModDataComponents.REPLENISH_HUNGER_ON_GRASS);
+        TICKING_COMPONENTS.add(ModDataComponents.REMOVE_BAD_EFFECTS);
+        TICKING_COMPONENTS.add(ModDataComponents.MOB_EFFECT);
+        TICKING_COMPONENTS.add(ModDataComponents.LIMITED_WATER_BREATHING);
+        TICKING_COMPONENTS.add(ModDataComponents.NIGHT_VISION);
+    }
 
     private static Component tooltip(String ability, String name) {
         return Component.translatable("%s.tooltip.ability.%s.%s".formatted(Artifacts.MOD_ID, ability, name));

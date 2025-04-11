@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 
-public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Integer> replenishingDuration) implements EquipmentAbility {
+public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Integer> replenishingDuration) implements EquipmentAbility, TickingAbility {
 
     public static final Codec<ReplenishHungerOnGrassAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(ReplenishHungerOnGrassAbility::enabled),
@@ -32,11 +32,6 @@ public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Intege
     @Override
     public boolean isNonCosmetic() {
         return enabled().get();
-    }
-
-    @Override
-    public boolean isTickingAbility() {
-        return true;
     }
 
     @Override

@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> maxEffectDuration) implements EquipmentAbility {
+public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> maxEffectDuration) implements EquipmentAbility, TickingAbility {
 
     public static final Codec<RemoveBadEffectsAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(RemoveBadEffectsAbility::enabled),
@@ -33,11 +33,6 @@ public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> max
     @Override
     public boolean isNonCosmetic() {
         return enabled().get();
-    }
-
-    @Override
-    public boolean isTickingAbility() {
-        return true;
     }
 
     @Override
