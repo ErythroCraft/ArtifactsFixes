@@ -6,9 +6,13 @@ import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.AbilityHelper;
 import artifacts.util.TooltipHelper;
+import be.florens.expandability.api.EventResult;
+import be.florens.expandability.api.forge.LivingFluidCollisionEvent;
+import be.florens.expandability.api.forge.PlayerSwimEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.bus.api.EventPriority;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.AddAttributeTooltipsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -26,6 +30,10 @@ import java.util.List;
 public class ArtifactHooksNeoForge {
 
     public static void register() {
+        if (ModList.get().isLoaded("expandability")) {
+            NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onPlayerSwim);
+            NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onAquaDashersFluidCollision);
+        }
         NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ArtifactHooksNeoForge::onLivingDamage);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onEntityAdded);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onLivingUpdate);
@@ -98,5 +106,17 @@ public class ArtifactHooksNeoForge {
 
     private static void addAttributeTooltips(AddAttributeTooltipsEvent event) {
         TooltipHelper.addAttributeTooltips(event::addTooltipLines, event.getStack());
+    }
+
+    public static void onPlayerSwim(PlayerSwimEvent event) {
+        if (event.getResult() == EventResult.PASS) {
+            event.setResult(ArtifactHooks.onPlayerSwim(event.getEntity()));
+        }
+    }
+
+    private static void onAquaDashersFluidCollision(LivingFluidCollisionEvent event) {
+        if (ArtifactHooks.onFluidCollision(event.getEntity(), event.getFluidState())) {
+            event.setColliding(true);
+        }
     }
 }

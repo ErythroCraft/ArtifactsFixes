@@ -4,7 +4,6 @@ import artifacts.Artifacts;
 import artifacts.config.screen.ArtifactsConfigScreen;
 import artifacts.integration.ModCompat;
 import artifacts.neoforge.event.ArtifactHooksNeoForge;
-import artifacts.neoforge.event.SwimmingHooksNeoForge;
 import artifacts.neoforge.network.NeoForgeNetworkHandler;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
@@ -52,7 +51,6 @@ public class ArtifactsNeoForge {
 
         registerConfig();
         ArtifactHooksNeoForge.register();
-        SwimmingHooksNeoForge.register();
 
         ArtifactsNeoForge.modBus = null;
     }

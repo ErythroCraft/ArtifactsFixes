@@ -2,7 +2,7 @@ package artifacts.fabric;
 
 import artifacts.Artifacts;
 import artifacts.event.ArtifactHooks;
-import artifacts.fabric.event.SwimmingHooksFabric;
+import artifacts.fabric.event.ArtifactHooksFabric;
 import artifacts.fabric.network.FabricNetworkHandler;
 import artifacts.fabric.registry.ModFeaturesFabric;
 import artifacts.fabric.registry.ModLootTablesFabric;
@@ -20,7 +20,7 @@ public class ArtifactsFabric implements ModInitializer {
         Artifacts.initConfigs();
         Artifacts.setup();
         Artifacts.onCommonSetup();
-        SwimmingHooksFabric.register();
+        ArtifactHooksFabric.register();
         ModFeaturesFabric.register();
         FabricNetworkHandler.registerClientboundPayloads();
         FabricNetworkHandler.registerServerboundPayloads();
