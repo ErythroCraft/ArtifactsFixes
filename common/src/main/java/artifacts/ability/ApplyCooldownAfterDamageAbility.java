@@ -36,14 +36,14 @@ public record ApplyCooldownAfterDamageAbility(Value<Integer> cooldown, Optional<
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (entity instanceof Player player && !player.level().isClientSide()) {
-            AbilityHelper.forEach(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), entity, (ability, stack) -> {
+            AbilityHelper.iterateAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     int c = ability.cooldown().get() * 20;
                     if (c > 0) {
                         player.getCooldowns().addCooldown(stack.getItem(), c);
                     }
                 }
-            }, true, true);
+            });
         }
     }
 

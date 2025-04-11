@@ -148,7 +148,7 @@ public class ArtifactHooks {
     }
 
     private static void activateRetaliationAbility(DataComponentType<? extends RetaliationAbility> type, LivingEntity entity, DamageSource damageSource) {
-        AbilityHelper.forEach(type, entity, (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource), true, true);
+        AbilityHelper.iterateAbilities(type, entity, true, true, (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource));
     }
 
     public static void onEntityAdded(Entity entity) {
@@ -165,7 +165,7 @@ public class ArtifactHooks {
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
         if (Artifacts.CONFIG.general.modifyHurtSounds.get()) {
-            AbilityHelper.forEach(ModDataComponents.MODIFY_HURT_SOUND.get(), entity, (ability, stack) -> entity.playSound(ability.soundEvent().value(), volume, pitch), false, true);
+            AbilityHelper.iterateAbilities(ModDataComponents.MODIFY_HURT_SOUND.get(), entity, false, true, (ability, stack) -> entity.playSound(ability.soundEvent().value(), volume, pitch));
         }
     }
 
@@ -224,7 +224,7 @@ public class ArtifactHooks {
     public static void absorbDamage(LivingEntity entity, DamageSource damageSource, float amount) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
-            AbilityHelper.forEach(ModDataComponents.ATTACKS_ABSORB_DAMAGE.get(), attacker, (ability, stack) -> {
+            AbilityHelper.iterateAbilities(ModDataComponents.ATTACKS_ABSORB_DAMAGE.get(), attacker, true, true, (ability, stack) -> {
                 double absorptionRatio = ability.absorptionRatio().get();
                 double maxHealthAbsorbed = ability.maxDamageAbsorbed().get();
 
@@ -234,7 +234,7 @@ public class ArtifactHooks {
                 if (damageAbsorbed > 0 && ability.absorptionChance().get() > entity.getRandom().nextDouble()) {
                     attacker.heal(damageAbsorbed);
                 }
-            }, true, true);
+            });
         }
     }
 

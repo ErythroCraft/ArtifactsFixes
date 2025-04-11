@@ -54,14 +54,14 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
     public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
-            AbilityHelper.forEach(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), attacker, (ability, stack) -> {
+            AbilityHelper.iterateAbilities(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), attacker, true, true, (ability, stack) -> {
                 if (entity.getRandom().nextDouble() < ability.chance().get()) {
                     entity.addEffect(ability.createEffect(attacker), attacker);
                     if (attacker instanceof Player player) {
                         player.getCooldowns().addCooldown(stack.getItem(), ability.cooldown().get() * 20);
                     }
                 }
-            }, true, true);
+            });
         }
     }
 

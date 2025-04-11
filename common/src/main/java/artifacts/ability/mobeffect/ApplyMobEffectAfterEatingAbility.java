@@ -45,9 +45,8 @@ public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Valu
 
     public static void applyEffects(LivingEntity entity, int foodPointsRestored) {
         if (foodPointsRestored > 0) {
-            AbilityHelper.forEach(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity,
-                    (ability, stack) -> entity.addEffect(ability.createEffect(ability.duration().get() * 20 * foodPointsRestored)),
-                    true, true
+            AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity, true, true,
+                    (ability, stack) -> entity.addEffect(ability.createEffect(ability.duration().get() * 20 * foodPointsRestored))
             );
         }
     }

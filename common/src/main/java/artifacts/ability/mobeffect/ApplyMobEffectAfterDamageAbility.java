@@ -45,11 +45,11 @@ public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Valu
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource, float amount) {
         if (!entity.level().isClientSide() && amount >= 0.1) { // TODO remove amount check
-            AbilityHelper.forEach(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, (ability, stack) -> {
+            AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     entity.addEffect(ability.createEffect(entity));
                 }
-            }, true, true);
+            });
         }
     }
 

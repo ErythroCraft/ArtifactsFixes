@@ -2,7 +2,6 @@ package artifacts.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import com.mojang.serialization.Codec;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse) implements EquipmentAbility {
 
@@ -48,25 +46,19 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
     public static ItemStack findTotem(LivingEntity entity) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack handItem = entity.getItemInHand(hand);
-            if (AbilityHelper.hasNonCosmeticAbility(ModDataComponents.TELEPORT_ON_DEATH.get(), handItem)
+            TeleportOnDeathAbility ability = handItem.get(ModDataComponents.TELEPORT_ON_DEATH.get());
+            if (!handItem.has(ModDataComponents.DISABLED_BY_TOGGLE.get())
+                    && ability != null && ability.isNonCosmetic()
                     && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(handItem.getItem()))
             ) {
                 return handItem;
             }
         }
 
-        AtomicReference<ItemStack> result = new AtomicReference<>(ItemStack.EMPTY);
-
-        EquipmentIntegrationUtils.iterateEquipment(entity, stack -> {
-            if (result.get().isEmpty()
-                    && AbilityHelper.hasNonCosmeticAbility(ModDataComponents.TELEPORT_ON_DEATH.get(), stack)
-                    && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem()))
-            ) {
-                result.set(stack);
-            }
-        });
-
-        return result.get();
+        return AbilityHelper.reduceAbilities(
+                ModDataComponents.TELEPORT_ON_DEATH.get(), entity, true, true, ItemStack.EMPTY,
+                (ability, totem, result) -> result.isEmpty() ? totem : result
+        );
     }
 
     public static void teleport(LivingEntity entity, ServerLevel level) {
