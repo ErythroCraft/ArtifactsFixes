@@ -10,7 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 
 import java.util.List;
 
-public record EnderPearlsCostHungerAbility(Value<Boolean> enabled, Value<Integer> cost, Value<Integer> cooldown) implements ArtifactAbility {
+public record EnderPearlsCostHungerAbility(Value<Boolean> enabled, Value<Integer> cost, Value<Integer> cooldown) implements EquipmentAbility {
 
     public static final Codec<EnderPearlsCostHungerAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(EnderPearlsCostHungerAbility::enabled),

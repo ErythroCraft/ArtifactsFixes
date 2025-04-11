@@ -18,7 +18,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHorizontalVelocity, Value<Double> sprintVerticalVelocity) implements ArtifactAbility {
+public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHorizontalVelocity, Value<Double> sprintVerticalVelocity) implements EquipmentAbility {
 
     public static final Codec<DoubleJumpAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(DoubleJumpAbility::enabled),

@@ -2,7 +2,7 @@ package artifacts.event;
 
 import artifacts.Artifacts;
 import artifacts.ability.ApplyCooldownAfterDamageAbility;
-import artifacts.ability.ArtifactAbility;
+import artifacts.ability.EquipmentAbility;
 import artifacts.ability.SwimInAirAbility;
 import artifacts.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
 import artifacts.ability.mobeffect.AttacksInflictMobEffectAbility;
@@ -72,8 +72,8 @@ public class ArtifactHooks {
             return;
         }
 
-        List<ArtifactAbility> oldAbilities = AbilityHelper.getAbilities(oldStack);
-        List<ArtifactAbility> newAbilities = AbilityHelper.getAbilities(newStack);
+        List<EquipmentAbility> oldAbilities = AbilityHelper.getAbilities(oldStack);
+        List<EquipmentAbility> newAbilities = AbilityHelper.getAbilities(newStack);
 
         boolean wasDisabled = oldStack.has(ModDataComponents.DISABLED_BY_TOGGLE.get());
         boolean isDisabled = newStack.has(ModDataComponents.DISABLED_BY_TOGGLE.get());
@@ -85,14 +85,14 @@ public class ArtifactHooks {
 
         if (wasDisabled ^ isDisabled && isDisabled) {
             // item was manually toggled off, unequip all abilities
-            for (ArtifactAbility ability : oldAbilities) {
+            for (EquipmentAbility ability : oldAbilities) {
                 if (ability.isNonCosmetic()) {
                     ability.onUnequip(entity);
                 }
             }
         } else if (!oldAbilities.isEmpty() && !oldAbilities.equals(newAbilities)) {
             // some abilities may have been removed
-            for (ArtifactAbility ability : oldAbilities) {
+            for (EquipmentAbility ability : oldAbilities) {
                 if (!newAbilities.contains(ability)) {
                     if (ability.isNonCosmetic()) {
                         ability.onUnequip(entity);
@@ -104,7 +104,7 @@ public class ArtifactHooks {
 
     public static void refreshTickingAbilities(LivingEntity entity) {
         boolean shouldTick = EquipmentIntegrationUtils.reduceEquipment(entity, false, (stack, init_) -> {
-            for (ArtifactAbility ability : AbilityHelper.getAbilities(stack)) {
+            for (EquipmentAbility ability : AbilityHelper.getAbilities(stack)) {
                 init_ = init_ || ability.isTickingAbility();
             }
             return init_;
@@ -118,7 +118,7 @@ public class ArtifactHooks {
         }
         EquipmentIntegrationUtils.iterateEquipment(entity, stack -> {
             for (TypedDataComponent<?> component : stack.getComponents()) {
-                if (component.value() instanceof ArtifactAbility ability) {
+                if (component.value() instanceof EquipmentAbility ability) {
                     boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem());
                     ability.wornTick(entity, isOnCooldown, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
                 }

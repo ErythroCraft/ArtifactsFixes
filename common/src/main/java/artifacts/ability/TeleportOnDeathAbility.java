@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse) implements ArtifactAbility {
+public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse) implements EquipmentAbility {
 
     public static final Codec<TeleportOnDeathAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(TeleportOnDeathAbility::teleportationChance),

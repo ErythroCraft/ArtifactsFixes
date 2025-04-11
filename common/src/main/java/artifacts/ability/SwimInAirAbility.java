@@ -20,7 +20,7 @@ import java.util.List;
 
 // TODO add short cooldown after stopping swimming, remove full recharge requirement
 // TODO allow cancelling flight
-public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rechargeDuration) implements ArtifactAbility {
+public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rechargeDuration) implements EquipmentAbility {
 
     public static final Codec<SwimInAirAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.DURATION.codec().fieldOf("flight_duration").forGetter(SwimInAirAbility::flightDuration),

@@ -1,6 +1,6 @@
 package artifacts.ability.mobeffect;
 
-import artifacts.ability.ArtifactAbility;
+import artifacts.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import com.mojang.datafixers.Products;
@@ -11,7 +11,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 
-public interface MobEffectAbility extends ArtifactAbility {
+public interface MobEffectAbility extends EquipmentAbility {
 
     static <T extends MobEffectAbility> Products.P2<RecordCodecBuilder.Mu<T>, Holder<MobEffect>, Value<Integer>> codecStart(RecordCodecBuilder.Instance<T> instance) {
         return instance.group(

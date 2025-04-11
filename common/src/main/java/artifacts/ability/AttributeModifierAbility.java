@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, ResourceLocation id, boolean ignoreCooldown) implements ArtifactAbility {
+public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, ResourceLocation id, boolean ignoreCooldown) implements EquipmentAbility {
 
     private static final Set<Holder<Attribute>> POSITIVE_ATTRIBUTES_WITH_TOOLTIP;
     private static final Set<Holder<Attribute>> NEGATIVE_ATTRIBUTES_WITH_TOOLTIP = Set.of(

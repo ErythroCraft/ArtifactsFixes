@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 
-public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Integer> replenishingDuration) implements ArtifactAbility {
+public record ReplenishHungerOnGrassAbility(Value<Boolean> enabled, Value<Integer> replenishingDuration) implements EquipmentAbility {
 
     public static final Codec<ReplenishHungerOnGrassAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(ReplenishHungerOnGrassAbility::enabled),

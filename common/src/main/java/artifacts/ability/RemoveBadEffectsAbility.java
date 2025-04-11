@@ -15,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> maxEffectDuration) implements ArtifactAbility {
+public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> maxEffectDuration) implements EquipmentAbility {
 
     public static final Codec<RemoveBadEffectsAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(RemoveBadEffectsAbility::enabled),

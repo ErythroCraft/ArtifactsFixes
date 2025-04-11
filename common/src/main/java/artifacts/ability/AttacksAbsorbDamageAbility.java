@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 
 import java.util.List;
 
-public record AttacksAbsorbDamageAbility(Value<Double> absorptionRatio, Value<Double> absorptionChance, Value<Integer> maxDamageAbsorbed) implements ArtifactAbility {
+public record AttacksAbsorbDamageAbility(Value<Double> absorptionRatio, Value<Double> absorptionChance, Value<Integer> maxDamageAbsorbed) implements EquipmentAbility {
 
     public static final Codec<AttacksAbsorbDamageAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.NON_NEGATIVE_DOUBLE.codec().fieldOf("absorption_ratio").forGetter(AttacksAbsorbDamageAbility::absorptionRatio),

@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
 
-public interface ArtifactAbility {
+public interface EquipmentAbility {
 
     boolean isNonCosmetic();
 

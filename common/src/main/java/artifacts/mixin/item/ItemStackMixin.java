@@ -1,7 +1,7 @@
 package artifacts.mixin.item;
 
 import artifacts.Artifacts;
-import artifacts.ability.ArtifactAbility;
+import artifacts.ability.EquipmentAbility;
 import artifacts.client.ToggleKeyHandlers;
 import artifacts.component.ToggleIdentifier;
 import artifacts.item.WearableArtifactItem;
@@ -51,7 +51,7 @@ public abstract class ItemStackMixin {
 
         List<MutableComponent> tooltip = new ArrayList<>();
         for (TypedDataComponent<?> component : stack.getComponents()) {
-            if (component.value() instanceof ArtifactAbility ability) {
+            if (component.value() instanceof EquipmentAbility ability) {
                 ability.addTooltipIfNonCosmetic(tooltip);
             }
         }

@@ -1,6 +1,6 @@
 package artifacts.ability.retaliation;
 
-import artifacts.ability.ArtifactAbility;
+import artifacts.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.registry.ModDataComponents;
@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public abstract class RetaliationAbility implements ArtifactAbility {
+public abstract class RetaliationAbility implements EquipmentAbility {
 
     private final Value<Double> strikeChance;
     private final Value<Integer> cooldown;

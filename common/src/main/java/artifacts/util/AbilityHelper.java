@@ -1,6 +1,6 @@
 package artifacts.util;
 
-import artifacts.ability.ArtifactAbility;
+import artifacts.ability.EquipmentAbility;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.component.DataComponentType;
@@ -18,10 +18,9 @@ import java.util.function.*;
 
 // TODO implement foreach through reduction
 // TODO cleanup EquipmentIntegrationUtils
-// TODO rename ArtifactAbility -> EquipmentAbility
 public class AbilityHelper {
 
-    public static <A extends ArtifactAbility, T> T reduce(DataComponentType<A> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, T init, BiFunction<A, T, T> f) {
+    public static <A extends EquipmentAbility, T> T reduce(DataComponentType<A> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, T init, BiFunction<A, T, T> f) {
         return EquipmentIntegrationUtils.reduceEquipment(entity, init, (stack, init_) -> {
             A ability = stack.get(type);
             if (ability != null) {
@@ -36,19 +35,19 @@ public class AbilityHelper {
         });
     }
 
-    public static boolean hasNonCosmeticAbility(DataComponentType<? extends ArtifactAbility> type, ItemStack stack) {
+    public static boolean hasNonCosmeticAbility(DataComponentType<? extends EquipmentAbility> type, ItemStack stack) {
         return hasNonCosmeticAbility(type, stack, ability -> true);
     }
 
-    public static <T extends ArtifactAbility> boolean hasNonCosmeticAbility(DataComponentType<T> type, ItemStack stack, Predicate<T> predicate) {
+    public static <T extends EquipmentAbility> boolean hasNonCosmeticAbility(DataComponentType<T> type, ItemStack stack, Predicate<T> predicate) {
         return stack.get(type) instanceof T ability && ability.isNonCosmetic() && predicate.test(ability);
     }
 
-    public static boolean hasAbilityActive(DataComponentType<? extends ArtifactAbility> type, @Nullable LivingEntity entity, boolean skipItemsOnCooldown) {
+    public static boolean hasAbilityActive(DataComponentType<? extends EquipmentAbility> type, @Nullable LivingEntity entity, boolean skipItemsOnCooldown) {
         return hasAbilityActive(type, entity, skipItemsOnCooldown, ability -> true);
     }
 
-    public static <A extends ArtifactAbility> boolean hasAbilityActive(DataComponentType<A> type, @Nullable LivingEntity entity, boolean skipItemsOnCooldown, Predicate<A> predicate) {
+    public static <A extends EquipmentAbility> boolean hasAbilityActive(DataComponentType<A> type, @Nullable LivingEntity entity, boolean skipItemsOnCooldown, Predicate<A> predicate) {
         if (entity == null) {
             return false;
         }
@@ -56,10 +55,10 @@ public class AbilityHelper {
     }
 
     // TODO replace with iteration
-    public static List<ArtifactAbility> getAbilities(ItemStack stack) {
-        List<ArtifactAbility> list = new ArrayList<>(0);
+    public static List<EquipmentAbility> getAbilities(ItemStack stack) {
+        List<EquipmentAbility> list = new ArrayList<>(0);
         for (TypedDataComponent<?> component : stack.getComponents()) {
-            if (component.value() instanceof ArtifactAbility ability) {
+            if (component.value() instanceof EquipmentAbility ability) {
                 list.add(ability);
             }
         }
@@ -67,7 +66,7 @@ public class AbilityHelper {
     }
 
     // TODO remove
-    public static <A extends ArtifactAbility> void iterateNonCosmeticAbilities(DataComponentType<A> type, ItemStack stack, Consumer<A> consumer) {
+    public static <A extends EquipmentAbility> void iterateNonCosmeticAbilities(DataComponentType<A> type, ItemStack stack, Consumer<A> consumer) {
         // TODO fix compound abilities
         if (stack.get(type) instanceof A ability && ability.isNonCosmetic()) {
             consumer.accept(ability);
@@ -77,7 +76,7 @@ public class AbilityHelper {
     // TODO move to tooltip class
     public static boolean isCosmetic(ItemStack stack) {
         for (TypedDataComponent<?> component : stack.getComponents()) {
-            if (component.value() instanceof ArtifactAbility ability && ability.isNonCosmetic()) {
+            if (component.value() instanceof EquipmentAbility ability && ability.isNonCosmetic()) {
                 return false;
             }
         }
@@ -90,23 +89,23 @@ public class AbilityHelper {
         );
     }
 
-    public static <A extends ArtifactAbility> int sumInt(DataComponentType<A> type, LivingEntity entity, Function<A, Integer> f, boolean skipItemsOnCooldown) {
+    public static <A extends EquipmentAbility> int sumInt(DataComponentType<A> type, LivingEntity entity, Function<A, Integer> f, boolean skipItemsOnCooldown) {
         return reduce(type, entity, skipItemsOnCooldown, true, 0, (ability, i) -> i + f.apply(ability));
     }
 
-    public static <A extends ArtifactAbility> double maxDouble(DataComponentType<A> type, LivingEntity entity, Function<A, Double> f, boolean skipItemsOnCooldown) {
+    public static <A extends EquipmentAbility> double maxDouble(DataComponentType<A> type, LivingEntity entity, Function<A, Double> f, boolean skipItemsOnCooldown) {
         return reduce(type, entity, skipItemsOnCooldown, true, 0D, (ability, d) -> Math.max(d, f.apply(ability)));
     }
 
-    public static <A extends ArtifactAbility> int maxInt(DataComponentType<A> type, LivingEntity entity, Function<A, Integer> f, boolean skipItemsOnCooldown) {
+    public static <A extends EquipmentAbility> int maxInt(DataComponentType<A> type, LivingEntity entity, Function<A, Integer> f, boolean skipItemsOnCooldown) {
         return reduce(type, entity, skipItemsOnCooldown, true, 0, (ability, d) -> Math.max(d, f.apply(ability)));
     }
 
-    public static <A extends ArtifactAbility> int minInt(DataComponentType<A> type, LivingEntity entity, int init, Function<A, Integer> f, boolean skipItemsOnCooldown) {
+    public static <A extends EquipmentAbility> int minInt(DataComponentType<A> type, LivingEntity entity, int init, Function<A, Integer> f, boolean skipItemsOnCooldown) {
         return reduce(type, entity, skipItemsOnCooldown, true, init, (ability, d) -> Math.min(d, f.apply(ability)));
     }
 
-    public static <A extends ArtifactAbility> void forEach(DataComponentType<A> type, LivingEntity entity, BiConsumer<A, ItemStack> consumer,  boolean skipItemsOnCooldown, boolean skipDisabledItems) {
+    public static <A extends EquipmentAbility> void forEach(DataComponentType<A> type, LivingEntity entity, BiConsumer<A, ItemStack> consumer, boolean skipItemsOnCooldown, boolean skipDisabledItems) {
         EquipmentIntegrationUtils.iterateEquipment(entity, stack -> {
             A ability = stack.get(type);
             if (ability != null) {

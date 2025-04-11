@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
-public record UpgradeToolTierAbility(Value<Tier> tier) implements ArtifactAbility {
+public record UpgradeToolTierAbility(Value<Tier> tier) implements EquipmentAbility {
 
     public static final Codec<UpgradeToolTierAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.TOOL_TIER.codec().fieldOf("tier").forGetter(UpgradeToolTierAbility::tier)

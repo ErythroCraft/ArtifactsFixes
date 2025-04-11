@@ -11,7 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 
 import java.util.List;
 
-public record CustomTooltipAbility(Component tooltip) implements ArtifactAbility {
+public record CustomTooltipAbility(Component tooltip) implements EquipmentAbility {
 
     public static final Codec<CustomTooltipAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ComponentSerialization.FLAT_CODEC.fieldOf("tooltip").forGetter(CustomTooltipAbility::tooltip)

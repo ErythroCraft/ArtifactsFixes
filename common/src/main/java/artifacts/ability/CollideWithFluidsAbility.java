@@ -17,7 +17,7 @@ import net.minecraft.world.level.material.Fluid;
 import java.util.List;
 import java.util.Optional;
 
-public record CollideWithFluidsAbility(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, Optional<Component> tooltip) implements ArtifactAbility {
+public record CollideWithFluidsAbility(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, Optional<Component> tooltip) implements EquipmentAbility {
 
     // TODO tooltip
     public static Codec<CollideWithFluidsAbility> codec(Component tooltip) {

@@ -15,7 +15,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
 
-public record IncreaseEnchantmentLevelAbility(ResourceKey<Enchantment> enchantment, Value<Integer> amount) implements ArtifactAbility {
+public record IncreaseEnchantmentLevelAbility(ResourceKey<Enchantment> enchantment, Value<Integer> amount) implements EquipmentAbility {
 
     public static final List<ResourceKey<Enchantment>> ALLOWED_ENCHANTMENTS = List.of(
             Enchantments.FORTUNE,

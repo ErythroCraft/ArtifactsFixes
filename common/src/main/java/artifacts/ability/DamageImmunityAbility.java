@@ -17,7 +17,7 @@ import net.minecraft.world.damagesource.DamageType;
 import java.util.List;
 import java.util.Set;
 
-public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> tag) implements ArtifactAbility {
+public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> tag) implements EquipmentAbility {
 
     private static final Set<TagKey<DamageType>> CUSTOM_TOOLTIP_TAGS = Set.of(
             DamageTypeTags.IS_LIGHTNING,
