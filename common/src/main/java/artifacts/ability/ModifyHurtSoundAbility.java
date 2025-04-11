@@ -10,7 +10,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvent;
 
-public record ModifyHurtSoundAbility(Holder<SoundEvent> soundEvent) implements TooltiplessAbility {
+public record ModifyHurtSoundAbility(Holder<SoundEvent> soundEvent) implements EquipmentAbility {
 
     public static final Codec<ModifyHurtSoundAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BuiltInRegistries.SOUND_EVENT.holderByNameCodec().fieldOf("sound").forGetter(ModifyHurtSoundAbility::soundEvent)

@@ -5,13 +5,10 @@ import artifacts.config.value.ValueTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-
-import java.util.List;
 
 public class SetAttackersOnFireAbility extends RetaliationAbility {
 
@@ -67,10 +64,10 @@ public class SetAttackersOnFireAbility extends RetaliationAbility {
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
-        super.addAbilityTooltip(tooltip);
+    public void addToTooltip(TooltipWriter writer) {
+        super.addToTooltip(writer);
         if (grantsFireResistance().get()) {
-            tooltip.add(tooltipLine("fire_resistance"));
+            writer.add("fire_resistance");
         }
     }
 

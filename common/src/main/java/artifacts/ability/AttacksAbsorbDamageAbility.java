@@ -5,13 +5,11 @@ import artifacts.config.value.ValueTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 
-import java.util.List;
-
-public record AttacksAbsorbDamageAbility(Value<Double> absorptionRatio, Value<Double> absorptionChance, Value<Integer> maxDamageAbsorbed) implements EquipmentAbility {
+public record AttacksAbsorbDamageAbility(Value<Double> absorptionRatio, Value<Double> absorptionChance, Value<Integer> maxDamageAbsorbed)
+        implements EquipmentAbility, AbilityWithTooltip {
 
     public static final Codec<AttacksAbsorbDamageAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.NON_NEGATIVE_DOUBLE.codec().fieldOf("absorption_ratio").forGetter(AttacksAbsorbDamageAbility::absorptionRatio),
@@ -35,11 +33,11 @@ public record AttacksAbsorbDamageAbility(Value<Double> absorptionRatio, Value<Do
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         if (Mth.equal(absorptionChance.get(), 1)) {
-            tooltip.add(tooltipLine("constant"));
+            writer.add("constant");
         } else {
-            tooltip.add(tooltipLine("chance"));
+            writer.add("chance");
         }
     }
 }

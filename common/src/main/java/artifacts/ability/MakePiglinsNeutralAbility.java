@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
-public record MakePiglinsNeutralAbility() implements TooltiplessAbility {
+public record MakePiglinsNeutralAbility() implements EquipmentAbility {
 
     public static final MakePiglinsNeutralAbility INSTANCE = new MakePiglinsNeutralAbility();
 

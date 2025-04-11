@@ -7,7 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
-public record SimpleAbility(Value<Boolean> enabled) implements EquipmentAbility {
+public record SimpleAbility(Value<Boolean> enabled) implements EquipmentAbility, AbilityWithTooltip {
 
     public static final Codec<SimpleAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(SimpleAbility::enabled)

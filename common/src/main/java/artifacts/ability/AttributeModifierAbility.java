@@ -9,7 +9,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation,
-                                       ResourceLocation id, boolean ignoreCooldown) implements EquipmentAbility, TickingAbility {
+                                       ResourceLocation id, boolean ignoreCooldown) implements EquipmentAbility, TickingAbility, AbilityWithTooltip {
 
     private static final Set<Holder<Attribute>> POSITIVE_ATTRIBUTES_WITH_TOOLTIP;
     private static final Set<Holder<Attribute>> NEGATIVE_ATTRIBUTES_WITH_TOOLTIP = Set.of(
@@ -117,7 +116,7 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         String attributeName = attribute().unwrapKey().orElseThrow().location().getPath();
         if (attributeName.equals("swim_speed")) { // neoforge swim speed
             attributeName = "generic.swim_speed";
@@ -126,13 +125,13 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
         if (amount().get() > 0) {
             for (Holder<Attribute> attribute : POSITIVE_ATTRIBUTES_WITH_TOOLTIP) {
                 if (attribute.isBound() && attribute.value() == attribute().value()) {
-                    tooltip.add(tooltipLine(attributeName));
+                    writer.add(attributeName);
                 }
             }
         } else {
             for (Holder<Attribute> attribute : NEGATIVE_ATTRIBUTES_WITH_TOOLTIP) {
                 if (attribute.isBound() && attribute.value() == attribute().value()) {
-                    tooltip.add(tooltipLine(attributeName));
+                    writer.add(attributeName);
                 }
             }
         }

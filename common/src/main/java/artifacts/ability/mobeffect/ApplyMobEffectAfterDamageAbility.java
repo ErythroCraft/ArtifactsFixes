@@ -1,5 +1,6 @@
 package artifacts.ability.mobeffect;
 
+import artifacts.ability.AbilityWithTooltip;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.registry.ModDataComponents;
@@ -10,7 +11,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.DamageTypeTags;
@@ -21,10 +21,10 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.util.List;
 import java.util.Optional;
 
-public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration, Optional<TagKey<DamageType>> tag) implements MobEffectAbility {
+public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration, Optional<TagKey<DamageType>> tag)
+        implements MobEffectAbility, AbilityWithTooltip {
 
     public static final Codec<ApplyMobEffectAfterDamageAbility> CODEC = RecordCodecBuilder.create(
             instance -> MobEffectAbility.codecStartWithDuration(instance)
@@ -59,11 +59,11 @@ public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Valu
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         if (mobEffect().equals(MobEffects.FIRE_RESISTANCE) && tag.isPresent() && tag.get().equals(DamageTypeTags.IS_FIRE)) {
-            tooltip.add(tooltipLine("fire_resistance"));
+            writer.add("fire_resistance");
         } else if (mobEffect().equals(MobEffects.MOVEMENT_SPEED)) {
-            tooltip.add(tooltipLine("speed"));
+            writer.add("speed");
         }
     }
 }

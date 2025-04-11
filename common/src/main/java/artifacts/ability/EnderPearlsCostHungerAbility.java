@@ -5,12 +5,10 @@ import artifacts.config.value.ValueTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 
-import java.util.List;
-
-public record EnderPearlsCostHungerAbility(Value<Boolean> enabled, Value<Integer> cost, Value<Integer> cooldown) implements EquipmentAbility {
+public record EnderPearlsCostHungerAbility(Value<Boolean> enabled, Value<Integer> cost, Value<Integer> cooldown)
+        implements EquipmentAbility, AbilityWithTooltip {
 
     public static final Codec<EnderPearlsCostHungerAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(EnderPearlsCostHungerAbility::enabled),
@@ -34,11 +32,11 @@ public record EnderPearlsCostHungerAbility(Value<Boolean> enabled, Value<Integer
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         if (cost.get() == 0) {
-            tooltip.add(tooltipLine("free"));
+            writer.add("free");
         } else {
-            tooltip.add(tooltipLine("cost"));
+            writer.add("cost");
         }
     }
 }

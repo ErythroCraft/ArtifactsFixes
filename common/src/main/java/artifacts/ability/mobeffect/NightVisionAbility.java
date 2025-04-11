@@ -1,19 +1,18 @@
 package artifacts.ability.mobeffect;
 
+import artifacts.ability.AbilityWithTooltip;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 
-import java.util.List;
 import java.util.Objects;
 
-public class NightVisionAbility extends ConstantMobEffectAbility {
+public class NightVisionAbility extends ConstantMobEffectAbility implements AbilityWithTooltip {
 
     public static final Codec<NightVisionAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.FRACTION.codec().optionalFieldOf("strength", Value.of(1D)).forGetter(NightVisionAbility::strength)
@@ -42,11 +41,11 @@ public class NightVisionAbility extends ConstantMobEffectAbility {
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         if (strength.get() > 0.5) {
-            tooltip.add(tooltipLine("full"));
+            writer.add("full");
         } else {
-            tooltip.add(tooltipLine("partial"));
+            writer.add("partial");
         }
     }
 

@@ -1,6 +1,5 @@
 package artifacts.registry;
 
-import artifacts.Artifacts;
 import artifacts.ability.*;
 import artifacts.ability.mobeffect.*;
 import artifacts.ability.retaliation.SetAttackersOnFireAbility;
@@ -12,13 +11,15 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Unit;
+import net.minecraft.world.item.component.ItemLore;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -28,6 +29,7 @@ public class ModDataComponents {
     public static final Register<DataComponentType<?>> DATA_COMPONENT_TYPES = PlatformServices.platformHelper.createRegister(Registries.DATA_COMPONENT_TYPE);
 
     public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
+    public static final List<Supplier<? extends DataComponentType<? extends AbilityWithTooltip>>> TOOLTIP_ORDER = new ArrayList<>();
 
     public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
     public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE = registerSynced("disabled_by_toggle", Codec.unit(Unit.INSTANCE), StreamCodec.unit(Unit.INSTANCE));
@@ -35,6 +37,7 @@ public class ModDataComponents {
             ResourceLocation.CODEC.xmap(SoundEvent::createVariableRangeEvent, SoundEvent::getLocation),
             ResourceLocation.STREAM_CODEC.map(SoundEvent::createVariableRangeEvent, SoundEvent::getLocation)
     );
+    public static final Supplier<DataComponentType<ItemLore>> ABILITY_LORE = registerCached("ability_lore", ItemLore.CODEC, ItemLore.STREAM_CODEC);
 
     public static final Supplier<DataComponentType<ApplyCooldownAfterDamageAbility>> APPLY_COOLDOWN_AFTER_DAMAGE =
             registerSynced("apply_cooldown_after_damage", ApplyCooldownAfterDamageAbility.CODEC, ApplyCooldownAfterDamageAbility.STREAM_CODEC);
@@ -48,8 +51,6 @@ public class ModDataComponents {
             registerSynced("attacks_inflict_mob_effect", AttacksInflictMobEffectAbility.CODEC, AttacksInflictMobEffectAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<AttributeModifierAbility>> ATTRIBUTE_MODIFIER =
              registerCached("attribute_modifier", AttributeModifierAbility.CODEC, AttributeModifierAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<CustomTooltipAbility>> CUSTOM_TOOLTIP =
-            registerCached("custom_tooltip", CustomTooltipAbility.CODEC, CustomTooltipAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<DamageImmunityAbility>> DAMAGE_IMMUNITY =
             registerSynced("damage_immunity", DamageImmunityAbility.CODEC, DamageImmunityAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<DoubleJumpAbility>> DOUBLE_JUMP =
@@ -84,13 +85,10 @@ public class ModDataComponents {
             registerSimpleAbility("sinking");
     public static final Supplier<DataComponentType<SimpleAbility>> SMELT_ORES =
             registerSimpleAbility("smelt_ores");
-    public static final Supplier<DataComponentType<CollideWithFluidsAbility>> SNEAK_ON_FLUIDS =
-            registerSynced("sneak_on_fluids",
-                    CollideWithFluidsAbility.codec(tooltip("sneak_on_fluids", "lava")),
-                    CollideWithFluidsAbility.streamCodec(tooltip("sneak_on_fluids", "lava"))
-            );
-    public static final Supplier<DataComponentType<CollideWithFluidsAbility>> SPRINT_ON_FLUIDS =
-            registerSynced("sprint_on_fluids", CollideWithFluidsAbility.codec(null), CollideWithFluidsAbility.streamCodec(null));
+    public static final Supplier<DataComponentType<SneakOnFluidsAbility>> SNEAK_ON_FLUIDS =
+            registerSynced("sneak_on_fluids", SneakOnFluidsAbility.CODEC, SneakOnFluidsAbility.STREAM_CODEC);
+    public static final Supplier<DataComponentType<SprintOnFluidsAbility>> SPRINT_ON_FLUIDS =
+            registerSynced("sprint_on_fluids", SprintOnFluidsAbility.CODEC, SprintOnFluidsAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<StrikeAttackersWithLightningAbility>> STRIKE_ATTACKERS_WITH_LIGHTNING =
             registerSynced("strike_attackers_with_lightning", StrikeAttackersWithLightningAbility.CODEC, StrikeAttackersWithLightningAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<SwimInAirAbility>> SWIM_IN_AIR =
@@ -111,10 +109,37 @@ public class ModDataComponents {
         TICKING_COMPONENTS.add(ModDataComponents.MOB_EFFECT);
         TICKING_COMPONENTS.add(ModDataComponents.LIMITED_WATER_BREATHING);
         TICKING_COMPONENTS.add(ModDataComponents.NIGHT_VISION);
-    }
 
-    private static Component tooltip(String ability, String name) {
-        return Component.translatable("%s.tooltip.ability.%s.%s".formatted(Artifacts.MOD_ID, ability, name));
+        TOOLTIP_ORDER.addAll(List.of(
+                APPLY_MOB_EFFECT_AFTER_DAMAGE,
+                APPLY_MOB_EFFECT_AFTER_EATING,
+                ATTACKS_ABSORB_DAMAGE,
+                ATTACKS_INFLICT_MOB_EFFECT,
+                ATTRIBUTE_MODIFIER,
+                DAMAGE_IMMUNITY,
+                DOUBLE_JUMP,
+                ENDER_PEARLS_COST_HUNGER,
+                GROW_PLANTS_AFTER_EATING,
+                INCREASE_ENCHANTMENT_LEVEL,
+                LIMITED_WATER_BREATHING,
+                MOB_EFFECT,
+                NIGHT_VISION,
+                NULLIFY_ENDER_PEARL_DAMAGE,
+                REMOVE_BAD_EFFECTS,
+                REPLENISH_HUNGER_ON_GRASS,
+                SCARE_CREEPERS,
+                SET_ATTACKERS_ON_FIRE,
+                SINKING,
+                SMELT_ORES,
+                SNEAK_ON_FLUIDS,
+                SPRINT_ON_FLUIDS,
+                STRIKE_ATTACKERS_WITH_LIGHTNING,
+                SWIM_IN_AIR,
+                TELEPORT_ON_DEATH,
+                THORNS,
+                UPGRADE_TOOL_TIER,
+                WALK_ON_POWDER_SNOW
+        ));
     }
 
     private static Supplier<DataComponentType<SimpleAbility>> registerSimpleAbility(String name) {

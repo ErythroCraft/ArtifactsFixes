@@ -1,5 +1,6 @@
 package artifacts.ability.retaliation;
 
+import artifacts.ability.AbilityWithTooltip;
 import artifacts.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
@@ -7,16 +8,13 @@ import artifacts.registry.ModDataComponents;
 import artifacts.util.DamageSourceHelper;
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.List;
-
-public abstract class RetaliationAbility implements EquipmentAbility {
+public abstract class RetaliationAbility implements EquipmentAbility, AbilityWithTooltip {
 
     private final Value<Double> strikeChance;
     private final Value<Integer> cooldown;
@@ -59,11 +57,11 @@ public abstract class RetaliationAbility implements EquipmentAbility {
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         if (Mth.equal(strikeChance().get(), 1)) {
-            tooltip.add(tooltipLine("constant"));
+            writer.add("constant");
         } else {
-            tooltip.add(tooltipLine("chance"));
+            writer.add("chance");
         }
     }
 

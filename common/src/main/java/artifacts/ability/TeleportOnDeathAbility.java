@@ -7,7 +7,6 @@ import artifacts.util.AbilityHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -20,9 +19,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
-
-public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse) implements EquipmentAbility {
+public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse)
+        implements EquipmentAbility, AbilityWithTooltip {
 
     public static final Codec<TeleportOnDeathAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(TeleportOnDeathAbility::teleportationChance),
@@ -95,14 +93,13 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
-        if (Mth.equal(teleportationChance().get(), 0)) {
-            tooltip.add(tooltipLine("constant"));
-        } else {
-            tooltip.add(tooltipLine("chance"));
-        }
+    public void addToTooltip(TooltipWriter writer) {if (Mth.equal(teleportationChance().get(), 0)) {
+        writer.add("constant");
+    } else {
+        writer.add("chance");
+    }
         if (!consumedOnUse().get()) {
-            tooltip.add(tooltipLine("not_consumed"));
+            writer.add("not_consumed");
         }
     }
 }

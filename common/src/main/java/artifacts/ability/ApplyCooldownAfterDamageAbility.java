@@ -19,7 +19,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
-public record ApplyCooldownAfterDamageAbility(Value<Integer> cooldown, Optional<TagKey<DamageType>> tag) implements TooltiplessAbility {
+public record ApplyCooldownAfterDamageAbility(Value<Integer> cooldown, Optional<TagKey<DamageType>> tag) implements EquipmentAbility {
 
     public static final Codec<ApplyCooldownAfterDamageAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.DURATION.codec().fieldOf("cooldown").forGetter(ApplyCooldownAfterDamageAbility::cooldown),

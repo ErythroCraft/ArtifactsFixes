@@ -10,17 +10,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.List;
-
-public record UpgradeToolTierAbility(Value<Tier> tier) implements EquipmentAbility {
+public record UpgradeToolTierAbility(Value<Tier> tier) implements EquipmentAbility, AbilityWithTooltip {
 
     public static final Codec<UpgradeToolTierAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.TOOL_TIER.codec().fieldOf("tier").forGetter(UpgradeToolTierAbility::tier)
@@ -64,16 +60,9 @@ public record UpgradeToolTierAbility(Value<Tier> tier) implements EquipmentAbili
         return tier().get() != Tier.NONE;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
-        ResourceLocation id = Artifacts.id(""); // TODO ModAbilities.getRegistry().getKey(getType());
-        tooltip.add(
-                Component.translatable(
-                        "%s.tooltip.ability.%s".formatted(id.getNamespace(), id.getPath()),
-                        getTierName(tier.get())
-                )
-        );
+    public void addToTooltip(TooltipWriter writer) {
+        writer.addDefault(getTierName(tier.get()));
     }
 
     public static Component getTierName(Tier tier) {

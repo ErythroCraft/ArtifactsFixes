@@ -11,16 +11,14 @@ import artifacts.util.AbilityHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
-
 // TODO add short cooldown after stopping swimming, remove full recharge requirement
 // TODO allow cancelling flight
-public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rechargeDuration) implements EquipmentAbility {
+public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rechargeDuration)
+        implements EquipmentAbility, AbilityWithTooltip {
 
     public static final Codec<SwimInAirAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.DURATION.codec().fieldOf("flight_duration").forGetter(SwimInAirAbility::flightDuration),
@@ -81,8 +79,8 @@ public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rec
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
-        tooltip.add(tooltipLine("swimming"));
-        tooltip.add(tooltipLine("keymapping", ModKeyMappings.getHeliumFlamingoKey().getTranslatedKeyMessage()));
+    public void addToTooltip(TooltipWriter writer) {
+        writer.add("swimming");
+        writer.add("keymapping", ModKeyMappings.getHeliumFlamingoKey().getTranslatedKeyMessage());
     }
 }

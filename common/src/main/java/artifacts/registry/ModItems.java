@@ -12,6 +12,7 @@ import artifacts.item.EverlastingFoodItem;
 import artifacts.item.UmbrellaItem;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -26,8 +27,10 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.enchantment.Enchantments;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -60,8 +63,8 @@ public class ModItems {
     );
     public static final Holder<Item> NOVELTY_DRINKING_HAT = wearableItem("novelty_drinking_hat", builder -> builder
             .equipSound(SoundEvents.BOTTLE_FILL)
-            .component(ModDataComponents.CUSTOM_TOOLTIP.get(),
-                    new CustomTooltipAbility(Component.translatable("artifacts.tooltip.item.novelty_drinking_hat"))
+            .component(ModDataComponents.ABILITY_LORE.get(),
+                    new ItemLore(List.of(Component.translatable("artifacts.tooltip.item.novelty_drinking_hat").withStyle(ChatFormatting.GRAY)))
             )
             .addAttributeModifier(ModAttributes.DRINKING_SPEED, Artifacts.CONFIG.items.noveltyDrinkingHatDrinkingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(ModAttributes.EATING_SPEED, Artifacts.CONFIG.items.noveltyDrinkingHatEatingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
@@ -273,9 +276,8 @@ public class ModItems {
 
     // feet
     public static final Holder<Item> AQUA_DASHERS = wearableItem("aqua_dashers", builder -> builder
-            .component(
-                    ModDataComponents.SPRINT_ON_FLUIDS.get(),
-                    new CollideWithFluidsAbility(Artifacts.CONFIG.items.aquaDashersEnabled, Optional.empty(), Optional.empty())
+            .component(ModDataComponents.SPRINT_ON_FLUIDS.get(),
+                    new SprintOnFluidsAbility(Artifacts.CONFIG.items.aquaDashersEnabled, Optional.empty())
             )
     );
     public static final Holder<Item> BUNNY_HOPPERS = wearableItem("bunny_hoppers", builder -> builder
@@ -321,7 +323,7 @@ public class ModItems {
     public static final Holder<Item> STRIDER_SHOES = wearableItem("strider_shoes", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
             .component(ModDataComponents.SNEAK_ON_FLUIDS.get(),
-                    new CollideWithFluidsAbility(Artifacts.CONFIG.items.striderShoesEnabled, Optional.of(FluidTags.LAVA), Optional.empty())
+                    new SneakOnFluidsAbility(Artifacts.CONFIG.items.striderShoesEnabled, Optional.of(FluidTags.LAVA))
             ).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
                     new DamageImmunityAbility(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR)
             )

@@ -8,16 +8,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 
-import java.util.List;
 import java.util.Set;
 
-public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> tag) implements EquipmentAbility {
+public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> tag)
+        implements EquipmentAbility, AbilityWithTooltip {
 
     private static final Set<TagKey<DamageType>> CUSTOM_TOOLTIP_TAGS = Set.of(
             DamageTypeTags.IS_LIGHTNING,
@@ -43,9 +42,9 @@ public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> t
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         if (CUSTOM_TOOLTIP_TAGS.contains(tag())) {
-            tooltip.add(tooltipLine(tag().location().getPath()));
+            writer.add(tag().location().getPath());
         }
     }
 }

@@ -7,7 +7,6 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -15,7 +14,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
 
-public record IncreaseEnchantmentLevelAbility(ResourceKey<Enchantment> enchantment, Value<Integer> amount) implements EquipmentAbility {
+public record IncreaseEnchantmentLevelAbility(ResourceKey<Enchantment> enchantment, Value<Integer> amount)
+        implements EquipmentAbility, AbilityWithTooltip {
 
     public static final List<ResourceKey<Enchantment>> ALLOWED_ENCHANTMENTS = List.of(
             Enchantments.FORTUNE,
@@ -51,12 +51,12 @@ public record IncreaseEnchantmentLevelAbility(ResourceKey<Enchantment> enchantme
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         String enchantmentName = enchantment().location().getPath();
         if (getAmount() == 1) {
-            tooltip.add(tooltipLine("%s.single_level".formatted(enchantmentName)));
+            writer.add("%s.single_level".formatted(enchantmentName));
         } else {
-            tooltip.add(tooltipLine("%s.multiple_levels".formatted(enchantmentName), getAmount()));
-        }
+            writer.add("%s.multiple_levels".formatted(enchantmentName), getAmount());
+        };
     }
 }

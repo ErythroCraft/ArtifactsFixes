@@ -1,11 +1,11 @@
 package artifacts.ability.mobeffect;
 
+import artifacts.ability.AbilityWithTooltip;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffects;
@@ -14,10 +14,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 
-import java.util.List;
 import java.util.Objects;
 
-public class LimitedWaterBreathingAbility extends ConstantMobEffectAbility {
+public class LimitedWaterBreathingAbility extends ConstantMobEffectAbility implements AbilityWithTooltip {
 
     public static final Codec<LimitedWaterBreathingAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.DURATION.codec().fieldOf("duration").forGetter(LimitedWaterBreathingAbility::duration),
@@ -51,11 +50,11 @@ public class LimitedWaterBreathingAbility extends ConstantMobEffectAbility {
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         if (isInfinite()) {
-            tooltip.add(tooltipLine("infinite"));
+            writer.add("infinite");
         } else {
-            tooltip.add(tooltipLine("limited"));
+            writer.add("limited");
         }
     }
 

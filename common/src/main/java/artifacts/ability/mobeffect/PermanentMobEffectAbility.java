@@ -1,5 +1,6 @@
 package artifacts.ability.mobeffect;
 
+import artifacts.ability.AbilityWithTooltip;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.registry.ModMobEffects;
@@ -9,17 +10,15 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class PermanentMobEffectAbility extends ConstantMobEffectAbility {
+public class PermanentMobEffectAbility extends ConstantMobEffectAbility implements AbilityWithTooltip {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
             MobEffects.INVISIBILITY,
@@ -43,7 +42,6 @@ public class PermanentMobEffectAbility extends ConstantMobEffectAbility {
 
     private final Value<Boolean> enabled;
 
-    // TODO add if/else -> number value, remove enabled parameter
     public PermanentMobEffectAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Boolean> enabled) {
         super(mobEffect, level);
         this.enabled = enabled;
@@ -54,13 +52,11 @@ public class PermanentMobEffectAbility extends ConstantMobEffectAbility {
         return enabled.get() ? super.level() : Value.of(0);
     }
 
-    // TODO move tooltips to separate handler class
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         for (Holder<MobEffect> mobEffect : CUSTOM_TOOLTIP_MOB_EFFECTS) {
             if (mobEffect.isBound() && mobEffect.value() == mobEffect().value()) {
-                //noinspection ConstantConditions
-                tooltip.add(tooltipLine(BuiltInRegistries.MOB_EFFECT.getKey(mobEffect.value()).getPath()));
+                writer.add(Objects.requireNonNull(BuiltInRegistries.MOB_EFFECT.getKey(mobEffect.value())).getPath());
                 return;
             }
         }

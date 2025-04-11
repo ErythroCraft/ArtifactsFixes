@@ -1,5 +1,6 @@
 package artifacts.ability.mobeffect;
 
+import artifacts.ability.AbilityWithTooltip;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.registry.ModDataComponents;
@@ -9,7 +10,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.effect.MobEffect;
@@ -18,9 +18,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 
-import java.util.List;
-
-public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration) implements MobEffectAbility {
+public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration)
+        implements MobEffectAbility, AbilityWithTooltip {
 
     public static final Codec<ApplyMobEffectAfterEatingAbility> CODEC = RecordCodecBuilder.create(
             instance -> MobEffectAbility.codecStartWithDuration(instance)
@@ -57,9 +56,9 @@ public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Valu
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         if (mobEffect.equals(MobEffects.DIG_SPEED)) {
-            tooltip.add(tooltipLine("haste"));
+            writer.add("haste");
         }
     }
 }

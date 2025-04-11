@@ -292,7 +292,7 @@ public class ArtifactHooks {
         return entity.isCrouching() && canCollideWithFluid(entity, fluidState, ModDataComponents.SNEAK_ON_FLUIDS.get());
     }
 
-    private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState, DataComponentType<CollideWithFluidsAbility> type) {
+    private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState, DataComponentType<? extends CollideWithFluidsAbility> type) {
         return AbilityHelper.hasAbilityActive(type, entity, true, ability -> ability.tag().isEmpty() || fluidState.is(ability.tag().get()));
     }
 

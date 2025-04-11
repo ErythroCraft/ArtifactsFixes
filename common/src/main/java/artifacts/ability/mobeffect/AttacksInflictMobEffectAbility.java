@@ -1,5 +1,6 @@
 package artifacts.ability.mobeffect;
 
+import artifacts.ability.AbilityWithTooltip;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.registry.ModDataComponents;
@@ -11,7 +12,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
@@ -21,10 +21,10 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.List;
 import java.util.Set;
 
-public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration, Value<Integer> cooldown, Value<Double> chance) implements MobEffectAbility {
+public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration, Value<Integer> cooldown, Value<Double> chance)
+        implements MobEffectAbility, AbilityWithTooltip {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
             MobEffects.WITHER
@@ -76,15 +76,15 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
     }
 
     @Override
-    public void addAbilityTooltip(List<MutableComponent> tooltip) {
+    public void addToTooltip(TooltipWriter writer) {
         for (Holder<MobEffect> mobEffect : CUSTOM_TOOLTIP_MOB_EFFECTS) {
             if (mobEffect.isBound() && mobEffect.value() == mobEffect().value()) {
                 //noinspection ConstantConditions
                 String name = BuiltInRegistries.MOB_EFFECT.getKey(mobEffect.value()).getPath();
                 if (Mth.equal(chance().get(), 1)) {
-                    tooltip.add(tooltipLine(name + ".constant"));
+                    writer.add(name + ".constant");
                 } else {
-                    tooltip.add(tooltipLine(name + ".chance"));
+                    writer.add(name + ".chance");
                 }
                 return;
             }
