@@ -14,6 +14,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Unit;
 
 import java.util.function.Supplier;
@@ -25,6 +27,10 @@ public class ModDataComponents {
 
     public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
     public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE = registerSynced("disabled_by_toggle", Codec.unit(Unit.INSTANCE), StreamCodec.unit(Unit.INSTANCE));
+    public static final Supplier<DataComponentType<SoundEvent>> EQUIP_SOUND = registerSynced("equip_sound",
+            ResourceLocation.CODEC.xmap(SoundEvent::createVariableRangeEvent, SoundEvent::getLocation),
+            ResourceLocation.STREAM_CODEC.map(SoundEvent::createVariableRangeEvent, SoundEvent::getLocation)
+    );
 
     public static final Supplier<DataComponentType<ApplyCooldownAfterDamageAbility>> APPLY_COOLDOWN_AFTER_DAMAGE =
             registerSynced("apply_cooldown_after_damage", ApplyCooldownAfterDamageAbility.CODEC, ApplyCooldownAfterDamageAbility.STREAM_CODEC);

@@ -50,7 +50,7 @@ public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rec
             ) {
                 swimData.setSwimming(player, false);
                 if (!player.onGround() && !player.isInWater()) {
-                    player.playSound(ModSoundEvents.POP.value(), 0.5F, 0.75F);
+                    player.playSound(ModSoundEvents.POP.value());
                 }
             }
 

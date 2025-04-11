@@ -193,7 +193,6 @@ public class ModItems {
     );
     public static final Holder<Item> HELIUM_FLAMINGO = wearableItem("helium_flamingo", builder -> builder
             .equipSound(ModSoundEvents.POP)
-            .equipSoundPitch(0.7F)
             .component(ModDataComponents.SWIM_IN_AIR.get(), new SwimInAirAbility(
                     Artifacts.CONFIG.items.heliumFlamingoFlightDuration,
                     Artifacts.CONFIG.items.heliumFlamingoRechargeDuration

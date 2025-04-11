@@ -33,24 +33,10 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.function.Consumer;
 
-// TODO equip sound as item component
 public class WearableArtifactItem extends Item {
 
-    private final Holder<SoundEvent> equipSound;
-    private final float equipSoundPitch;
-
-    public WearableArtifactItem(Item.Properties properties, Holder<SoundEvent> equipSound, float equipSoundPitch) {
+    public WearableArtifactItem(Item.Properties properties) {
         super(properties);
-        this.equipSound = equipSound;
-        this.equipSoundPitch = equipSoundPitch;
-    }
-
-    public SoundEvent getEquipSound() {
-        return equipSound.value();
-    }
-
-    public float getEquipSoundPitch() {
-        return equipSoundPitch;
     }
 
     @Override
@@ -70,10 +56,12 @@ public class WearableArtifactItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        EquipmentIntegration integration = EquipmentIntegrationUtils.getIntegration(ModCompat.TRINKETS);
-
-        if (!stack.has(DataComponents.FOOD) && integration != null && integration.equipAccessory(player, stack)) {
-            player.playSound(getEquipSound(), 1, getEquipSoundPitch());
+        EquipmentIntegration trinkets = EquipmentIntegrationUtils.getIntegration(ModCompat.TRINKETS);
+        if (!stack.has(DataComponents.FOOD) && trinkets != null && trinkets.equipAccessory(player, stack)) {
+            SoundEvent sound = stack.get(ModDataComponents.EQUIP_SOUND.get());
+            if (sound != null) {
+                player.playSound(sound, 1, 1);
+            }
 
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
         }
@@ -84,12 +72,11 @@ public class WearableArtifactItem extends Item {
     public static class Builder {
 
         private final String itemName;
-        private Holder<SoundEvent> equipSound = SoundEvents.ARMOR_EQUIP_GENERIC;
-        private float equipSoundPitch = 1;
         private final Item.Properties properties = new Item.Properties();
 
         public Builder(String itemName) {
             this.itemName = itemName;
+            equipSound(SoundEvents.ARMOR_EQUIP_GENERIC);
         }
 
         public Builder equipSound(SoundEvent equipSound) {
@@ -97,12 +84,7 @@ public class WearableArtifactItem extends Item {
         }
 
         public Builder equipSound(Holder<SoundEvent> equipSound) {
-            this.equipSound = equipSound;
-            return this;
-        }
-
-        public Builder equipSoundPitch(float pitch) {
-            this.equipSoundPitch = pitch;
+            properties.component(ModDataComponents.EQUIP_SOUND.get(), equipSound.value());
             return this;
         }
 
@@ -130,7 +112,7 @@ public class WearableArtifactItem extends Item {
 
         public WearableArtifactItem build() {
             properties.stacksTo(1).rarity(Rarity.RARE).fireResistant();
-            return new WearableArtifactItem(properties, equipSound, equipSoundPitch);
+            return new WearableArtifactItem(properties);
         }
     }
 }

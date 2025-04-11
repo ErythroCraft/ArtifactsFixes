@@ -1,9 +1,13 @@
 package artifacts.neoforge.integration.curios;
 
 import artifacts.item.WearableArtifactItem;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.DamageSourceHelper;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
@@ -19,12 +23,17 @@ public record WearableArtifactCurio(WearableArtifactItem item) implements ICurio
     }
 
     @Override
-    public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
-        return new ICurio.SoundInfo(item.getEquipSound(), 1, item.getEquipSoundPitch());
+    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        return item.getFoodProperties(stack, slotContext.entity()) == null;
     }
 
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return item.getFoodProperties(stack, slotContext.entity()) == null;
+    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        SoundEvent equipSound = stack.get(ModDataComponents.EQUIP_SOUND);
+        if (equipSound != null) {
+            LivingEntity entity = slotContext.entity();
+            Vec3 pos = entity.position();
+            slotContext.entity().level().playSound(null, pos.x(), pos.y(), pos.z(), equipSound, slotContext.entity().getSoundSource());
+        }
     }
 }

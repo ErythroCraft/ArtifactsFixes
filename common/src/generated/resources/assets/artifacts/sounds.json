@@ -43,7 +43,11 @@
   },
   "generic.pop": {
     "sounds": [
-      "random/pop"
+      {
+        "name": "random/pop",
+        "pitch": 0.75,
+        "volume": 0.5
+      }
     ]
   },
   "item.whoopee_cushion.fart": {

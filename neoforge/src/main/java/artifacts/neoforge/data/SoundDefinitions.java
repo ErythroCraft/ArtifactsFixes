@@ -29,7 +29,7 @@ public class SoundDefinitions extends SoundDefinitionsProvider {
 
         addSubtitled(ModSoundEvents.FART.value()).with(sounds("fart", 2));
 
-        add(ModSoundEvents.POP.value()).with(sound(ResourceLocation.parse("random/pop")));
+        add(ModSoundEvents.POP.value()).with(sound(ResourceLocation.parse("random/pop")).pitch(0.75).volume(0.5));
 
     }
 
