@@ -1,9 +1,9 @@
 package artifacts.mixin.item;
 
 import artifacts.Artifacts;
-import artifacts.ability.AbilityWithTooltip;
 import artifacts.client.ToggleKeyHandlers;
 import artifacts.component.ToggleIdentifier;
+import artifacts.component.ability.EquipmentAbility;
 import artifacts.item.WearableArtifactItem;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.TooltipHelper;
@@ -50,10 +50,10 @@ public abstract class ItemStackMixin {
             lore.addToTooltip(context, tooltip::add, tooltipFlag);
         }
 
-        for (Supplier<? extends DataComponentType<? extends AbilityWithTooltip>> type : ModDataComponents.TOOLTIP_ORDER) {
-            AbilityWithTooltip provider = stack.get(type.get());
+        for (Supplier<? extends DataComponentType<? extends EquipmentAbility>> type : ModDataComponents.TOOLTIP_ORDER) {
+            EquipmentAbility provider = stack.get(type.get());
             if (provider != null && provider.isNonCosmetic()) {
-                provider.addToTooltip(new AbilityWithTooltip.TooltipWriter(type.get(), tooltip::add, context));
+                provider.addToTooltip(new EquipmentAbility.TooltipWriter(type.get(), tooltip::add, context));
             }
         }
 

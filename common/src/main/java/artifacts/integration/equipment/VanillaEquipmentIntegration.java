@@ -5,7 +5,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 public class VanillaEquipmentIntegration implements EquipmentIntegration {
 
@@ -13,14 +12,7 @@ public class VanillaEquipmentIntegration implements EquipmentIntegration {
     public void setup() {}
 
     @Override
-    public void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer) {
-        for (ItemStack item : entity.getArmorAndBodyArmorSlots()) {
-            if (!item.isEmpty()) consumer.accept(item);
-        }
-    }
-
-    @Override
-    public <T> T reduceAccessories(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
         for (ItemStack item : entity.getArmorAndBodyArmorSlots()) {
             if (!item.isEmpty()) init = f.apply(item, init);
         }

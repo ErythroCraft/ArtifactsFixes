@@ -1,7 +1,7 @@
 package artifacts.network;
 
 import artifacts.Artifacts;
-import artifacts.ability.DoubleJumpAbility;
+import artifacts.component.ability.DoubleJumpAbility;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;
 import net.minecraft.core.particles.ParticleOptions;

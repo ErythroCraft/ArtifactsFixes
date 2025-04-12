@@ -20,7 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 public class AccessoriesIntegration implements EquipmentIntegration {
 
@@ -38,16 +37,7 @@ public class AccessoriesIntegration implements EquipmentIntegration {
     }
 
     @Override
-    public void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer) {
-        AccessoriesCapability capability = AccessoriesCapability.get(entity);
-
-        if (capability != null) {
-            capability.getAllEquipped().forEach(slotEntryReference -> consumer.accept(slotEntryReference.stack()));
-        }
-    }
-
-    @Override
-    public <T> T reduceAccessories(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
         AccessoriesCapability capability = AccessoriesCapability.get(entity);
 
         if (capability != null) {

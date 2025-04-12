@@ -1,7 +1,7 @@
 package artifacts.util;
 
-import artifacts.ability.AttributeModifierAbility;
-import artifacts.ability.EquipmentAbility;
+import artifacts.component.ability.AttributeModifierAbility;
+import artifacts.component.ability.EquipmentAbility;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;

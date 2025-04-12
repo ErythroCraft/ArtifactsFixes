@@ -1,6 +1,6 @@
 package artifacts.fabric.mixin.ability.upgradetooltier;
 
-import artifacts.ability.UpgradeToolTierAbility;
+import artifacts.component.ability.UpgradeToolTierAbility;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

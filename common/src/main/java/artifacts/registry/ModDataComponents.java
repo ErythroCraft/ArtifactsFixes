@@ -1,11 +1,12 @@
 package artifacts.registry;
 
-import artifacts.ability.*;
-import artifacts.ability.mobeffect.*;
-import artifacts.ability.retaliation.SetAttackersOnFireAbility;
-import artifacts.ability.retaliation.StrikeAttackersWithLightningAbility;
-import artifacts.ability.retaliation.ThornsAbility;
+import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
+import artifacts.component.ability.*;
+import artifacts.component.ability.mobeffect.*;
+import artifacts.component.ability.retaliation.SetAttackersOnFireAbility;
+import artifacts.component.ability.retaliation.StrikeAttackersWithLightningAbility;
+import artifacts.component.ability.retaliation.ThornsAbility;
 import artifacts.platform.PlatformServices;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
@@ -29,7 +30,7 @@ public class ModDataComponents {
     public static final Register<DataComponentType<?>> DATA_COMPONENT_TYPES = PlatformServices.platformHelper.createRegister(Registries.DATA_COMPONENT_TYPE);
 
     public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
-    public static final List<Supplier<? extends DataComponentType<? extends AbilityWithTooltip>>> TOOLTIP_ORDER = new ArrayList<>();
+    public static final List<Supplier<? extends DataComponentType<? extends EquipmentAbility>>> TOOLTIP_ORDER = new ArrayList<>();
 
     public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
     public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE = registerSynced("disabled_by_toggle", Codec.unit(Unit.INSTANCE), StreamCodec.unit(Unit.INSTANCE));
@@ -63,12 +64,12 @@ public class ModDataComponents {
             registerSynced("increase_enchantment_level", IncreaseEnchantmentLevelAbility.CODEC, IncreaseEnchantmentLevelAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<LimitedWaterBreathingAbility>> LIMITED_WATER_BREATHING =
             registerSynced("limited_water_breathing", LimitedWaterBreathingAbility.CODEC, LimitedWaterBreathingAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<MakePiglinsNeutralAbility>> MAKE_PIGLINS_NEUTRAL =
-            registerSynced("make_piglins_neutral", MakePiglinsNeutralAbility.CODEC, MakePiglinsNeutralAbility.STREAM_CODEC);
+    public static final Supplier<DataComponentType<Unit>> MAKE_PIGLINS_NEUTRAL =
+            registerSynced("make_piglins_neutral", Unit.CODEC, StreamCodec.unit(Unit.INSTANCE));
     public static final Supplier<DataComponentType<PermanentMobEffectAbility>> MOB_EFFECT =
             registerSynced("mob_effect", PermanentMobEffectAbility.CODEC, PermanentMobEffectAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<ModifyHurtSoundAbility>> MODIFY_HURT_SOUND =
-            registerSynced("modify_hurt_sound", ModifyHurtSoundAbility.CODEC, ModifyHurtSoundAbility.STREAM_CODEC);
+    public static final Supplier<DataComponentType<HurtSound>> MODIFY_HURT_SOUND =
+            registerSynced("modify_hurt_sound", HurtSound.CODEC, HurtSound.STREAM_CODEC);
     public static final Supplier<DataComponentType<NightVisionAbility>> NIGHT_VISION =
             registerSynced("night_vision", NightVisionAbility.CODEC, NightVisionAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<SimpleAbility>> NULLIFY_ENDER_PEARL_DAMAGE =

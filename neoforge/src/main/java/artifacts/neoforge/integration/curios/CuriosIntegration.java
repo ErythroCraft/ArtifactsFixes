@@ -17,7 +17,6 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 public class CuriosIntegration implements EquipmentIntegration {
 
@@ -34,22 +33,7 @@ public class CuriosIntegration implements EquipmentIntegration {
     }
 
     @Override
-    public void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer) {
-        Optional<ICuriosItemHandler> itemHandler = CuriosApi.getCuriosInventory(entity);
-        if (itemHandler.isPresent()) {
-            for (ICurioStacksHandler stacksHandler : itemHandler.get().getCurios().values()) {
-                for (int i = 0; i < stacksHandler.getStacks().getSlots(); i++) {
-                    ItemStack item = stacksHandler.getStacks().getStackInSlot(i);
-                    if (!item.isEmpty()) {
-                        consumer.accept(item);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public <T> T reduceAccessories(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
         Optional<ICuriosItemHandler> itemHandler = CuriosApi.getCuriosInventory(entity);
         if (itemHandler.isPresent()) {
             for (ICurioStacksHandler stacksHandler : itemHandler.get().getCurios().values()) {

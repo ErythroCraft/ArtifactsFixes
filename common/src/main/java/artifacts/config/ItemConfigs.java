@@ -1,7 +1,7 @@
 package artifacts.config;
 
 import artifacts.Artifacts;
-import artifacts.ability.UpgradeToolTierAbility;
+import artifacts.component.ability.UpgradeToolTierAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.network.NetworkHandler;

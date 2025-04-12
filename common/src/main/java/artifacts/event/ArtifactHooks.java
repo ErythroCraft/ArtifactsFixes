@@ -1,15 +1,15 @@
 package artifacts.event;
 
 import artifacts.Artifacts;
-import artifacts.ability.ApplyCooldownAfterDamageAbility;
-import artifacts.ability.CollideWithFluidsAbility;
-import artifacts.ability.SwimInAirAbility;
-import artifacts.ability.TickingAbility;
-import artifacts.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
-import artifacts.ability.mobeffect.AttacksInflictMobEffectAbility;
-import artifacts.ability.retaliation.RetaliationAbility;
 import artifacts.attribute.DynamicAttributeModifier;
 import artifacts.component.SwimData;
+import artifacts.component.ability.ApplyCooldownAfterDamageAbility;
+import artifacts.component.ability.CollideWithFluidsAbility;
+import artifacts.component.ability.SwimInAirAbility;
+import artifacts.component.ability.TickingAbility;
+import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
+import artifacts.component.ability.mobeffect.AttacksInflictMobEffectAbility;
+import artifacts.component.ability.retaliation.RetaliationAbility;
 import artifacts.extensions.ability.LivingEntityExtensions;
 import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.item.UmbrellaItem;
@@ -152,7 +152,7 @@ public class ArtifactHooks {
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
         if (Artifacts.CONFIG.general.modifyHurtSounds.get()) {
-            AbilityHelper.iterateAbilities(ModDataComponents.MODIFY_HURT_SOUND.get(), entity, false, true, (ability, stack) -> entity.playSound(ability.soundEvent().value(), volume, pitch));
+            AbilityHelper.iterateComponents(ModDataComponents.MODIFY_HURT_SOUND.get(), entity, (stack, ability) -> entity.playSound(ability.soundEvent().value(), volume, pitch));
         }
     }
 

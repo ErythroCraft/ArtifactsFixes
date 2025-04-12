@@ -115,7 +115,7 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.LIMITED_WATER_BREATHING.get(), "infinite", "Allows the wearer to breathe underwater");
         addAbilityTooltip(ModDataComponents.LIMITED_WATER_BREATHING.get(), "limited", "Allows the wearer to breathe underwater for a limited amount of time");
         addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "invisibility", "Turns the wearer invisible");
-        addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "magnetism", "Attracts nearby items"); // TODO gen data
+        addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "magnetism", "Attracts nearby items");
         addAbilityTooltip(ModDataComponents.NIGHT_VISION.get(), "full", "Allows the wearer to see in the dark");
         addAbilityTooltip(ModDataComponents.NIGHT_VISION.get(), "partial", "Allows the wearer to see in the dark slightly");
         addAbilityTooltip(ModDataComponents.NULLIFY_ENDER_PEARL_DAMAGE.get(), "Ender Pearls deal no damage");

@@ -1,8 +1,8 @@
 package artifacts.client;
 
 import artifacts.Artifacts;
-import artifacts.ability.SwimInAirAbility;
 import artifacts.component.SwimData;
+import artifacts.component.ability.SwimInAirAbility;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.AbilityHelper;

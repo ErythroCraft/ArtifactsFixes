@@ -1,12 +1,13 @@
 package artifacts.registry;
 
 import artifacts.Artifacts;
-import artifacts.ability.*;
-import artifacts.ability.mobeffect.*;
-import artifacts.ability.retaliation.SetAttackersOnFireAbility;
-import artifacts.ability.retaliation.StrikeAttackersWithLightningAbility;
-import artifacts.ability.retaliation.ThornsAbility;
+import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
+import artifacts.component.ability.*;
+import artifacts.component.ability.mobeffect.*;
+import artifacts.component.ability.retaliation.SetAttackersOnFireAbility;
+import artifacts.component.ability.retaliation.StrikeAttackersWithLightningAbility;
+import artifacts.component.ability.retaliation.ThornsAbility;
 import artifacts.config.value.Value;
 import artifacts.item.EverlastingFoodItem;
 import artifacts.item.UmbrellaItem;
@@ -102,7 +103,7 @@ public class ModItems {
     );
     public static final Holder<Item> CROSS_NECKLACE = wearableItem("cross_necklace", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
-            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), MakePiglinsNeutralAbility.INSTANCE)
+            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get())
             .component(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), new ApplyCooldownAfterDamageAbility(Artifacts.CONFIG.items.crossNecklaceCooldown, Optional.empty()))
             .addAttributeModifier(ModAttributes.INVINCIBILITY_TICKS, Artifacts.CONFIG.items.crossNecklaceBonusInvincibilityTicks, AttributeModifier.Operation.ADD_VALUE, false)
     );
@@ -177,14 +178,14 @@ public class ModItems {
     );
     public static final Holder<Item> ANTIDOTE_VESSEL = wearableItem("antidote_vessel", builder -> builder
             .equipSound(SoundEvents.BOTTLE_FILL)
-            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), MakePiglinsNeutralAbility.INSTANCE)
+            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get())
             .component(ModDataComponents.REMOVE_BAD_EFFECTS.get(), new RemoveBadEffectsAbility(
                     Artifacts.CONFIG.items.antidoteVesselEnabled,
                     Artifacts.CONFIG.items.antidoteVesselMaxEffectDuration
             ))
     );
     public static final Holder<Item> UNIVERSAL_ATTRACTOR = wearableItem("universal_attractor", builder -> builder
-            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), MakePiglinsNeutralAbility.INSTANCE)
+            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get())
             .component(ModDataComponents.MOB_EFFECT.get(), new PermanentMobEffectAbility(
                     ModMobEffects.MAGNETISM, Value.of(1), Artifacts.CONFIG.items.universalAttractorEnabled
             ))
@@ -250,7 +251,7 @@ public class ModItems {
     );
     public static final Holder<Item> GOLDEN_HOOK = wearableItem("golden_hook", builder -> builder
             .addAttributeModifier(ModAttributes.ENTITY_EXPERIENCE, Artifacts.CONFIG.items.goldenHookEntityExperienceBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get(), MakePiglinsNeutralAbility.INSTANCE)
+            .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get())
     );
     public static final Holder<Item> ONION_RING = wearableItem("onion_ring", builder -> builder
             .properties(properties -> properties.food(new FoodProperties.Builder().nutrition(2).build()))
@@ -284,14 +285,14 @@ public class ModItems {
             .addAttributeModifier(Attributes.JUMP_STRENGTH, Artifacts.CONFIG.items.bunnyHoppersJumpStrengthBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(Attributes.FALL_DAMAGE_MULTIPLIER, Artifacts.CONFIG.items.bunnyHoppersFallDamageMultiplier, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(Attributes.SAFE_FALL_DISTANCE, Artifacts.CONFIG.items.bunnyHoppersSafeFallDistanceBonus, AttributeModifier.Operation.ADD_VALUE)
-            .component(ModDataComponents.MODIFY_HURT_SOUND.get(), new ModifyHurtSoundAbility(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.RABBIT_HURT)))
+            .component(ModDataComponents.MODIFY_HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.RABBIT_HURT)))
     );
     public static final Holder<Item> KITTY_SLIPPERS = wearableItem("kitty_slippers", builder -> builder
             .equipSound(SoundEvents.CAT_AMBIENT)
             .component(ModDataComponents.SCARE_CREEPERS.get(),
                     new SimpleAbility(Artifacts.CONFIG.items.kittySlippersEnabled)
             )
-            .component(ModDataComponents.MODIFY_HURT_SOUND.get(), new ModifyHurtSoundAbility(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT)))
+            .component(ModDataComponents.MODIFY_HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT)))
     );
     public static final Holder<Item> RUNNING_SHOES = wearableItem("running_shoes", builder -> builder
             .addAttributeModifier(ModAttributes.SPRINTING_SPEED, Artifacts.CONFIG.items.runningShoesSprintingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)

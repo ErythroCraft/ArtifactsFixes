@@ -1,6 +1,6 @@
 package artifacts.component;
 
-import artifacts.ability.SwimInAirAbility;
+import artifacts.component.ability.SwimInAirAbility;
 import artifacts.network.NetworkHandler;
 import artifacts.network.SwimPacket;
 import net.minecraft.world.entity.LivingEntity;

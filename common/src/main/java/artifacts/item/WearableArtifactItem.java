@@ -1,8 +1,8 @@
 package artifacts.item;
 
 import artifacts.Artifacts;
-import artifacts.ability.AttributeModifierAbility;
-import artifacts.ability.IncreaseEnchantmentLevelAbility;
+import artifacts.component.ability.AttributeModifierAbility;
+import artifacts.component.ability.IncreaseEnchantmentLevelAbility;
 import artifacts.config.value.Value;
 import artifacts.integration.ModCompat;
 import artifacts.integration.equipment.EquipmentIntegration;
@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -98,6 +99,10 @@ public class WearableArtifactItem extends Item {
 
         public Builder increasesEnchantment(ResourceKey<Enchantment> enchantment, Value<Integer> amount) {
             return component(ModDataComponents.INCREASE_ENCHANTMENT_LEVEL.get(), new IncreaseEnchantmentLevelAbility(enchantment, amount));
+        }
+
+        public Builder component(DataComponentType<Unit> type) {
+            return component(type, Unit.INSTANCE);
         }
 
         public <T> Builder component(DataComponentType<T> type, T component) {

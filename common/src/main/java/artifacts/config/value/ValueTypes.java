@@ -1,6 +1,6 @@
 package artifacts.config.value;
 
-import artifacts.ability.UpgradeToolTierAbility;
+import artifacts.component.ability.UpgradeToolTierAbility;
 import artifacts.config.value.type.*;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

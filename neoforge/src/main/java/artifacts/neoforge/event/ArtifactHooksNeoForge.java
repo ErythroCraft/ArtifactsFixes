@@ -1,6 +1,6 @@
 package artifacts.neoforge.event;
 
-import artifacts.ability.UpgradeToolTierAbility;
+import artifacts.component.ability.UpgradeToolTierAbility;
 import artifacts.event.ArtifactHooks;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;

@@ -1,5 +1,6 @@
 package artifacts.integration.equipment;
 
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -33,14 +34,15 @@ public class EquipmentIntegrationUtils {
     }
 
     public static void iterateEquipment(LivingEntity entity, Consumer<ItemStack> consumer) {
-        for (EquipmentIntegration integration : INTEGRATIONS.values()) {
-            integration.iterateEquippedAccessories(entity, consumer);
-        }
+        reduceEquipment(entity, Unit.INSTANCE, (stack, unit) -> {
+            consumer.accept(stack);
+            return unit;
+        });
     }
 
     public static <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
         for (EquipmentIntegration integration : INTEGRATIONS.values()) {
-            init = integration.reduceAccessories(entity, init, f);
+            init = integration.reduceEquipment(entity, init, f);
         }
 
         return init;

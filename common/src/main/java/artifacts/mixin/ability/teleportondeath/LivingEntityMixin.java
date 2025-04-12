@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.teleportondeath;
 
-import artifacts.ability.TeleportOnDeathAbility;
+import artifacts.component.ability.TeleportOnDeathAbility;
 import artifacts.network.ChorusTotemUsedPacket;
 import artifacts.network.NetworkHandler;
 import artifacts.registry.ModDataComponents;

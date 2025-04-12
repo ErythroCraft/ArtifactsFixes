@@ -1,7 +1,7 @@
 package artifacts.network;
 
 import artifacts.Artifacts;
-import artifacts.ability.TeleportOnDeathAbility;
+import artifacts.component.ability.TeleportOnDeathAbility;
 import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;

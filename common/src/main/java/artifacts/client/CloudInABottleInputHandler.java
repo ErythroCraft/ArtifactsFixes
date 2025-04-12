@@ -1,6 +1,6 @@
 package artifacts.client;
 
-import artifacts.ability.DoubleJumpAbility;
+import artifacts.component.ability.DoubleJumpAbility;
 import artifacts.network.DoubleJumpPacket;
 import artifacts.network.NetworkHandler;
 import artifacts.registry.ModDataComponents;

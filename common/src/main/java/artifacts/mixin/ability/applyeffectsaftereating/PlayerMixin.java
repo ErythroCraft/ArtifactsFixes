@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.applyeffectsaftereating;
 
-import artifacts.ability.mobeffect.ApplyMobEffectAfterEatingAbility;
+import artifacts.component.ability.mobeffect.ApplyMobEffectAfterEatingAbility;
 import artifacts.event.ArtifactHooks;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

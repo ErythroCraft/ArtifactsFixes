@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 public class TrinketsIntegration implements EquipmentIntegration {
 
@@ -32,23 +31,7 @@ public class TrinketsIntegration implements EquipmentIntegration {
     }
 
     @Override
-    public void iterateEquippedAccessories(LivingEntity entity, Consumer<ItemStack> consumer) {
-        TrinketsApi.getTrinketComponent(entity).ifPresent(component -> {
-            for (Map<String, TrinketInventory> map : component.getInventory().values()) {
-                for (TrinketInventory inventory : map.values()) {
-                    for (int i = 0; i < inventory.getContainerSize(); i++) {
-                        ItemStack item = inventory.getItem(i);
-                        if (!item.isEmpty()) {
-                            consumer.accept(item);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public <T> T reduceAccessories(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
         Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(entity);
         if (component.isPresent()) {
             for (Map<String, TrinketInventory> map : component.get().getInventory().values()) {
