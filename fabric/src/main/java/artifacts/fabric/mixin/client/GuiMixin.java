@@ -2,10 +2,12 @@ package artifacts.fabric.mixin.client;
 
 import artifacts.Artifacts;
 import artifacts.equipment.EquipmentHelper;
+import artifacts.registry.ModDataComponents;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.spongepowered.asm.mixin.Final;
@@ -14,6 +16,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.Supplier;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin {
@@ -46,11 +50,20 @@ public abstract class GuiMixin {
 
         MutableInt k = new MutableInt(0);
         EquipmentHelper.iterateEquipment(player, stack -> {
-            if (!stack.isEmpty() && player.getCooldowns().isOnCooldown(stack.getItem())) { // TODO && stack.has(ModDataComponents.ABILITIES.get())
-                int x = start + step * k.intValue();
-                k.add(1);
-                guiGraphics.renderItem(player, stack, x, y, k.intValue() + 1);
-                guiGraphics.renderItemDecorations(minecraft.font, stack, x, y);
+            if (player.getCooldowns().isOnCooldown(stack.getItem())) {
+                boolean canApplyCooldown = false;
+                for (Supplier<? extends DataComponentType<?>> type : ModDataComponents.APPLIES_COOLDOWN) {
+                    if (stack.has(type.get())) {
+                        canApplyCooldown = true;
+                        break;
+                    }
+                }
+                if (canApplyCooldown) {
+                    int x = start + step * k.intValue();
+                    k.add(1);
+                    guiGraphics.renderItem(player, stack, x, y, k.intValue() + 1);
+                    guiGraphics.renderItemDecorations(minecraft.font, stack, x, y);
+                }
             }
         });
     }

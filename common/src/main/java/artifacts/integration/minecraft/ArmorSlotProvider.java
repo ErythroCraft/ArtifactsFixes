@@ -10,8 +10,10 @@ public class ArmorSlotProvider implements EquipmentSlotProvider {
 
     @Override
     public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
-        for (ItemStack item : entity.getArmorAndBodyArmorSlots()) {
-            if (!item.isEmpty()) init = f.apply(item, init);
+        for (ItemStack stack : entity.getArmorAndBodyArmorSlots()) {
+            if (!stack.isEmpty()) {
+                init = f.apply(stack, init);
+            }
         }
         return init;
     }

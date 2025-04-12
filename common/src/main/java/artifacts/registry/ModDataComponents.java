@@ -31,6 +31,7 @@ public class ModDataComponents {
 
     public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
     public static final List<Supplier<? extends DataComponentType<? extends EquipmentAbility>>> TOOLTIP_ORDER = new ArrayList<>();
+    public static final Set<Supplier<? extends DataComponentType<?>>> APPLIES_COOLDOWN = new LinkedHashSet<>();
 
     public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
     public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE = registerSynced("disabled_by_toggle", Codec.unit(Unit.INSTANCE), StreamCodec.unit(Unit.INSTANCE));
@@ -104,13 +105,14 @@ public class ModDataComponents {
             registerSimpleAbility("walk_on_powdered_snow");
 
     static {
-        TICKING_COMPONENTS.add(ModDataComponents.ATTRIBUTE_MODIFIER);
-        TICKING_COMPONENTS.add(ModDataComponents.REPLENISH_HUNGER_ON_GRASS);
-        TICKING_COMPONENTS.add(ModDataComponents.REMOVE_BAD_EFFECTS);
-        TICKING_COMPONENTS.add(ModDataComponents.MOB_EFFECT);
-        TICKING_COMPONENTS.add(ModDataComponents.LIMITED_WATER_BREATHING);
-        TICKING_COMPONENTS.add(ModDataComponents.NIGHT_VISION);
-
+        TICKING_COMPONENTS.addAll(List.of(
+                ATTRIBUTE_MODIFIER,
+                REPLENISH_HUNGER_ON_GRASS,
+                REMOVE_BAD_EFFECTS,
+                MOB_EFFECT,
+                LIMITED_WATER_BREATHING,
+                NIGHT_VISION
+        ));
         TOOLTIP_ORDER.addAll(List.of(
                 APPLY_MOB_EFFECT_AFTER_DAMAGE,
                 APPLY_MOB_EFFECT_AFTER_EATING,
@@ -140,6 +142,13 @@ public class ModDataComponents {
                 THORNS,
                 UPGRADE_TOOL_TIER,
                 WALK_ON_POWDER_SNOW
+        ));
+        APPLIES_COOLDOWN.addAll(Set.of(
+                APPLY_COOLDOWN_AFTER_DAMAGE,
+                STRIKE_ATTACKERS_WITH_LIGHTNING,
+                THORNS,
+                SET_ATTACKERS_ON_FIRE,
+                TELEPORT_ON_DEATH
         ));
     }
 
