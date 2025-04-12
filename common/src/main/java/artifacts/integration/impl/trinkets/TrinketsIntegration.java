@@ -5,10 +5,14 @@ import artifacts.integration.ModCompat;
 import artifacts.integration.equipment.EquipmentIntegration;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
+import artifacts.registry.ModDataComponents;
 import artifacts.util.DamageSourceHelper;
 import dev.emi.trinkets.api.*;
 import dev.emi.trinkets.api.event.TrinketEquipCallback;
 import dev.emi.trinkets.api.event.TrinketUnequipCallback;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -66,6 +70,20 @@ public class TrinketsIntegration implements EquipmentIntegration {
                 return TrinketEnums.DropRule.DESTROY;
             }
             return Trinket.super.getDropRule(stack, slot, entity);
+        }
+
+        @Override
+        public boolean canEquipFromUse(ItemStack stack, LivingEntity entity) {
+            return !stack.has(DataComponents.FOOD);
+        }
+
+        @Override
+        public Holder<SoundEvent> getEquipSound(ItemStack stack, SlotReference slot, LivingEntity entity) {
+            SoundEvent equipSound = stack.get(ModDataComponents.EQUIP_SOUND.get());
+            if (equipSound != null) {
+                return Holder.direct(equipSound);
+            }
+            return Trinket.super.getEquipSound(stack, slot, entity);
         }
     }
 }

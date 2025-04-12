@@ -3,7 +3,6 @@ package artifacts.integration.equipment;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,11 +12,6 @@ import java.util.function.Consumer;
 public class EquipmentIntegrationUtils {
 
     private static final Map<String, EquipmentIntegration> INTEGRATIONS = new LinkedHashMap<>();
-
-    @Nullable
-    public static EquipmentIntegration getIntegration(String name) {
-        return INTEGRATIONS.get(name);
-    }
 
     public static void setupIntegrations() {
         INTEGRATIONS.values().forEach(EquipmentIntegration::setup);
