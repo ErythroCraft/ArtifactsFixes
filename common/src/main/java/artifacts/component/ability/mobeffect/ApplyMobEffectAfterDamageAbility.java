@@ -43,8 +43,8 @@ public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Valu
             ApplyMobEffectAfterDamageAbility::new
     );
 
-    public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource, float amount) {
-        if (!entity.level().isClientSide() && amount >= 0.1) { // TODO remove amount check
+    public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
+        if (!entity.level().isClientSide()) {
             EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     entity.addEffect(ability.createEffect(entity));

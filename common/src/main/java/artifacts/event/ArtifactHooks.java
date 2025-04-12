@@ -64,8 +64,8 @@ public class ArtifactHooks {
     }
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource source, float amount) {
-        ArtifactHooks.absorbDamage(entity, source, amount);
-        ApplyMobEffectAfterDamageAbility.onLivingDamaged(entity, source, amount);
+        absorbDamage(entity, source, amount);
+        ApplyMobEffectAfterDamageAbility.onLivingDamaged(entity, source);
         ApplyCooldownAfterDamageAbility.onLivingDamaged(entity, source);
     }
 
