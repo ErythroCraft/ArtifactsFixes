@@ -1,16 +1,10 @@
 package artifacts.neoforge.platform;
 
 import artifacts.component.SwimData;
-import artifacts.integration.ModCompat;
-import artifacts.integration.equipment.EquipmentIntegrationUtils;
-import artifacts.integration.equipment.client.ClientEquipmentIntegrationUtils;
 import artifacts.neoforge.integration.cosmeticarmor.CosmeticArmorCompat;
-import artifacts.neoforge.integration.curios.CuriosClientIntegration;
-import artifacts.neoforge.integration.curios.CuriosIntegration;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.NeoForgeRegister;
 import artifacts.platform.PlatformHelper;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModEntityTypes;
 import artifacts.registry.Register;
 import net.minecraft.core.Holder;
@@ -71,7 +65,7 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     }
 
     @Override
-    public void registryEntryAddCallback(Consumer<Item> consumer) {
+    public void addItemRegistryCallback(Consumer<Item> consumer) {
         BuiltInRegistries.ITEM.addCallback((AddCallback<Item>) (registry, i, key, item) -> consumer.accept(item));
     }
 
@@ -88,22 +82,5 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public SpawnEggItem createMimicSpawnEgg(Item.Properties properties) {
         return new DeferredSpawnEggItem(ModEntityTypes.MIMIC, 0xFFFFFF, 0xFFFFFF, properties);
-    }
-
-    public void setupIntegrations() {
-        PlatformHelper.super.setupIntegrations();
-
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS) && !PlatformServices.platformHelper.isModLoaded(ModCompat.CCLAYER)) {
-            EquipmentIntegrationUtils.registerIntegration(new CuriosIntegration());
-        }
-    }
-
-    @Override
-    public void setupClientIntegrations() {
-        PlatformHelper.super.setupClientIntegrations();
-
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS) && !PlatformServices.platformHelper.isModLoaded(ModCompat.CCLAYER)) {
-            ClientEquipmentIntegrationUtils.registerIntegration(new CuriosClientIntegration());
-        }
     }
 }

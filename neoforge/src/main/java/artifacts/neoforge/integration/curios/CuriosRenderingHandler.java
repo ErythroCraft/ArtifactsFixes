@@ -2,58 +2,29 @@ package artifacts.neoforge.integration.curios;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
-import artifacts.integration.ModCompat;
-import artifacts.integration.equipment.client.ClientEquipmentIntegration;
+import artifacts.equipment.client.EquipmentRenderingHandler;
 import artifacts.item.WearableArtifactItem;
-import artifacts.mixin.accessors.client.LivingEntityRendererAccessor;
-import artifacts.registry.ModLootTables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
-import top.theillusivec4.curios.client.render.CuriosLayer;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Supplier;
 
-public class CuriosClientIntegration implements ClientEquipmentIntegration {
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
-        Set<EntityType<?>> entities = ModLootTables.ENTITY_EQUIPMENT.keySet();
-        loop:
-        for (EntityType<?> entity : entities) {
-            EntityRenderer<?> renderer = event.getRenderer(entity);
-            if (renderer == null) {
-                continue;
-            }
-            LivingEntityRenderer livingEntityRenderer = (LivingEntityRenderer<?, ?>) renderer;
-            for (RenderLayer<?, ?> layer : ((LivingEntityRendererAccessor<?, ?>) livingEntityRenderer).getLayers()) {
-                if (layer instanceof CuriosLayer<?, ?>) {
-                    continue loop;
-                }
-            }
-            livingEntityRenderer.addLayer(new CuriosLayer<>(livingEntityRenderer));
-        }
-    }
+public class CuriosRenderingHandler implements EquipmentRenderingHandler {
 
     @Override
     public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
@@ -93,11 +64,6 @@ public class CuriosClientIntegration implements ClientEquipmentIntegration {
                 }
             }
         }));
-    }
-
-    @Override
-    public String name() {
-        return ModCompat.CURIOS;
     }
 
     public record ArtifactCurioRenderer(ArtifactRenderer renderer) implements ICurioRenderer {

@@ -1,9 +1,8 @@
-package artifacts.integration.impl.trinkets;
+package artifacts.integration.trinkets;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
-import artifacts.integration.ModCompat;
-import artifacts.integration.equipment.client.ClientEquipmentIntegration;
+import artifacts.equipment.client.EquipmentRenderingHandler;
 import artifacts.item.WearableArtifactItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.trinkets.api.SlotReference;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class TrinketsClientIntegration implements ClientEquipmentIntegration {
+public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
     
     @Override
     public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
@@ -53,11 +52,6 @@ public class TrinketsClientIntegration implements ClientEquipmentIntegration {
                 }
             }
         });
-    }
-
-    @Override
-    public String name() {
-        return ModCompat.TRINKETS;
     }
 
     public record ArtifactTrinketRenderer(ArtifactRenderer renderer) implements TrinketRenderer {

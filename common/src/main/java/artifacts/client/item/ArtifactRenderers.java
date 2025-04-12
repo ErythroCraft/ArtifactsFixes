@@ -2,7 +2,7 @@ package artifacts.client.item;
 
 import artifacts.client.item.model.*;
 import artifacts.client.item.renderer.*;
-import artifacts.integration.equipment.client.ClientEquipmentIntegrationUtils;
+import artifacts.equipment.client.EquipmentRenderingManager;
 import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -77,7 +77,7 @@ public class ArtifactRenderers {
         return Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation);
     }
 
-    public static void register(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
-        ClientEquipmentIntegrationUtils.registerArtifactRenderer(item, rendererSupplier);
+    public static void register(Item item, Supplier<ArtifactRenderer> rendererFactory) {
+        EquipmentRenderingManager.registerArtifactRenderer(item, rendererFactory);
     }
 }

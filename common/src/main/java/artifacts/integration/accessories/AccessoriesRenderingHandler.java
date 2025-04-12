@@ -1,9 +1,8 @@
-package artifacts.integration.impl.accessories;
+package artifacts.integration.accessories;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
-import artifacts.integration.ModCompat;
-import artifacts.integration.equipment.client.ClientEquipmentIntegration;
+import artifacts.equipment.client.EquipmentRenderingHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
 import io.wispforest.accessories.api.client.AccessoryRenderer;
@@ -21,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class AccessoriesClientIntegration implements ClientEquipmentIntegration {
+public class AccessoriesRenderingHandler implements EquipmentRenderingHandler {
 
     @Override
     public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
@@ -40,11 +39,6 @@ public class AccessoriesClientIntegration implements ClientEquipmentIntegration 
     @Override
     public void renderArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side) {
         // NO-OP SEE shouldRenderInFirstPerson below
-    }
-
-    @Override
-    public String name() {
-        return ModCompat.ACCESSORIES;
     }
 
     public record ArtifactAccessoryRenderer(ArtifactRenderer renderer) implements AccessoryRenderer {

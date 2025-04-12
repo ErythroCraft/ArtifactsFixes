@@ -28,7 +28,7 @@ public class EnchantedCountIncreaseFunctionMixin {
         Entity entity = lootContext.getParamOrNull(LootContextParams.THIS_ENTITY);
 
         if (this.enchantment.is(Enchantments.LOOTING) && entity instanceof LivingEntity livingEntity) {
-            level += AbilityHelper.getEnchantmentSum(Enchantments.LOOTING, livingEntity);
+            level += AbilityHelper.getEnchantmentLevelIncrease(Enchantments.LOOTING, livingEntity);
         }
 
         return level;

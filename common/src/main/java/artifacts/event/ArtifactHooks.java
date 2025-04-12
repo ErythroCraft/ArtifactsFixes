@@ -11,7 +11,6 @@ import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
 import artifacts.component.ability.mobeffect.AttacksInflictMobEffectAbility;
 import artifacts.component.ability.retaliation.RetaliationAbility;
 import artifacts.extensions.ability.LivingEntityExtensions;
-import artifacts.integration.equipment.EquipmentIntegrationUtils;
 import artifacts.item.UmbrellaItem;
 import artifacts.mixin.accessors.MobAccessor;
 import artifacts.platform.PlatformServices;
@@ -93,7 +92,7 @@ public class ArtifactHooks {
     }
 
     public static void refreshTickingAbilities(LivingEntity entity) {
-        boolean shouldTick = EquipmentIntegrationUtils.reduceEquipment(entity, false, (stack, hasTickingAbilities) -> {
+        boolean shouldTick = AbilityHelper.reduceEquipment(entity, false, (stack, hasTickingAbilities) -> {
             for (var type : ModDataComponents.TICKING_COMPONENTS) {
                 // abilities are tracked as ticking even when they're cosmetic,
                 // since updating the config does not trigger onItemChanged

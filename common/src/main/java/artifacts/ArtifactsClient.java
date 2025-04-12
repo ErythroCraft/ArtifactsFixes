@@ -5,6 +5,9 @@ import artifacts.client.ToggleKeyHandlers;
 import artifacts.client.item.ArtifactLayers;
 import artifacts.client.mimic.model.MimicChestLayerModel;
 import artifacts.client.mimic.model.MimicModel;
+import artifacts.integration.ModCompat;
+import artifacts.integration.accessories.AccessoriesCompatClient;
+import artifacts.integration.trinkets.TrinketsCompatClient;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
@@ -12,18 +15,21 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import org.apache.logging.log4j.util.TriConsumer;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class ArtifactsClient {
 
-    public static void init() {
-        PlatformServices.platformHelper.setupClientIntegrations();
+    public static void setup() {
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS)) {
+            TrinketsCompatClient.setup();
+        }
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)) {
+            AccessoriesCompatClient.setup();
+        }
     }
 
     public static void onClientTick(Minecraft instance) {
@@ -52,10 +58,5 @@ public class ArtifactsClient {
         ArtifactLayers.register(registration);
         registration.accept(MimicModel.LAYER_LOCATION, MimicModel::createLayer);
         registration.accept(MimicChestLayerModel.LAYER_LOCATION, MimicChestLayerModel::createLayer);
-    }
-
-    @Nullable
-    public static Player getLocalPlayer() {
-        return Minecraft.getInstance().player;
     }
 }

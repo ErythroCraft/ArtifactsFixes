@@ -1,4 +1,4 @@
-package artifacts.integration.equipment.client;
+package artifacts.equipment.client;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public interface ClientEquipmentIntegration {
+public interface EquipmentRenderingHandler {
 
     void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier);
 
@@ -19,5 +19,4 @@ public interface ClientEquipmentIntegration {
 
     void renderArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side);
 
-    String name();
 }

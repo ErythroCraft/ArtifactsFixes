@@ -1,15 +1,12 @@
-package artifacts.integration.equipment;
+package artifacts.integration.minecraft;
 
-import artifacts.integration.ModCompat;
+import artifacts.equipment.EquipmentSlotProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.BiFunction;
 
-public class VanillaEquipmentIntegration implements EquipmentIntegration {
-
-    @Override
-    public void setup() {}
+public class ArmorSlotProvider implements EquipmentSlotProvider {
 
     @Override
     public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
@@ -20,12 +17,7 @@ public class VanillaEquipmentIntegration implements EquipmentIntegration {
     }
 
     @Override
-    public boolean equipAccessory(LivingEntity entity, ItemStack stack) {
+    public boolean tryEquipItem(LivingEntity entity, ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public String name() {
-        return ModCompat.MINECRAFT;
     }
 }

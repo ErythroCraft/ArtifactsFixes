@@ -1,7 +1,7 @@
 package artifacts.fabric.mixin.compat.trinkets.client;
 
 import artifacts.Artifacts;
-import artifacts.integration.equipment.client.ClientEquipmentIntegrationUtils;
+import artifacts.equipment.client.EquipmentRenderingManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -32,6 +32,6 @@ public abstract class PlayerRendererMixin {
             return;
         }
 
-        ClientEquipmentIntegrationUtils.renderArm(matrixStack, buffer, light, player, handSide);
+        EquipmentRenderingManager.renderArm(matrixStack, buffer, light, player, handSide);
     }
 }

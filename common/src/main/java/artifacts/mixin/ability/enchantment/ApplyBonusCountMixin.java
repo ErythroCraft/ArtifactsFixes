@@ -28,7 +28,7 @@ public class ApplyBonusCountMixin {
         Entity entity = lootContext.getParamOrNull(LootContextParams.THIS_ENTITY);
 
         if (this.enchantment.is(Enchantments.FORTUNE) && entity instanceof LivingEntity livingEntity) {
-            level += AbilityHelper.getEnchantmentSum(Enchantments.FORTUNE, livingEntity);
+            level += AbilityHelper.getEnchantmentLevelIncrease(Enchantments.FORTUNE, livingEntity);
         }
 
         return level;

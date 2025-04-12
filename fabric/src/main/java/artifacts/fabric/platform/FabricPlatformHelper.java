@@ -60,7 +60,7 @@ public class FabricPlatformHelper implements PlatformHelper {
     }
 
     @Override
-    public void registryEntryAddCallback(Consumer<Item> consumer) {
+    public void addItemRegistryCallback(Consumer<Item> consumer) {
         RegistryEntryAddedCallback.event(BuiltInRegistries.ITEM)
                 .register((i, resourceLocation, item) -> consumer.accept(item));
     }

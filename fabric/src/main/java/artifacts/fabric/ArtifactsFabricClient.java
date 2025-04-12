@@ -1,12 +1,12 @@
 package artifacts.fabric;
 
+import artifacts.Artifacts;
 import artifacts.ArtifactsClient;
 import artifacts.client.mimic.MimicRenderer;
 import artifacts.event.ArtifactHooks;
 import artifacts.fabric.client.UmbrellaModelLoadingPlugin;
 import artifacts.fabric.network.FabricClientNetworkHandler;
-import artifacts.integration.ModCompat;
-import artifacts.integration.impl.trinkets.TrinketRenderersReloadHook;
+import artifacts.integration.trinkets.ArtifactRendererReloadListener;
 import artifacts.registry.ModEntityTypes;
 import artifacts.registry.ModKeyMappings;
 import net.fabricmc.api.ClientModInitializer;
@@ -16,21 +16,20 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.ResourceManager;
 
 public class ArtifactsFabricClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ArtifactsClient.init();
+        ArtifactsClient.setup();
         ArtifactsClient.onClientStarted();
         FabricClientNetworkHandler.registerClientboundReceivers();
+
         ModelLoadingPlugin.register(new UmbrellaModelLoadingPlugin());
         ArtifactsClient.registerLayerDefinitions((location, layerDefinition) -> EntityModelLayerRegistry.registerModelLayer(location, layerDefinition::get));
         ArtifactsClient.registerItemPropertyFunctions(ItemProperties::register);
@@ -39,19 +38,17 @@ public class ArtifactsFabricClient implements ClientModInitializer {
         ModKeyMappings.register(KeyBindingHelper::registerKeyBinding);
 
         ClientEntityEvents.ENTITY_LOAD.register((entity, level) -> ArtifactHooks.onEntityAdded(entity));
+        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new IdentifiableArtifactRendererReloadListener());
+    }
 
-        if (FabricLoader.getInstance().isModLoaded(ModCompat.TRINKETS)) {
-            ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-                @Override
-                public ResourceLocation getFabricId() {
-                    return TrinketRenderersReloadHook.ID;
-                }
+    private static class IdentifiableArtifactRendererReloadListener
+            extends ArtifactRendererReloadListener implements IdentifiableResourceReloadListener {
 
-                @Override
-                public void onResourceManagerReload(ResourceManager resourceManager) {
-                    TrinketRenderersReloadHook.INSTANCE.onResourceManagerReload(resourceManager);
-                }
-            });
+        private static final ResourceLocation ID = Artifacts.id("trinket_renderers");
+
+        @Override
+        public ResourceLocation getFabricId() {
+            return ID;
         }
     }
 }

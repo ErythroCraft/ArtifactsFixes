@@ -4,6 +4,7 @@ import artifacts.Artifacts;
 import artifacts.config.screen.ArtifactsConfigScreen;
 import artifacts.integration.ModCompat;
 import artifacts.neoforge.event.ArtifactHooksNeoForge;
+import artifacts.neoforge.integration.curios.CuriosCompat;
 import artifacts.neoforge.network.NeoForgeNetworkHandler;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModLootModifiers;
@@ -49,13 +50,17 @@ public class ArtifactsNeoForge {
         NeoForge.EVENT_BUS.addListener(this::onPlayerLoggedIn);
         modBus.addListener((EntityAttributeCreationEvent event) -> ModEntityTypes.registerMobAttributes(event::put));
 
-        registerConfig();
+        registerConfigScreen();
         ArtifactHooksNeoForge.register();
+
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS)) {
+            CuriosCompat.setup();
+        }
 
         ArtifactsNeoForge.modBus = null;
     }
 
-    private void registerConfig() {
+    private void registerConfigScreen() {
         if (PlatformServices.platformHelper.isModLoaded(ModCompat.CLOTH_CONFIG)) {
             ModLoadingContext.get().registerExtensionPoint(
                     IConfigScreenFactory.class,

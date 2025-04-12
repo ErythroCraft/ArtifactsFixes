@@ -22,7 +22,7 @@ public class EnchantmentHelperMixin {
             return original;
         }
         if (PlatformServices.platformHelper.isFishingRod(stack) && entity instanceof LivingEntity livingEntity) {
-            return Math.min(25, original + 5 * AbilityHelper.getEnchantmentSum(Enchantments.LURE, livingEntity));
+            return Math.min(25, original + 5 * AbilityHelper.getEnchantmentLevelIncrease(Enchantments.LURE, livingEntity));
         }
         return original;
     }
@@ -30,7 +30,7 @@ public class EnchantmentHelperMixin {
     @ModifyReturnValue(method = "getFishingLuckBonus", at = @At("RETURN"))
     private static int increaseFishingLuckBonus(int original, ServerLevel level, ItemStack stack, Entity entity) {
         if (PlatformServices.platformHelper.isFishingRod(stack) && entity instanceof LivingEntity livingEntity) {
-            return original + AbilityHelper.getEnchantmentSum(Enchantments.LUCK_OF_THE_SEA, livingEntity);
+            return original + AbilityHelper.getEnchantmentLevelIncrease(Enchantments.LUCK_OF_THE_SEA, livingEntity);
         }
         return original;
     }

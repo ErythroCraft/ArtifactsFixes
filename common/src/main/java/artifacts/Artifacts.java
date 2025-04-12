@@ -2,8 +2,11 @@ package artifacts;
 
 import artifacts.config.ConfigManager;
 import artifacts.config.ModConfig;
-import artifacts.integration.equipment.EquipmentIntegrationUtils;
-import artifacts.integration.equipment.VanillaEquipmentIntegration;
+import artifacts.equipment.EquipmentSlotManager;
+import artifacts.integration.ModCompat;
+import artifacts.integration.accessories.AccessoriesCompat;
+import artifacts.integration.minecraft.ArmorSlotProvider;
+import artifacts.integration.trinkets.TrinketsCompat;
 import artifacts.network.NetworkHandler;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.*;
@@ -44,6 +47,12 @@ public class Artifacts {
 
     public static void setup() {
         setupIntegrations();
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS)) {
+            TrinketsCompat.setup();
+        }
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)) {
+            AccessoriesCompat.setup();
+        }
 
         NetworkHandler.initPayloads();
 
@@ -65,11 +74,7 @@ public class Artifacts {
     }
 
     public static void setupIntegrations() {
-        PlatformServices.platformHelper.setupIntegrations();
-
-        EquipmentIntegrationUtils.registerIntegration(new VanillaEquipmentIntegration());
-
-        EquipmentIntegrationUtils.setupIntegrations();
+        EquipmentSlotManager.register(new ArmorSlotProvider());
     }
 
     public static void onServerStarting(MinecraftServer server) {

@@ -1,16 +1,10 @@
 package artifacts.neoforge.integration.curios;
 
-import artifacts.event.ArtifactHooks;
-import artifacts.integration.ModCompat;
-import artifacts.integration.equipment.EquipmentIntegration;
-import artifacts.item.WearableArtifactItem;
-import artifacts.platform.PlatformServices;
+import artifacts.equipment.EquipmentSlotProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.NeoForge;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
@@ -18,19 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-public class CuriosIntegration implements EquipmentIntegration {
-
-    @Override
-    public void setup() {
-        PlatformServices.platformHelper.registryEntryAddCallback(item -> {
-            if (item instanceof WearableArtifactItem wearableArtifactItem) {
-                CuriosApi.registerCurio(wearableArtifactItem, new WearableArtifactCurio(wearableArtifactItem));
-            }
-        });
-        NeoForge.EVENT_BUS.addListener(
-                (CurioChangeEvent event) -> ArtifactHooks.onItemChanged(event.getEntity(), event.getFrom(), event.getTo())
-        );
-    }
+public class CuriosSlotProvider implements EquipmentSlotProvider {
 
     @Override
     public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
@@ -49,7 +31,7 @@ public class CuriosIntegration implements EquipmentIntegration {
     }
 
     @Override
-    public boolean equipAccessory(LivingEntity entity, ItemStack stack) {
+    public boolean tryEquipItem(LivingEntity entity, ItemStack stack) {
         Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(entity);
         if (optional.isPresent()) {
             ICuriosItemHandler handler = optional.get();
@@ -67,8 +49,4 @@ public class CuriosIntegration implements EquipmentIntegration {
         return false;
     }
 
-    @Override
-    public String name() {
-        return ModCompat.CURIOS;
-    }
 }
