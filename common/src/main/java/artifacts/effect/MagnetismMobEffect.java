@@ -27,7 +27,7 @@ public class MagnetismMobEffect extends MobEffect {
         }
         Vec3 pos = entity.position().add(0, 0.75, 0);
 
-        int range = 5;
+        int range = Math.min(2 + amplifier, 10);
         List<ItemEntity> items = entity.level().getEntitiesOfClass(ItemEntity.class, new AABB(pos.x - range, pos.y - range, pos.z - range, pos.x + range, pos.y + range, pos.z + range));
         int amountPulled = 0;
         for (ItemEntity item : items) {

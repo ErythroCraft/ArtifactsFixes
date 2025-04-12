@@ -184,10 +184,11 @@ public class ModItems {
                     Artifacts.CONFIG.items.antidoteVesselMaxEffectDuration
             ))
     );
+    // TODO (>1.21.1) remove 'enabled' config option
     public static final Holder<Item> UNIVERSAL_ATTRACTOR = wearableItem("universal_attractor", builder -> builder
             .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get())
             .component(ModDataComponents.MOB_EFFECT.get(), new PermanentMobEffectAbility(
-                    ModMobEffects.MAGNETISM, Value.of(1), Artifacts.CONFIG.items.universalAttractorEnabled
+                    ModMobEffects.MAGNETISM, Artifacts.CONFIG.items.universalAttractorMagnetismLevel, Artifacts.CONFIG.items.universalAttractorEnabled
             ))
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.UNIVERSAL_ATTRACTOR)
     );

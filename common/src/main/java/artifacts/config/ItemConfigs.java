@@ -224,6 +224,8 @@ public class ItemConfigs extends ConfigManager {
                     "The level of the haste effect that is applied by the Onion Ring"),
             panicNecklaceSpeedLevel = defineMobEffectLevel(createKey(ModItems.PANIC_NECKLACE, "speedLevel"), 1,
                     "The level of the speed effect that is applied by the Panic Necklace"),
+            universalAttractorMagnetismLevel = defineMobEffectLevel(createKey(ModItems.UNIVERSAL_ATTRACTOR, "magnetismLevel"), 4,
+                    "The level of the magnetism effect that is applied by the Universal Attractor"),
             witheredBraceletWitherLevel = defineMobEffectLevel(createKey(ModItems.WITHERED_BRACELET, "witherLevel"), 2,
                     "The level of the wither effect that is inflicted by the Withered Bracelet");
 

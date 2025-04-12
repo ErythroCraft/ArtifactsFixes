@@ -22,7 +22,7 @@ public class PermanentMobEffectAbility extends ConstantMobEffectAbility implemen
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
             MobEffects.INVISIBILITY,
-            ModMobEffects.MAGNETISM // TODO add different magnetism strengths
+            ModMobEffects.MAGNETISM
     );
 
     public static final Codec<PermanentMobEffectAbility> CODEC = RecordCodecBuilder.create(instance -> MobEffectAbility.codecStart(instance)
