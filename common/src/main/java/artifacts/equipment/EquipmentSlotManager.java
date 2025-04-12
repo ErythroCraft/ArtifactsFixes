@@ -15,7 +15,7 @@ public class EquipmentSlotManager {
         SLOT_PROVIDERS.add(integration);
     }
 
-    public static <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    protected static <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
         for (EquipmentSlotProvider integration : SLOT_PROVIDERS) {
             init = integration.reduceEquipment(entity, init, f);
         }

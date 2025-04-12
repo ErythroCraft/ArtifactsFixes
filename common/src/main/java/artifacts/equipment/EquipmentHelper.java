@@ -1,7 +1,6 @@
-package artifacts.util;
+package artifacts.equipment;
 
 import artifacts.component.ability.EquipmentAbility;
-import artifacts.equipment.EquipmentSlotManager;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceKey;
@@ -17,7 +16,7 @@ import java.util.function.*;
 
 // TODO fix compound abilities (mob effects/attributes)
 // TODO render mob effects as infinite in inventory
-public class AbilityHelper {
+public class EquipmentHelper {
 
     public static boolean hasComponent(DataComponentType<?> type, @Nullable LivingEntity entity) {
         return reduceComponents(type, entity, false, (prefix, stack, component) -> true);

@@ -3,8 +3,8 @@ package artifacts.component.ability.mobeffect;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import artifacts.util.DamageSourceHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -54,7 +54,7 @@ public record AttacksInflictMobEffectAbility(Holder<MobEffect> mobEffect, Value<
     public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
-            AbilityHelper.iterateAbilities(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), attacker, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), attacker, true, true, (ability, stack) -> {
                 if (entity.getRandom().nextDouble() < ability.chance().get()) {
                     entity.addEffect(ability.createEffect(attacker), attacker);
                     if (attacker instanceof Player player) {

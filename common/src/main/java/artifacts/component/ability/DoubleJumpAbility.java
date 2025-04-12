@@ -2,10 +2,10 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModAttributes;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModSoundEvents;
-import artifacts.util.AbilityHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -47,7 +47,7 @@ public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHori
             upwardsMotion += 0.1 * (player.getEffect(MobEffects.JUMP).getAmplifier() + 1);
         }
         if (player.isSprinting()) {
-            upwardsMotion *= 1 + AbilityHelper.maxDouble(
+            upwardsMotion *= 1 + EquipmentHelper.maxDouble(
                     ModDataComponents.DOUBLE_JUMP.get(), player,
                     ability -> ability.sprintVerticalVelocity().get(), true
             );
@@ -56,7 +56,7 @@ public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHori
         Vec3 motion = player.getDeltaMovement();
         double motionMultiplier = 0;
         if (player.isSprinting()) {
-            motionMultiplier = AbilityHelper.maxDouble(
+            motionMultiplier = EquipmentHelper.maxDouble(
                     ModDataComponents.DOUBLE_JUMP.get(), player,
                     ability -> ability.sprintHorizontalVelocity().get(), true
             );

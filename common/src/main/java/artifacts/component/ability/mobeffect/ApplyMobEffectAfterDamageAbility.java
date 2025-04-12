@@ -3,8 +3,8 @@ package artifacts.component.ability.mobeffect;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -45,7 +45,7 @@ public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Valu
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource, float amount) {
         if (!entity.level().isClientSide() && amount >= 0.1) { // TODO remove amount check
-            AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     entity.addEffect(ability.createEffect(entity));
                 }

@@ -3,9 +3,9 @@ package artifacts.component.ability;
 import artifacts.Artifacts;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
-import artifacts.util.AbilityHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -30,7 +30,7 @@ public record UpgradeToolTierAbility(Value<Tier> tier) implements EquipmentAbili
 
     public static boolean canHarvestWithTier(LivingEntity entity, BlockState state) {
         if (state.is(ModTags.MINEABLE_WITH_DIGGING_CLAWS)) {
-            Tier tier = Tier.fromLevel(AbilityHelper.maxInt(
+            Tier tier = Tier.fromLevel(EquipmentHelper.maxInt(
                     ModDataComponents.UPGRADE_TOOL_TIER.get(), entity,
                     ability -> ability.tier().get().getLevel(), true
             ));

@@ -1,10 +1,10 @@
 package artifacts.neoforge.event;
 
 import artifacts.component.ability.UpgradeToolTierAbility;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.event.ArtifactHooks;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
-import artifacts.util.AbilityHelper;
 import artifacts.util.TooltipHelper;
 import be.florens.expandability.api.EventResult;
 import be.florens.expandability.api.forge.LivingFluidCollisionEvent;
@@ -73,7 +73,7 @@ public class ArtifactHooksNeoForge {
     private static void onKittySlippersChangeTarget(LivingChangeTargetEvent event) {
         LivingEntity target = event.getNewAboutToBeSetTarget();
         if (event.getEntity().getType().is(ModTags.CREEPERS)
-                && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), target, true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), target, true)
         ) {
             event.setCanceled(true);
         }
@@ -81,7 +81,7 @@ public class ArtifactHooksNeoForge {
 
     private static void onKittySlippersLivingUpdate(LivingEntity entity) {
         if (entity.getLastHurtByMob() != null
-                && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity.getLastHurtByMob(), true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity.getLastHurtByMob(), true)
                 && entity.getType().is(ModTags.CREEPERS)
         ) {
             entity.setLastHurtByMob(null);

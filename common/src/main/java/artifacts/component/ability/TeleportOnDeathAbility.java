@@ -2,8 +2,8 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -53,7 +53,7 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
             }
         }
 
-        return AbilityHelper.reduceAbilities(
+        return EquipmentHelper.reduceAbilities(
                 ModDataComponents.TELEPORT_ON_DEATH.get(), entity, true, true, ItemStack.EMPTY,
                 (ability, totem, result) -> result.isEmpty() ? totem : result
         );

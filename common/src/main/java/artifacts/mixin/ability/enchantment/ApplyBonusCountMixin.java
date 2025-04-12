@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.enchantment;
 
-import artifacts.util.AbilityHelper;
+import artifacts.equipment.EquipmentHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
@@ -28,7 +28,7 @@ public class ApplyBonusCountMixin {
         Entity entity = lootContext.getParamOrNull(LootContextParams.THIS_ENTITY);
 
         if (this.enchantment.is(Enchantments.FORTUNE) && entity instanceof LivingEntity livingEntity) {
-            level += AbilityHelper.getEnchantmentLevelIncrease(Enchantments.FORTUNE, livingEntity);
+            level += EquipmentHelper.getEnchantmentLevelIncrease(Enchantments.FORTUNE, livingEntity);
         }
 
         return level;

@@ -3,8 +3,8 @@ package artifacts.component.ability.mobeffect;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -44,7 +44,7 @@ public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Valu
 
     public static void applyEffects(LivingEntity entity, int foodPointsRestored) {
         if (foodPointsRestored > 0) {
-            AbilityHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity, true, true,
+            EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity, true, true,
                     (ability, stack) -> entity.addEffect(ability.createEffect(ability.duration().get() * 20 * foodPointsRestored))
             );
         }

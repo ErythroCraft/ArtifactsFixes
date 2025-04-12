@@ -2,8 +2,8 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -36,7 +36,7 @@ public record ApplyCooldownAfterDamageAbility(Value<Integer> cooldown, Optional<
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (entity instanceof Player player && !player.level().isClientSide()) {
-            AbilityHelper.iterateAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     int c = ability.cooldown().get() * 20;
                     if (c > 0) {

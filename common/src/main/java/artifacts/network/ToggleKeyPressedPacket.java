@@ -2,8 +2,8 @@ package artifacts.network;
 
 import artifacts.Artifacts;
 import artifacts.component.ToggleIdentifier;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -19,7 +19,7 @@ public record ToggleKeyPressedPacket(ToggleIdentifier identifier) implements Cus
 
     void apply(NetworkHandler.PayloadContext context) {
         Player player = context.player();
-        context.queue(() -> AbilityHelper.iterateEquipment(player, stack -> {
+        context.queue(() -> EquipmentHelper.iterateEquipment(player, stack -> {
             if (stack.get(ModDataComponents.TOGGLE_KEY.get()) instanceof ToggleIdentifier id && id == identifier) {
                 if (stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get())) {
                     stack.remove(ModDataComponents.DISABLED_BY_TOGGLE.get());

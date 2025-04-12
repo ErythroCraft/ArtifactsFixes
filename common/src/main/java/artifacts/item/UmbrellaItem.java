@@ -1,8 +1,8 @@
 package artifacts.item;
 
 import artifacts.Artifacts;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -71,7 +71,7 @@ public class UmbrellaItem extends ArtifactItem {
                 && entity.getDeltaMovement().y < 0
                 && !entity.hasEffect(MobEffects.SLOW_FALLING)
                 && Artifacts.CONFIG.items.umbrellaIsGlider.get()
-                && !(entity.isInWater() && !AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), entity, true))
+                && !(entity.isInWater() && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), entity, true))
                 && UmbrellaItem.isHoldingUmbrellaUpright(entity);
     }
 

@@ -1,7 +1,7 @@
 package artifacts.mixin.ability.nightvision.client;
 
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
@@ -20,7 +20,7 @@ public class GameRendererMixin {
         if (effect == null || !effect.endsWithin(12 * 20)) {
             return original;
         }
-        double scale = AbilityHelper.maxDouble(ModDataComponents.NIGHT_VISION.get(), entity, ability -> ability.strength().get(), true);
+        double scale = EquipmentHelper.maxDouble(ModDataComponents.NIGHT_VISION.get(), entity, ability -> ability.strength().get(), true);
         if (scale == 0) {
             return original;
         }

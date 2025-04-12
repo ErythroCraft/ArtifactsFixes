@@ -1,8 +1,8 @@
 package artifacts.fabric.mixin.ability.scarecreepers;
 
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
-import artifacts.util.AbilityHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -23,7 +23,7 @@ public abstract class HurtByTargetGoalMixin extends TargetGoal {
     @Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
     private void cancelRevenge(CallbackInfoReturnable<Boolean> info) {
         LivingEntity attacker = mob.getLastHurtByMob();
-        if (ModTags.isInTag(mob.getType(), ModTags.CREEPERS) && AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), attacker, true)) {
+        if (ModTags.isInTag(mob.getType(), ModTags.CREEPERS) && EquipmentHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), attacker, true)) {
             info.setReturnValue(false); // early return intended!
         }
     }

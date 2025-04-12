@@ -1,8 +1,8 @@
 package artifacts.fabric.mixin.ability.scarecreepers;
 
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
-import artifacts.util.AbilityHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -23,7 +23,7 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> e
 
     @Unique
     private static final Predicate<LivingEntity> NOT_WEARING_KITTY_SLIPPERS = entity ->
-            !AbilityHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity, true);
+            !EquipmentHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity, true);
 
     @Shadow
     @Final

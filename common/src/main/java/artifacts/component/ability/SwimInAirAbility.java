@@ -3,11 +3,11 @@ package artifacts.component.ability;
 import artifacts.component.SwimData;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModKeyMappings;
 import artifacts.registry.ModSoundEvents;
-import artifacts.util.AbilityHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -39,7 +39,7 @@ public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rec
             return;
         }
         int maxFlightTime = getFlightDuration(player);
-        boolean shouldSink = AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true);
+        boolean shouldSink = EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true);
         boolean canFly = maxFlightTime > 0;
         if (swimData.isSwimming()) {
             if (swimData.getSwimTime() > maxFlightTime
@@ -66,11 +66,11 @@ public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rec
     }
 
     public static int getFlightDuration(LivingEntity entity) {
-        return AbilityHelper.maxInt(ModDataComponents.SWIM_IN_AIR.get(), entity, ability -> ability.flightDuration().get() * 20, false);
+        return EquipmentHelper.maxInt(ModDataComponents.SWIM_IN_AIR.get(), entity, ability -> ability.flightDuration().get() * 20, false);
     }
 
     public static int getRechargeDuration(LivingEntity entity) {
-        return Math.max(20, AbilityHelper.maxInt(ModDataComponents.SWIM_IN_AIR.get(), entity, ability -> ability.rechargeDuration().get() * 20, false));
+        return Math.max(20, EquipmentHelper.maxInt(ModDataComponents.SWIM_IN_AIR.get(), entity, ability -> ability.rechargeDuration().get() * 20, false));
     }
 
     @Override

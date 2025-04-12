@@ -1,7 +1,7 @@
 package artifacts.fabric.mixin.ability.sinking;
 
+import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.AbilityHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +13,6 @@ public class PlayerMixin {
     @ModifyExpressionValue(method = "getDestroySpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"))
     private boolean isDestroySpeedAffectedByWater(boolean isInFluid) {
         Player player = (Player) (Object) this;
-        return isInFluid && !AbilityHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true);
+        return isInFluid && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true);
     }
 }
