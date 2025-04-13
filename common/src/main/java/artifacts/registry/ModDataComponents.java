@@ -87,10 +87,8 @@ public class ModDataComponents {
             registerSimpleAbility("sinking");
     public static final Supplier<DataComponentType<SimpleAbility>> SMELT_ORES =
             registerSimpleAbility("smelt_ores");
-    public static final Supplier<DataComponentType<SneakOnFluidsAbility>> SNEAK_ON_FLUIDS =
-            registerSynced("sneak_on_fluids", SneakOnFluidsAbility.CODEC, SneakOnFluidsAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<SprintOnFluidsAbility>> SPRINT_ON_FLUIDS =
-            registerSynced("sprint_on_fluids", SprintOnFluidsAbility.CODEC, SprintOnFluidsAbility.STREAM_CODEC);
+    public static final Supplier<DataComponentType<CollideWithFluidsAbility>> COLLIDE_WITH_FLUIDS =
+            registerSynced("collide_with_fluids", CollideWithFluidsAbility.CODEC, CollideWithFluidsAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<StrikeAttackersWithLightningAbility>> STRIKE_ATTACKERS_WITH_LIGHTNING =
             registerSynced("strike_attackers_with_lightning", StrikeAttackersWithLightningAbility.CODEC, StrikeAttackersWithLightningAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<SwimInAirAbility>> SWIM_IN_AIR =
@@ -134,8 +132,7 @@ public class ModDataComponents {
                 SET_ATTACKERS_ON_FIRE,
                 SINKING,
                 SMELT_ORES,
-                SNEAK_ON_FLUIDS,
-                SPRINT_ON_FLUIDS,
+                COLLIDE_WITH_FLUIDS,
                 STRIKE_ATTACKERS_WITH_LIGHTNING,
                 SWIM_IN_AIR,
                 TELEPORT_ON_DEATH,

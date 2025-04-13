@@ -278,8 +278,8 @@ public class ModItems {
 
     // feet
     public static final Holder<Item> AQUA_DASHERS = wearableItem("aqua_dashers", builder -> builder
-            .component(ModDataComponents.SPRINT_ON_FLUIDS.get(),
-                    new SprintOnFluidsAbility(Artifacts.CONFIG.items.aquaDashersEnabled, Optional.empty())
+            .component(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), new CollideWithFluidsAbility(Artifacts.CONFIG.items.aquaDashersEnabled,
+                    Optional.empty(), CollideWithFluidsAbility.CollisionCondition.WHILE_SPRINTING)
             )
     );
     public static final Holder<Item> BUNNY_HOPPERS = wearableItem("bunny_hoppers", builder -> builder
@@ -324,8 +324,8 @@ public class ModItems {
     );
     public static final Holder<Item> STRIDER_SHOES = wearableItem("strider_shoes", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
-            .component(ModDataComponents.SNEAK_ON_FLUIDS.get(),
-                    new SneakOnFluidsAbility(Artifacts.CONFIG.items.striderShoesEnabled, Optional.of(FluidTags.LAVA))
+            .component(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), new CollideWithFluidsAbility(Artifacts.CONFIG.items.striderShoesEnabled,
+                    Optional.of(FluidTags.LAVA), CollideWithFluidsAbility.CollisionCondition.WHILE_SNEAKING)
             ).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
                     new DamageImmunityAbility(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR)
             )

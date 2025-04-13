@@ -127,8 +127,8 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.SET_ATTACKERS_ON_FIRE.get(), "constant", "Attacking entities are lit on fire");
         addAbilityTooltip(ModDataComponents.SINKING.get(), "Allows the wearer to move freely in water");
         addAbilityTooltip(ModDataComponents.SMELT_ORES.get(), "Automatically smelts mined ores");
-        addAbilityTooltip(ModDataComponents.SNEAK_ON_FLUIDS.get(), "lava", "Allows the wearer to stand on lava while sneaking");
-        addAbilityTooltip(ModDataComponents.SPRINT_ON_FLUIDS.get(), "Allows the wearer to walk on fluids while sprinting");
+        addAbilityTooltip(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), "sneaking", "lava", "Allows the wearer to stand on lava while sneaking");
+        addAbilityTooltip(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), "sprinting", "Allows the wearer to walk on fluids while sprinting");
         addAbilityTooltip(ModDataComponents.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), "chance", "Has a chance to strike attackers with lightning");
         addAbilityTooltip(ModDataComponents.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), "constant", "Attacking entities are struck by lightning");
         addAbilityTooltip(ModDataComponents.SWIM_IN_AIR.get(), "keymapping", "Press %s while in the air to start swimming");

@@ -4,7 +4,6 @@ import artifacts.Artifacts;
 import artifacts.attribute.DynamicAttributeModifier;
 import artifacts.component.SwimData;
 import artifacts.component.ability.ApplyCooldownAfterDamageAbility;
-import artifacts.component.ability.CollideWithFluidsAbility;
 import artifacts.component.ability.SwimInAirAbility;
 import artifacts.component.ability.TickingAbility;
 import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
@@ -269,30 +268,21 @@ public class ArtifactHooks {
         return EventResult.PASS;
     }
 
-    public static boolean onFluidCollision(LivingEntity player, FluidState fluidState) {
-        SwimData swimData = PlatformServices.platformHelper.getSwimData(player);
+    public static boolean onFluidCollision(LivingEntity entity, FluidState fluidState) {
+        SwimData swimData = PlatformServices.platformHelper.getSwimData(entity);
         if (swimData == null || swimData.isWet() || swimData.isSwimming()) {
             return false;
-        } else if (canSprintOnFluid(player, fluidState) || canSneakOnFluid(player, fluidState)) {
-            dealLavaDamage(player, fluidState);
+        } else if (canCollideWithFluid(entity, fluidState)) {
+            dealLavaDamage(entity, fluidState);
             return true;
         }
         return false;
     }
 
-    private static boolean canSprintOnFluid(LivingEntity entity, FluidState fluidState) {
-        return canCollideWithFluid(entity, fluidState, ModDataComponents.SPRINT_ON_FLUIDS.get())
-                && entity.isSprinting()
-                && !entity.isUsingItem()
-                && !entity.isCrouching();
-    }
-
-    private static boolean canSneakOnFluid(LivingEntity entity, FluidState fluidState) {
-        return entity.isCrouching() && canCollideWithFluid(entity, fluidState, ModDataComponents.SNEAK_ON_FLUIDS.get());
-    }
-
-    private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState, DataComponentType<? extends CollideWithFluidsAbility> type) {
-        return EquipmentHelper.hasAbilityActive(type, entity, true, ability -> ability.tag().isEmpty() || fluidState.is(ability.tag().get()));
+    private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState) {
+        return EquipmentHelper.hasAbilityActive(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), entity, true, ability ->
+                ability.matchesFluid(fluidState) && ability.condition().test(entity)
+        );
     }
 
     private static void dealLavaDamage(LivingEntity entity, FluidState fluidState) {

@@ -91,7 +91,7 @@ public abstract class EntityMixin {
         }
         SwimData swimData = PlatformServices.platformHelper.getSwimData(entity);
         return swimData != null
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.SPRINT_ON_FLUIDS.get(), entity, true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), entity, true)
                 && entity.isSprinting()
                 && !swimData.isWet();
     }

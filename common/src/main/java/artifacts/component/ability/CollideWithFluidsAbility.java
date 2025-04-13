@@ -9,64 +9,81 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 
-import java.util.Objects;
+import java.util.Locale;
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
-public class CollideWithFluidsAbility implements EquipmentAbility {
+public record CollideWithFluidsAbility(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, CollisionCondition condition)
+        implements EquipmentAbility {
 
-    private final Value<Boolean> enabled;
-    private final Optional<TagKey<Fluid>> tag;
+    public static Codec<CollideWithFluidsAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ValueTypes.enabledField().forGetter(CollideWithFluidsAbility::enabled),
+            TagKey.codec(Registries.FLUID).optionalFieldOf("tag").forGetter(CollideWithFluidsAbility::tag),
+            CollisionCondition.CODEC.optionalFieldOf("condition", CollisionCondition.ALWAYS).forGetter(CollideWithFluidsAbility::condition)
+    ).apply(instance, CollideWithFluidsAbility::new));
 
-    public CollideWithFluidsAbility(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag) {
-        this.enabled = enabled;
-        this.tag = tag;
-    }
-
-    protected static <T extends CollideWithFluidsAbility> Codec<T> codec(BiFunction<Value<Boolean>, Optional<TagKey<Fluid>>, T> constructor) {
-        return RecordCodecBuilder.create(instance -> instance.group(
-                ValueTypes.enabledField().forGetter(CollideWithFluidsAbility::enabled),
-                TagKey.codec(Registries.FLUID).optionalFieldOf("tag").forGetter(CollideWithFluidsAbility::tag)
-        ).apply(instance, constructor));
-    }
-
-    protected static <T extends CollideWithFluidsAbility> StreamCodec<ByteBuf, T> streamCodec(BiFunction<Value<Boolean>, Optional<TagKey<Fluid>>, T> constructor) {
-        return StreamCodec.composite(
-                ValueTypes.BOOLEAN.streamCodec(),
-                CollideWithFluidsAbility::enabled,
-                ByteBufCodecs.optional(ModCodecs.tagKeyStreamCodec(Registries.FLUID)),
-                CollideWithFluidsAbility::tag,
-                constructor
-        );
-    }
+    public static StreamCodec<ByteBuf, CollideWithFluidsAbility> STREAM_CODEC = StreamCodec.composite(
+            ValueTypes.BOOLEAN.streamCodec(),
+            CollideWithFluidsAbility::enabled,
+            ByteBufCodecs.optional(ModCodecs.tagKeyStreamCodec(Registries.FLUID)),
+            CollideWithFluidsAbility::tag,
+            CollisionCondition.STREAM_CODEC,
+            CollideWithFluidsAbility::condition,
+            CollideWithFluidsAbility::new
+    );
 
     @Override
     public boolean isNonCosmetic() {
         return enabled().get();
     }
 
-    public Value<Boolean> enabled() {
-        return enabled;
-    }
-
-    public Optional<TagKey<Fluid>> tag() {
-        return tag;
+    public boolean matchesFluid(FluidState fluidState) {
+        return tag().isEmpty() || fluidState.is(tag().get());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (CollideWithFluidsAbility) obj;
-        return Objects.equals(this.enabled, that.enabled) &&
-                Objects.equals(this.tag, that.tag);
+    public void addToTooltip(TooltipWriter writer) {
+        if (condition == CollisionCondition.WHILE_SNEAKING && tag().isPresent() && tag().get().equals(FluidTags.LAVA)) {
+            writer.add("sneaking.lava");
+        } else {
+            writer.add("sprinting");
+        }
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(enabled, tag);
+    public enum CollisionCondition implements StringRepresentable {
+        ALWAYS(entity -> true),
+        WHILE_SNEAKING(Entity::isCrouching),
+        WHILE_SPRINTING(entity -> entity.isSprinting() && !entity.isUsingItem() && !entity.isCrouching());
+
+        public static final Codec<CollisionCondition> CODEC = StringRepresentable.fromValues(CollisionCondition::values);
+        public static final StreamCodec<ByteBuf, CollisionCondition> STREAM_CODEC = ByteBufCodecs.idMapper(i -> CollisionCondition.values()[i], CollisionCondition::ordinal);
+
+        private final Predicate<LivingEntity> predicate;
+
+        CollisionCondition(Predicate<LivingEntity> predicate) {
+            this.predicate = predicate;
+        }
+
+        public boolean test(LivingEntity entity) {
+            return predicate.test(entity);
+        }
+
+        @Override
+        public String getSerializedName() {
+            return toString();
+        }
+
+        @Override
+        public String toString() {
+            return name().toLowerCase(Locale.ROOT);
+        }
     }
 }
