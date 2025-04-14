@@ -1,78 +1,104 @@
 package artifacts.component.ability.mobeffect;
 
-import artifacts.component.ability.EquipmentAbility;
+import artifacts.component.ability.AbilityCondition;
+import artifacts.component.ability.TickingAbility;
 import artifacts.config.value.Value;
-import artifacts.config.value.ValueTypes;
+import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModMobEffects;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class PermanentMobEffectAbility extends ConstantMobEffectAbility implements EquipmentAbility {
+public record PermanentMobEffectAbility(List<MobEffectProvider> effects) implements TickingAbility {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
             MobEffects.INVISIBILITY,
             ModMobEffects.MAGNETISM
     );
 
-    public static final Codec<PermanentMobEffectAbility> CODEC = RecordCodecBuilder.create(instance -> MobEffectAbility.codecStart(instance)
-            .and(ValueTypes.enabledField().forGetter(ability -> ability.enabled))
-            .apply(instance, PermanentMobEffectAbility::new)
+    public static final Codec<PermanentMobEffectAbility> CODEC = MobEffectProvider.CODEC.listOf(0, 16).xmap(
+            PermanentMobEffectAbility::new, PermanentMobEffectAbility::effects
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, PermanentMobEffectAbility> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.holderRegistry(Registries.MOB_EFFECT),
-            PermanentMobEffectAbility::mobEffect,
-            ValueTypes.MOB_EFFECT_LEVEL.streamCodec(),
-            PermanentMobEffectAbility::level,
-            ValueTypes.BOOLEAN.streamCodec(),
-            ability -> ability.enabled,
-            PermanentMobEffectAbility::new
-    );
-
-    private final Value<Boolean> enabled;
-
-    public PermanentMobEffectAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Boolean> enabled) {
-        super(mobEffect, level);
-        this.enabled = enabled;
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, PermanentMobEffectAbility> STREAM_CODEC = ByteBufCodecs
+            .<RegistryFriendlyByteBuf, MobEffectProvider>list()
+            .apply(MobEffectProvider.STREAM_CODEC).map(
+                    PermanentMobEffectAbility::new, PermanentMobEffectAbility::effects
+            );
 
     @Override
-    public Value<Integer> level() {
-        return enabled.get() ? super.level() : Value.of(0);
-    }
-
-    @Override
-    public void addToTooltip(TooltipWriter writer) {
-        for (Holder<MobEffect> mobEffect : CUSTOM_TOOLTIP_MOB_EFFECTS) {
-            if (mobEffect.isBound() && mobEffect.value() == mobEffect().value()) {
-                writer.add(Objects.requireNonNull(BuiltInRegistries.MOB_EFFECT.getKey(mobEffect.value())).getPath());
-                return;
+    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        if (!isDisabled && !isOnCooldown) {
+            for (MobEffectProvider provider : effects()) {
+                if (provider.canApply(entity)) {
+                    entity.addEffect(provider.createEffect());
+                }
             }
         }
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        PermanentMobEffectAbility that = (PermanentMobEffectAbility) o;
-        return enabled.equals(that.enabled);
+    public void onUnequip(LivingEntity entity) {
+        for (MobEffectProvider provider : effects()) {
+            MobEffectInstance instance = entity.getEffect(provider.mobEffect());
+            if (instance != null
+                    && instance.getAmplifier() == provider.getAmplifier()
+                    && instance.isVisible() == provider.spawnParticles().get()
+                    && instance.showIcon() == provider.showIcon().get()
+                    && instance.endsWithin(provider.getDuration() * 20 + 19)
+            ) {
+                entity.removeEffect(provider.mobEffect());
+            }
+        }
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), enabled);
+    public void addToTooltip(TooltipWriter writer) {
+        for (MobEffectProvider provider : effects) {
+            if (provider.condition() == AbilityCondition.NEVER || !provider.isNonCosmetic()) {
+                continue;
+            }
+            if (CUSTOM_TOOLTIP_MOB_EFFECTS.contains(provider.mobEffect())) {
+                ResourceLocation id = BuiltInRegistries.MOB_EFFECT.getKey(provider.mobEffect().value());
+                writer.add(Objects.requireNonNull(id).getPath());
+            }
+            if (provider.mobEffect().value() == MobEffects.NIGHT_VISION.value()) {
+                Value<Double> nightVisionStrength = writer.stack().get(ModDataComponents.REDUCES_NIGHT_VISION_STRENGTH.get());
+                if (nightVisionStrength != null && nightVisionStrength.get() < 0.5) {
+                    writer.add("night_vision.partial");
+                } else {
+                    writer.add("night_vision.full");
+                }
+            }
+            if (provider.mobEffect().value() == MobEffects.WATER_BREATHING.value()) {
+                if (provider.condition() == AbilityCondition.ALWAYS) {
+                    writer.add("water_breathing.infinite");
+                } else {
+                    writer.add("water_breathing.limited");
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean isNonCosmetic() {
+        for (MobEffectProvider provider : effects) {
+            if (provider.isNonCosmetic()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -4,7 +4,9 @@ import artifacts.Artifacts;
 import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
-import artifacts.component.ability.mobeffect.*;
+import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
+import artifacts.component.ability.mobeffect.ApplyMobEffectAfterEatingAbility;
+import artifacts.component.ability.mobeffect.AttacksInflictMobEffectAbility;
 import artifacts.component.ability.retaliation.SetAttackersOnFireAbility;
 import artifacts.component.ability.retaliation.StrikeAttackersWithLightningAbility;
 import artifacts.component.ability.retaliation.ThornsAbility;
@@ -71,10 +73,13 @@ public class ModItems {
             .addAttributeModifier(ModAttributes.EATING_SPEED, Artifacts.CONFIG.items.noveltyDrinkingHatEatingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
     public static final Holder<Item> SNORKEL = wearableItem("snorkel", builder -> builder
-            .component(ModDataComponents.LIMITED_WATER_BREATHING.get(), new LimitedWaterBreathingAbility(Artifacts.CONFIG.items.snorkelWaterBreathingDuration, Artifacts.CONFIG.items.snorkelIsInfinite))
+            .mobEffect(MobEffects.WATER_BREATHING, Value.of(1), Artifacts.CONFIG.items.snorkelWaterBreathingDuration,
+                    Artifacts.CONFIG.items.snorkelIsInfinite.get() ? AbilityCondition.ALWAYS : AbilityCondition.ABOVE_WATER
+            )
     );
     public static final Holder<Item> NIGHT_VISION_GOGGLES = wearableItem("night_vision_goggles", builder -> builder
-            .component(ModDataComponents.NIGHT_VISION.get(), new NightVisionAbility(Artifacts.CONFIG.items.nightVisionGogglesStrength))
+            .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), AbilityCondition.ALWAYS)
+            .component(ModDataComponents.REDUCES_NIGHT_VISION_STRENGTH.get(), Artifacts.CONFIG.items.nightVisionGogglesStrength)
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.NIGHT_VISION_GOGGLES)
     );
     public static final Holder<Item> VILLAGER_HAT = wearableItem("villager_hat", builder -> builder
@@ -98,7 +103,9 @@ public class ModItems {
             .increasesEnchantment(Enchantments.FORTUNE, Artifacts.CONFIG.items.luckScarfFortuneBonus)
     );
     public static final Holder<Item> SCARF_OF_INVISIBILITY = wearableItem("scarf_of_invisibility", builder -> builder
-            .component(ModDataComponents.MOB_EFFECT.get(), new PermanentMobEffectAbility(MobEffects.INVISIBILITY, Value.of(1), Artifacts.CONFIG.items.scarfOfInvisibilityEnabled))
+            .mobEffect(MobEffects.INVISIBILITY, Value.of(1), Value.of(10),
+                    Artifacts.CONFIG.items.scarfOfInvisibilityEnabled.get() ? AbilityCondition.ALWAYS : AbilityCondition.NEVER
+            )
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.SCARF_OF_INVISIBILITY)
     );
     public static final Holder<Item> CROSS_NECKLACE = wearableItem("cross_necklace", builder -> builder
@@ -187,9 +194,9 @@ public class ModItems {
     // TODO (>1.21.1) remove 'enabled' config option
     public static final Holder<Item> UNIVERSAL_ATTRACTOR = wearableItem("universal_attractor", builder -> builder
             .component(ModDataComponents.MAKE_PIGLINS_NEUTRAL.get())
-            .component(ModDataComponents.MOB_EFFECT.get(), new PermanentMobEffectAbility(
-                    ModMobEffects.MAGNETISM, Artifacts.CONFIG.items.universalAttractorMagnetismLevel, Artifacts.CONFIG.items.universalAttractorEnabled
-            ))
+            .mobEffect(ModMobEffects.MAGNETISM, Artifacts.CONFIG.items.universalAttractorMagnetismLevel, Value.of(10),
+                    Artifacts.CONFIG.items.universalAttractorEnabled.get() ? AbilityCondition.ALWAYS : AbilityCondition.NEVER
+            )
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.UNIVERSAL_ATTRACTOR)
     );
     public static final Holder<Item> CRYSTAL_HEART = wearableItem("crystal_heart", builder -> builder
@@ -279,7 +286,7 @@ public class ModItems {
     // feet
     public static final Holder<Item> AQUA_DASHERS = wearableItem("aqua_dashers", builder -> builder
             .component(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), new CollideWithFluidsAbility(Artifacts.CONFIG.items.aquaDashersEnabled,
-                    Optional.empty(), CollideWithFluidsAbility.CollisionCondition.WHILE_SPRINTING)
+                    Optional.empty(), AbilityCondition.SPRINTING)
             )
     );
     public static final Holder<Item> BUNNY_HOPPERS = wearableItem("bunny_hoppers", builder -> builder
@@ -325,7 +332,7 @@ public class ModItems {
     public static final Holder<Item> STRIDER_SHOES = wearableItem("strider_shoes", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
             .component(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), new CollideWithFluidsAbility(Artifacts.CONFIG.items.striderShoesEnabled,
-                    Optional.of(FluidTags.LAVA), CollideWithFluidsAbility.CollisionCondition.WHILE_SNEAKING)
+                    Optional.of(FluidTags.LAVA), AbilityCondition.SNEAKING)
             ).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
                     new DamageImmunityAbility(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR)
             )

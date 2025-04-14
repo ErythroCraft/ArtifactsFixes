@@ -1,7 +1,9 @@
 package artifacts.util;
 
+import artifacts.component.ability.AbilityCondition;
 import artifacts.component.ability.AttributeModifierAbility;
 import artifacts.component.ability.EquipmentAbility;
+import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
@@ -50,8 +52,6 @@ public class TooltipHelper {
         if (!hasSlotTooltip) {
             if (getAbility(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack).isPresent()
                     || getAbility(ModDataComponents.MOB_EFFECT.get(), stack).isPresent()
-                    || getAbility(ModDataComponents.LIMITED_WATER_BREATHING.get(), stack).isPresent()
-                    || getAbility(ModDataComponents.NIGHT_VISION.get(), stack).isPresent()
             ) {
                 consumer.accept(CommonComponents.EMPTY);
                 consumer.accept(Component.translatable("item.modifiers.body").withStyle(ChatFormatting.GRAY));
@@ -69,15 +69,11 @@ public class TooltipHelper {
         getAbility(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack).ifPresent(ability ->
                 addAbilityAttributeTooltip(tooltip, ability)
         );
-        getAbility(ModDataComponents.MOB_EFFECT.get(), stack).ifPresent(ability ->
-                addMobEffectTooltip(tooltip, context, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
-        );
-        getAbility(ModDataComponents.LIMITED_WATER_BREATHING.get(), stack).ifPresent(ability ->
-                addMobEffectTooltip(tooltip, context, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
-        );
-        getAbility(ModDataComponents.NIGHT_VISION.get(), stack).ifPresent(ability ->
-                addMobEffectTooltip(tooltip, context, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), ability.isInfinite())
-        );
+        getAbility(ModDataComponents.MOB_EFFECT.get(), stack).ifPresent(ability -> {
+            for (MobEffectProvider provider : ability.effects()) {
+                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), provider.condition() == AbilityCondition.ALWAYS);
+            }
+        });
     }
 
     @Unique

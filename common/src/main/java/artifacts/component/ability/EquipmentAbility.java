@@ -6,6 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -24,17 +25,23 @@ public interface EquipmentAbility {
         private final String namespace;
         private final String path;
         private final Item.TooltipContext context;
+        private final ItemStack stack;
 
-        public TooltipWriter(DataComponentType<? extends EquipmentAbility> type, Consumer<Component> tooltip, Item.TooltipContext context) {
+        public TooltipWriter(DataComponentType<? extends EquipmentAbility> type, Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
             this.tooltip = tooltip;
             ResourceLocation id = Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(type));
             this.namespace = id.getNamespace();
             this.path = id.getPath();
             this.context = context;
+            this.stack = stack;
         }
 
         public Item.TooltipContext context() {
             return context;
+        }
+
+        public ItemStack stack() {
+            return stack;
         }
 
         public TooltipWriter add(String identifier, Object... args) {

@@ -77,6 +77,8 @@ public class Artifacts {
         EquipmentSlotManager.register(new ArmorSlotProvider());
     }
 
+    // TODO take another look at this, make sure config received from dedicated server can't be written to disk
+    // TODO call this before items are registered
     public static void onServerStarting(MinecraftServer server) {
         currentServer = server;
         for (ConfigManager config : CONFIG.configs) {

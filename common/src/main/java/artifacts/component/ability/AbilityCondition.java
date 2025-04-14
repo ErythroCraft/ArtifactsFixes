@@ -1,0 +1,48 @@
+package artifacts.component.ability;
+
+import artifacts.registry.ModTags;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+
+import java.util.function.Predicate;
+
+// TODO add cooldown/toggle condition?
+public enum AbilityCondition implements StringRepresentable {
+    ALWAYS("always", entity -> true),
+    NEVER("never", entity -> false),
+    ABOVE_WATER("above_water", entity -> !entity.isEyeInFluid(FluidTags.WATER)),
+    ON_GRASS("on_grass", entity -> entity.onGround() && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)),
+    SNEAKING("while_sneaking", Entity::isCrouching),
+    SPRINTING("while_sprinting", entity -> entity.isSprinting() && !entity.isUsingItem() && !entity.isCrouching());
+
+    public static final Codec<AbilityCondition> CODEC = StringRepresentable.fromValues(AbilityCondition::values);
+    public static final StreamCodec<ByteBuf, AbilityCondition> STREAM_CODEC = ByteBufCodecs.idMapper(i -> AbilityCondition.values()[i], AbilityCondition::ordinal);
+
+    private final String name;
+    private final Predicate<LivingEntity> predicate;
+
+    AbilityCondition(String name, Predicate<LivingEntity> predicate) {
+        this.name = name;
+        this.predicate = predicate;
+    }
+
+    public boolean test(LivingEntity entity) {
+        return predicate.test(entity);
+    }
+
+    @Override
+    public String getSerializedName() {
+        return toString();
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}

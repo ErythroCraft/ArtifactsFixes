@@ -1,8 +1,11 @@
 package artifacts.item;
 
 import artifacts.Artifacts;
+import artifacts.component.ability.AbilityCondition;
 import artifacts.component.ability.AttributeModifierAbility;
 import artifacts.component.ability.IncreaseEnchantmentLevelAbility;
+import artifacts.component.ability.mobeffect.MobEffectProvider;
+import artifacts.component.ability.mobeffect.PermanentMobEffectAbility;
 import artifacts.config.value.Value;
 import artifacts.integration.ModCompat;
 import artifacts.platform.PlatformServices;
@@ -16,6 +19,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Unit;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
@@ -71,6 +75,12 @@ public class WearableArtifactItem extends Item {
 
         public Builder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, boolean ignoreCooldown) {
             return component(ModDataComponents.ATTRIBUTE_MODIFIER.get(), new AttributeModifierAbility(attribute, amount, operation, Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().location().getPath()), ignoreCooldown));
+        }
+
+        public Builder mobEffect(Holder<MobEffect> effect, Value<Integer> level, Value<Integer> duration, AbilityCondition condition) {
+            return component(ModDataComponents.MOB_EFFECT.get(), new PermanentMobEffectAbility(List.of(
+                    new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition)
+            )));
         }
 
         public Builder increasesEnchantment(ResourceKey<Enchantment> enchantment, Value<Integer> amount) {

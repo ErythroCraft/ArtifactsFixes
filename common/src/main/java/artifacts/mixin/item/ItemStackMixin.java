@@ -53,7 +53,7 @@ public abstract class ItemStackMixin {
         for (Supplier<? extends DataComponentType<? extends EquipmentAbility>> type : ModDataComponents.TOOLTIP_ORDER) {
             EquipmentAbility provider = stack.get(type.get());
             if (provider != null && provider.isNonCosmetic()) {
-                provider.addToTooltip(new EquipmentAbility.TooltipWriter(type.get(), tooltip::add, context));
+                provider.addToTooltip(new EquipmentAbility.TooltipWriter(type.get(), tooltip::add, context, stack));
             }
         }
 

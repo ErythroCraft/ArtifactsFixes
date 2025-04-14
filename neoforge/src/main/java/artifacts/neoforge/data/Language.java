@@ -112,12 +112,12 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.INCREASE_ENCHANTMENT_LEVEL.get(), "luck_of_the_sea", "single_level", "Applies an extra Luck of the Sea when fishing");
         addAbilityTooltip(ModDataComponents.INCREASE_ENCHANTMENT_LEVEL.get(), "lure", "multiple_levels", "Applies %s extra levels of Lure when fishing");
         addAbilityTooltip(ModDataComponents.INCREASE_ENCHANTMENT_LEVEL.get(), "lure", "single_level", "Applies an extra level of Lure when fishing");
-        addAbilityTooltip(ModDataComponents.LIMITED_WATER_BREATHING.get(), "infinite", "Allows the wearer to breathe underwater");
-        addAbilityTooltip(ModDataComponents.LIMITED_WATER_BREATHING.get(), "limited", "Allows the wearer to breathe underwater for a limited amount of time");
+        addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "water_breathing", "infinite", "Allows the wearer to breathe underwater");
+        addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "water_breathing", "limited", "Allows the wearer to breathe underwater for a limited amount of time");
         addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "invisibility", "Turns the wearer invisible");
         addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "magnetism", "Attracts nearby items");
-        addAbilityTooltip(ModDataComponents.NIGHT_VISION.get(), "full", "Allows the wearer to see in the dark");
-        addAbilityTooltip(ModDataComponents.NIGHT_VISION.get(), "partial", "Allows the wearer to see in the dark slightly");
+        addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "night_vision", "full", "Allows the wearer to see in the dark");
+        addAbilityTooltip(ModDataComponents.MOB_EFFECT.get(), "night_vision", "partial", "Allows the wearer to see in the dark slightly");
         addAbilityTooltip(ModDataComponents.NULLIFY_ENDER_PEARL_DAMAGE.get(), "Ender Pearls deal no damage");
         addAbilityTooltip(ModDataComponents.REMOVE_BAD_EFFECTS.get(), "Greatly reduces the duration of negative effects");
         addAbilityTooltip(ModDataComponents.REPLENISH_HUNGER_ON_GRASS.get(), "Slowly replenishes hunger while walking on grass");

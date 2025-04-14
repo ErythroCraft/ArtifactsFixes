@@ -3,10 +3,15 @@ package artifacts.registry;
 import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
-import artifacts.component.ability.mobeffect.*;
+import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
+import artifacts.component.ability.mobeffect.ApplyMobEffectAfterEatingAbility;
+import artifacts.component.ability.mobeffect.AttacksInflictMobEffectAbility;
+import artifacts.component.ability.mobeffect.PermanentMobEffectAbility;
 import artifacts.component.ability.retaliation.SetAttackersOnFireAbility;
 import artifacts.component.ability.retaliation.StrikeAttackersWithLightningAbility;
 import artifacts.component.ability.retaliation.ThornsAbility;
+import artifacts.config.value.Value;
+import artifacts.config.value.ValueTypes;
 import artifacts.platform.PlatformServices;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
@@ -63,16 +68,14 @@ public class ModDataComponents {
             registerSimpleAbility("grow_plants_after_eating");
     public static final Supplier<DataComponentType<IncreaseEnchantmentLevelAbility>> INCREASE_ENCHANTMENT_LEVEL =
             registerSynced("increase_enchantment_level", IncreaseEnchantmentLevelAbility.CODEC, IncreaseEnchantmentLevelAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<LimitedWaterBreathingAbility>> LIMITED_WATER_BREATHING =
-            registerSynced("limited_water_breathing", LimitedWaterBreathingAbility.CODEC, LimitedWaterBreathingAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<Unit>> MAKE_PIGLINS_NEUTRAL =
             registerSynced("make_piglins_neutral", Unit.CODEC, StreamCodec.unit(Unit.INSTANCE));
     public static final Supplier<DataComponentType<PermanentMobEffectAbility>> MOB_EFFECT =
             registerSynced("mob_effect", PermanentMobEffectAbility.CODEC, PermanentMobEffectAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<HurtSound>> MODIFY_HURT_SOUND =
             registerSynced("modify_hurt_sound", HurtSound.CODEC, HurtSound.STREAM_CODEC);
-    public static final Supplier<DataComponentType<NightVisionAbility>> NIGHT_VISION =
-            registerSynced("night_vision", NightVisionAbility.CODEC, NightVisionAbility.STREAM_CODEC);
+    public static final Supplier<DataComponentType<Value<Double>>> REDUCES_NIGHT_VISION_STRENGTH =
+            registerSynced("night_vision", ValueTypes.FRACTION.codec(), ValueTypes.FRACTION.streamCodec());
     public static final Supplier<DataComponentType<SimpleAbility>> NULLIFY_ENDER_PEARL_DAMAGE =
             registerSimpleAbility("nullify_ender_pearl_damage");
     public static final Supplier<DataComponentType<RemoveBadEffectsAbility>> REMOVE_BAD_EFFECTS =
@@ -107,9 +110,7 @@ public class ModDataComponents {
                 ATTRIBUTE_MODIFIER,
                 REPLENISH_HUNGER_ON_GRASS,
                 REMOVE_BAD_EFFECTS,
-                MOB_EFFECT,
-                LIMITED_WATER_BREATHING,
-                NIGHT_VISION
+                MOB_EFFECT
         ));
         TOOLTIP_ORDER.addAll(List.of(
                 APPLY_MOB_EFFECT_AFTER_DAMAGE,
@@ -122,9 +123,7 @@ public class ModDataComponents {
                 ENDER_PEARLS_COST_HUNGER,
                 GROW_PLANTS_AFTER_EATING,
                 INCREASE_ENCHANTMENT_LEVEL,
-                LIMITED_WATER_BREATHING,
                 MOB_EFFECT,
-                NIGHT_VISION,
                 NULLIFY_ENDER_PEARL_DAMAGE,
                 REMOVE_BAD_EFFECTS,
                 REPLENISH_HUNGER_ON_GRASS,
