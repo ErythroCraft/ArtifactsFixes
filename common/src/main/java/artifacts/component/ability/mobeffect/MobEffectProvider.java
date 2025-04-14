@@ -17,14 +17,16 @@ import net.minecraft.world.entity.LivingEntity;
 
 public record MobEffectProvider(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration, Value<Boolean> spawnParticles, Value<Boolean> showIcon, AbilityCondition condition) {
 
-    public static final Codec<MobEffectProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BuiltInRegistries.MOB_EFFECT.holderByNameCodec().fieldOf("id").forGetter(MobEffectProvider::mobEffect),
-            ValueTypes.MOB_EFFECT_LEVEL.codec().optionalFieldOf("level", Value.of(1)).forGetter(MobEffectProvider::level),
-            ValueTypes.DURATION.codec().optionalFieldOf("duration", Value.of(10)).forGetter(MobEffectProvider::duration),
-            ValueTypes.BOOLEAN.codec().optionalFieldOf("spawn_particles", Value.of(false)).forGetter(MobEffectProvider::spawnParticles),
-            ValueTypes.BOOLEAN.codec().optionalFieldOf("show_icon", Value.of(false)).forGetter(MobEffectProvider::showIcon),
-            AbilityCondition.CODEC.optionalFieldOf("condition", AbilityCondition.ALWAYS).forGetter(MobEffectProvider::condition)
-            ).apply(instance, MobEffectProvider::new));
+    public static Codec<MobEffectProvider> codec(boolean showParticles) {
+        return RecordCodecBuilder.create(instance -> instance.group(
+                BuiltInRegistries.MOB_EFFECT.holderByNameCodec().fieldOf("id").forGetter(MobEffectProvider::mobEffect),
+                ValueTypes.MOB_EFFECT_LEVEL.codec().optionalFieldOf("level", Value.of(1)).forGetter(MobEffectProvider::level),
+                ValueTypes.DURATION.codec().optionalFieldOf("duration", Value.of(10)).forGetter(MobEffectProvider::duration),
+                ValueTypes.BOOLEAN.codec().optionalFieldOf("spawn_particles", Value.of(showParticles)).forGetter(MobEffectProvider::spawnParticles),
+                ValueTypes.BOOLEAN.codec().optionalFieldOf("show_icon", Value.of(false)).forGetter(MobEffectProvider::showIcon),
+                AbilityCondition.CODEC.optionalFieldOf("condition", AbilityCondition.ALWAYS).forGetter(MobEffectProvider::condition)
+        ).apply(instance, MobEffectProvider::new));
+    }
 
     public static final StreamCodec<RegistryFriendlyByteBuf, MobEffectProvider> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.holderRegistry(Registries.MOB_EFFECT),

@@ -8,7 +8,6 @@ import artifacts.registry.ModDataComponents;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -17,53 +16,88 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.List;
 import java.util.Optional;
 
-public record ApplyMobEffectAfterDamageAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration, Optional<TagKey<DamageType>> tag)
-        implements MobEffectAbility, EquipmentAbility {
+public record ApplyMobEffectAfterDamageAbility(List<Entry> effects) implements EquipmentAbility {
 
-    public static final Codec<ApplyMobEffectAfterDamageAbility> CODEC = RecordCodecBuilder.create(
-            instance -> MobEffectAbility.codecStartWithDuration(instance)
-                    .and(TagKey.codec(Registries.DAMAGE_TYPE).optionalFieldOf("tag").forGetter(ApplyMobEffectAfterDamageAbility::tag))
-                    .apply(instance, ApplyMobEffectAfterDamageAbility::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, ApplyMobEffectAfterDamageAbility> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.holderRegistry(Registries.MOB_EFFECT),
-            ApplyMobEffectAfterDamageAbility::mobEffect,
-            ValueTypes.MOB_EFFECT_LEVEL.streamCodec(),
-            ApplyMobEffectAfterDamageAbility::level,
-            ValueTypes.DURATION.streamCodec(),
-            ApplyMobEffectAfterDamageAbility::duration,
-            ByteBufCodecs.optional(ModCodecs.tagKeyStreamCodec(Registries.DAMAGE_TYPE)),
-            ApplyMobEffectAfterDamageAbility::tag,
-            ApplyMobEffectAfterDamageAbility::new
+    public static final Codec<ApplyMobEffectAfterDamageAbility> CODEC = Entry.CODEC.listOf(0, 16).xmap(
+            ApplyMobEffectAfterDamageAbility::new, ApplyMobEffectAfterDamageAbility::effects
     );
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ApplyMobEffectAfterDamageAbility> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
+            .apply(Entry.STREAM_CODEC).map(ApplyMobEffectAfterDamageAbility::new, ApplyMobEffectAfterDamageAbility::effects);
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (!entity.level().isClientSide()) {
             EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
-                if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
-                    entity.addEffect(ability.createEffect(entity));
+                for (Entry entry : ability.effects) {
+                    if (entry.shouldApply(damageSource.type(), entity)) {
+                        entity.addEffect(entry.provider.createEffect());
+                    }
+
                 }
             });
         }
     }
 
     @Override
-    public boolean isVisible() {
-        return true;
+    public boolean isNonCosmetic() {
+        for (Entry effect : effects) {
+            if (effect.isNonCosmetic()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public void addToTooltip(TooltipWriter writer) {
-        if (mobEffect().equals(MobEffects.FIRE_RESISTANCE) && tag.isPresent() && tag.get().equals(DamageTypeTags.IS_FIRE)) {
-            writer.add("fire_resistance");
-        } else if (mobEffect().equals(MobEffects.MOVEMENT_SPEED)) {
-            writer.add("speed");
+        for (Entry entry : effects) {
+            if (entry.provider.mobEffect().equals(MobEffects.FIRE_RESISTANCE)
+                    && entry.tag.isPresent() && entry.tag.get().equals(DamageTypeTags.IS_FIRE)
+                    && entry.chance.get() == 1
+            ) {
+                writer.add("fire_resistance");
+            } else if (entry.provider.mobEffect().equals(MobEffects.MOVEMENT_SPEED)
+                    && entry.tag.isEmpty() && entry.chance.get() == 1
+            ) {
+                writer.add("speed");
+            }
+        }
+    }
+
+    public record Entry(MobEffectProvider provider, Optional<TagKey<DamageType>> tag, Value<Double> chance) {
+
+        public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                MobEffectProvider.codec(true).fieldOf("effect").forGetter(Entry::provider),
+                TagKey.codec(Registries.DAMAGE_TYPE).optionalFieldOf("tag").forGetter(Entry::tag),
+                ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(Entry::chance)
+        ).apply(instance, Entry::new));
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, Entry> STREAM_CODEC = StreamCodec.composite(
+                MobEffectProvider.STREAM_CODEC,
+                Entry::provider,
+                ByteBufCodecs.optional(ModCodecs.tagKeyStreamCodec(Registries.DAMAGE_TYPE)),
+                Entry::tag,
+                ValueTypes.FRACTION.streamCodec(),
+                Entry::chance,
+                Entry::new
+        );
+
+        public boolean shouldApply(DamageType type, LivingEntity entity) {
+            return provider.canApply(entity)
+                    && entity.getRandom().nextDouble() < chance.get()
+                    && (tag.isEmpty() || entity.level().registryAccess().registry(Registries.DAMAGE_TYPE)
+                    .flatMap(registry -> registry.getTag(tag.get()).map(tag -> tag.contains(registry.wrapAsHolder(type))))
+                    .orElseThrow());
+        }
+
+        public boolean isNonCosmetic() {
+            return provider.isNonCosmetic() && chance.get() > 0;
         }
     }
 }

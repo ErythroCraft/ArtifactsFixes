@@ -7,6 +7,7 @@ import artifacts.component.ability.*;
 import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
 import artifacts.component.ability.mobeffect.ApplyMobEffectAfterEatingAbility;
 import artifacts.component.ability.mobeffect.AttacksInflictMobEffectAbility;
+import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.component.ability.retaliation.SetAttackersOnFireAbility;
 import artifacts.component.ability.retaliation.StrikeAttackersWithLightningAbility;
 import artifacts.component.ability.retaliation.ThornsAbility;
@@ -116,12 +117,11 @@ public class ModItems {
     );
     public static final Holder<Item> PANIC_NECKLACE = wearableItem("panic_necklace", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
-            .component(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), new ApplyMobEffectAfterDamageAbility(
-                    MobEffects.MOVEMENT_SPEED,
-                    Artifacts.CONFIG.items.panicNecklaceSpeedLevel,
-                    Artifacts.CONFIG.items.panicNecklaceSpeedDuration,
-                    Optional.empty()
-            ))
+            .component(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), new ApplyMobEffectAfterDamageAbility(List.of(new ApplyMobEffectAfterDamageAbility.Entry(
+                    new MobEffectProvider(MobEffects.MOVEMENT_SPEED, Artifacts.CONFIG.items.panicNecklaceSpeedLevel, Artifacts.CONFIG.items.panicNecklaceSpeedDuration, Value.of(true), Value.of(true), AbilityCondition.ALWAYS),
+                    Optional.empty(),
+                    Value.of(1D)
+            ))))
             .component(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), new ApplyCooldownAfterDamageAbility(
                     Artifacts.CONFIG.items.panicNecklaceCooldown,
                     Optional.empty()
@@ -172,12 +172,11 @@ public class ModItems {
     );
     public static final Holder<Item> OBSIDIAN_SKULL = wearableItem("obsidian_skull", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
-            .component(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), new ApplyMobEffectAfterDamageAbility(
-                    MobEffects.FIRE_RESISTANCE,
-                    Value.of(1),
-                    Artifacts.CONFIG.items.obsidianSkullFireResistanceDuration,
-                    Optional.of(DamageTypeTags.IS_FIRE)
-            ))
+            .component(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), new ApplyMobEffectAfterDamageAbility(List.of(new ApplyMobEffectAfterDamageAbility.Entry(
+                    new MobEffectProvider(MobEffects.FIRE_RESISTANCE, Value.of(1), Artifacts.CONFIG.items.obsidianSkullFireResistanceDuration, Value.of(true), Value.of(true), AbilityCondition.ALWAYS),
+                    Optional.of(DamageTypeTags.IS_FIRE),
+                    Value.of(1D)
+            ))))
             .component(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), new ApplyCooldownAfterDamageAbility(
                     Artifacts.CONFIG.items.obsidianSkullCooldown,
                     Optional.of(DamageTypeTags.IS_FIRE)

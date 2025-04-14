@@ -3,6 +3,7 @@ package artifacts.util;
 import artifacts.component.ability.AbilityCondition;
 import artifacts.component.ability.AttributeModifierAbility;
 import artifacts.component.ability.EquipmentAbility;
+import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
@@ -102,15 +103,17 @@ public class TooltipHelper {
         }
     }
 
-    @Unique
+    @Unique // TODO add chance to tooltip
     private static void addWhenHurtTooltips(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
         MutableBoolean flag = new MutableBoolean(false);
         List<TagKey<DamageType>> list = new ArrayList<>();
         getAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {
-            if (ability.tag().isEmpty()) {
-                flag.setTrue();
-            } else {
-                list.add(ability.tag().get());
+            for (ApplyMobEffectAfterDamageAbility.Entry entry : ability.effects()) {
+                if (entry.tag().isEmpty()) {
+                    flag.setTrue();
+                } else {
+                    list.add(entry.tag().get());
+                }
             }
         });
         getAbility(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {
@@ -140,8 +143,10 @@ public class TooltipHelper {
 
     private static void addWhenHurtTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack, @Nullable TagKey<DamageType> tag) {
         getAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {
-            if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
-                addMobEffectTooltip(tooltip, context, ability.mobEffect().value(), ability.duration().get(), ability.level().get(), false);
+            for (ApplyMobEffectAfterDamageAbility.Entry entry : ability.effects()) {
+                if (entry.tag().isEmpty() && tag == null || entry.tag().isPresent() && entry.tag().get().equals(tag)) {
+                    addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), false);
+                }
             }
         });
         getAbility(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {

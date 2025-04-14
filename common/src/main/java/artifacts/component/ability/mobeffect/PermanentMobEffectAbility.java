@@ -28,7 +28,7 @@ public record PermanentMobEffectAbility(List<MobEffectProvider> effects) impleme
             ModMobEffects.MAGNETISM
     );
 
-    public static final Codec<PermanentMobEffectAbility> CODEC = MobEffectProvider.CODEC.listOf(0, 16).xmap(
+    public static final Codec<PermanentMobEffectAbility> CODEC = MobEffectProvider.codec(false).listOf(0, 16).xmap(
             PermanentMobEffectAbility::new, PermanentMobEffectAbility::effects
     );
 
