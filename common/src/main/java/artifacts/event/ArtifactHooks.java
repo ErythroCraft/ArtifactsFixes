@@ -105,7 +105,8 @@ public class ArtifactHooks {
     }
 
     public static void onItemTick(LivingEntity entity) {
-        if (entity.level().isClientSide() || !((LivingEntityExtensions) entity).artifacts$hasTickingAbilities()) {
+        // tick players both server- and clientside
+        if (!(entity instanceof Player) && !((LivingEntityExtensions) entity).artifacts$hasTickingAbilities()) {
             return;
         }
         for (var type : ModDataComponents.TICKING_COMPONENTS) {
