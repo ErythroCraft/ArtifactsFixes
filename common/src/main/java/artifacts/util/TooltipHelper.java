@@ -62,8 +62,7 @@ public class TooltipHelper {
         }
         addWhenHurtTooltips(consumer, context, stack);
         addPerFoodPointEatenTooltip(consumer, context, stack);
-        addAttacksInflictTooltip(consumer, context, stack, false);
-        addAttacksInflictTooltip(consumer, context, stack, true);
+        addAttacksInflictTooltip(consumer, context, stack);
     }
 
     @Unique
@@ -75,7 +74,7 @@ public class TooltipHelper {
         });
         getAbility(ModDataComponents.MOB_EFFECT.get(), stack).ifPresent(ability -> {
             for (MobEffectProvider provider : ability.effects()) {
-                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), provider.condition() == AbilityCondition.ALWAYS);
+                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, provider.condition() == AbilityCondition.ALWAYS);
             }
         });
     }
@@ -106,7 +105,7 @@ public class TooltipHelper {
         }
     }
 
-    @Unique // TODO add chance to tooltip
+    @Unique
     private static void addWhenHurtTooltips(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
         MutableBoolean flag = new MutableBoolean(false);
         List<TagKey<DamageType>> list = new ArrayList<>();
@@ -148,7 +147,7 @@ public class TooltipHelper {
         getAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {
             for (ApplyMobEffectAfterDamageAbility.Entry entry : ability.effects()) {
                 if (entry.tag().isEmpty() && tag == null || entry.tag().isPresent() && entry.tag().get().equals(tag)) {
-                    addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), false);
+                    addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), entry.chance().get(), false);
                 }
             }
         });
@@ -164,25 +163,25 @@ public class TooltipHelper {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.per_food_point_restored").withStyle(ChatFormatting.GRAY));
             for (MobEffectProvider provider : ability.effects()) {
-                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), false);
+                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, false);
             }
         });
     }
 
-    private static void addAttacksInflictTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack, boolean chance) {
+    private static void addAttacksInflictTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
         getAbility(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), stack).ifPresent(ability -> {
+            tooltip.accept(CommonComponents.EMPTY);
+            tooltip.accept(Component.translatable("artifacts.tooltip.attacks_inflict").withStyle(ChatFormatting.GRAY));
             for (AttacksInflictMobEffectAbility.Entry entry : ability.effects()) {
-                if (chance ^ Mth.equal(entry.chance().get(), 1)) {
-                    addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), false);
-                    if (entry.cooldown().get() > 0) {
-                        tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(context, entry.cooldown().get())).withStyle(ChatFormatting.GOLD));
-                    }
+                addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), entry.chance().get(), false);
+                if (entry.cooldown().get() > 0) {
+                    tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(context, entry.cooldown().get())).withStyle(ChatFormatting.GOLD));
                 }
             }
         });
     }
 
-    private static void addMobEffectTooltip(Consumer<Component> tooltip, Item.TooltipContext context, MobEffect mobEffect, int duration, int level, boolean isInfinite) {
+    private static void addMobEffectTooltip(Consumer<Component> tooltip, Item.TooltipContext context, MobEffect mobEffect, int duration, int level, double chance, boolean isInfinite) {
         MutableComponent mutableComponent;
         mutableComponent = Component.translatable(mobEffect.getDescriptionId());
         if (level > 1) {
@@ -191,7 +190,11 @@ public class TooltipHelper {
         if (!isInfinite) {
             mutableComponent = Component.translatable("potion.withDuration", mutableComponent, formatDurationSeconds(context, duration));
         }
-        tooltip.accept(Component.translatable("artifacts.tooltip.plus_mob_effect", mutableComponent).withStyle(mobEffect.getCategory().getTooltipFormatting()));
+        if (Mth.equal(chance, 1)) {
+            tooltip.accept(Component.translatable("artifacts.tooltip.plus_mob_effect", mutableComponent).withStyle(mobEffect.getCategory().getTooltipFormatting()));
+        } else {
+            tooltip.accept(Component.translatable("artifacts.tooltip.plus_mob_effect_chance", mutableComponent, (int) (chance * 100) + "%").withStyle(mobEffect.getCategory().getTooltipFormatting()));
+        }
     }
 
     private static MutableComponent formatDurationSeconds(Item.TooltipContext context, int seconds) {

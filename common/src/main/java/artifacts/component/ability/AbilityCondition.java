@@ -12,7 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.function.Predicate;
 
-// TODO add cooldown/toggle condition?
 public enum AbilityCondition implements StringRepresentable {
     ALWAYS("always", entity -> true),
     NEVER("never", entity -> false),

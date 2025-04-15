@@ -229,8 +229,7 @@ public class Language extends LanguageProvider {
     }
 
     private void addTooltips() {
-        tooltip("attacks_inflict.chance", "Attacks have a chance to inflict:");
-        tooltip("attacks_inflict.constant", "Attacks inflict:");
+        tooltip("attacks_inflict", "Attacks inflict:");
         tooltip("cooldown", "+Cooldown (%s)");
         tooltip("cosmetic", "Cosmetic");
         tooltip("cosmetics_disabled", "Cosmetics disabled (right-click to toggle)");
@@ -242,6 +241,7 @@ public class Language extends LanguageProvider {
         tooltip("missing_dependency", "Install Curios, Trinkets or Accessories to use this item");
         tooltip("per_food_point_restored", "For every food point restored:");
         tooltip("plus_mob_effect", "+%s");
+        tooltip("plus_mob_effect_chance", "+%s (%s)");
         tooltip("toggle_keymapping", "Press %s to toggle");
         tooltip("tool_tier.none", "none");
         tooltip("tool_tier.wood", "wood");
