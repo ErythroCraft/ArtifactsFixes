@@ -1,6 +1,7 @@
 package artifacts.equipment;
 
 import artifacts.component.ability.EquipmentAbility;
+import artifacts.component.ability.IncreaseEnchantmentLevelAbility;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceKey;
@@ -14,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.*;
 
-// TODO fix compound abilities (mob effects/attributes)
 // TODO render mob effects as infinite in inventory
 public class EquipmentHelper {
 
@@ -34,9 +34,15 @@ public class EquipmentHelper {
     }
 
     public static int getEnchantmentLevelIncrease(ResourceKey<Enchantment> enchantment, LivingEntity entity) {
-        return sumInt(ModDataComponents.INCREASE_ENCHANTMENT_LEVEL.get(), entity, ability ->
-                ability.enchantment().equals(enchantment) ? ability.getAmount() : 0, true
-        );
+        return sumInt(ModDataComponents.INCREASE_ENCHANTMENT_LEVEL.get(), entity, ability -> {
+            int amount = 0;
+            for (IncreaseEnchantmentLevelAbility.Entry entry : ability.entries()) {
+                if (entry.enchantment().equals(enchantment)) {
+                    amount += entry.amount().get();
+                }
+            }
+            return amount;
+        }, true);
     }
 
     public static <A extends EquipmentAbility> int sumInt(DataComponentType<A> type, LivingEntity entity, Function<A, Integer> f, boolean skipItemsOnCooldown) {

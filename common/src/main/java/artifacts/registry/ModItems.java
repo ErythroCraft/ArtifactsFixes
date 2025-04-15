@@ -263,9 +263,12 @@ public class ModItems {
     public static final Holder<Item> ONION_RING = wearableItem("onion_ring", builder -> builder
             .properties(properties -> properties.food(new FoodProperties.Builder().nutrition(2).build()))
             .component(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), new ApplyMobEffectAfterEatingAbility(
-                    MobEffects.DIG_SPEED,
-                    Artifacts.CONFIG.items.onionRingHasteLevel,
-                    Artifacts.CONFIG.items.onionRingHasteDurationPerFoodPoint
+                    List.of(new MobEffectProvider(
+                            MobEffects.DIG_SPEED,
+                            Artifacts.CONFIG.items.onionRingHasteLevel,
+                            Artifacts.CONFIG.items.onionRingHasteDurationPerFoodPoint,
+                            Value.of(true), Value.of(true), AbilityCondition.ALWAYS
+                    ))
             ))
     );
     public static final Holder<Item> PICKAXE_HEATER = wearableItem("pickaxe_heater", builder -> builder
@@ -273,13 +276,18 @@ public class ModItems {
             .component(ModDataComponents.SMELT_ORES.get(), new SimpleAbility(Artifacts.CONFIG.items.pickaxeHeaterEnabled))
     );
     public static final Holder<Item> WITHERED_BRACELET = wearableItem("withered_bracelet", builder -> builder
-            .component(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), new AttacksInflictMobEffectAbility(
-                    MobEffects.WITHER,
-                    Artifacts.CONFIG.items.witheredBraceletWitherLevel,
-                    Artifacts.CONFIG.items.witheredBraceletWitherDuration,
-                    Artifacts.CONFIG.items.witheredBraceletCooldown,
-                    Artifacts.CONFIG.items.witheredBraceletWitherChance
-            ))
+            .component(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), new AttacksInflictMobEffectAbility(List.of(
+                    new AttacksInflictMobEffectAbility.Entry(
+                            new MobEffectProvider(
+                                    MobEffects.WITHER,
+                                    Artifacts.CONFIG.items.witheredBraceletWitherLevel,
+                                    Artifacts.CONFIG.items.witheredBraceletWitherDuration,
+                                    Value.of(true), Value.of(true), AbilityCondition.ALWAYS
+                            ),
+                            Artifacts.CONFIG.items.witheredBraceletWitherChance,
+                            Artifacts.CONFIG.items.witheredBraceletCooldown
+                    )
+            )))
     );
 
     // feet

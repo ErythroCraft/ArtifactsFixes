@@ -23,8 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation,
-                                       ResourceLocation id, boolean ignoreCooldown) implements EquipmentAbility, TickingAbility {
+public record AttributeModifierAbility(List<Entry> modifiers) implements TickingAbility {
 
     private static final Set<Holder<Attribute>> POSITIVE_ATTRIBUTES_WITH_TOOLTIP;
     private static final Set<Holder<Attribute>> NEGATIVE_ATTRIBUTES_WITH_TOOLTIP = Set.of(
@@ -49,91 +48,119 @@ public record AttributeModifierAbility(Holder<Attribute> attribute, Value<Double
         ));
     }
 
-    public static final Codec<AttributeModifierAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BuiltInRegistries.ATTRIBUTE.holderByNameCodec().fieldOf("attribute").forGetter(AttributeModifierAbility::attribute),
-            ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT.codec().fieldOf("amount").forGetter(AttributeModifierAbility::amount),
-            AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(AttributeModifierAbility::operation),
-            ResourceLocation.CODEC.fieldOf("id").forGetter(AttributeModifierAbility::id),
-            Codec.BOOL.optionalFieldOf("ignore_cooldown", true).forGetter(AttributeModifierAbility::ignoreCooldown)
-    ).apply(instance, AttributeModifierAbility::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, AttributeModifierAbility> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.holderRegistry(Registries.ATTRIBUTE),
-            AttributeModifierAbility::attribute,
-            ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT.streamCodec(),
-            AttributeModifierAbility::amount,
-            AttributeModifier.Operation.STREAM_CODEC,
-            AttributeModifierAbility::operation,
-            ResourceLocation.STREAM_CODEC,
-            AttributeModifierAbility::id,
-            ByteBufCodecs.BOOL,
-            AttributeModifierAbility::ignoreCooldown,
-            AttributeModifierAbility::new
+    public static final Codec<AttributeModifierAbility> CODEC = Entry.CODEC.listOf().xmap(
+            AttributeModifierAbility::new, AttributeModifierAbility::modifiers
     );
 
-    public AttributeModifier createModifier() {
-        return new AttributeModifier(id(), amount().get(), operation());
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, AttributeModifierAbility> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
+            .apply(Entry.STREAM_CODEC).map(AttributeModifierAbility::new, AttributeModifierAbility::modifiers);
 
     private void onAttributeUpdated(LivingEntity entity) {
-        if (attribute() == Attributes.MAX_HEALTH && entity.getHealth() > entity.getMaxHealth()) {
-            entity.setHealth(entity.getMaxHealth());
+        for (Entry entry : modifiers) {
+            if (entry.attribute() == Attributes.MAX_HEALTH && entity.getHealth() > entity.getMaxHealth()) {
+                entity.setHealth(entity.getMaxHealth());
+            }
         }
     }
 
     @Override
     public boolean isNonCosmetic() {
-        return !Mth.equal(amount().get(), 0);
+        for (Entry entry : modifiers) {
+            if (entry.isNonCosmetic()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public void onUnequip(LivingEntity entity) {
-        AttributeInstance attributeInstance = entity.getAttribute(attribute());
-        if (attributeInstance != null && attributeInstance.hasModifier(id())) {
-            attributeInstance.removeModifier(id());
-            onAttributeUpdated(entity);
-        }
-    }
-
-    @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
-        AttributeInstance attributeInstance = entity.getAttribute(attribute());
-        if (attributeInstance == null) {
-            return;
-        }
-        AttributeModifier existingModifier = attributeInstance.getModifier(id());
-        if (!ignoreCooldown() && isOnCooldown) {
-            if (!isDisabled && isNonCosmetic()) {
-                onUnequip(entity);
-            }
-        } else if (!isDisabled) {
-            if (existingModifier == null || !Mth.equal(amount().get(), existingModifier.amount())) {
-                attributeInstance.removeModifier(id());
-                attributeInstance.addPermanentModifier(createModifier());
+        for (Entry entry : modifiers) {
+            AttributeInstance attributeInstance = entity.getAttribute(entry.attribute());
+            if (attributeInstance != null && attributeInstance.hasModifier(entry.id())) {
+                attributeInstance.removeModifier(entry.id());
                 onAttributeUpdated(entity);
             }
         }
     }
 
     @Override
+    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        for (Entry entry : modifiers) {
+            AttributeInstance attributeInstance = entity.getAttribute(entry.attribute());
+            if (attributeInstance == null) {
+                return;
+            }
+            AttributeModifier existingModifier = attributeInstance.getModifier(entry.id());
+            if (!entry.ignoreCooldown() && isOnCooldown) {
+                if (!isDisabled && isNonCosmetic()) {
+                    onUnequip(entity);
+                }
+            } else if (!isDisabled) {
+                if (existingModifier == null || !Mth.equal(entry.amount().get(), existingModifier.amount())) {
+                    attributeInstance.removeModifier(entry.id());
+                    attributeInstance.addPermanentModifier(entry.createModifier());
+                    onAttributeUpdated(entity);
+                }
+            }
+        }
+    }
+
+    @Override
     public void addToTooltip(TooltipWriter writer) {
-        String attributeName = attribute().unwrapKey().orElseThrow().location().getPath();
-        if (attributeName.equals("swim_speed")) { // neoforge swim speed
-            attributeName = "generic.swim_speed";
+        for (Entry entry : modifiers) {
+            String attributeName = entry.attribute().unwrapKey().orElseThrow().location().getPath();
+            if (attributeName.equals("swim_speed")) { // neoforge swim speed
+                attributeName = "generic.swim_speed";
+            }
+
+            if (entry.amount().get() > 0) {
+                for (Holder<Attribute> attribute : POSITIVE_ATTRIBUTES_WITH_TOOLTIP) {
+                    if (attribute.isBound() && attribute.value() == entry.attribute().value()) {
+                        writer.add(attributeName);
+                    }
+                }
+            } else {
+                for (Holder<Attribute> attribute : NEGATIVE_ATTRIBUTES_WITH_TOOLTIP) {
+                    if (attribute.isBound() && attribute.value() == entry.attribute().value()) {
+                        writer.add(attributeName);
+                    }
+                }
+            }
+        }
+    }
+
+    public record Entry(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation,
+                        ResourceLocation id, boolean ignoreCooldown) {
+
+        public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                BuiltInRegistries.ATTRIBUTE.holderByNameCodec().fieldOf("attribute").forGetter(Entry::attribute),
+                ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT.codec().fieldOf("amount").forGetter(Entry::amount),
+                AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(Entry::operation),
+                ResourceLocation.CODEC.fieldOf("id").forGetter(Entry::id),
+                Codec.BOOL.optionalFieldOf("ignore_cooldown", true).forGetter(Entry::ignoreCooldown)
+        ).apply(instance, Entry::new));
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, Entry> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.holderRegistry(Registries.ATTRIBUTE),
+                Entry::attribute,
+                ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT.streamCodec(),
+                Entry::amount,
+                AttributeModifier.Operation.STREAM_CODEC,
+                Entry::operation,
+                ResourceLocation.STREAM_CODEC,
+                Entry::id,
+                ByteBufCodecs.BOOL,
+                Entry::ignoreCooldown,
+                Entry::new
+        );
+
+        public boolean isNonCosmetic() {
+            return !Mth.equal(amount().get(), 0);
         }
 
-        if (amount().get() > 0) {
-            for (Holder<Attribute> attribute : POSITIVE_ATTRIBUTES_WITH_TOOLTIP) {
-                if (attribute.isBound() && attribute.value() == attribute().value()) {
-                    writer.add(attributeName);
-                }
-            }
-        } else {
-            for (Holder<Attribute> attribute : NEGATIVE_ATTRIBUTES_WITH_TOOLTIP) {
-                if (attribute.isBound() && attribute.value() == attribute().value()) {
-                    writer.add(attributeName);
-                }
-            }
+        public AttributeModifier createModifier() {
+            return new AttributeModifier(id(), amount().get(), operation());
         }
     }
 }

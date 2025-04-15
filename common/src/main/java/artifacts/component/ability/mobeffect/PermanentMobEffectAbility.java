@@ -57,7 +57,7 @@ public record PermanentMobEffectAbility(List<MobEffectProvider> effects) impleme
                     && instance.getAmplifier() == provider.getAmplifier()
                     && instance.isVisible() == provider.spawnParticles().get()
                     && instance.showIcon() == provider.showIcon().get()
-                    && instance.endsWithin(provider.getDuration() * 20 + 19)
+                    && instance.endsWithin(provider.getDuration(1) * 20 + 19)
             ) {
                 entity.removeEffect(provider.mobEffect());
             }

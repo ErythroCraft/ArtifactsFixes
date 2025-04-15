@@ -1,40 +1,38 @@
 package artifacts.component.ability.mobeffect;
 
+import artifacts.component.ability.AbilityCondition;
 import artifacts.component.ability.EquipmentAbility;
-import artifacts.config.value.Value;
-import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 
-public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration)
-        implements MobEffectAbility, EquipmentAbility {
+import java.util.List;
 
-    public static final Codec<ApplyMobEffectAfterEatingAbility> CODEC = RecordCodecBuilder.create(
-            instance -> MobEffectAbility.codecStartWithDuration(instance)
-                    .apply(instance, ApplyMobEffectAfterEatingAbility::new)
-    );
+public record ApplyMobEffectAfterEatingAbility(List<MobEffectProvider> effects)
+        implements EquipmentAbility {
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ApplyMobEffectAfterEatingAbility> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.holderRegistry(Registries.MOB_EFFECT),
-            ApplyMobEffectAfterEatingAbility::mobEffect,
-            ValueTypes.DURATION.streamCodec(),
-            ApplyMobEffectAfterEatingAbility::duration,
-            ValueTypes.MOB_EFFECT_LEVEL.streamCodec(),
-            ApplyMobEffectAfterEatingAbility::level,
-            ApplyMobEffectAfterEatingAbility::new
-    );
+    public static final Codec<ApplyMobEffectAfterEatingAbility> CODEC = MobEffectProvider.codec(true)
+            .listOf().xmap(ApplyMobEffectAfterEatingAbility::new, ApplyMobEffectAfterEatingAbility::effects);
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ApplyMobEffectAfterEatingAbility> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, MobEffectProvider>list()
+            .apply(MobEffectProvider.STREAM_CODEC).map(ApplyMobEffectAfterEatingAbility::new, ApplyMobEffectAfterEatingAbility::effects);
+
+    @Override
+    public boolean isNonCosmetic() {
+        for (MobEffectProvider provider : effects) {
+            if (provider.isNonCosmetic()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static void applyEffects(LivingEntity entity, FoodProperties properties) {
         int foodPointsMissing = entity instanceof Player player ? 20 - player.getFoodData().getFoodLevel() : 20;
@@ -44,21 +42,21 @@ public record ApplyMobEffectAfterEatingAbility(Holder<MobEffect> mobEffect, Valu
 
     public static void applyEffects(LivingEntity entity, int foodPointsRestored) {
         if (foodPointsRestored > 0) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity, true, true,
-                    (ability, stack) -> entity.addEffect(ability.createEffect(ability.duration().get() * 20 * foodPointsRestored))
+            EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity, true, true, (ability, stack) -> {
+                        for (MobEffectProvider provider : ability.effects) {
+                            entity.addEffect(provider.createEffect(foodPointsRestored));
+                        }
+                    }
             );
         }
     }
 
     @Override
-    public boolean isVisible() {
-        return true;
-    }
-
-    @Override
     public void addToTooltip(TooltipWriter writer) {
-        if (mobEffect.equals(MobEffects.DIG_SPEED)) {
-            writer.add("haste");
+        for (MobEffectProvider provider : effects) {
+            if (provider.mobEffect().equals(MobEffects.DIG_SPEED) && provider.condition() == AbilityCondition.ALWAYS && provider.isNonCosmetic()) {
+                writer.add("haste");
+            }
         }
     }
 }

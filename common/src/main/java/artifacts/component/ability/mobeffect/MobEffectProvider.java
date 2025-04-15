@@ -44,8 +44,8 @@ public record MobEffectProvider(Holder<MobEffect> mobEffect, Value<Integer> leve
             MobEffectProvider::new
     );
 
-    public int getDuration() {
-        return duration().get() * 20 + 19;
+    public int getDuration(int multiplier) {
+        return duration().get() * 20 * multiplier + 19;
     }
 
     public int getAmplifier() {
@@ -61,6 +61,10 @@ public record MobEffectProvider(Holder<MobEffect> mobEffect, Value<Integer> leve
     }
 
     public MobEffectInstance createEffect() {
-        return new MobEffectInstance(mobEffect(), getDuration(), getAmplifier(), false, spawnParticles().get(), showIcon().get());
+        return createEffect(1);
+    }
+
+    public MobEffectInstance createEffect(int multiplier) {
+        return new MobEffectInstance(mobEffect(), getDuration(multiplier), getAmplifier(), false, spawnParticles().get(), showIcon().get());
     }
 }
