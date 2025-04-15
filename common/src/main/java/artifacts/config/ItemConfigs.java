@@ -158,7 +158,7 @@ public class ItemConfigs extends ConfigManager {
                     "The minimum amount of damage that is dealt when the Thorn Pendant activates"),
             thornPendantMinDamage = defineNonNegativeInt(createKey(ModItems.THORN_PENDANT, "minDamage"), 2,
                     "The maximum amount of damage that is dealt when the Thorn Pendant activates"),
-            warpDriveHungerCost = defineNonNegativeInt(createKey(ModItems.WARP_DRIVE, "hungerCost"), 4, // TODO reduce this/factor in saturation
+            warpDriveHungerCost = defineNonNegativeInt(createKey(ModItems.WARP_DRIVE, "hungerCost"), 2,
                     "How many hunger points it costs to throw an Ender Pearl using the Warp Drive"),
             vampiricGloveMaxHealingPerHit = defineNonNegativeInt(createKey(ModItems.VAMPIRIC_GLOVE, "maxHealingPerHit"), 6,
                     "The maximum amount of healing that can be absorbed in a single hit " +
