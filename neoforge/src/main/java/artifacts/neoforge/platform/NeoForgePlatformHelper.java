@@ -1,7 +1,6 @@
 package artifacts.neoforge.platform;
 
 import artifacts.component.SwimData;
-import artifacts.neoforge.integration.cosmeticarmor.CosmeticArmorCompat;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.NeoForgeRegister;
 import artifacts.platform.PlatformHelper;
@@ -44,14 +43,6 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public boolean isEyeInWater(Player player) {
         return player.isEyeInFluidType(NeoForgeMod.WATER_TYPE.value());
-    }
-
-    @Override
-    public boolean areBootsHidden(LivingEntity entity) {
-        if (entity instanceof Player player && ModList.get().isLoaded("cosmeticarmorreworked")) {
-            return CosmeticArmorCompat.areBootsHidden(player);
-        }
-        return false;
     }
 
     @Override

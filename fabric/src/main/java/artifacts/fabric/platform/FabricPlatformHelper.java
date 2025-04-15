@@ -45,11 +45,6 @@ public class FabricPlatformHelper implements PlatformHelper {
     }
 
     @Override
-    public boolean areBootsHidden(LivingEntity entity) {
-        return false;
-    }
-
-    @Override
     public boolean isFishingRod(ItemStack stack) {
         return stack.getItem() instanceof FishingRodItem;
     }

@@ -25,8 +25,6 @@ public interface PlatformHelper {
 
     boolean isEyeInWater(Player player);
 
-    boolean areBootsHidden(LivingEntity entity);
-
     boolean isFishingRod(ItemStack stack);
 
     Path getConfigDir();

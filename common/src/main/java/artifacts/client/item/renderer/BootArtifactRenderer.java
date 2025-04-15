@@ -1,7 +1,6 @@
 package artifacts.client.item.renderer;
 
 import artifacts.client.item.model.LegsModel;
-import artifacts.platform.PlatformServices;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
@@ -33,7 +32,7 @@ public class BootArtifactRenderer implements ArtifactRenderer {
     }
 
     protected HumanoidModel<LivingEntity> getModel(LivingEntity entity) {
-        return PlatformServices.platformHelper.areBootsHidden(entity) || entity.getItemBySlot(EquipmentSlot.FEET).isEmpty() ? model : armorModel;
+        return entity.getItemBySlot(EquipmentSlot.FEET).isEmpty() ? model : armorModel;
     }
 
     @Override
