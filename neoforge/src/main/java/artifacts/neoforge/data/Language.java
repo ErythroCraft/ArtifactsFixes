@@ -64,7 +64,7 @@ public class Language extends LanguageProvider {
         add("artifacts.key_category", "Artifacts");
         add(ModSoundEvents.FART.value(), "Fart");
         add("curios.identifier.feet", "Feet");
-        add("curios.entries.feet", "When on feet:");
+        add("curios.modifiers.feet", "When on feet:");
     }
 
     private void addAbilities() {
