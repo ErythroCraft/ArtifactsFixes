@@ -8,31 +8,31 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 
-public class Thorns extends RetaliationAbility {
+public class ThornsEffect extends RetaliationEffect {
 
-    public static final Codec<Thorns> CODEC = RecordCodecBuilder.create(instance -> codecStart(instance)
-            .and(ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("min_damage").forGetter(Thorns::minDamage))
-            .and(ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("max_damage").forGetter(Thorns::maxDamage))
-            .apply(instance, Thorns::new)
+    public static final Codec<ThornsEffect> CODEC = RecordCodecBuilder.create(instance -> codecStart(instance)
+            .and(ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("min_damage").forGetter(ThornsEffect::minDamage))
+            .and(ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("max_damage").forGetter(ThornsEffect::maxDamage))
+            .apply(instance, ThornsEffect::new)
     );
 
-    public static final StreamCodec<ByteBuf, Thorns> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, ThornsEffect> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.FRACTION.streamCodec(),
-            Thorns::strikeChance,
+            ThornsEffect::strikeChance,
             ValueTypes.DURATION.streamCodec(),
-            Thorns::cooldown,
+            ThornsEffect::cooldown,
             ValueTypes.NON_NEGATIVE_INT.streamCodec(),
-            Thorns::minDamage,
+            ThornsEffect::minDamage,
             ValueTypes.NON_NEGATIVE_INT.streamCodec(),
-            Thorns::maxDamage,
-            Thorns::new
+            ThornsEffect::maxDamage,
+            ThornsEffect::new
     );
 
     private final Value<Integer> minDamage;
     private final Value<Integer> maxDamage;
 
-    public Thorns(Value<Double> strikeChance, Value<Integer> cooldown, Value<Integer> minDamage, Value<Integer> maxDamage) {
-        super(strikeChance, cooldown);
+    public ThornsEffect(Value<Double> strikeChance, Value<Integer> cooldown, Value<Integer> minDamage, Value<Integer> maxDamage) {
+        super("thorns", strikeChance, cooldown);
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
     }
@@ -68,7 +68,7 @@ public class Thorns extends RetaliationAbility {
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Thorns that)) return false;
+        if (!(o instanceof ThornsEffect that)) return false;
         if (!super.equals(o)) return false;
 
         return minDamage.equals(that.minDamage) && maxDamage.equals(that.maxDamage);

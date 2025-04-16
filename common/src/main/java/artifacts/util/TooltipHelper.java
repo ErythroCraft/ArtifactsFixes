@@ -68,7 +68,7 @@ public class TooltipHelper {
     @Unique
     private static void addAbilityAttributeTooltips(ItemStack stack, Item.TooltipContext context, Consumer<Component> tooltip) {
         getAbility(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack).ifPresent(ability -> {
-            for (AttributeModifiers.Entry entry : ability.modifiers()) {
+            for (AttributeModifiers.Entry entry : ability.entries()) {
                 addAbilityAttributeTooltip(tooltip, entry);
             }
         });

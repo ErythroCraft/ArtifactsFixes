@@ -8,7 +8,6 @@ import artifacts.component.ability.SwimInAir;
 import artifacts.component.ability.TickingAbility;
 import artifacts.component.ability.mobeffect.AttackEffects;
 import artifacts.component.ability.mobeffect.PostDamageEffects;
-import artifacts.component.ability.retaliation.RetaliationAbility;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.extensions.ability.LivingEntityExtensions;
 import artifacts.item.UmbrellaItem;
@@ -19,7 +18,6 @@ import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.DamageSourceHelper;
 import be.florens.expandability.api.EventResult;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -127,15 +125,12 @@ public class ArtifactHooks {
     }
 
     public static void doPostAttackEffects(LivingEntity entity, DamageSource damageSource) {
-        activateRetaliationAbility(ModDataComponents.SET_ATTACKERS_ON_FIRE.get(), entity, damageSource);
-        activateRetaliationAbility(ModDataComponents.THORNS.get(), entity, damageSource);
-        activateRetaliationAbility(ModDataComponents.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), entity, damageSource);
+        EquipmentHelper.iterateAbilities(ModDataComponents.RETALIATION_EFFECTS.get(), entity, true, true,
+                (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource)
+        );
+
         AttackEffects.onLivingHurt(entity, damageSource);
         onAttackBurningLivingHurt(entity, damageSource);
-    }
-
-    private static void activateRetaliationAbility(DataComponentType<? extends RetaliationAbility> type, LivingEntity entity, DamageSource damageSource) {
-        EquipmentHelper.iterateAbilities(type, entity, true, true, (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource));
     }
 
     public static void onEntityAdded(Entity entity) {

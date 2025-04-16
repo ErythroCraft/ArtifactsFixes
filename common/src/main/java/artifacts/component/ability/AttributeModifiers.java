@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public record AttributeModifiers(List<Entry> modifiers) implements TickingAbility {
+public record AttributeModifiers(List<Entry> entries) implements TickingCompositeAbility<AttributeModifiers.Entry> {
 
     private static final Set<Holder<Attribute>> POSITIVE_ATTRIBUTES_WITH_TOOLTIP;
     private static final Set<Holder<Attribute>> NEGATIVE_ATTRIBUTES_WITH_TOOLTIP = Set.of(
@@ -48,90 +48,13 @@ public record AttributeModifiers(List<Entry> modifiers) implements TickingAbilit
         ));
     }
 
-    public static final Codec<AttributeModifiers> CODEC = Entry.CODEC.listOf().xmap(
-            AttributeModifiers::new, AttributeModifiers::modifiers
-    );
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, AttributeModifiers> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
-            .apply(Entry.STREAM_CODEC).map(AttributeModifiers::new, AttributeModifiers::modifiers);
-
-    private void onAttributeUpdated(LivingEntity entity) {
-        for (Entry entry : modifiers) {
-            if (entry.attribute() == Attributes.MAX_HEALTH && entity.getHealth() > entity.getMaxHealth()) {
-                entity.setHealth(entity.getMaxHealth());
-            }
-        }
-    }
-
-    @Override
-    public boolean isNonCosmetic() {
-        for (Entry entry : modifiers) {
-            if (entry.isNonCosmetic()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void onUnequip(LivingEntity entity) {
-        for (Entry entry : modifiers) {
-            AttributeInstance attributeInstance = entity.getAttribute(entry.attribute());
-            if (attributeInstance != null && attributeInstance.hasModifier(entry.id())) {
-                attributeInstance.removeModifier(entry.id());
-                onAttributeUpdated(entity);
-            }
-        }
-    }
-
-    @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
-        for (Entry entry : modifiers) {
-            AttributeInstance attributeInstance = entity.getAttribute(entry.attribute());
-            if (attributeInstance == null) {
-                return;
-            }
-            AttributeModifier existingModifier = attributeInstance.getModifier(entry.id());
-            if (!entry.ignoreCooldown() && isOnCooldown) {
-                if (!isDisabled && isNonCosmetic()) {
-                    onUnequip(entity);
-                }
-            } else if (!isDisabled) {
-                if (existingModifier == null || !Mth.equal(entry.amount().get(), existingModifier.amount())) {
-                    attributeInstance.removeModifier(entry.id());
-                    attributeInstance.addPermanentModifier(entry.createModifier());
-                    onAttributeUpdated(entity);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void addToTooltip(TooltipWriter writer) {
-        for (Entry entry : modifiers) {
-            String attributeName = entry.attribute().unwrapKey().orElseThrow().location().getPath();
-            if (attributeName.equals("swim_speed")) { // neoforge swim speed
-                attributeName = "generic.swim_speed";
-            }
-
-            if (entry.amount().get() > 0) {
-                for (Holder<Attribute> attribute : POSITIVE_ATTRIBUTES_WITH_TOOLTIP) {
-                    if (attribute.isBound() && attribute.value() == entry.attribute().value()) {
-                        writer.add(attributeName);
-                    }
-                }
-            } else {
-                for (Holder<Attribute> attribute : NEGATIVE_ATTRIBUTES_WITH_TOOLTIP) {
-                    if (attribute.isBound() && attribute.value() == entry.attribute().value()) {
-                        writer.add(attributeName);
-                    }
-                }
-            }
-        }
-    }
+    public static final Codec<AttributeModifiers> CODEC =
+            CompositeAbility.codec(Entry.CODEC, AttributeModifiers::new, AttributeModifiers::entries);
+    public static final StreamCodec<RegistryFriendlyByteBuf, AttributeModifiers> STREAM_CODEC =
+            CompositeAbility.streamCodec(Entry.STREAM_CODEC, AttributeModifiers::new, AttributeModifiers::entries);
 
     public record Entry(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation,
-                        ResourceLocation id, boolean ignoreCooldown) {
+                        ResourceLocation id, boolean ignoreCooldown) implements TickingAbility {
 
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BuiltInRegistries.ATTRIBUTE.holderByNameCodec().fieldOf("attribute").forGetter(Entry::attribute),
@@ -155,12 +78,71 @@ public record AttributeModifiers(List<Entry> modifiers) implements TickingAbilit
                 Entry::new
         );
 
+        public AttributeModifier createModifier() {
+            return new AttributeModifier(id(), amount().get(), operation());
+        }
+
+        private void onAttributeUpdated(LivingEntity entity) {
+            if (attribute() == Attributes.MAX_HEALTH && entity.getHealth() > entity.getMaxHealth()) {
+                entity.setHealth(entity.getMaxHealth());
+            }
+        }
+
+        @Override
+        public void onUnequip(LivingEntity entity) {
+            AttributeInstance attributeInstance = entity.getAttribute(attribute());
+            if (attributeInstance != null && attributeInstance.hasModifier(id())) {
+                attributeInstance.removeModifier(id());
+                onAttributeUpdated(entity);
+            }
+        }
+
+        @Override
+        public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+            AttributeInstance attributeInstance = entity.getAttribute(attribute());
+            if (attributeInstance == null) {
+                return;
+            }
+            AttributeModifier existingModifier = attributeInstance.getModifier(id());
+            if (!ignoreCooldown() && isOnCooldown) {
+                if (!isDisabled && isNonCosmetic()) {
+                    onUnequip(entity);
+                }
+            } else if (!isDisabled) {
+                if (existingModifier == null || !Mth.equal(amount().get(), existingModifier.amount())) {
+                    attributeInstance.removeModifier(id());
+                    attributeInstance.addPermanentModifier(createModifier());
+                    onAttributeUpdated(entity);
+                }
+            }
+        }
+
+
+        @Override
         public boolean isNonCosmetic() {
             return !Mth.equal(amount().get(), 0);
         }
 
-        public AttributeModifier createModifier() {
-            return new AttributeModifier(id(), amount().get(), operation());
+        @Override
+        public void addToTooltip(TooltipWriter writer) {
+            String attributeName = attribute().unwrapKey().orElseThrow().location().getPath();
+            if (attributeName.equals("swim_speed")) { // neoforge swim speed
+                attributeName = "generic.swim_speed";
+            }
+
+            if (amount().get() > 0) {
+                for (Holder<Attribute> attribute : POSITIVE_ATTRIBUTES_WITH_TOOLTIP) {
+                    if (attribute.isBound() && attribute.value() == attribute().value()) {
+                        writer.add(attributeName);
+                    }
+                }
+            } else {
+                for (Holder<Attribute> attribute : NEGATIVE_ATTRIBUTES_WITH_TOOLTIP) {
+                    if (attribute.isBound() && attribute.value() == attribute().value()) {
+                        writer.add(attributeName);
+                    }
+                }
+            }
         }
     }
 }

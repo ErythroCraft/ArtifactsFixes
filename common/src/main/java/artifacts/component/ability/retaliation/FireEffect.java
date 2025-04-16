@@ -10,32 +10,32 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
-public class SetAttackersOnFireAbility extends RetaliationAbility {
+public class FireEffect extends RetaliationEffect {
 
-    public static final Codec<SetAttackersOnFireAbility> CODEC = RecordCodecBuilder.create(
+    public static final Codec<FireEffect> CODEC = RecordCodecBuilder.create(
             instance -> codecStart(instance)
-                    .and(ValueTypes.DURATION.codec().fieldOf("duration").forGetter(SetAttackersOnFireAbility::fireDuration))
-                    .and(ValueTypes.BOOLEAN.codec().optionalFieldOf("grant_fire_resistance", Value.of(true)).forGetter(SetAttackersOnFireAbility::grantsFireResistance))
-                    .apply(instance, SetAttackersOnFireAbility::new)
+                    .and(ValueTypes.DURATION.codec().fieldOf("duration").forGetter(FireEffect::fireDuration))
+                    .and(ValueTypes.BOOLEAN.codec().optionalFieldOf("grant_fire_resistance", Value.of(true)).forGetter(FireEffect::grantsFireResistance))
+                    .apply(instance, FireEffect::new)
     );
 
-    public static final StreamCodec<ByteBuf, SetAttackersOnFireAbility> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, FireEffect> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.FRACTION.streamCodec(),
-            SetAttackersOnFireAbility::strikeChance,
+            FireEffect::strikeChance,
             ValueTypes.DURATION.streamCodec(),
-            SetAttackersOnFireAbility::cooldown,
+            FireEffect::cooldown,
             ValueTypes.DURATION.streamCodec(),
-            SetAttackersOnFireAbility::fireDuration,
+            FireEffect::fireDuration,
             ValueTypes.BOOLEAN.streamCodec(),
-            SetAttackersOnFireAbility::grantsFireResistance,
-            SetAttackersOnFireAbility::new
+            FireEffect::grantsFireResistance,
+            FireEffect::new
     );
 
     private final Value<Integer> fireDuration;
     private final Value<Boolean> grantsFireResistance;
 
-    public SetAttackersOnFireAbility(Value<Double> strikeChance, Value<Integer> cooldown, Value<Integer> fireDuration, Value<Boolean> grantsFireResistance) {
-        super(strikeChance, cooldown);
+    public FireEffect(Value<Double> strikeChance, Value<Integer> cooldown, Value<Integer> fireDuration, Value<Boolean> grantsFireResistance) {
+        super("fire", strikeChance, cooldown);
         this.fireDuration = fireDuration;
         this.grantsFireResistance = grantsFireResistance;
     }
@@ -67,14 +67,14 @@ public class SetAttackersOnFireAbility extends RetaliationAbility {
     public void addToTooltip(TooltipWriter writer) {
         super.addToTooltip(writer);
         if (grantsFireResistance().get()) {
-            writer.add("fire_resistance");
+            writer.add("fire.fire_resistance");
         }
     }
 
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SetAttackersOnFireAbility that)) return false;
+        if (!(o instanceof FireEffect that)) return false;
         if (!super.equals(o)) return false;
 
         return fireDuration.equals(that.fireDuration) && grantsFireResistance.equals(that.grantsFireResistance);

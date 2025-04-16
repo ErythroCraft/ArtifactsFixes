@@ -64,7 +64,7 @@ public class Language extends LanguageProvider {
         add("artifacts.key_category", "Artifacts");
         add(ModSoundEvents.FART.value(), "Fart");
         add("curios.identifier.feet", "Feet");
-        add("curios.modifiers.feet", "When on feet:");
+        add("curios.entries.feet", "When on feet:");
     }
 
     private void addAbilities() {
@@ -122,22 +122,22 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.CURE_EFFECTS.get(), "Greatly reduces the duration of negative effects");
         addAbilityTooltip(ModDataComponents.REPLENISH_HUNGER_ON_GRASS.get(), "Slowly replenishes hunger while walking on grass");
         addAbilityTooltip(ModDataComponents.CREEPER_REPELLENT.get(), "Creepers avoid the wearer");
-        addAbilityTooltip(ModDataComponents.SET_ATTACKERS_ON_FIRE.get(), "fire_resistance", "Grants fire resistance after lighting an attacker on fire");
-        addAbilityTooltip(ModDataComponents.SET_ATTACKERS_ON_FIRE.get(), "chance", "Has a chance to light attackers on fire");
-        addAbilityTooltip(ModDataComponents.SET_ATTACKERS_ON_FIRE.get(), "constant", "Attacking entities are lit on fire");
+        addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "fire", "fire_resistance", "Grants fire resistance after lighting an attacker on fire");
+        addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "fire", "chance", "Has a chance to light attackers on fire");
+        addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "fire", "constant", "Attacking entities are lit on fire");
         addAbilityTooltip(ModDataComponents.SINKING.get(), "Allows the wearer to move freely in water");
         addAbilityTooltip(ModDataComponents.AUTO_SMELT.get(), "Automatically smelts mined ores");
         addAbilityTooltip(ModDataComponents.FLUID_COLLISION.get(), "sneaking", "lava", "Allows the wearer to stand on lava while sneaking");
         addAbilityTooltip(ModDataComponents.FLUID_COLLISION.get(), "sprinting", "Allows the wearer to walk on fluids while sprinting");
-        addAbilityTooltip(ModDataComponents.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), "chance", "Has a chance to strike attackers with lightning");
-        addAbilityTooltip(ModDataComponents.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), "constant", "Attacking entities are struck by lightning");
+        addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "lightning", "chance", "Has a chance to strike attackers with lightning");
+        addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "lightning", "constant", "Attacking entities are struck by lightning");
         addAbilityTooltip(ModDataComponents.SWIM_IN_AIR.get(), "keymapping", "Press %s while in the air to start swimming");
         addAbilityTooltip(ModDataComponents.SWIM_IN_AIR.get(), "swimming", "Allows the wearer to swim in the air for a limited period of time");
         addAbilityTooltip(ModDataComponents.DEATH_PROTECTION_TELEPORT.get(), "chance", "A fatal hit has a chance to teleport you somewhere else instead");
         addAbilityTooltip(ModDataComponents.DEATH_PROTECTION_TELEPORT.get(), "constant", "A fatal hit teleports you somewhere else instead");
         addAbilityTooltip(ModDataComponents.DEATH_PROTECTION_TELEPORT.get(), "not_consumed", "Not consumed on use");
-        addAbilityTooltip(ModDataComponents.THORNS.get(), "chance", "Has a chance to damage attackers");
-        addAbilityTooltip(ModDataComponents.THORNS.get(), "constant", "Attacking entities are damaged as well");
+        addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "thorns", "chance", "Has a chance to damage attackers");
+        addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "thorns", "constant", "Attacking entities are damaged as well");
         addAbilityTooltip(ModDataComponents.TOOL_TIER_UPGRADE.get(), "Increases the wearer's base mining level to %s");
         addAbilityTooltip(ModDataComponents.WALK_ON_POWDER_SNOW.get(), "Allows the wearer to walk on Powder Snow");
     }

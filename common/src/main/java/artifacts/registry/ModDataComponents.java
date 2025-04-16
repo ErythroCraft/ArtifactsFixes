@@ -7,9 +7,7 @@ import artifacts.component.ability.mobeffect.AttackEffects;
 import artifacts.component.ability.mobeffect.EquipmentMobEffects;
 import artifacts.component.ability.mobeffect.PostDamageEffects;
 import artifacts.component.ability.mobeffect.PostEatingEffects;
-import artifacts.component.ability.retaliation.SetAttackersOnFireAbility;
-import artifacts.component.ability.retaliation.StrikeAttackersWithLightning;
-import artifacts.component.ability.retaliation.Thorns;
+import artifacts.component.ability.retaliation.RetaliationEffects;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.platform.PlatformServices;
@@ -84,8 +82,6 @@ public class ModDataComponents {
     // TODO use entity type/entity type tag
     public static final Supplier<DataComponentType<SimpleAbility>> CREEPER_REPELLENT =
             registerSimpleAbility("creeper_repellent");
-    public static final Supplier<DataComponentType<SetAttackersOnFireAbility>> SET_ATTACKERS_ON_FIRE =
-            registerSynced("set_attackers_on_fire", SetAttackersOnFireAbility.CODEC, SetAttackersOnFireAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<SimpleAbility>> SINKING =
             registerSimpleAbility("sinking");
     // TODO add item/block tag parameters
@@ -93,16 +89,13 @@ public class ModDataComponents {
             registerSimpleAbility("auto_smelt");
     public static final Supplier<DataComponentType<FluidCollision>> FLUID_COLLISION =
             registerSynced("fluid_collision", FluidCollision.CODEC, FluidCollision.STREAM_CODEC);
-    public static final Supplier<DataComponentType<StrikeAttackersWithLightning>> STRIKE_ATTACKERS_WITH_LIGHTNING =
-            registerSynced("strike_attackers_with_lightning", StrikeAttackersWithLightning.CODEC, StrikeAttackersWithLightning.STREAM_CODEC);
     public static final Supplier<DataComponentType<SwimInAir>> SWIM_IN_AIR =
             registerSynced("swim_in_air", SwimInAir.CODEC, SwimInAir.STREAM_CODEC);
     // TODO (>1.21.1) use vanilla death_protection component
     public static final Supplier<DataComponentType<DeathProtectionTeleport>> DEATH_PROTECTION_TELEPORT =
             registerSynced("death_protection_teleport", DeathProtectionTeleport.CODEC, DeathProtectionTeleport.STREAM_CODEC);
-    // TODO merge retaliation effects into single component
-    public static final Supplier<DataComponentType<Thorns>> THORNS =
-            registerSynced("thorns", Thorns.CODEC, Thorns.STREAM_CODEC);
+    public static final Supplier<DataComponentType<RetaliationEffects>> RETALIATION_EFFECTS =
+            registerSynced("retaliation_effects", RetaliationEffects.CODEC, RetaliationEffects.STREAM_CODEC);
     // TODO add block tag parameter
     public static final Supplier<DataComponentType<ToolTierUpgrade>> TOOL_TIER_UPGRADE =
             registerSynced("tool_tier_upgrade", ToolTierUpgrade.CODEC, ToolTierUpgrade.STREAM_CODEC);
@@ -133,22 +126,18 @@ public class ModDataComponents {
                 CURE_EFFECTS,
                 REPLENISH_HUNGER_ON_GRASS,
                 CREEPER_REPELLENT,
-                SET_ATTACKERS_ON_FIRE,
                 SINKING,
                 AUTO_SMELT,
                 FLUID_COLLISION,
-                STRIKE_ATTACKERS_WITH_LIGHTNING,
                 SWIM_IN_AIR,
                 DEATH_PROTECTION_TELEPORT,
-                THORNS,
+                RETALIATION_EFFECTS,
                 TOOL_TIER_UPGRADE,
                 WALK_ON_POWDER_SNOW
         ));
         APPLIES_COOLDOWN.addAll(Set.of(
                 POST_DAMAGE_COOLDOWN,
-                STRIKE_ATTACKERS_WITH_LIGHTNING,
-                THORNS,
-                SET_ATTACKERS_ON_FIRE,
+                RETALIATION_EFFECTS,
                 DEATH_PROTECTION_TELEPORT
         ));
     }

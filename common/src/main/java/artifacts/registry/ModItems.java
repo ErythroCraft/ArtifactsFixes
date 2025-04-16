@@ -8,9 +8,10 @@ import artifacts.component.ability.mobeffect.AttackEffects;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.component.ability.mobeffect.PostDamageEffects;
 import artifacts.component.ability.mobeffect.PostEatingEffects;
-import artifacts.component.ability.retaliation.SetAttackersOnFireAbility;
-import artifacts.component.ability.retaliation.StrikeAttackersWithLightning;
-import artifacts.component.ability.retaliation.Thorns;
+import artifacts.component.ability.retaliation.FireEffect;
+import artifacts.component.ability.retaliation.LightningEffect;
+import artifacts.component.ability.retaliation.RetaliationEffects;
+import artifacts.component.ability.retaliation.ThornsEffect;
 import artifacts.config.value.Value;
 import artifacts.item.EverlastingFoodItem;
 import artifacts.item.UmbrellaItem;
@@ -128,28 +129,35 @@ public class ModItems {
             ))
     );
     public static final Holder<Item> SHOCK_PENDANT = wearableItem("shock_pendant", builder -> builder
-            .component(ModDataComponents.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), new StrikeAttackersWithLightning(
-                    Artifacts.CONFIG.items.shockPendantStrikeChance,
-                    Artifacts.CONFIG.items.shockPendantCooldown
+            .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(
+                    Optional.empty(), Optional.empty(),
+                    Optional.of(new LightningEffect(
+                            Artifacts.CONFIG.items.shockPendantStrikeChance,
+                            Artifacts.CONFIG.items.shockPendantCooldown
+                    ))
             )).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
                     new DamageImmunity(Artifacts.CONFIG.items.shockPendantCancelLightningDamage, DamageTypeTags.IS_LIGHTNING)
             )
     );
     public static final Holder<Item> FLAME_PENDANT = wearableItem("flame_pendant", builder -> builder
-            .component(ModDataComponents.SET_ATTACKERS_ON_FIRE.get(), new SetAttackersOnFireAbility(
-                    Artifacts.CONFIG.items.flamePendantStrikeChance,
-                    Artifacts.CONFIG.items.flamePendantCooldown,
-                    Artifacts.CONFIG.items.flamePendantFireDuration,
-                    Artifacts.CONFIG.items.flamePendantGrantFireResistance
+            .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(
+                    Optional.empty(),
+                    Optional.of(new FireEffect(
+                            Artifacts.CONFIG.items.flamePendantStrikeChance,
+                            Artifacts.CONFIG.items.flamePendantCooldown,
+                            Artifacts.CONFIG.items.flamePendantFireDuration,
+                            Artifacts.CONFIG.items.flamePendantGrantFireResistance
+                    )),
+                    Optional.empty()
             ))
     );
     public static final Holder<Item> THORN_PENDANT = wearableItem("thorn_pendant", builder -> builder
-            .component(ModDataComponents.THORNS.get(), new Thorns(
+            .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(Optional.of(new ThornsEffect(
                     Artifacts.CONFIG.items.thornPendantStrikeChance,
                     Artifacts.CONFIG.items.thornPendantCooldown,
                     Artifacts.CONFIG.items.thornPendantMinDamage,
                     Artifacts.CONFIG.items.thornPendantMaxDamage
-            ))
+            )), Optional.empty(), Optional.empty()))
     );
     public static final Holder<Item> CHARM_OF_SINKING = wearableItem("charm_of_sinking", builder -> builder
             .component(ModDataComponents.SINKING.get(), Artifacts.CONFIG.items.charmOfSinkingEnabled)

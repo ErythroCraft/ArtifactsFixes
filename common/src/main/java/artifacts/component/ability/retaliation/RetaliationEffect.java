@@ -13,19 +13,21 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public abstract class RetaliationAbility implements EquipmentAbility {
+public abstract class RetaliationEffect implements EquipmentAbility {
 
+    private final String name;
     private final Value<Double> strikeChance;
     private final Value<Integer> cooldown;
 
-    protected static <T extends RetaliationAbility> Products.P2<RecordCodecBuilder.Mu<T>, Value<Double>, Value<Integer>> codecStart(RecordCodecBuilder.Instance<T> instance) {
+    protected static <T extends RetaliationEffect> Products.P2<RecordCodecBuilder.Mu<T>, Value<Double>, Value<Integer>> codecStart(RecordCodecBuilder.Instance<T> instance) {
         return instance.group(
-                ValueTypes.FRACTION.codec().fieldOf("chance").forGetter(RetaliationAbility::strikeChance),
-                ValueTypes.cooldownField().forGetter(RetaliationAbility::cooldown)
+                ValueTypes.FRACTION.codec().fieldOf("chance").forGetter(RetaliationEffect::strikeChance),
+                ValueTypes.cooldownField().forGetter(RetaliationEffect::cooldown)
         );
     }
 
-    public RetaliationAbility(Value<Double> strikeChance, Value<Integer> cooldown) {
+    public RetaliationEffect(String name, Value<Double> strikeChance, Value<Integer> cooldown) {
+        this.name = name;
         this.strikeChance = strikeChance;
         this.cooldown = cooldown;
     }
@@ -58,16 +60,16 @@ public abstract class RetaliationAbility implements EquipmentAbility {
     @Override
     public void addToTooltip(TooltipWriter writer) {
         if (Mth.equal(strikeChance().get(), 1)) {
-            writer.add("constant");
+            writer.add(name + ".constant");
         } else {
-            writer.add("chance");
+            writer.add(name + ".chance");
         }
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RetaliationAbility that)) return false;
+        if (!(o instanceof RetaliationEffect that)) return false;
 
         return strikeChance.equals(that.strikeChance) && cooldown.equals(that.cooldown);
     }
