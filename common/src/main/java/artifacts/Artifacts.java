@@ -46,6 +46,7 @@ public class Artifacts {
     }
 
     public static void setup() {
+        initConfigs();
         setupIntegrations();
         if (PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS)) {
             TrinketsCompat.setup();
@@ -71,14 +72,16 @@ public class Artifacts {
 
     public static void initConfigs() {
         CONFIG = new ModConfig();
+        CONFIG.setup();
+        for (ConfigManager config : CONFIG.configs) {
+            config.readValuesFromConfig();
+        }
     }
 
     public static void setupIntegrations() {
         EquipmentSlotManager.register(new ArmorSlotProvider());
     }
 
-    // TODO take another look at this, make sure config received from dedicated server can't be written to disk
-    // TODO call this before items are registered
     public static void onServerStarting(MinecraftServer server) {
         currentServer = server;
         for (ConfigManager config : CONFIG.configs) {
@@ -88,10 +91,6 @@ public class Artifacts {
 
     public static void onServerStopping() {
         currentServer = null;
-    }
-
-    public static void onCommonSetup() {
-        CONFIG.setup();
     }
 
     public static void onPlayerJoin(ServerPlayer player) {

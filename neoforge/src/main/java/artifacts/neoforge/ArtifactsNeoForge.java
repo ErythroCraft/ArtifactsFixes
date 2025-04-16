@@ -15,7 +15,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -33,7 +32,6 @@ public class ArtifactsNeoForge {
     public ArtifactsNeoForge(IEventBus modBus) {
         ArtifactsNeoForge.modBus = modBus;
 
-        Artifacts.initConfigs();
         Artifacts.setup();
         if (FMLEnvironment.dist == Dist.CLIENT) {
             new ArtifactsNeoForgeClient(modBus);
@@ -44,7 +42,6 @@ public class ArtifactsNeoForge {
 
         modBus.addListener(ArtifactsData::gatherData);
         modBus.addListener(NeoForgeNetworkHandler::registerPayloadHandlers);
-        modBus.addListener((FMLCommonSetupEvent event) -> Artifacts.onCommonSetup());
         NeoForge.EVENT_BUS.addListener((ServerStartingEvent event) -> Artifacts.onServerStarting(event.getServer()));
         NeoForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> Artifacts.onServerStopping());
         NeoForge.EVENT_BUS.addListener(this::onPlayerLoggedIn);

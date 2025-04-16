@@ -17,16 +17,13 @@ public class ArtifactsFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Artifacts.initConfigs();
         Artifacts.setup();
-        Artifacts.onCommonSetup();
         ArtifactHooksFabric.register();
         ModFeaturesFabric.register();
         FabricNetworkHandler.registerClientboundPayloads();
         FabricNetworkHandler.registerServerboundPayloads();
         FabricNetworkHandler.registerServerboundReceivers();
         ModEntityTypes.registerMobAttributes(FabricDefaultAttributeRegistry::register);
-
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> ArtifactHooks.onEntityAdded(entity));
 
