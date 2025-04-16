@@ -86,7 +86,7 @@ public class WearableArtifactItem extends Item {
 
         public Builder mobEffect(Holder<MobEffect> effect, Value<Integer> level, Value<Integer> duration, AbilityCondition condition) {
             return component(ModDataComponents.MOB_EFFECTS.get(), new EquipmentMobEffects(List.of(
-                    new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition)
+                    new EquipmentMobEffects.Entry(new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition))
             )));
         }
 

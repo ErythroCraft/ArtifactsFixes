@@ -1,7 +1,9 @@
 package artifacts.component.ability.mobeffect;
 
 import artifacts.component.ability.AbilityCondition;
+import artifacts.component.ability.CompositeAbility;
 import artifacts.component.ability.TickingAbility;
+import artifacts.component.ability.TickingCompositeAbility;
 import artifacts.config.value.Value;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModMobEffects;
@@ -9,7 +11,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -20,37 +21,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public record EquipmentMobEffects(List<MobEffectProvider> effects) implements TickingAbility {
+public record EquipmentMobEffects(List<Entry> entries) implements TickingCompositeAbility<EquipmentMobEffects.Entry> {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
             net.minecraft.world.effect.MobEffects.INVISIBILITY,
             ModMobEffects.MAGNETISM
     );
 
-    public static final Codec<EquipmentMobEffects> CODEC = MobEffectProvider.codec(false).listOf(0, 16).xmap(
-            EquipmentMobEffects::new, EquipmentMobEffects::effects
-    );
+    public static final Codec<EquipmentMobEffects> CODEC =
+            CompositeAbility.codec(Entry.CODEC, EquipmentMobEffects::new, EquipmentMobEffects::entries);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, EquipmentMobEffects> STREAM_CODEC = ByteBufCodecs
-            .<RegistryFriendlyByteBuf, MobEffectProvider>list()
-            .apply(MobEffectProvider.STREAM_CODEC).map(
-                    EquipmentMobEffects::new, EquipmentMobEffects::effects
-            );
+    public static final StreamCodec<RegistryFriendlyByteBuf, EquipmentMobEffects> STREAM_CODEC =
+            CompositeAbility.streamCodec(Entry.STREAM_CODEC, EquipmentMobEffects::new, EquipmentMobEffects::entries);
 
-    @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
-        if (!isDisabled && !isOnCooldown) {
-            for (MobEffectProvider provider : effects()) {
-                if (provider.canApply(entity)) {
-                    entity.addEffect(provider.createEffect());
-                }
-            }
-        }
-    }
+    public record Entry(MobEffectProvider provider) implements TickingAbility {
 
-    @Override
-    public void onUnequip(LivingEntity entity) {
-        for (MobEffectProvider provider : effects()) {
+        public static final Codec<Entry> CODEC = MobEffectProvider.codec(false).xmap(Entry::new, Entry::provider);
+        public static final StreamCodec<RegistryFriendlyByteBuf, Entry> STREAM_CODEC = MobEffectProvider.STREAM_CODEC.map(Entry::new, Entry::provider);
+
+        @Override
+        public void onUnequip(LivingEntity entity) {
             MobEffectInstance instance = entity.getEffect(provider.mobEffect());
             if (instance != null
                     && instance.getAmplifier() == provider.getAmplifier()
@@ -61,14 +51,23 @@ public record EquipmentMobEffects(List<MobEffectProvider> effects) implements Ti
                 entity.removeEffect(provider.mobEffect());
             }
         }
-    }
 
-    @Override
-    public void addToTooltip(TooltipWriter writer) {
-        for (MobEffectProvider provider : effects) {
-            if (provider.condition() == AbilityCondition.NEVER || !provider.isNonCosmetic()) {
-                continue;
+        @Override
+        public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+            if (!isDisabled && !isOnCooldown) {
+                if (provider.canApply(entity)) {
+                    entity.addEffect(provider.createEffect());
+                }
             }
+        }
+
+        @Override
+        public boolean isNonCosmetic() {
+            return provider().isNonCosmetic();
+        }
+
+        @Override
+        public void addToTooltip(TooltipWriter writer) {
             if (CUSTOM_TOOLTIP_MOB_EFFECTS.contains(provider.mobEffect())) {
                 ResourceLocation id = BuiltInRegistries.MOB_EFFECT.getKey(provider.mobEffect().value());
                 writer.add(Objects.requireNonNull(id).getPath());
@@ -89,15 +88,5 @@ public record EquipmentMobEffects(List<MobEffectProvider> effects) implements Ti
                 }
             }
         }
-    }
-
-    @Override
-    public boolean isNonCosmetic() {
-        for (MobEffectProvider provider : effects) {
-            if (provider.isNonCosmetic()) {
-                return true;
-            }
-        }
-        return false;
     }
 }

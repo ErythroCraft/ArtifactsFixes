@@ -1,5 +1,6 @@
 package artifacts.component.ability.mobeffect;
 
+import artifacts.component.ability.CompositeAbility;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
@@ -24,25 +25,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public record AttackEffects(List<Entry> effects)
-        implements EquipmentAbility {
+public record AttackEffects(List<Entry> entries) implements CompositeAbility<AttackEffects.Entry> {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
             MobEffects.WITHER
     );
 
     public static final Codec<AttackEffects> CODEC = Entry.CODEC.listOf().xmap(
-            AttackEffects::new, AttackEffects::effects
+            AttackEffects::new, AttackEffects::entries
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AttackEffects> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
-            .apply(Entry.STREAM_CODEC).map(AttackEffects::new, AttackEffects::effects);
+            .apply(Entry.STREAM_CODEC).map(AttackEffects::new, AttackEffects::entries);
 
     public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
             EquipmentHelper.iterateAbilities(ModDataComponents.ATTACK_EFFECTS.get(), attacker, true, true, (ability, stack) -> {
-                for (Entry effect : ability.effects) {
+                for (Entry effect : ability.entries) {
                     if (effect.shouldApply(entity)) {
                         entity.addEffect(effect.provider().createEffect(), attacker);
                         if (attacker instanceof Player player) {
@@ -54,34 +54,7 @@ public record AttackEffects(List<Entry> effects)
         }
     }
 
-    @Override
-    public boolean isNonCosmetic() {
-        for (Entry effect : effects) {
-            if (effect.isNonCosmetic()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void addToTooltip(TooltipWriter writer) {
-        for (Entry effect : effects) {
-            for (Holder<MobEffect> mobEffect : CUSTOM_TOOLTIP_MOB_EFFECTS) {
-                if (mobEffect.isBound() && mobEffect.value() == effect.provider.mobEffect().value() && effect.isNonCosmetic()) {
-                    String name = Objects.requireNonNull(BuiltInRegistries.MOB_EFFECT.getKey(mobEffect.value())).getPath();
-                    if (Mth.equal(effect.chance().get(), 1)) {
-                        writer.add(name + ".constant");
-                    } else {
-                        writer.add(name + ".chance");
-                    }
-                    return;
-                }
-            }
-        }
-    }
-
-    public record Entry(MobEffectProvider provider, Value<Double> chance, Value<Integer> cooldown) {
+    public record Entry(MobEffectProvider provider, Value<Double> chance, Value<Integer> cooldown) implements EquipmentAbility {
 
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 MobEffectProvider.codec(true).fieldOf("effect").forGetter(Entry::provider),
@@ -100,11 +73,27 @@ public record AttackEffects(List<Entry> effects)
         );
 
         public boolean shouldApply(LivingEntity entity) {
-            return chance().get() > entity.getRandom().nextDouble();
+            return isNonCosmetic() && chance().get() > entity.getRandom().nextDouble();
         }
 
+        @Override
         public boolean isNonCosmetic() {
             return provider().isNonCosmetic() && chance().get() > 0;
+        }
+
+        @Override
+        public void addToTooltip(TooltipWriter writer) {
+            for (Holder<MobEffect> mobEffect : CUSTOM_TOOLTIP_MOB_EFFECTS) {
+                if (mobEffect.isBound() && mobEffect.value() == provider.mobEffect().value() && isNonCosmetic()) {
+                    String name = Objects.requireNonNull(BuiltInRegistries.MOB_EFFECT.getKey(mobEffect.value())).getPath();
+                    if (Mth.equal(chance().get(), 1)) {
+                        writer.add(name + ".constant");
+                    } else {
+                        writer.add(name + ".chance");
+                    }
+                    return;
+                }
+            }
         }
     }
 }

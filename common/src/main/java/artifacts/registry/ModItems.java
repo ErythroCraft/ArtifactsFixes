@@ -269,12 +269,12 @@ public class ModItems {
     public static final Holder<Item> ONION_RING = wearableItem("onion_ring", builder -> builder
             .properties(properties -> properties.food(new FoodProperties.Builder().nutrition(2).build()))
             .component(ModDataComponents.POST_EATING_EFFECTS.get(), new PostEatingEffects(
-                    List.of(new MobEffectProvider(
+                    List.of(new PostEatingEffects.Entry(new MobEffectProvider(
                             MobEffects.DIG_SPEED,
                             Artifacts.CONFIG.items.onionRingHasteLevel,
                             Artifacts.CONFIG.items.onionRingHasteDurationPerFoodPoint,
                             Value.of(true), Value.of(true), AbilityCondition.ALWAYS
-                    ))
+                    )))
             ))
     );
     public static final Holder<Item> PICKAXE_HEATER = wearableItem("pickaxe_heater", builder -> builder
