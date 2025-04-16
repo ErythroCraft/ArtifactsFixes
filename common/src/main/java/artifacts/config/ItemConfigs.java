@@ -1,7 +1,7 @@
 package artifacts.config;
 
 import artifacts.Artifacts;
-import artifacts.component.ability.UpgradeToolTierAbility;
+import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.network.NetworkHandler;
@@ -229,8 +229,8 @@ public class ItemConfigs extends ConfigManager {
             witheredBraceletWitherLevel = defineMobEffectLevel(createKey(ModItems.WITHERED_BRACELET, "witherLevel"), 2,
                     "The level of the wither effect that is inflicted by the Withered Bracelet");
 
-    public final Value.ConfigValue<UpgradeToolTierAbility.Tier>
-            diggingClawsToolTier = defineEnum(createKey(ModItems.DIGGING_CLAWS, "toolTier"), ValueTypes.TOOL_TIER, UpgradeToolTierAbility.Tier.STONE,
+    public final Value.ConfigValue<ToolTierUpgrade.Tier>
+            diggingClawsToolTier = defineEnum(createKey(ModItems.DIGGING_CLAWS, "toolTier"), ValueTypes.TOOL_TIER, ToolTierUpgrade.Tier.STONE,
                     "The tool tier that the Digging Claws increase the wearer's mining level to");
 
     protected ItemConfigs() {

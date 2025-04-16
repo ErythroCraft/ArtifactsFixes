@@ -1,6 +1,6 @@
 package artifacts.neoforge.event;
 
-import artifacts.component.ability.UpgradeToolTierAbility;
+import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.event.ArtifactHooks;
 import artifacts.registry.ModDataComponents;
@@ -73,7 +73,7 @@ public class ArtifactHooksNeoForge {
     private static void onKittySlippersChangeTarget(LivingChangeTargetEvent event) {
         LivingEntity target = event.getNewAboutToBeSetTarget();
         if (event.getEntity().getType().is(ModTags.CREEPERS)
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), target, true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target, true)
         ) {
             event.setCanceled(true);
         }
@@ -81,7 +81,7 @@ public class ArtifactHooksNeoForge {
 
     private static void onKittySlippersLivingUpdate(LivingEntity entity) {
         if (entity.getLastHurtByMob() != null
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), entity.getLastHurtByMob(), true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), entity.getLastHurtByMob(), true)
                 && entity.getType().is(ModTags.CREEPERS)
         ) {
             entity.setLastHurtByMob(null);
@@ -89,7 +89,7 @@ public class ArtifactHooksNeoForge {
     }
 
     private static void onDiggingClawsHarvestCheck(PlayerEvent.HarvestCheck event) {
-        event.setCanHarvest(event.canHarvest() || UpgradeToolTierAbility.canHarvestWithTier(event.getEntity(), event.getTargetBlock()));
+        event.setCanHarvest(event.canHarvest() || ToolTierUpgrade.canHarvestWithTier(event.getEntity(), event.getTargetBlock()));
     }
 
     private static void onBlockDrops(BlockDropsEvent event) {

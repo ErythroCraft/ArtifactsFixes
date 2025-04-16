@@ -18,23 +18,23 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public record DoubleJumpAbility(Value<Boolean> enabled, Value<Double> sprintHorizontalVelocity, Value<Double> sprintVerticalVelocity)
+public record DoubleJump(Value<Boolean> enabled, Value<Double> sprintHorizontalVelocity, Value<Double> sprintVerticalVelocity)
         implements EquipmentAbility {
 
-    public static final Codec<DoubleJumpAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.enabledField().forGetter(DoubleJumpAbility::enabled),
-            ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_horizontal_velocity", Value.of(0D)).forGetter(DoubleJumpAbility::sprintHorizontalVelocity),
-            ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_vertical_velocity", Value.of(0D)).forGetter(DoubleJumpAbility::sprintVerticalVelocity)
-    ).apply(instance, DoubleJumpAbility::new));
+    public static final Codec<DoubleJump> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ValueTypes.enabledField().forGetter(DoubleJump::enabled),
+            ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_horizontal_velocity", Value.of(0D)).forGetter(DoubleJump::sprintHorizontalVelocity),
+            ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_vertical_velocity", Value.of(0D)).forGetter(DoubleJump::sprintVerticalVelocity)
+    ).apply(instance, DoubleJump::new));
 
-    public static final StreamCodec<ByteBuf, DoubleJumpAbility> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, DoubleJump> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.BOOLEAN.streamCodec(),
-            DoubleJumpAbility::enabled,
+            DoubleJump::enabled,
             ValueTypes.NON_NEGATIVE_DOUBLE.streamCodec(),
-            DoubleJumpAbility::sprintHorizontalVelocity,
+            DoubleJump::sprintHorizontalVelocity,
             ValueTypes.NON_NEGATIVE_DOUBLE.streamCodec(),
-            DoubleJumpAbility::sprintVerticalVelocity,
-            DoubleJumpAbility::new
+            DoubleJump::sprintVerticalVelocity,
+            DoubleJump::new
     );
 
 

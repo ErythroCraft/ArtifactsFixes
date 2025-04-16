@@ -19,32 +19,32 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
-public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse)
+public record DeathProtectionTeleport(Value<Double> teleportationChance, Value<Integer> healthRestored, Value<Integer> cooldown, Value<Boolean> consumedOnUse)
         implements EquipmentAbility {
 
-    public static final Codec<TeleportOnDeathAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(TeleportOnDeathAbility::teleportationChance),
-            ValueTypes.NON_NEGATIVE_INT.codec().optionalFieldOf("health_restored", Value.of(10)).forGetter(TeleportOnDeathAbility::healthRestored),
-            ValueTypes.cooldownField().forGetter(TeleportOnDeathAbility::cooldown),
-            ValueTypes.BOOLEAN.codec().optionalFieldOf("consume", Value.of(true)).forGetter(TeleportOnDeathAbility::consumedOnUse)
-    ).apply(instance, TeleportOnDeathAbility::new));
+    public static final Codec<DeathProtectionTeleport> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(DeathProtectionTeleport::teleportationChance),
+            ValueTypes.NON_NEGATIVE_INT.codec().optionalFieldOf("health_restored", Value.of(10)).forGetter(DeathProtectionTeleport::healthRestored),
+            ValueTypes.cooldownField().forGetter(DeathProtectionTeleport::cooldown),
+            ValueTypes.BOOLEAN.codec().optionalFieldOf("consume", Value.of(true)).forGetter(DeathProtectionTeleport::consumedOnUse)
+    ).apply(instance, DeathProtectionTeleport::new));
 
-    public static final StreamCodec<ByteBuf, TeleportOnDeathAbility> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, DeathProtectionTeleport> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.FRACTION.streamCodec(),
-            TeleportOnDeathAbility::teleportationChance,
+            DeathProtectionTeleport::teleportationChance,
             ValueTypes.NON_NEGATIVE_INT.streamCodec(),
-            TeleportOnDeathAbility::healthRestored,
+            DeathProtectionTeleport::healthRestored,
             ValueTypes.DURATION.streamCodec(),
-            TeleportOnDeathAbility::cooldown,
+            DeathProtectionTeleport::cooldown,
             ValueTypes.BOOLEAN.streamCodec(),
-            TeleportOnDeathAbility::consumedOnUse,
-            TeleportOnDeathAbility::new
+            DeathProtectionTeleport::consumedOnUse,
+            DeathProtectionTeleport::new
     );
 
     public static ItemStack findTotem(LivingEntity entity) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack handItem = entity.getItemInHand(hand);
-            TeleportOnDeathAbility ability = handItem.get(ModDataComponents.TELEPORT_ON_DEATH.get());
+            DeathProtectionTeleport ability = handItem.get(ModDataComponents.DEATH_PROTECTION_TELEPORT.get());
             if (!handItem.has(ModDataComponents.DISABLED_BY_TOGGLE.get())
                     && ability != null && ability.isNonCosmetic()
                     && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(handItem.getItem()))
@@ -54,7 +54,7 @@ public record TeleportOnDeathAbility(Value<Double> teleportationChance, Value<In
         }
 
         return EquipmentHelper.reduceAbilities(
-                ModDataComponents.TELEPORT_ON_DEATH.get(), entity, true, true, ItemStack.EMPTY,
+                ModDataComponents.DEATH_PROTECTION_TELEPORT.get(), entity, true, true, ItemStack.EMPTY,
                 (ability, totem, result) -> result.isEmpty() ? totem : result
         );
     }

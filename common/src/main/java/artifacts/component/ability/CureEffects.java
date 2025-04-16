@@ -15,20 +15,20 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-public record RemoveBadEffectsAbility(Value<Boolean> enabled, Value<Integer> maxEffectDuration)
+public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDuration)
         implements EquipmentAbility, TickingAbility {
 
-    public static final Codec<RemoveBadEffectsAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.enabledField().forGetter(RemoveBadEffectsAbility::enabled),
-            ValueTypes.DURATION.codec().fieldOf("duration").forGetter(RemoveBadEffectsAbility::maxEffectDuration)
-    ).apply(instance, RemoveBadEffectsAbility::new));
+    public static final Codec<CureEffects> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ValueTypes.enabledField().forGetter(CureEffects::enabled),
+            ValueTypes.DURATION.codec().fieldOf("duration").forGetter(CureEffects::maxEffectDuration)
+    ).apply(instance, CureEffects::new));
 
-    public static final StreamCodec<ByteBuf, RemoveBadEffectsAbility> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, CureEffects> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.BOOLEAN.streamCodec(),
-            RemoveBadEffectsAbility::enabled,
+            CureEffects::enabled,
             ValueTypes.DURATION.streamCodec(),
-            RemoveBadEffectsAbility::maxEffectDuration,
-            RemoveBadEffectsAbility::new
+            CureEffects::maxEffectDuration,
+            CureEffects::new
     );
 
     @Override

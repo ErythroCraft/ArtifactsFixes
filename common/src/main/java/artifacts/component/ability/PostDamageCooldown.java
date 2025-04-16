@@ -19,24 +19,24 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
-public record ApplyCooldownAfterDamageAbility(Value<Integer> cooldown, Optional<TagKey<DamageType>> tag) implements EquipmentAbility {
+public record PostDamageCooldown(Value<Integer> cooldown, Optional<TagKey<DamageType>> tag) implements EquipmentAbility {
 
-    public static final Codec<ApplyCooldownAfterDamageAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.DURATION.codec().fieldOf("cooldown").forGetter(ApplyCooldownAfterDamageAbility::cooldown),
-            TagKey.codec(Registries.DAMAGE_TYPE).optionalFieldOf("tag").forGetter(ApplyCooldownAfterDamageAbility::tag)
-    ).apply(instance, ApplyCooldownAfterDamageAbility::new));
+    public static final Codec<PostDamageCooldown> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ValueTypes.DURATION.codec().fieldOf("cooldown").forGetter(PostDamageCooldown::cooldown),
+            TagKey.codec(Registries.DAMAGE_TYPE).optionalFieldOf("tag").forGetter(PostDamageCooldown::tag)
+    ).apply(instance, PostDamageCooldown::new));
 
-    public static final StreamCodec<ByteBuf, ApplyCooldownAfterDamageAbility> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, PostDamageCooldown> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.DURATION.streamCodec(),
-            ApplyCooldownAfterDamageAbility::cooldown,
+            PostDamageCooldown::cooldown,
             ByteBufCodecs.optional(ModCodecs.tagKeyStreamCodec(Registries.DAMAGE_TYPE)),
-            ApplyCooldownAfterDamageAbility::tag,
-            ApplyCooldownAfterDamageAbility::new
+            PostDamageCooldown::tag,
+            PostDamageCooldown::new
     );
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (entity instanceof Player player && !player.level().isClientSide()) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), entity, true, true, (ability, stack) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     int c = ability.cooldown().get() * 20;
                     if (c > 0) {

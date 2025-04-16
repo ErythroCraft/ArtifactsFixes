@@ -15,7 +15,7 @@ import net.minecraft.world.damagesource.DamageType;
 
 import java.util.Set;
 
-public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> tag)
+public record DamageImmunity(Value<Boolean> enabled, TagKey<DamageType> tag)
         implements EquipmentAbility {
 
     private static final Set<TagKey<DamageType>> CUSTOM_TOOLTIP_TAGS = Set.of(
@@ -23,17 +23,17 @@ public record DamageImmunityAbility(Value<Boolean> enabled, TagKey<DamageType> t
             ModTags.IS_HOT_FLOOR
     );
 
-    public static final Codec<DamageImmunityAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.enabledField().forGetter(DamageImmunityAbility::enabled),
-            TagKey.codec(Registries.DAMAGE_TYPE).fieldOf("tag").forGetter(DamageImmunityAbility::tag)
-    ).apply(instance, DamageImmunityAbility::new));
+    public static final Codec<DamageImmunity> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ValueTypes.enabledField().forGetter(DamageImmunity::enabled),
+            TagKey.codec(Registries.DAMAGE_TYPE).fieldOf("tag").forGetter(DamageImmunity::tag)
+    ).apply(instance, DamageImmunity::new));
 
-    public static final StreamCodec<ByteBuf, DamageImmunityAbility> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, DamageImmunity> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.BOOLEAN.streamCodec(),
-            DamageImmunityAbility::enabled,
+            DamageImmunity::enabled,
             ModCodecs.tagKeyStreamCodec(Registries.DAMAGE_TYPE),
-            DamageImmunityAbility::tag,
-            DamageImmunityAbility::new
+            DamageImmunity::tag,
+            DamageImmunity::new
     );
 
     @Override

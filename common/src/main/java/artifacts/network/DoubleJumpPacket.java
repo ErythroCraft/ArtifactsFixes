@@ -1,7 +1,7 @@
 package artifacts.network;
 
 import artifacts.Artifacts;
-import artifacts.component.ability.DoubleJumpAbility;
+import artifacts.component.ability.DoubleJump;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.particles.ParticleOptions;
@@ -20,7 +20,7 @@ public record DoubleJumpPacket() implements CustomPacketPayload {
     void apply(NetworkHandler.PayloadContext context) {
         if (context.player() instanceof ServerPlayer player && EquipmentHelper.hasAbilityActive(ModDataComponents.DOUBLE_JUMP.get(), player, true)) {
             context.queue(() -> {
-                DoubleJumpAbility.jump(player);
+                DoubleJump.jump(player);
 
                 for (int i = 0; i < 20; ++i) {
                     double motionX = player.getRandom().nextGaussian() * 0.02;

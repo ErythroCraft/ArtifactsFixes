@@ -1,6 +1,6 @@
 package artifacts.fabric.mixin.ability.upgradetooltier;
 
-import artifacts.component.ability.UpgradeToolTierAbility;
+import artifacts.component.ability.ToolTierUpgrade;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,6 +20,6 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @ModifyReturnValue(method = "hasCorrectToolForDrops", at = @At("RETURN"))
     private boolean increaseBaseToolTier(boolean original, BlockState state) {
-        return original || UpgradeToolTierAbility.canHarvestWithTier(this, state);
+        return original || ToolTierUpgrade.canHarvestWithTier(this, state);
     }
 }

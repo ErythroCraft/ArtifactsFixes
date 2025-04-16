@@ -22,18 +22,18 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.List;
 import java.util.Optional;
 
-public record ApplyMobEffectAfterDamageAbility(List<Entry> effects) implements EquipmentAbility {
+public record PostDamageEffects(List<Entry> effects) implements EquipmentAbility {
 
-    public static final Codec<ApplyMobEffectAfterDamageAbility> CODEC = Entry.CODEC.listOf(0, 16).xmap(
-            ApplyMobEffectAfterDamageAbility::new, ApplyMobEffectAfterDamageAbility::effects
+    public static final Codec<PostDamageEffects> CODEC = Entry.CODEC.listOf(0, 16).xmap(
+            PostDamageEffects::new, PostDamageEffects::effects
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ApplyMobEffectAfterDamageAbility> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
-            .apply(Entry.STREAM_CODEC).map(ApplyMobEffectAfterDamageAbility::new, ApplyMobEffectAfterDamageAbility::effects);
+    public static final StreamCodec<RegistryFriendlyByteBuf, PostDamageEffects> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
+            .apply(Entry.STREAM_CODEC).map(PostDamageEffects::new, PostDamageEffects::effects);
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (!entity.level().isClientSide()) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), entity, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.POST_DAMAGE_EFFECTS.get(), entity, true, true, (ability, stack) -> {
                 for (Entry entry : ability.effects) {
                     if (entry.shouldApply(damageSource.type(), entity)) {
                         entity.addEffect(entry.provider.createEffect());

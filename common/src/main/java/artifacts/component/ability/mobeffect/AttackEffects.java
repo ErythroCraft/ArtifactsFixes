@@ -24,24 +24,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public record AttacksInflictMobEffectAbility(List<Entry> effects)
+public record AttackEffects(List<Entry> effects)
         implements EquipmentAbility {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
             MobEffects.WITHER
     );
 
-    public static final Codec<AttacksInflictMobEffectAbility> CODEC = Entry.CODEC.listOf().xmap(
-            AttacksInflictMobEffectAbility::new, AttacksInflictMobEffectAbility::effects
+    public static final Codec<AttackEffects> CODEC = Entry.CODEC.listOf().xmap(
+            AttackEffects::new, AttackEffects::effects
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, AttacksInflictMobEffectAbility> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
-            .apply(Entry.STREAM_CODEC).map(AttacksInflictMobEffectAbility::new, AttacksInflictMobEffectAbility::effects);
+    public static final StreamCodec<RegistryFriendlyByteBuf, AttackEffects> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
+            .apply(Entry.STREAM_CODEC).map(AttackEffects::new, AttackEffects::effects);
 
     public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), attacker, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.ATTACK_EFFECTS.get(), attacker, true, true, (ability, stack) -> {
                 for (Entry effect : ability.effects) {
                     if (effect.shouldApply(entity)) {
                         entity.addEffect(effect.provider().createEffect(), attacker);

@@ -13,21 +13,21 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
-public class StrikeAttackersWithLightningAbility extends RetaliationAbility {
+public class StrikeAttackersWithLightning extends RetaliationAbility {
 
-    public static final Codec<StrikeAttackersWithLightningAbility> CODEC = RecordCodecBuilder.create(
-            instance -> codecStart(instance).apply(instance, StrikeAttackersWithLightningAbility::new)
+    public static final Codec<StrikeAttackersWithLightning> CODEC = RecordCodecBuilder.create(
+            instance -> codecStart(instance).apply(instance, StrikeAttackersWithLightning::new)
     );
 
-    public static final StreamCodec<ByteBuf, StrikeAttackersWithLightningAbility> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, StrikeAttackersWithLightning> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.FRACTION.streamCodec(),
-            StrikeAttackersWithLightningAbility::strikeChance,
+            StrikeAttackersWithLightning::strikeChance,
             ValueTypes.DURATION.streamCodec(),
-            StrikeAttackersWithLightningAbility::cooldown,
-            StrikeAttackersWithLightningAbility::new
+            StrikeAttackersWithLightning::cooldown,
+            StrikeAttackersWithLightning::new
     );
 
-    public StrikeAttackersWithLightningAbility(Value<Double> strikeChance, Value<Integer> cooldown) {
+    public StrikeAttackersWithLightning(Value<Double> strikeChance, Value<Integer> cooldown) {
         super(strikeChance, cooldown);
     }
 

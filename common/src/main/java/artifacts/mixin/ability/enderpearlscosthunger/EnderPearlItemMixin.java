@@ -23,8 +23,8 @@ public abstract class EnderPearlItemMixin extends Item {
 
     @WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V"))
     private void shouldConsumeEnderPearl(ItemStack stack, int amount, LivingEntity entity, Operation<Void> operation) {
-        if (EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARLS_COST_HUNGER.get(), entity, true) && entity instanceof Player player) {
-            int cost = EquipmentHelper.minInt(ModDataComponents.ENDER_PEARLS_COST_HUNGER.get(), player, 20, ability -> ability.cost().get(), true);
+        if (EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), entity, true) && entity instanceof Player player) {
+            int cost = EquipmentHelper.minInt(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), player, 20, ability -> ability.cost().get(), true);
             if (player.getFoodData().getFoodLevel() >= cost) {
                 if (cost > 0 && !player.isCreative()) {
                     player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() - cost);
@@ -39,7 +39,7 @@ public abstract class EnderPearlItemMixin extends Item {
                             0.8F + entity.getRandom().nextFloat() * 0.4F
                     );
                 }
-                int cooldown = EquipmentHelper.maxInt(ModDataComponents.ENDER_PEARLS_COST_HUNGER.get(), player, ability -> ability.cooldown().get(), true);
+                int cooldown = EquipmentHelper.maxInt(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), player, ability -> ability.cooldown().get(), true);
                 if (!player.isCreative()) {
                     player.getCooldowns().addCooldown(this, cooldown * 20);
                 }

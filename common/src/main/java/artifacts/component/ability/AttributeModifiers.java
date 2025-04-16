@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public record AttributeModifierAbility(List<Entry> modifiers) implements TickingAbility {
+public record AttributeModifiers(List<Entry> modifiers) implements TickingAbility {
 
     private static final Set<Holder<Attribute>> POSITIVE_ATTRIBUTES_WITH_TOOLTIP;
     private static final Set<Holder<Attribute>> NEGATIVE_ATTRIBUTES_WITH_TOOLTIP = Set.of(
@@ -48,12 +48,12 @@ public record AttributeModifierAbility(List<Entry> modifiers) implements Ticking
         ));
     }
 
-    public static final Codec<AttributeModifierAbility> CODEC = Entry.CODEC.listOf().xmap(
-            AttributeModifierAbility::new, AttributeModifierAbility::modifiers
+    public static final Codec<AttributeModifiers> CODEC = Entry.CODEC.listOf().xmap(
+            AttributeModifiers::new, AttributeModifiers::modifiers
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, AttributeModifierAbility> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
-            .apply(Entry.STREAM_CODEC).map(AttributeModifierAbility::new, AttributeModifierAbility::modifiers);
+    public static final StreamCodec<RegistryFriendlyByteBuf, AttributeModifiers> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
+            .apply(Entry.STREAM_CODEC).map(AttributeModifiers::new, AttributeModifiers::modifiers);
 
     private void onAttributeUpdated(LivingEntity entity) {
         for (Entry entry : modifiers) {

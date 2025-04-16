@@ -2,7 +2,7 @@ package artifacts.client;
 
 import artifacts.Artifacts;
 import artifacts.component.SwimData;
-import artifacts.component.ability.SwimInAirAbility;
+import artifacts.component.ability.SwimInAir;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
@@ -38,9 +38,9 @@ public class HeliumFlamingoOverlay {
         if (Math.abs(swimTime) == 0) {
             return false;
         } else if (swimTime > 0) {
-            maxProgressTime = SwimInAirAbility.getFlightDuration(player);
+            maxProgressTime = SwimInAir.getFlightDuration(player);
         } else {
-            maxProgressTime = SwimInAirAbility.getRechargeDuration(player);
+            maxProgressTime = SwimInAir.getRechargeDuration(player);
         }
 
         float progress = 1 - Math.abs(swimTime) / (float) maxProgressTime;

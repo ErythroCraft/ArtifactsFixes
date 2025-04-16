@@ -1,6 +1,6 @@
 package artifacts.config.value;
 
-import artifacts.component.ability.UpgradeToolTierAbility;
+import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.config.value.type.*;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -17,7 +17,7 @@ public class ValueTypes {
     public static final NumberValueType<Integer> DURATION = new IntegerValueType(0, 60 * 60 * 20, Codec.INT, ByteBufCodecs.INT);
     public static final NumberValueType<Integer> ENCHANTMENT_LEVEL = new IntegerValueType(0, 100, Codec.INT, ByteBufCodecs.INT);
     public static final NumberValueType<Integer> MOB_EFFECT_LEVEL = new IntegerValueType(0, 256, Codec.INT, ByteBufCodecs.INT);
-    public static final EnumValueType<UpgradeToolTierAbility.Tier> TOOL_TIER = new EnumValueType<>(UpgradeToolTierAbility.Tier.class, UpgradeToolTierAbility::getTierName);
+    public static final EnumValueType<ToolTierUpgrade.Tier> TOOL_TIER = new EnumValueType<>(ToolTierUpgrade.Tier.class, ToolTierUpgrade::getTierName);
 
     public static MapCodec<Value<Boolean>> enabledField() {
         return BOOLEAN.codec().optionalFieldOf("enabled", Value.of(true));
@@ -25,9 +25,5 @@ public class ValueTypes {
 
     public static MapCodec<Value<Integer>> cooldownField() {
         return DURATION.codec().optionalFieldOf("cooldown", Value.of(0));
-    }
-
-    public static MapCodec<Value<Integer>> mobEffectLevelField() {
-        return MOB_EFFECT_LEVEL.codec().optionalFieldOf("level", Value.of(1));
     }
 }

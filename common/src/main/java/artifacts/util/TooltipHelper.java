@@ -1,11 +1,11 @@
 package artifacts.util;
 
 import artifacts.component.ability.AbilityCondition;
-import artifacts.component.ability.AttributeModifierAbility;
+import artifacts.component.ability.AttributeModifiers;
 import artifacts.component.ability.EquipmentAbility;
-import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
-import artifacts.component.ability.mobeffect.AttacksInflictMobEffectAbility;
+import artifacts.component.ability.mobeffect.AttackEffects;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
+import artifacts.component.ability.mobeffect.PostDamageEffects;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
@@ -52,8 +52,8 @@ public class TooltipHelper {
             }
         }
         if (!hasSlotTooltip) {
-            if (getAbility(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack).isPresent()
-                    || getAbility(ModDataComponents.MOB_EFFECT.get(), stack).isPresent()
+            if (getAbility(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack).isPresent()
+                    || getAbility(ModDataComponents.MOB_EFFECTS.get(), stack).isPresent()
             ) {
                 consumer.accept(CommonComponents.EMPTY);
                 consumer.accept(Component.translatable("item.modifiers.body").withStyle(ChatFormatting.GRAY));
@@ -67,12 +67,12 @@ public class TooltipHelper {
 
     @Unique
     private static void addAbilityAttributeTooltips(ItemStack stack, Item.TooltipContext context, Consumer<Component> tooltip) {
-        getAbility(ModDataComponents.ATTRIBUTE_MODIFIER.get(), stack).ifPresent(ability -> {
-            for (AttributeModifierAbility.Entry entry : ability.modifiers()) {
+        getAbility(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack).ifPresent(ability -> {
+            for (AttributeModifiers.Entry entry : ability.modifiers()) {
                 addAbilityAttributeTooltip(tooltip, entry);
             }
         });
-        getAbility(ModDataComponents.MOB_EFFECT.get(), stack).ifPresent(ability -> {
+        getAbility(ModDataComponents.MOB_EFFECTS.get(), stack).ifPresent(ability -> {
             for (MobEffectProvider provider : ability.effects()) {
                 addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, provider.condition() == AbilityCondition.ALWAYS);
             }
@@ -80,7 +80,7 @@ public class TooltipHelper {
     }
 
     @Unique
-    private static void addAbilityAttributeTooltip(Consumer<Component> tooltip, AttributeModifierAbility.Entry entry) {
+    private static void addAbilityAttributeTooltip(Consumer<Component> tooltip, AttributeModifiers.Entry entry) {
         double amount = entry.amount().get();
 
         if (entry.operation() != AttributeModifier.Operation.ADD_VALUE) {
@@ -109,8 +109,8 @@ public class TooltipHelper {
     private static void addWhenHurtTooltips(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
         MutableBoolean flag = new MutableBoolean(false);
         List<TagKey<DamageType>> list = new ArrayList<>();
-        getAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {
-            for (ApplyMobEffectAfterDamageAbility.Entry entry : ability.effects()) {
+        getAbility(ModDataComponents.POST_DAMAGE_EFFECTS.get(), stack).ifPresent(ability -> {
+            for (PostDamageEffects.Entry entry : ability.effects()) {
                 if (entry.tag().isEmpty()) {
                     flag.setTrue();
                 } else {
@@ -118,7 +118,7 @@ public class TooltipHelper {
                 }
             }
         });
-        getAbility(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {
+        getAbility(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), stack).ifPresent(ability -> {
             if (ability.tag().isEmpty()) {
                 flag.setTrue();
             } else if (!list.contains(ability.tag().get())) {
@@ -144,14 +144,14 @@ public class TooltipHelper {
     }
 
     private static void addWhenHurtTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack, @Nullable TagKey<DamageType> tag) {
-        getAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {
-            for (ApplyMobEffectAfterDamageAbility.Entry entry : ability.effects()) {
+        getAbility(ModDataComponents.POST_DAMAGE_EFFECTS.get(), stack).ifPresent(ability -> {
+            for (PostDamageEffects.Entry entry : ability.effects()) {
                 if (entry.tag().isEmpty() && tag == null || entry.tag().isPresent() && entry.tag().get().equals(tag)) {
                     addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), entry.chance().get(), false);
                 }
             }
         });
-        getAbility(ModDataComponents.APPLY_COOLDOWN_AFTER_DAMAGE.get(), stack).ifPresent(ability -> {
+        getAbility(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), stack).ifPresent(ability -> {
             if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                 tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(context, ability.cooldown().get())).withStyle(ChatFormatting.GOLD));
             }
@@ -159,7 +159,7 @@ public class TooltipHelper {
     }
 
     private static void addPerFoodPointEatenTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
-        getAbility(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), stack).ifPresent(ability -> {
+        getAbility(ModDataComponents.POST_EATING_EFFECTS.get(), stack).ifPresent(ability -> {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.per_food_point_restored").withStyle(ChatFormatting.GRAY));
             for (MobEffectProvider provider : ability.effects()) {
@@ -169,10 +169,10 @@ public class TooltipHelper {
     }
 
     private static void addAttacksInflictTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
-        getAbility(ModDataComponents.ATTACKS_INFLICT_MOB_EFFECT.get(), stack).ifPresent(ability -> {
+        getAbility(ModDataComponents.ATTACK_EFFECTS.get(), stack).ifPresent(ability -> {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.attacks_inflict").withStyle(ChatFormatting.GRAY));
-            for (AttacksInflictMobEffectAbility.Entry entry : ability.effects()) {
+            for (AttackEffects.Entry entry : ability.effects()) {
                 addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), entry.chance().get(), false);
                 if (entry.cooldown().get() > 0) {
                     tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(context, entry.cooldown().get())).withStyle(ChatFormatting.GOLD));

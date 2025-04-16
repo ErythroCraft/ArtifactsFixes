@@ -16,23 +16,23 @@ import net.minecraft.world.level.material.FluidState;
 
 import java.util.Optional;
 
-public record CollideWithFluidsAbility(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, AbilityCondition condition)
+public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, AbilityCondition condition)
         implements EquipmentAbility {
 
-    public static Codec<CollideWithFluidsAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.enabledField().forGetter(CollideWithFluidsAbility::enabled),
-            TagKey.codec(Registries.FLUID).optionalFieldOf("tag").forGetter(CollideWithFluidsAbility::tag),
-            AbilityCondition.CODEC.optionalFieldOf("condition", AbilityCondition.ALWAYS).forGetter(CollideWithFluidsAbility::condition)
-    ).apply(instance, CollideWithFluidsAbility::new));
+    public static Codec<FluidCollision> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ValueTypes.enabledField().forGetter(FluidCollision::enabled),
+            TagKey.codec(Registries.FLUID).optionalFieldOf("tag").forGetter(FluidCollision::tag),
+            AbilityCondition.CODEC.optionalFieldOf("condition", AbilityCondition.ALWAYS).forGetter(FluidCollision::condition)
+    ).apply(instance, FluidCollision::new));
 
-    public static StreamCodec<ByteBuf, CollideWithFluidsAbility> STREAM_CODEC = StreamCodec.composite(
+    public static StreamCodec<ByteBuf, FluidCollision> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.BOOLEAN.streamCodec(),
-            CollideWithFluidsAbility::enabled,
+            FluidCollision::enabled,
             ByteBufCodecs.optional(ModCodecs.tagKeyStreamCodec(Registries.FLUID)),
-            CollideWithFluidsAbility::tag,
+            FluidCollision::tag,
             AbilityCondition.STREAM_CODEC,
-            CollideWithFluidsAbility::condition,
-            CollideWithFluidsAbility::new
+            FluidCollision::condition,
+            FluidCollision::new
     );
 
     @Override

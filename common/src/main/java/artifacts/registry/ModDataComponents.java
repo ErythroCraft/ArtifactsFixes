@@ -3,13 +3,13 @@ package artifacts.registry;
 import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
-import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
-import artifacts.component.ability.mobeffect.ApplyMobEffectAfterEatingAbility;
-import artifacts.component.ability.mobeffect.AttacksInflictMobEffectAbility;
-import artifacts.component.ability.mobeffect.PermanentMobEffectAbility;
+import artifacts.component.ability.mobeffect.AttackEffects;
+import artifacts.component.ability.mobeffect.EquipmentMobEffects;
+import artifacts.component.ability.mobeffect.PostDamageEffects;
+import artifacts.component.ability.mobeffect.PostEatingEffects;
 import artifacts.component.ability.retaliation.SetAttackersOnFireAbility;
-import artifacts.component.ability.retaliation.StrikeAttackersWithLightningAbility;
-import artifacts.component.ability.retaliation.ThornsAbility;
+import artifacts.component.ability.retaliation.StrikeAttackersWithLightning;
+import artifacts.component.ability.retaliation.Thorns;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.platform.PlatformServices;
@@ -45,106 +45,111 @@ public class ModDataComponents {
             ResourceLocation.STREAM_CODEC.map(SoundEvent::createVariableRangeEvent, SoundEvent::getLocation)
     );
     public static final Supplier<DataComponentType<ItemLore>> ABILITY_LORE = registerCached("ability_lore", ItemLore.CODEC, ItemLore.STREAM_CODEC);
+    public static final Supplier<DataComponentType<Unit>> PIGLIN_LOVED = registerSynced("piglin_loved", Unit.CODEC, StreamCodec.unit(Unit.INSTANCE));
+    public static final Supplier<DataComponentType<HurtSound>> HURT_SOUND = registerSynced("hurt_sound", HurtSound.CODEC, HurtSound.STREAM_CODEC);
+    public static final Supplier<DataComponentType<Value<Double>>> REDUCED_NIGHT_VISION = registerSynced("reduced_night_vision", ValueTypes.FRACTION.codec(), ValueTypes.FRACTION.streamCodec());
 
-    public static final Supplier<DataComponentType<ApplyCooldownAfterDamageAbility>> APPLY_COOLDOWN_AFTER_DAMAGE =
-            registerSynced("apply_cooldown_after_damage", ApplyCooldownAfterDamageAbility.CODEC, ApplyCooldownAfterDamageAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<ApplyMobEffectAfterDamageAbility>> APPLY_MOB_EFFECT_AFTER_DAMAGE =
-            registerSynced("apply_mob_effect_after_damage", ApplyMobEffectAfterDamageAbility.CODEC, ApplyMobEffectAfterDamageAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<ApplyMobEffectAfterEatingAbility>> APPLY_MOB_EFFECT_AFTER_EATING =
-            registerSynced("apply_mob_effect_after_eating", ApplyMobEffectAfterEatingAbility.CODEC, ApplyMobEffectAfterEatingAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<AttacksAbsorbDamageAbility>> ATTACKS_ABSORB_DAMAGE =
-            registerSynced("attacks_absorb_damage", AttacksAbsorbDamageAbility.CODEC, AttacksAbsorbDamageAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<AttacksInflictMobEffectAbility>> ATTACKS_INFLICT_MOB_EFFECT =
-            registerSynced("attacks_inflict_mob_effect", AttacksInflictMobEffectAbility.CODEC, AttacksInflictMobEffectAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<AttributeModifierAbility>> ATTRIBUTE_MODIFIER =
-             registerCached("attribute_modifier", AttributeModifierAbility.CODEC, AttributeModifierAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<DamageImmunityAbility>> DAMAGE_IMMUNITY =
-            registerSynced("damage_immunity", DamageImmunityAbility.CODEC, DamageImmunityAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<DoubleJumpAbility>> DOUBLE_JUMP =
-            registerSynced("double_jump", DoubleJumpAbility.CODEC, DoubleJumpAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<EnderPearlsCostHungerAbility>> ENDER_PEARLS_COST_HUNGER =
-            registerSynced("ender_pearls_cost_hunger", EnderPearlsCostHungerAbility.CODEC, EnderPearlsCostHungerAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<SimpleAbility>> GROW_PLANTS_AFTER_EATING =
-            registerSimpleAbility("grow_plants_after_eating");
-    public static final Supplier<DataComponentType<IncreaseEnchantmentLevelAbility>> INCREASE_ENCHANTMENT_LEVEL =
-            registerSynced("increase_enchantment_level", IncreaseEnchantmentLevelAbility.CODEC, IncreaseEnchantmentLevelAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<Unit>> MAKE_PIGLINS_NEUTRAL =
-            registerSynced("make_piglins_neutral", Unit.CODEC, StreamCodec.unit(Unit.INSTANCE));
-    public static final Supplier<DataComponentType<PermanentMobEffectAbility>> MOB_EFFECT =
-            registerSynced("mob_effect", PermanentMobEffectAbility.CODEC, PermanentMobEffectAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<HurtSound>> MODIFY_HURT_SOUND =
-            registerSynced("modify_hurt_sound", HurtSound.CODEC, HurtSound.STREAM_CODEC);
-    public static final Supplier<DataComponentType<Value<Double>>> REDUCES_NIGHT_VISION_STRENGTH =
-            registerSynced("night_vision", ValueTypes.FRACTION.codec(), ValueTypes.FRACTION.streamCodec());
-    public static final Supplier<DataComponentType<SimpleAbility>> NULLIFY_ENDER_PEARL_DAMAGE =
-            registerSimpleAbility("nullify_ender_pearl_damage");
-    public static final Supplier<DataComponentType<RemoveBadEffectsAbility>> REMOVE_BAD_EFFECTS =
-            registerSynced("remove_bad_effects", RemoveBadEffectsAbility.CODEC, RemoveBadEffectsAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<ReplenishHungerOnGrassAbility>> REPLENISH_HUNGER_ON_GRASS =
-            registerSynced("replenish_hunger_on_grass", ReplenishHungerOnGrassAbility.CODEC, ReplenishHungerOnGrassAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<SimpleAbility>> SCARE_CREEPERS =
-            registerSimpleAbility("scare_creepers");
+    // abilities
+    public static final Supplier<DataComponentType<PostDamageCooldown>> POST_DAMAGE_COOLDOWN =
+            registerSynced("post_damage_cooldown", PostDamageCooldown.CODEC, PostDamageCooldown.STREAM_CODEC);
+    public static final Supplier<DataComponentType<PostDamageEffects>> POST_DAMAGE_EFFECTS =
+            registerSynced("post_damage_effects", PostDamageEffects.CODEC, PostDamageEffects.STREAM_CODEC);
+    public static final Supplier<DataComponentType<PostEatingEffects>> POST_EATING_EFFECTS =
+            registerSynced("post_eating_effects", PostEatingEffects.CODEC, PostEatingEffects.STREAM_CODEC);
+    public static final Supplier<DataComponentType<DamageAbsorption>> DAMAGE_ABSORPTION =
+            registerSynced("damage_absorption", DamageAbsorption.CODEC, DamageAbsorption.STREAM_CODEC);
+    public static final Supplier<DataComponentType<AttackEffects>> ATTACK_EFFECTS =
+            registerSynced("attack_effects", AttackEffects.CODEC, AttackEffects.STREAM_CODEC);
+    public static final Supplier<DataComponentType<AttributeModifiers>> ATTRIBUTE_MODIFIERS =
+             registerCached("attribute_modifiers", AttributeModifiers.CODEC, AttributeModifiers.STREAM_CODEC);
+    public static final Supplier<DataComponentType<DamageImmunity>> DAMAGE_IMMUNITY =
+            registerSynced("damage_immunity", DamageImmunity.CODEC, DamageImmunity.STREAM_CODEC);
+    public static final Supplier<DataComponentType<DoubleJump>> DOUBLE_JUMP =
+            registerSynced("double_jump", DoubleJump.CODEC, DoubleJump.STREAM_CODEC);
+    public static final Supplier<DataComponentType<EnderPearlHungerCost>> ENDER_PEARL_HUNGER_COST =
+            registerSynced("ender_pearl_hunger_cost", EnderPearlHungerCost.CODEC, EnderPearlHungerCost.STREAM_CODEC);
+    public static final Supplier<DataComponentType<SimpleAbility>> POST_EATING_PLANT_GROWTH =
+            registerSimpleAbility("post_eating_plant_growth");
+    public static final Supplier<DataComponentType<EnchantmentLevelModifiers>> ENCHANTMENT_LEVEL_MODIFIERS =
+            registerSynced("enchantment_level_modifiers", EnchantmentLevelModifiers.CODEC, EnchantmentLevelModifiers.STREAM_CODEC);
+    public static final Supplier<DataComponentType<EquipmentMobEffects>> MOB_EFFECTS =
+            registerSynced("mob_effects", EquipmentMobEffects.CODEC, EquipmentMobEffects.STREAM_CODEC);
+    public static final Supplier<DataComponentType<SimpleAbility>> ENDER_PEARL_DAMAGE_IMMUNITY =
+            registerSimpleAbility("ender_pearl_damage_immunity");
+    public static final Supplier<DataComponentType<CureEffects>> CURE_EFFECTS =
+            registerSynced("cure_effects", CureEffects.CODEC, CureEffects.STREAM_CODEC);
+    // TODO add block tag parameter
+    public static final Supplier<DataComponentType<ReplenishHungerOnGrass>> REPLENISH_HUNGER_ON_GRASS =
+            registerSynced("replenish_hunger_on_grass", ReplenishHungerOnGrass.CODEC, ReplenishHungerOnGrass.STREAM_CODEC);
+    // TODO use entity type/entity type tag
+    public static final Supplier<DataComponentType<SimpleAbility>> CREEPER_REPELLENT =
+            registerSimpleAbility("creeper_repellent");
     public static final Supplier<DataComponentType<SetAttackersOnFireAbility>> SET_ATTACKERS_ON_FIRE =
             registerSynced("set_attackers_on_fire", SetAttackersOnFireAbility.CODEC, SetAttackersOnFireAbility.STREAM_CODEC);
     public static final Supplier<DataComponentType<SimpleAbility>> SINKING =
             registerSimpleAbility("sinking");
-    public static final Supplier<DataComponentType<SimpleAbility>> SMELT_ORES =
-            registerSimpleAbility("smelt_ores");
-    public static final Supplier<DataComponentType<CollideWithFluidsAbility>> COLLIDE_WITH_FLUIDS =
-            registerSynced("collide_with_fluids", CollideWithFluidsAbility.CODEC, CollideWithFluidsAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<StrikeAttackersWithLightningAbility>> STRIKE_ATTACKERS_WITH_LIGHTNING =
-            registerSynced("strike_attackers_with_lightning", StrikeAttackersWithLightningAbility.CODEC, StrikeAttackersWithLightningAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<SwimInAirAbility>> SWIM_IN_AIR =
-            registerSynced("swim_in_air", SwimInAirAbility.CODEC, SwimInAirAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<TeleportOnDeathAbility>> TELEPORT_ON_DEATH =
-            registerSynced("teleport_on_death", TeleportOnDeathAbility.CODEC, TeleportOnDeathAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<ThornsAbility>> THORNS =
-            registerSynced("thorns", ThornsAbility.CODEC, ThornsAbility.STREAM_CODEC);
-    public static final Supplier<DataComponentType<UpgradeToolTierAbility>> UPGRADE_TOOL_TIER =
-            registerSynced("upgrade_tool_tier", UpgradeToolTierAbility.CODEC, UpgradeToolTierAbility.STREAM_CODEC);
+    // TODO add item/block tag parameters
+    public static final Supplier<DataComponentType<SimpleAbility>> AUTO_SMELT =
+            registerSimpleAbility("auto_smelt");
+    public static final Supplier<DataComponentType<FluidCollision>> FLUID_COLLISION =
+            registerSynced("fluid_collision", FluidCollision.CODEC, FluidCollision.STREAM_CODEC);
+    public static final Supplier<DataComponentType<StrikeAttackersWithLightning>> STRIKE_ATTACKERS_WITH_LIGHTNING =
+            registerSynced("strike_attackers_with_lightning", StrikeAttackersWithLightning.CODEC, StrikeAttackersWithLightning.STREAM_CODEC);
+    public static final Supplier<DataComponentType<SwimInAir>> SWIM_IN_AIR =
+            registerSynced("swim_in_air", SwimInAir.CODEC, SwimInAir.STREAM_CODEC);
+    // TODO (>1.21.1) use vanilla death_protection component
+    public static final Supplier<DataComponentType<DeathProtectionTeleport>> DEATH_PROTECTION_TELEPORT =
+            registerSynced("death_protection_teleport", DeathProtectionTeleport.CODEC, DeathProtectionTeleport.STREAM_CODEC);
+    // TODO merge retaliation effects into single component
+    public static final Supplier<DataComponentType<Thorns>> THORNS =
+            registerSynced("thorns", Thorns.CODEC, Thorns.STREAM_CODEC);
+    // TODO add block tag parameter
+    public static final Supplier<DataComponentType<ToolTierUpgrade>> TOOL_TIER_UPGRADE =
+            registerSynced("tool_tier_upgrade", ToolTierUpgrade.CODEC, ToolTierUpgrade.STREAM_CODEC);
+    // TODO add ability condition parameter
     public static final Supplier<DataComponentType<SimpleAbility>> WALK_ON_POWDER_SNOW =
-            registerSimpleAbility("walk_on_powdered_snow");
+            registerSimpleAbility("walk_on_powder_snow");
 
     static {
         TICKING_COMPONENTS.addAll(List.of(
-                ATTRIBUTE_MODIFIER,
+                ATTRIBUTE_MODIFIERS,
                 REPLENISH_HUNGER_ON_GRASS,
-                REMOVE_BAD_EFFECTS,
-                MOB_EFFECT
+                CURE_EFFECTS,
+                MOB_EFFECTS
         ));
         TOOLTIP_ORDER.addAll(List.of(
-                APPLY_MOB_EFFECT_AFTER_DAMAGE,
-                APPLY_MOB_EFFECT_AFTER_EATING,
-                ATTACKS_ABSORB_DAMAGE,
-                ATTACKS_INFLICT_MOB_EFFECT,
-                ATTRIBUTE_MODIFIER,
+                POST_DAMAGE_EFFECTS,
+                POST_EATING_EFFECTS,
+                DAMAGE_ABSORPTION,
+                ATTACK_EFFECTS,
+                ATTRIBUTE_MODIFIERS,
                 DAMAGE_IMMUNITY,
                 DOUBLE_JUMP,
-                ENDER_PEARLS_COST_HUNGER,
-                GROW_PLANTS_AFTER_EATING,
-                INCREASE_ENCHANTMENT_LEVEL,
-                MOB_EFFECT,
-                NULLIFY_ENDER_PEARL_DAMAGE,
-                REMOVE_BAD_EFFECTS,
+                ENDER_PEARL_HUNGER_COST,
+                POST_EATING_PLANT_GROWTH,
+                ENCHANTMENT_LEVEL_MODIFIERS,
+                MOB_EFFECTS,
+                ENDER_PEARL_DAMAGE_IMMUNITY,
+                CURE_EFFECTS,
                 REPLENISH_HUNGER_ON_GRASS,
-                SCARE_CREEPERS,
+                CREEPER_REPELLENT,
                 SET_ATTACKERS_ON_FIRE,
                 SINKING,
-                SMELT_ORES,
-                COLLIDE_WITH_FLUIDS,
+                AUTO_SMELT,
+                FLUID_COLLISION,
                 STRIKE_ATTACKERS_WITH_LIGHTNING,
                 SWIM_IN_AIR,
-                TELEPORT_ON_DEATH,
+                DEATH_PROTECTION_TELEPORT,
                 THORNS,
-                UPGRADE_TOOL_TIER,
+                TOOL_TIER_UPGRADE,
                 WALK_ON_POWDER_SNOW
         ));
         APPLIES_COOLDOWN.addAll(Set.of(
-                APPLY_COOLDOWN_AFTER_DAMAGE,
+                POST_DAMAGE_COOLDOWN,
                 STRIKE_ATTACKERS_WITH_LIGHTNING,
                 THORNS,
                 SET_ATTACKERS_ON_FIRE,
-                TELEPORT_ON_DEATH
+                DEATH_PROTECTION_TELEPORT
         ));
     }
 

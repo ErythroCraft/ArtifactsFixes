@@ -1,6 +1,6 @@
 package artifacts.client;
 
-import artifacts.component.ability.DoubleJumpAbility;
+import artifacts.component.ability.DoubleJump;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.network.DoubleJumpPacket;
 import artifacts.network.NetworkHandler;
@@ -31,7 +31,7 @@ public class CloudInABottleInputHandler {
             canDoubleJump = false;
             if (EquipmentHelper.hasAbilityActive(ModDataComponents.DOUBLE_JUMP.get(), player, true)) {
                 NetworkHandler.sendToServer(new DoubleJumpPacket());
-                DoubleJumpAbility.jump(player);
+                DoubleJump.jump(player);
             }
         }
     }

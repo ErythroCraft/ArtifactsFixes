@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.teleportondeath;
 
-import artifacts.component.ability.TeleportOnDeathAbility;
+import artifacts.component.ability.DeathProtectionTeleport;
 import artifacts.network.ChorusTotemUsedPacket;
 import artifacts.network.NetworkHandler;
 import artifacts.registry.ModDataComponents;
@@ -25,14 +25,14 @@ public class LivingEntityMixin {
     @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
     private void checkTotemDeathProtection(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        ItemStack totem = TeleportOnDeathAbility.findTotem(entity);
+        ItemStack totem = DeathProtectionTeleport.findTotem(entity);
         if (!totem.isEmpty()
                 && entity.level() instanceof ServerLevel level
                 && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
         ) {
-            if (totem.get(ModDataComponents.TELEPORT_ON_DEATH.get()) instanceof TeleportOnDeathAbility ability) {
+            if (totem.get(ModDataComponents.DEATH_PROTECTION_TELEPORT.get()) instanceof DeathProtectionTeleport ability) {
                 if (ability.teleportationChance().get() > entity.getRandom().nextDouble()) {
-                    TeleportOnDeathAbility.teleport(entity, level);
+                    DeathProtectionTeleport.teleport(entity, level);
                     if (ability.consumedOnUse().get()) {
                         totem.shrink(1);
                     } else if (entity instanceof Player player) {

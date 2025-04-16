@@ -17,20 +17,20 @@ import net.minecraft.world.entity.player.Player;
 
 // TODO add short cooldown after stopping swimming, remove full recharge requirement
 // TODO allow cancelling flight
-public record SwimInAirAbility(Value<Integer> flightDuration, Value<Integer> rechargeDuration)
+public record SwimInAir(Value<Integer> flightDuration, Value<Integer> rechargeDuration)
         implements EquipmentAbility {
 
-    public static final Codec<SwimInAirAbility> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.DURATION.codec().fieldOf("flight_duration").forGetter(SwimInAirAbility::flightDuration),
-            ValueTypes.DURATION.codec().fieldOf("recharge_duration").forGetter(SwimInAirAbility::rechargeDuration)
-    ).apply(instance, SwimInAirAbility::new));
+    public static final Codec<SwimInAir> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ValueTypes.DURATION.codec().fieldOf("flight_duration").forGetter(SwimInAir::flightDuration),
+            ValueTypes.DURATION.codec().fieldOf("recharge_duration").forGetter(SwimInAir::rechargeDuration)
+    ).apply(instance, SwimInAir::new));
 
-    public static final StreamCodec<ByteBuf, SwimInAirAbility> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, SwimInAir> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.DURATION.streamCodec(),
-            SwimInAirAbility::flightDuration,
+            SwimInAir::flightDuration,
             ValueTypes.DURATION.streamCodec(),
-            SwimInAirAbility::rechargeDuration,
-            SwimInAirAbility::new
+            SwimInAir::rechargeDuration,
+            SwimInAir::new
     );
 
     public static void onHeliumFlamingoTick(Player player) {

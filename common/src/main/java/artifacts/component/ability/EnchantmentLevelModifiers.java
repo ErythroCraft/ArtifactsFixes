@@ -15,7 +15,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
 
-public record IncreaseEnchantmentLevelAbility(List<Entry> entries) implements EquipmentAbility {
+public record EnchantmentLevelModifiers(List<Entry> entries) implements EquipmentAbility {
 
     public static final List<ResourceKey<Enchantment>> ALLOWED_ENCHANTMENTS = List.of(
             Enchantments.FORTUNE,
@@ -24,12 +24,12 @@ public record IncreaseEnchantmentLevelAbility(List<Entry> entries) implements Eq
             Enchantments.LUCK_OF_THE_SEA
     );
 
-    public static final Codec<IncreaseEnchantmentLevelAbility> CODEC = Entry.CODEC.listOf().xmap(
-            IncreaseEnchantmentLevelAbility::new, IncreaseEnchantmentLevelAbility::entries
+    public static final Codec<EnchantmentLevelModifiers> CODEC = Entry.CODEC.listOf().xmap(
+            EnchantmentLevelModifiers::new, EnchantmentLevelModifiers::entries
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, IncreaseEnchantmentLevelAbility> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
-            .apply(Entry.STREAM_CODEC).map(IncreaseEnchantmentLevelAbility::new, IncreaseEnchantmentLevelAbility::entries);
+    public static final StreamCodec<RegistryFriendlyByteBuf, EnchantmentLevelModifiers> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, Entry>list()
+            .apply(Entry.STREAM_CODEC).map(EnchantmentLevelModifiers::new, EnchantmentLevelModifiers::entries);
 
     @Override
     public boolean isNonCosmetic() {

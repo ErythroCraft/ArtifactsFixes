@@ -3,11 +3,11 @@ package artifacts.event;
 import artifacts.Artifacts;
 import artifacts.attribute.DynamicAttributeModifier;
 import artifacts.component.SwimData;
-import artifacts.component.ability.ApplyCooldownAfterDamageAbility;
-import artifacts.component.ability.SwimInAirAbility;
+import artifacts.component.ability.PostDamageCooldown;
+import artifacts.component.ability.SwimInAir;
 import artifacts.component.ability.TickingAbility;
-import artifacts.component.ability.mobeffect.ApplyMobEffectAfterDamageAbility;
-import artifacts.component.ability.mobeffect.AttacksInflictMobEffectAbility;
+import artifacts.component.ability.mobeffect.AttackEffects;
+import artifacts.component.ability.mobeffect.PostDamageEffects;
 import artifacts.component.ability.retaliation.RetaliationAbility;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.extensions.ability.LivingEntityExtensions;
@@ -52,7 +52,7 @@ public class ArtifactHooks {
 
     public static void livingUpdate(LivingEntity entity) {
         if (entity instanceof Player player) {
-            SwimInAirAbility.onHeliumFlamingoTick(player);
+            SwimInAir.onHeliumFlamingoTick(player);
             onPlayerTick(player);
         }
         onItemTick(entity);
@@ -64,8 +64,9 @@ public class ArtifactHooks {
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource source, float amount) {
         absorbDamage(entity, source, amount);
-        ApplyMobEffectAfterDamageAbility.onLivingDamaged(entity, source);
-        ApplyCooldownAfterDamageAbility.onLivingDamaged(entity, source);
+        PostDamageEffects.onLivingDamaged(entity, source);
+
+        PostDamageCooldown.onLivingDamaged(entity, source);
     }
 
     public static void onItemChanged(LivingEntity entity, ItemStack oldStack, ItemStack newStack) {
@@ -129,7 +130,7 @@ public class ArtifactHooks {
         activateRetaliationAbility(ModDataComponents.SET_ATTACKERS_ON_FIRE.get(), entity, damageSource);
         activateRetaliationAbility(ModDataComponents.THORNS.get(), entity, damageSource);
         activateRetaliationAbility(ModDataComponents.STRIKE_ATTACKERS_WITH_LIGHTNING.get(), entity, damageSource);
-        AttacksInflictMobEffectAbility.onLivingHurt(entity, damageSource);
+        AttackEffects.onLivingHurt(entity, damageSource);
         onAttackBurningLivingHurt(entity, damageSource);
     }
 
@@ -142,7 +143,7 @@ public class ArtifactHooks {
             refreshTickingAbilities(livingEntity);
         }
         if (entity instanceof PathfinderMob creeper && creeper.getType().is(ModTags.CREEPERS)) {
-            Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.SCARE_CREEPERS.get(), target, true);
+            Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target, true);
             ((MobAccessor) creeper).getGoalSelector().addGoal(3,
                     new AvoidEntityGoal<>(creeper, Player.class, predicate, 6, 1, 1.3, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test)
             );
@@ -151,13 +152,13 @@ public class ArtifactHooks {
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
         if (Artifacts.CONFIG.general.modifyHurtSounds.get()) {
-            EquipmentHelper.iterateComponents(ModDataComponents.MODIFY_HURT_SOUND.get(), entity, (stack, ability) -> entity.playSound(ability.soundEvent().value(), volume, pitch));
+            EquipmentHelper.iterateComponents(ModDataComponents.HURT_SOUND.get(), entity, (stack, ability) -> entity.playSound(ability.soundEvent().value(), volume, pitch));
         }
     }
 
     public static ItemStack applySmeltOresAbility(ItemStack original, @Nullable Entity entity, @Nullable BlockState state, Consumer<Integer> experienceConsumer) {
         if (entity instanceof LivingEntity livingEntity
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.SMELT_ORES.get(), livingEntity, true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.AUTO_SMELT.get(), livingEntity, true)
                 && state != null
                 && state.is(ModTags.ORES)
         ) {
@@ -210,7 +211,7 @@ public class ArtifactHooks {
     public static void absorbDamage(LivingEntity entity, DamageSource damageSource, float amount) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.ATTACKS_ABSORB_DAMAGE.get(), attacker, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.DAMAGE_ABSORPTION.get(), attacker, true, true, (ability, stack) -> {
                 double absorptionRatio = ability.absorptionRatio().get();
                 double maxHealthAbsorbed = ability.maxDamageAbsorbed().get();
 
@@ -234,7 +235,7 @@ public class ArtifactHooks {
 
     public static void applyBoneMealAfterEating(LivingEntity entity, FoodProperties properties) {
         if (!entity.level().isClientSide()
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.GROW_PLANTS_AFTER_EATING.get(), entity, true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.POST_EATING_PLANT_GROWTH.get(), entity, true)
                 && properties.nutrition() > 0
                 && !properties.canAlwaysEat()
                 && entity.onGround()
@@ -281,7 +282,7 @@ public class ArtifactHooks {
     }
 
     private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState) {
-        return EquipmentHelper.hasAbilityActive(ModDataComponents.COLLIDE_WITH_FLUIDS.get(), entity, true, ability ->
+        return EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION.get(), entity, true, ability ->
                 ability.matchesFluid(fluidState) && ability.condition().test(entity)
         );
     }

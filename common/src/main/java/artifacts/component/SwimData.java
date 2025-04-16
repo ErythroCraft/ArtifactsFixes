@@ -1,6 +1,6 @@
 package artifacts.component;
 
-import artifacts.component.ability.SwimInAirAbility;
+import artifacts.component.ability.SwimInAir;
 import artifacts.network.NetworkHandler;
 import artifacts.network.SwimPacket;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,8 +25,8 @@ public class SwimData {
 
     public void setSwimming(LivingEntity entity, boolean shouldSwim) {
         if (this.shouldSwim && !shouldSwim) {
-            int rechargeTime = SwimInAirAbility.getRechargeDuration(entity);
-            int maxFlightTime = Math.max(1, SwimInAirAbility.getFlightDuration(entity));
+            int rechargeTime = SwimInAir.getRechargeDuration(entity);
+            int maxFlightTime = Math.max(1, SwimInAir.getFlightDuration(entity));
 
             setSwimTime((int) (-rechargeTime * getSwimTime() / (float) maxFlightTime));
         }

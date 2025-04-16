@@ -15,14 +15,14 @@ import net.minecraft.world.food.FoodProperties;
 
 import java.util.List;
 
-public record ApplyMobEffectAfterEatingAbility(List<MobEffectProvider> effects)
+public record PostEatingEffects(List<MobEffectProvider> effects)
         implements EquipmentAbility {
 
-    public static final Codec<ApplyMobEffectAfterEatingAbility> CODEC = MobEffectProvider.codec(true)
-            .listOf().xmap(ApplyMobEffectAfterEatingAbility::new, ApplyMobEffectAfterEatingAbility::effects);
+    public static final Codec<PostEatingEffects> CODEC = MobEffectProvider.codec(true)
+            .listOf().xmap(PostEatingEffects::new, PostEatingEffects::effects);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ApplyMobEffectAfterEatingAbility> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, MobEffectProvider>list()
-            .apply(MobEffectProvider.STREAM_CODEC).map(ApplyMobEffectAfterEatingAbility::new, ApplyMobEffectAfterEatingAbility::effects);
+    public static final StreamCodec<RegistryFriendlyByteBuf, PostEatingEffects> STREAM_CODEC = ByteBufCodecs.<RegistryFriendlyByteBuf, MobEffectProvider>list()
+            .apply(MobEffectProvider.STREAM_CODEC).map(PostEatingEffects::new, PostEatingEffects::effects);
 
     @Override
     public boolean isNonCosmetic() {
@@ -42,7 +42,7 @@ public record ApplyMobEffectAfterEatingAbility(List<MobEffectProvider> effects)
 
     public static void applyEffects(LivingEntity entity, int foodPointsRestored) {
         if (foodPointsRestored > 0) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.APPLY_MOB_EFFECT_AFTER_EATING.get(), entity, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.POST_EATING_EFFECTS.get(), entity, true, true, (ability, stack) -> {
                         for (MobEffectProvider provider : ability.effects) {
                             entity.addEffect(provider.createEffect(foodPointsRestored));
                         }

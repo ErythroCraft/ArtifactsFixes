@@ -1,7 +1,7 @@
 package artifacts.network;
 
 import artifacts.Artifacts;
-import artifacts.component.ability.TeleportOnDeathAbility;
+import artifacts.component.ability.DeathProtectionTeleport;
 import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +20,7 @@ public record ChorusTotemUsedPacket() implements CustomPacketPayload {
 
     void apply(NetworkHandler.PayloadContext context) {
         Player player = context.player();
-        ItemStack totem = TeleportOnDeathAbility.findTotem(player);
+        ItemStack totem = DeathProtectionTeleport.findTotem(player);
         if (totem.isEmpty()) {
             totem = new ItemStack(ModItems.CHORUS_TOTEM.value());
         }

@@ -14,28 +14,27 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public record PermanentMobEffectAbility(List<MobEffectProvider> effects) implements TickingAbility {
+public record EquipmentMobEffects(List<MobEffectProvider> effects) implements TickingAbility {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
-            MobEffects.INVISIBILITY,
+            net.minecraft.world.effect.MobEffects.INVISIBILITY,
             ModMobEffects.MAGNETISM
     );
 
-    public static final Codec<PermanentMobEffectAbility> CODEC = MobEffectProvider.codec(false).listOf(0, 16).xmap(
-            PermanentMobEffectAbility::new, PermanentMobEffectAbility::effects
+    public static final Codec<EquipmentMobEffects> CODEC = MobEffectProvider.codec(false).listOf(0, 16).xmap(
+            EquipmentMobEffects::new, EquipmentMobEffects::effects
     );
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, PermanentMobEffectAbility> STREAM_CODEC = ByteBufCodecs
+    public static final StreamCodec<RegistryFriendlyByteBuf, EquipmentMobEffects> STREAM_CODEC = ByteBufCodecs
             .<RegistryFriendlyByteBuf, MobEffectProvider>list()
             .apply(MobEffectProvider.STREAM_CODEC).map(
-                    PermanentMobEffectAbility::new, PermanentMobEffectAbility::effects
+                    EquipmentMobEffects::new, EquipmentMobEffects::effects
             );
 
     @Override
@@ -74,15 +73,15 @@ public record PermanentMobEffectAbility(List<MobEffectProvider> effects) impleme
                 ResourceLocation id = BuiltInRegistries.MOB_EFFECT.getKey(provider.mobEffect().value());
                 writer.add(Objects.requireNonNull(id).getPath());
             }
-            if (provider.mobEffect().value() == MobEffects.NIGHT_VISION.value()) {
-                Value<Double> nightVisionStrength = writer.stack().get(ModDataComponents.REDUCES_NIGHT_VISION_STRENGTH.get());
+            if (provider.mobEffect().value() == net.minecraft.world.effect.MobEffects.NIGHT_VISION.value()) {
+                Value<Double> nightVisionStrength = writer.stack().get(ModDataComponents.REDUCED_NIGHT_VISION.get());
                 if (nightVisionStrength != null && nightVisionStrength.get() < 0.5) {
                     writer.add("night_vision.partial");
                 } else {
                     writer.add("night_vision.full");
                 }
             }
-            if (provider.mobEffect().value() == MobEffects.WATER_BREATHING.value()) {
+            if (provider.mobEffect().value() == net.minecraft.world.effect.MobEffects.WATER_BREATHING.value()) {
                 if (provider.condition() == AbilityCondition.ALWAYS) {
                     writer.add("water_breathing.infinite");
                 } else {
