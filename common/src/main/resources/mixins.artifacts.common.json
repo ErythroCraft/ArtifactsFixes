@@ -15,6 +15,7 @@
     "ability.hurtsound.LivingEntityMixin",
     "ability.makepiglinsneutral.PiglinAiMixin",
     "ability.nullifyenderpearldamage.ThrownEnderPearlMixin",
+    "ability.phantomrepellent.PhantomSweepAttackGoalMixin",
     "ability.retaliation.EnchantmentHelperMixin",
     "ability.sprintonfluids.EntityMixin",
     "ability.teleportondeath.LivingEntityMixin",

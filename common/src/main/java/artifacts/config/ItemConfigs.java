@@ -28,7 +28,7 @@ public class ItemConfigs extends ConfigManager {
             everlastingBeefEnabled = defineBool(createKey(ModItems.EVERLASTING_BEEF, "enabled"),
                     "Whether the Everlasting Beef can be eaten"),
             kittySlippersEnabled = defineBool(createKey(ModItems.KITTY_SLIPPERS, "enabled"),
-                    "Whether the Kitty Slippers scare nearby creepers"),
+                    "Whether the Kitty Slippers scare nearby creepers and phantoms"),
             pickaxeHeaterEnabled = defineBool(createKey(ModItems.PICKAXE_HEATER, "enabled"),
                     "Whether the Pickaxe Heater smelts mined ores"),
             rootedBootsEnabled = defineBool(createKey(ModItems.ROOTED_BOOTS, "enabled"),

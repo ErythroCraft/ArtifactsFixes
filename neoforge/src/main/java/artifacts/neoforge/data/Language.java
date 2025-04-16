@@ -122,6 +122,7 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.CURE_EFFECTS.get(), "Greatly reduces the duration of negative effects");
         addAbilityTooltip(ModDataComponents.REPLENISH_HUNGER_ON_GRASS.get(), "Slowly replenishes hunger while walking on grass");
         addAbilityTooltip(ModDataComponents.CREEPER_REPELLENT.get(), "Creepers avoid the wearer");
+        addAbilityTooltip(ModDataComponents.PHANTOM_REPELLENT.get(), "Hisses at attacking phantoms");
         addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "fire", "fire_resistance", "Grants fire resistance after lighting an attacker on fire");
         addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "fire", "chance", "Has a chance to light attackers on fire");
         addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "fire", "constant", "Attacking entities are lit on fire");

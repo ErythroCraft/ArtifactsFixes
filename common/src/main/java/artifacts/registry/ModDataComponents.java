@@ -76,15 +76,14 @@ public class ModDataComponents {
             registerSimpleAbility("ender_pearl_damage_immunity");
     public static final Supplier<DataComponentType<CureEffects>> CURE_EFFECTS =
             registerSynced("cure_effects", CureEffects.CODEC, CureEffects.STREAM_CODEC);
-    // TODO add block tag parameter
     public static final Supplier<DataComponentType<ReplenishHungerOnGrass>> REPLENISH_HUNGER_ON_GRASS =
             registerSynced("replenish_hunger_on_grass", ReplenishHungerOnGrass.CODEC, ReplenishHungerOnGrass.STREAM_CODEC);
-    // TODO use entity type/entity type tag
     public static final Supplier<DataComponentType<SimpleAbility>> CREEPER_REPELLENT =
             registerSimpleAbility("creeper_repellent");
+    public static final Supplier<DataComponentType<SimpleAbility>> PHANTOM_REPELLENT =
+            registerSimpleAbility("phantom_repellent");
     public static final Supplier<DataComponentType<SimpleAbility>> SINKING =
             registerSimpleAbility("sinking");
-    // TODO add item/block tag parameters
     public static final Supplier<DataComponentType<SimpleAbility>> AUTO_SMELT =
             registerSimpleAbility("auto_smelt");
     public static final Supplier<DataComponentType<FluidCollision>> FLUID_COLLISION =
@@ -96,10 +95,8 @@ public class ModDataComponents {
             registerSynced("death_protection_teleport", DeathProtectionTeleport.CODEC, DeathProtectionTeleport.STREAM_CODEC);
     public static final Supplier<DataComponentType<RetaliationEffects>> RETALIATION_EFFECTS =
             registerSynced("retaliation_effects", RetaliationEffects.CODEC, RetaliationEffects.STREAM_CODEC);
-    // TODO add block tag parameter
     public static final Supplier<DataComponentType<ToolTierUpgrade>> TOOL_TIER_UPGRADE =
             registerSynced("tool_tier_upgrade", ToolTierUpgrade.CODEC, ToolTierUpgrade.STREAM_CODEC);
-    // TODO add ability condition parameter
     public static final Supplier<DataComponentType<SimpleAbility>> WALK_ON_POWDER_SNOW =
             registerSimpleAbility("walk_on_powder_snow");
 
@@ -126,6 +123,7 @@ public class ModDataComponents {
                 CURE_EFFECTS,
                 REPLENISH_HUNGER_ON_GRASS,
                 CREEPER_REPELLENT,
+                PHANTOM_REPELLENT,
                 SINKING,
                 AUTO_SMELT,
                 FLUID_COLLISION,
