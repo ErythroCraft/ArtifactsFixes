@@ -15,7 +15,7 @@ public class GeneralConfig extends ConfigManager {
             "The chance that a skeleton, zombie or piglin spawns with an artifact equipped");
     public final Supplier<Double> archaeologyChance = defineFraction("archaeologyChance", 1 / 16D,
             "The chance that an artifact generates in suspicious sand or gravel");
-    public final Supplier<Boolean> modifyHurtSounds = defineBool("modifyHurtSounds", true,
+    public final Supplier<Boolean> modifyHurtSounds = defineBool("modifyHurtSounds", true, false,
             "Whether the Kitty Slippers and Bunny Hoppers change the player's hurt sounds");
 
     public final Campsite campsite = new Campsite();
@@ -31,9 +31,9 @@ public class GeneralConfig extends ConfigManager {
                 "The maximum height campsites can spawn at");
         public final Supplier<Double> mimicChance = defineFraction("campsite.mimicChance", 0.3,
                 "The probability that a campsite has a mimic instead of a chest");
-        public final Supplier<Boolean> useModdedChests = defineBool("campsite.useModdedChests", true,
+        public final Supplier<Boolean> useModdedChests = defineBool("campsite.useModdedChests", true, false,
                 "Whether to use wooden chests from other mods when generating campsites");
-        public final Supplier<Boolean> allowLightSources = defineBool("campsite.allowLightSources", true,
+        public final Supplier<Boolean> allowLightSources = defineBool("campsite.allowLightSources", true, false,
                 "Whether campsites can contain blocks that emit light");
     }
 

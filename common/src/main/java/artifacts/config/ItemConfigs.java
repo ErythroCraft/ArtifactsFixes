@@ -33,7 +33,7 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Pickaxe Heater smelts mined ores"),
             rootedBootsEnabled = defineBool(createKey(ModItems.ROOTED_BOOTS, "enabled"),
                     "Whether the Rooted Boots replenish hunger when standing on grass"),
-            scarfOfInvisibilityEnabled = defineBool(createKey(ModItems.SCARF_OF_INVISIBILITY, "enabled"),
+            scarfOfInvisibilityEnabled = defineBool(createKey(ModItems.SCARF_OF_INVISIBILITY, "enabled"), true, true,
                     "Whether the Scarf of Invisibility makes players invisible"),
             striderShoesEnabled = defineBool(createKey(ModItems.STRIDER_SHOES, "enabled"),
                     "Whether the Strider Shoes allow sneaking on lava"),
@@ -50,7 +50,7 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Rooted Boots apply a bone meal effect after eating food"),
             shockPendantCancelLightningDamage = defineBool(createKey(ModItems.SHOCK_PENDANT, "cancelLightningDamage"),
                     "Whether the Shock Pendant cancels damage from lightning"),
-            snorkelIsInfinite = defineBool(createKey(ModItems.SNORKEL, "isInfinite"), false,
+            snorkelIsInfinite = defineBool(createKey(ModItems.SNORKEL, "isInfinite"), false, true,
                     "Whether the Snorkel's water breathing effect depletes when underwater"),
             snowshoesAllowWalkingOnPowderedSnow = defineBool(createKey(ModItems.SNOWSHOES, "allowWalkingOnPowderedSnow"),
                     "Whether the Snowshoes allow the wearer to walk on powdered snow"),
@@ -230,7 +230,7 @@ public class ItemConfigs extends ConfigManager {
                     "The level of the wither effect that is inflicted by the Withered Bracelet");
 
     public final Value.ConfigValue<ToolTierUpgrade.Tier>
-            diggingClawsToolTier = defineEnum(createKey(ModItems.DIGGING_CLAWS, "toolTier"), ValueTypes.TOOL_TIER, ToolTierUpgrade.Tier.STONE,
+            diggingClawsToolTier = defineEnum(createKey(ModItems.DIGGING_CLAWS, "toolTier"), ValueTypes.TOOL_TIER, ToolTierUpgrade.Tier.STONE, false,
                     "The tool tier that the Digging Claws increase the wearer's mining level to");
 
     protected ItemConfigs() {

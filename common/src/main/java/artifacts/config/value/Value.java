@@ -18,12 +18,18 @@ public interface Value<T> extends Supplier<T> {
         private final ValueType<T, ?> type;
         private final String id;
         private final T defaultValue;
+        private final boolean requiresRestart;
 
         private T value;
 
         public ConfigValue(ValueType<T, ?> type, String id, T defaultValue) {
+            this(type, id, defaultValue, false);
+        }
+
+        public ConfigValue(ValueType<T, ?> type, String id, T defaultValue, boolean requiresRestart) {
             this.type = type;
             this.id = id;
+            this.requiresRestart = requiresRestart;
             this.defaultValue = this.value = defaultValue;
         }
 
@@ -49,6 +55,10 @@ public interface Value<T> extends Supplier<T> {
 
         public ValueType<T, ?> type() {
             return type;
+        }
+
+        public boolean requiresRestart() {
+            return requiresRestart;
         }
 
         @Override

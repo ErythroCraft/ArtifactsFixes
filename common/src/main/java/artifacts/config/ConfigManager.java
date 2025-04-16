@@ -169,57 +169,57 @@ public abstract class ConfigManager {
     }
 
     protected Value.ConfigValue<Boolean> defineBool(String key, String... tooltips) {
-        return defineBool(key, true, tooltips);
+        return defineBool(key, true, false, tooltips);
     }
 
-    protected Value.ConfigValue<Boolean> defineBool(String key, boolean defaultValue, String... tooltips) {
-        Value.ConfigValue<Boolean> value = createValue(key, ValueTypes.BOOLEAN, defaultValue, tooltips);
+    protected Value.ConfigValue<Boolean> defineBool(String key, boolean defaultValue, boolean requiresRestart, String... tooltips) {
+        Value.ConfigValue<Boolean> value = createValue(key, ValueTypes.BOOLEAN, defaultValue, requiresRestart, tooltips);
         spec.define(key, defaultValue);
         return value;
     }
 
     protected Value.ConfigValue<Integer> defineNonNegativeInt(String key, int defaultValue, String... tooltips) {
-        return defineNumber(key, ValueTypes.NON_NEGATIVE_INT, defaultValue, tooltips);
+        return defineNumber(key, ValueTypes.NON_NEGATIVE_INT, defaultValue, false, tooltips);
     }
 
     protected Value.ConfigValue<Integer> defineInt(String key, int defaultValue, String... tooltips) {
-        return defineNumber(key, ValueTypes.INT, defaultValue, tooltips);
+        return defineNumber(key, ValueTypes.INT, defaultValue, false, tooltips);
     }
 
     protected Value.ConfigValue<Double> defineAttributeModifier(String key, double defaultValue, String... tooltips) {
-        return defineNumber(key, ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT, defaultValue, tooltips);
+        return defineNumber(key, ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT, defaultValue, false, tooltips);
     }
 
     protected Value.ConfigValue<Double> defineNonNegativeDouble(String key, double defaultValue, String... tooltips) {
-        return defineNumber(key, ValueTypes.NON_NEGATIVE_DOUBLE, defaultValue, tooltips);
+        return defineNumber(key, ValueTypes.NON_NEGATIVE_DOUBLE, defaultValue, false, tooltips);
     }
 
     protected Value.ConfigValue<Double> defineFraction(String key, double defaultValue, String... tooltips) {
-        return defineNumber(key, ValueTypes.FRACTION, defaultValue, tooltips);
+        return defineNumber(key, ValueTypes.FRACTION, defaultValue, false, tooltips);
     }
 
     protected Value.ConfigValue<Integer> defineDuration(String key, int defaultValue, String... tooltips) {
-        return defineNumber(key, ValueTypes.DURATION, defaultValue, tooltips);
+        return defineNumber(key, ValueTypes.DURATION, defaultValue, false, tooltips);
     }
 
     @SuppressWarnings("SameParameterValue")
     protected Value.ConfigValue<Integer> defineEnchantmentLevel(String key, int defaultValue, String... tooltips) {
-        return defineNumber(key, ValueTypes.ENCHANTMENT_LEVEL, defaultValue, tooltips);
+        return defineNumber(key, ValueTypes.ENCHANTMENT_LEVEL, defaultValue, false, tooltips);
     }
 
     protected Value.ConfigValue<Integer> defineMobEffectLevel(String key, int defaultValue, String... tooltips) {
-        return defineNumber(key, ValueTypes.MOB_EFFECT_LEVEL, defaultValue, tooltips);
+        return defineNumber(key, ValueTypes.MOB_EFFECT_LEVEL, defaultValue, false, tooltips);
     }
 
-    private <T extends Number & Comparable<T>> Value.ConfigValue<T> defineNumber(String key, NumberValueType<T> type, T defaultValue, String... tooltips) {
-        Value.ConfigValue<T> value = createValue(key, type, defaultValue, tooltips);
+    private <T extends Number & Comparable<T>> Value.ConfigValue<T> defineNumber(String key, NumberValueType<T> type, T defaultValue, boolean requiresRestart, String... tooltips) {
+        Value.ConfigValue<T> value = createValue(key, type, defaultValue, requiresRestart, tooltips);
         spec.defineInRange(key, defaultValue, type.getMin(), type.getMax());
         return value;
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected <T extends Enum<T> & StringRepresentable> Value.ConfigValue<T> defineEnum(String key, EnumValueType<T> type, T defaultValue, String... tooltips) {
-        Value.ConfigValue<T> value = createValue(key, type, defaultValue, tooltips);
+    protected <T extends Enum<T> & StringRepresentable> Value.ConfigValue<T> defineEnum(String key, EnumValueType<T> type, T defaultValue, boolean requiresRestart, String... tooltips) {
+        Value.ConfigValue<T> value = createValue(key, type, defaultValue, requiresRestart, tooltips);
         List<String> allowedValues = new ArrayList<>();
         allowedValues.addAll(type.getValues().stream().map(StringRepresentable::getSerializedName).toList());
         allowedValues.addAll(type.getValues().stream().map(StringRepresentable::getSerializedName).map(String::toUpperCase).toList());
@@ -227,8 +227,8 @@ public abstract class ConfigManager {
         return value;
     }
 
-    protected <T> Value.ConfigValue<T> createValue(String key, ValueType<T, ?> type, T defaultValue, String... tooltips) {
-        Value.ConfigValue<T> value = new Value.ConfigValue<>(type, key, defaultValue);
+    protected <T> Value.ConfigValue<T> createValue(String key, ValueType<T, ?> type, T defaultValue, boolean requiresRestart, String... tooltips) {
+        Value.ConfigValue<T> value = new Value.ConfigValue<>(type, key, defaultValue, requiresRestart);
         values.put(key, value);
         this.tooltips.put(key, List.of(tooltips));
         if (!this.typeToValues.containsKey(type)) {

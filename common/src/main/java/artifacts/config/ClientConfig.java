@@ -4,13 +4,13 @@ import java.util.function.Supplier;
 
 public class ClientConfig extends ConfigManager {
 
-    public final Supplier<Boolean> showFirstPersonGloves = defineBool("showFirstPersonGloves", true,
+    public final Supplier<Boolean> showFirstPersonGloves = defineBool("showFirstPersonGloves", true, false,
             "Whether models for gloves are shown in first person");
-    public final Supplier<Boolean> showTooltips = defineBool("showTooltips", true,
+    public final Supplier<Boolean> showTooltips = defineBool("showTooltips", true, false,
             "Whether artifacts have tooltips explaining their effects");
-    public final Supplier<Boolean> useModdedMimicTextures = defineBool("useModdedMimicTextures", true,
+    public final Supplier<Boolean> useModdedMimicTextures = defineBool("useModdedMimicTextures", true, false,
             "Whether mimics can use textures from Lootr or Quark");
-    public final Supplier<Boolean> enableCooldownOverlay = defineBool("enableCooldownOverlay", false,
+    public final Supplier<Boolean> enableCooldownOverlay = defineBool("enableCooldownOverlay", false, false,
             "Display artifacts on cooldown next to the hotbar");
     public final Supplier<Integer> cooldownOverlayOffset = defineInt("cooldownOverlayOffset", 10,
             "Location of the artifact cooldown gui element",

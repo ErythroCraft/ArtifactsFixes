@@ -95,7 +95,9 @@ public class ArtifactsConfigScreen {
     }
 
     private <T> FieldBuilder<?, ?, ?> createConfigEntry(ConfigManager config, Value.ConfigValue<T> value, Component title) {
-        return value.type().getConfigEntryFactory().createConfigEntry(config, builder.entryBuilder(), title, value);
+        FieldBuilder<?, ?, ?> configEntry = value.type().getConfigEntryFactory().createConfigEntry(config, builder.entryBuilder(), title, value);
+        configEntry.requireRestart(value.requiresRestart());
+        return configEntry;
     }
 
     private static Component getTitle(String categoryKey) {
