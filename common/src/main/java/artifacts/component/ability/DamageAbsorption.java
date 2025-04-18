@@ -37,7 +37,7 @@ public record DamageAbsorption(Value<Double> absorptionRatio, Value<Double> abso
         if (Mth.equal(absorptionChance.get(), 1)) {
             writer.add("constant");
         } else {
-            writer.add("chance");
+            writer.add("chance", Math.round(absorptionChance.get() * 100));
         }
     }
 }

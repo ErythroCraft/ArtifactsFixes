@@ -62,7 +62,7 @@ public abstract class RetaliationEffect implements EquipmentAbility {
         if (Mth.equal(strikeChance().get(), 1)) {
             writer.add(name + ".constant");
         } else {
-            writer.add(name + ".chance", Math.round(strikeChance().get() * 100) + "%");
+            writer.add(name + ".chance", Math.round(strikeChance().get() * 100));
         }
     }
 

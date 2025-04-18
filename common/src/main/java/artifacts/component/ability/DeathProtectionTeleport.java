@@ -93,11 +93,12 @@ public record DeathProtectionTeleport(Value<Double> teleportationChance, Value<I
     }
 
     @Override
-    public void addToTooltip(TooltipWriter writer) {if (Mth.equal(teleportationChance().get(), 0)) {
-        writer.add("constant");
-    } else {
-        writer.add("chance");
-    }
+    public void addToTooltip(TooltipWriter writer) {
+        if (Mth.equal(teleportationChance().get(), 1)) {
+            writer.add("constant");
+        } else {
+            writer.add("chance", Math.round(teleportationChance().get() * 100));
+        }
         if (!consumedOnUse().get()) {
             writer.add("not_consumed");
         }

@@ -193,7 +193,7 @@ public class TooltipHelper {
         if (Mth.equal(chance, 1)) {
             tooltip.accept(Component.translatable("artifacts.tooltip.plus_mob_effect", mutableComponent).withStyle(mobEffect.getCategory().getTooltipFormatting()));
         } else {
-            tooltip.accept(Component.translatable("artifacts.tooltip.plus_mob_effect_chance", mutableComponent, (int) (chance * 100) + "%").withStyle(mobEffect.getCategory().getTooltipFormatting()));
+            tooltip.accept(Component.translatable("artifacts.tooltip.plus_mob_effect_chance", mutableComponent, Math.round(chance * 100)).withStyle(mobEffect.getCategory().getTooltipFormatting()));
         }
     }
 
