@@ -58,8 +58,7 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Flame Pendant grants Fire Resistance after igniting an entity"),
             rootedBootsGrowPlantsAfterEating = defineBool(createKey(ModItems.ROOTED_BOOTS, "growPlantsAfterEating"),
                     "Whether the Rooted Boots apply a bone meal effect after eating food"),
-            // TODO fix name
-            scarfOfInvisibilityHideWhenInvisible = defineBool(createKey(ModItems.SCARF_OF_INVISIBILITY, "hide_when_invisible"), false, false,
+            scarfOfInvisibilityHideWhenInvisible = defineBool(createKey(ModItems.SCARF_OF_INVISIBILITY, "hideWhenInvisible"), false, false,
                     "Whether the Scarf of Invisibility is hidden when the wearer is invisible"),
             shockPendantCancelLightningDamage = defineBool(createKey(ModItems.SHOCK_PENDANT, "cancelLightningDamage"),
                     "Whether the Shock Pendant cancels damage from lightning"),
