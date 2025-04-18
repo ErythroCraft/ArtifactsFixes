@@ -109,19 +109,20 @@ public class ModDataComponents {
                 MOB_EFFECTS
         ));
         TOOLTIP_ORDER.addAll(List.of(
+                TOOL_TIER_UPGRADE,
+                DOUBLE_JUMP,
+                MOB_EFFECTS,
+                ENCHANTMENT_LEVEL_MODIFIERS,
+                ATTRIBUTE_MODIFIERS,
                 POST_DAMAGE_EFFECTS,
                 POST_EATING_EFFECTS,
-                DAMAGE_ABSORPTION,
                 ATTACK_EFFECTS,
-                ATTRIBUTE_MODIFIERS,
-                DAMAGE_IMMUNITY,
-                DOUBLE_JUMP,
-                ENDER_PEARL_HUNGER_COST,
-                POST_EATING_PLANT_GROWTH,
-                ENCHANTMENT_LEVEL_MODIFIERS,
-                MOB_EFFECTS,
-                ENDER_PEARL_DAMAGE_IMMUNITY,
+                RETALIATION_EFFECTS,
                 CURE_EFFECTS,
+                DAMAGE_ABSORPTION,
+                DEATH_PROTECTION_TELEPORT,
+                ENDER_PEARL_HUNGER_COST,
+                ENDER_PEARL_DAMAGE_IMMUNITY,
                 REPLENISH_HUNGER_ON_GRASS,
                 CREEPER_REPELLENT,
                 PHANTOM_REPELLENT,
@@ -129,10 +130,9 @@ public class ModDataComponents {
                 AUTO_SMELT,
                 FLUID_COLLISION,
                 SWIM_IN_AIR,
-                DEATH_PROTECTION_TELEPORT,
-                RETALIATION_EFFECTS,
-                TOOL_TIER_UPGRADE,
-                WALK_ON_POWDER_SNOW
+                WALK_ON_POWDER_SNOW,
+                DAMAGE_IMMUNITY,
+                POST_EATING_PLANT_GROWTH
         ));
         APPLIES_COOLDOWN.addAll(Set.of(
                 POST_DAMAGE_COOLDOWN,
