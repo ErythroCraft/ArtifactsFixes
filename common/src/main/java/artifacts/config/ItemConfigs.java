@@ -37,8 +37,6 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Eternal Steak can be eaten"),
             everlastingBeefEnabled = defineBool(createKey(ModItems.EVERLASTING_BEEF, "enabled"),
                     "Whether the Everlasting Beef can be eaten"),
-            kittySlippersEnabled = defineBool(createKey(ModItems.KITTY_SLIPPERS, "enabled"),
-                    "Whether the Kitty Slippers scare nearby creepers and phantoms"),
             pickaxeHeaterEnabled = defineBool(createKey(ModItems.PICKAXE_HEATER, "enabled"),
                     "Whether the Pickaxe Heater smelts mined ores"),
             rootedBootsEnabled = defineBool(createKey(ModItems.ROOTED_BOOTS, "enabled"),
@@ -67,8 +65,7 @@ public class ItemConfigs extends ConfigManager {
             snowshoesAllowWalkingOnPowderedSnow = defineBool(createKey(ModItems.SNOWSHOES, "allowWalkingOnPowderedSnow"),
                     "Whether the Snowshoes allow the wearer to walk on powdered snow"),
             striderShoesCancelHotFloorDamage = defineBool(createKey(ModItems.STRIDER_SHOES, "cancelHotFloorDamage"),
-                    "Whether the Strider Shoes make the wearer immune to hot floor damage"
-            ),
+                    "Whether the Strider Shoes make the wearer immune to hot floor damage"),
             umbrellaIsShield = defineBool(createKey(ModItems.UMBRELLA, "isShield"),
                     "Whether the Umbrella can be used as a shield"),
             umbrellaIsGlider = defineBool(createKey(ModItems.UMBRELLA, "isGlider"),
@@ -78,7 +75,11 @@ public class ItemConfigs extends ConfigManager {
             bunnyHoppersModifyHurtSounds = defineBool(createKey(ModItems.BUNNY_HOPPERS, "modifyHurtSounds"),
                     "Whether the Bunny Hoppers change the player's hurt sounds"),
             kittySlippersModifyHurtSounds = defineBool(createKey(ModItems.KITTY_SLIPPERS, "modifyHurtSounds"),
-                    "Whether the Kitty Slippers change the player's hurt sounds");
+                    "Whether the Kitty Slippers change the player's hurt sounds"),
+            kittySlippersRepelCreepers = defineBool(createKey(ModItems.KITTY_SLIPPERS, "repelCreepers"),
+                    "Whether the Kitty Slippers scare nearby creepers"),
+            kittySlippersRepelPhantoms = defineBool(createKey(ModItems.KITTY_SLIPPERS, "repelPhantoms"),
+                    "Whether the Kitty Slippers hiss at nearby phantoms");
 
     public final Value.ConfigValue<Double>
             cloudInABottleSprintJumpVerticalVelocity = defineNonNegativeDouble(createKey(ModItems.CLOUD_IN_A_BOTTLE, "sprintJumpVerticalVelocity"), 0.25,

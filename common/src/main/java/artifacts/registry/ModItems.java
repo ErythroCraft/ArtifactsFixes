@@ -311,9 +311,8 @@ public class ModItems {
     );
     public static final Holder<Item> KITTY_SLIPPERS = wearableItem("kitty_slippers", builder -> builder
             .equipSound(SoundEvents.CAT_AMBIENT)
-            // TODO (>1.21.1) rename to repelCreepers, add repelPhantoms config
-            .component(ModDataComponents.CREEPER_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersEnabled)
-            .component(ModDataComponents.PHANTOM_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersEnabled)
+            .component(ModDataComponents.CREEPER_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersRepelCreepers)
+            .component(ModDataComponents.PHANTOM_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersRepelPhantoms)
             .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT), Artifacts.CONFIG.items.kittySlippersModifyHurtSounds))
     );
     public static final Holder<Item> RUNNING_SHOES = wearableItem("running_shoes", builder -> builder
