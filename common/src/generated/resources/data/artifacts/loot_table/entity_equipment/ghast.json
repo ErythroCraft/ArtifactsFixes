@@ -9,28 +9,24 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:plastic_drinking_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/anglers_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:anglers_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/cowboy_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:cowboy_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/villager_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:villager_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/night_vision_goggles"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:night_vision_goggles"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "artifacts:snorkel"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/snorkel"
         }
       ],
       "functions": [

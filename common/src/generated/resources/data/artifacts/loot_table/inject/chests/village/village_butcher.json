@@ -11,8 +11,8 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:everlasting_beef"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/everlasting_beef"
         }
       ],
       "rolls": 1.0

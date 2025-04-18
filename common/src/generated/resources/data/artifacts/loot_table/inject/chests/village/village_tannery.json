@@ -11,30 +11,30 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:umbrella",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/umbrella",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:whoopee_cushion",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/whoopee_cushion",
           "weight": 2
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:kitty_slippers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/kitty_slippers"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:bunny_hoppers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/bunny_hoppers"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:scarf_of_invisibility"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/scarf_of_invisibility"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:anglers_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/anglers_hat"
         }
       ],
       "rolls": 1.0

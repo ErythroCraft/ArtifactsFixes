@@ -11,8 +11,8 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:chorus_totem",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/chorus_totem",
           "weight": 2
         },
         {

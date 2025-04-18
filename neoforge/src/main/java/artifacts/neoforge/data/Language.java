@@ -164,6 +164,8 @@ public class Language extends LanguageProvider {
         add(configTitle(), "Artifacts Config");
         add("artifacts.config.enabled.title", "Enabled");
         add("artifacts.config.cooldown.title", "Cooldown");
+        add("artifacts.config.generateAsLoot.title", "Generate as loot");
+        add("artifacts.config.generateAsLoot.description", "Whether this item can be found in structures or drop from entities");
         for (ConfigManager config : Artifacts.CONFIG.configs) {
             add(configTitle(config.getName()), fromCamelCasedString(config.getName()));
             addConfigNames(config);

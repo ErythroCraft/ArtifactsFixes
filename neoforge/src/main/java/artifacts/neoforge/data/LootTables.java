@@ -1,11 +1,14 @@
 package artifacts.neoforge.data;
 
 import artifacts.Artifacts;
+import artifacts.config.value.Value;
 import artifacts.entity.MimicEntity;
 import artifacts.loot.ArtifactRarityAdjustedChance;
+import artifacts.loot.ConfigValueCondition;
 import artifacts.registry.ModItems;
 import artifacts.world.CampsiteFeature;
 import com.google.common.base.Preconditions;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -17,10 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
-import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.entries.*;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
@@ -43,29 +43,27 @@ public class LootTables extends LootTableProvider {
 
     private final ExistingFileHelper existingFileHelper;
     private final LootModifiers lootModifiers;
-    private final CompletableFuture<HolderLookup.Provider> registries;
 
     public LootTables(PackOutput packOutput, ExistingFileHelper existingFileHelper, LootModifiers lootModifiers, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(packOutput, Set.of(), List.of(), lookupProvider);
         this.existingFileHelper = existingFileHelper;
         this.lootModifiers = lootModifiers;
-        this.registries = lookupProvider;
     }
 
     @Override
     public List<SubProviderEntry> getTables() {
         tables.clear();
         addDrinkingHatsLootTable();
+        addItemLootTables();
         addArtifactsLootTable();
         addChestLootTables();
-        new EntityEquipment(this).addLootTables(registries);
+        new EntityEquipment(this).addLootTables();
 
         for (LootModifiers.Builder lootBuilder : lootModifiers.lootBuilders) {
             addLootTable("inject/" + lootBuilder.getName(), provider -> lootBuilder.createLootTable(), lootBuilder.getParameterSet());
         }
 
         addLootTable(MimicEntity.LOOT_TABLE.location().getPath(), new LootTable.Builder().withPool(new LootPool.Builder().add(artifact(1))));
-
 
         return tables;
     }
@@ -90,12 +88,12 @@ public class LootTables extends LootTableProvider {
         ));
 
         LootPool.Builder builder = LootPool.lootPool().name("main").setRolls(ConstantValue.exactly(1));
-        items.forEach(item -> builder.add(item(item, 8)));
-        builder.add(drinkingHat(8))
-                .add(item(ModItems.UMBRELLA.value(), 5))
-                .add(item(ModItems.WHOOPEE_CUSHION.value(), 5))
-                .add(item(ModItems.HELIUM_FLAMINGO.value(), 4))
-                .add(item(ModItems.EVERLASTING_BEEF.value(), 2));
+        items.forEach(item -> builder.add(itemWhenEnabled(item, 8)));
+        builder.add(drinkingHatWhenEnabled(8))
+                .add(itemWhenEnabled(ModItems.UMBRELLA.value(), 5))
+                .add(itemWhenEnabled(ModItems.WHOOPEE_CUSHION.value(), 5))
+                .add(itemWhenEnabled(ModItems.HELIUM_FLAMINGO.value(), 4))
+                .add(itemWhenEnabled(ModItems.EVERLASTING_BEEF.value(), 2));
 
         addLootTable("artifact", LootTable.lootTable().withPool(builder));
     }
@@ -106,10 +104,39 @@ public class LootTables extends LootTableProvider {
                         LootPool.lootPool()
                                 .name("main")
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(item(ModItems.PLASTIC_DRINKING_HAT.value(), 3))
-                                .add(item(ModItems.NOVELTY_DRINKING_HAT.value(), 1))
+                                .add(AlternativesEntry.alternatives(
+                                        LootItem.lootTableItem(ModItems.PLASTIC_DRINKING_HAT.value()).setWeight(3).when(ConfigValueCondition.canGenerateAsLoot(ModItems.PLASTIC_DRINKING_HAT.value())),
+                                        EmptyLootItem.emptyItem().setWeight(3)
+                                ))
+                                .add(AlternativesEntry.alternatives(
+                                        LootItem.lootTableItem(ModItems.NOVELTY_DRINKING_HAT.value()).setWeight(1).when(ConfigValueCondition.canGenerateAsLoot(ModItems.NOVELTY_DRINKING_HAT.value())),
+                                        EmptyLootItem.emptyItem().setWeight(1)
+                                ))
                 )
         );
+    }
+
+    private void addItemLootTables() {
+        for (Holder<Item> item : ModItems.ITEMS.getEntries()) {
+            if (!List.of(
+                    ModItems.MIMIC_SPAWN_EGG.value(),
+                    ModItems.ETERNAL_STEAK.value(),
+                    ModItems.PLASTIC_DRINKING_HAT.value(),
+                    ModItems.NOVELTY_DRINKING_HAT.value()
+            ).contains(item.value())) {
+                addLootTable("items/%s".formatted(item.unwrapKey().orElseThrow().location().getPath()), LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .name("main")
+                                        .setRolls(ConstantValue.exactly(1))
+                                        .add(AlternativesEntry.alternatives(
+                                                LootItem.lootTableItem(item.value()).setWeight(1).when(ConfigValueCondition.canGenerateAsLoot(item.value())),
+                                                EmptyLootItem.emptyItem().setWeight(1)
+                                        ))
+                        )
+                );
+            }
+        }
     }
 
     private void addChestLootTables() {
@@ -314,8 +341,20 @@ public class LootTables extends LootTableProvider {
         );
     }
 
+    protected static LootPoolEntryContainer.Builder<?> itemWhenEnabled(Item item, int weight) {
+        return item(item, weight).when(ConfigValueCondition.canGenerateAsLoot(item));
+    }
+
     protected static LootPoolSingletonContainer.Builder<?> item(Item item, int weight) {
-        return LootItem.lootTableItem(item).setWeight(weight);
+        Value<Boolean> generatesAsLoot = Artifacts.CONFIG.items.generatesAsLoot(item);
+        if (generatesAsLoot == null) {
+            return LootItem.lootTableItem(item).setWeight(weight);
+        } else if (item == ModItems.PLASTIC_DRINKING_HAT.value() || item == ModItems.NOVELTY_DRINKING_HAT.value()) {
+            throw new IllegalArgumentException();
+        } else {
+            String itemName = BuiltInRegistries.ITEM.getKey(item).getPath();
+            return NestedLootTable.lootTableReference(Artifacts.key(Registries.LOOT_TABLE, "items/%s".formatted(itemName))).setWeight(weight);
+        }
     }
 
     protected static LootPoolSingletonContainer.Builder<?> item(Item item, int weight, int min, int max) {
@@ -328,6 +367,12 @@ public class LootTables extends LootTableProvider {
 
     protected static LootPoolEntryContainer.Builder<?> drinkingHat(int weight) {
         return lootTable("items/drinking_hat", weight);
+    }
+
+    protected static LootPoolEntryContainer.Builder<?> drinkingHatWhenEnabled(int weight) {
+        return lootTable("items/drinking_hat", weight)
+                .when(ConfigValueCondition.canGenerateAsLoot(ModItems.PLASTIC_DRINKING_HAT.value())
+                        .or(ConfigValueCondition.canGenerateAsLoot(ModItems.NOVELTY_DRINKING_HAT.value())));
     }
 
     private static LootPoolEntryContainer.Builder<?> lootTable(String lootTable, int weight) {

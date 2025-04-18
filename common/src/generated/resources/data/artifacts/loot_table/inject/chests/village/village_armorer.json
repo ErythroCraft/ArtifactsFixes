@@ -11,20 +11,20 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:steadfast_spikes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/steadfast_spikes"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:superstitious_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/superstitious_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:running_shoes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/running_shoes"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:vampiric_glove"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/vampiric_glove"
         }
       ],
       "rolls": 1.0

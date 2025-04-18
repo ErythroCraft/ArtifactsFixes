@@ -11,8 +11,8 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:whoopee_cushion"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/whoopee_cushion"
         }
       ],
       "rolls": 1.0

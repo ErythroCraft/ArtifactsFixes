@@ -11,36 +11,36 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:power_glove"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/power_glove"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:antidote_vessel"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/antidote_vessel"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:superstitious_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/superstitious_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:lucky_scarf"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/lucky_scarf"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:aqua_dashers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/aqua_dashers"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:helium_flamingo"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/helium_flamingo"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:rooted_boots"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/rooted_boots"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:pickaxe_heater"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/pickaxe_heater"
         }
       ],
       "rolls": 1.0

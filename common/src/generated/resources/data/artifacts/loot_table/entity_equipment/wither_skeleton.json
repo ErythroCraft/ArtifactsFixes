@@ -10,12 +10,12 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:fire_gauntlet"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/fire_gauntlet"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:antidote_vessel"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/antidote_vessel"
         }
       ],
       "rolls": 1.0

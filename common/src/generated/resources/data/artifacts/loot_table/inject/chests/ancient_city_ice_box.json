@@ -11,8 +11,8 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:snowshoes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/snowshoes"
         }
       ],
       "rolls": 1.0

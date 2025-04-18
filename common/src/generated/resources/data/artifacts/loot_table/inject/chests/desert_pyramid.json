@@ -11,48 +11,48 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:flame_pendant",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/flame_pendant",
           "weight": 2
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:thorn_pendant",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/thorn_pendant",
           "weight": 2
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:whoopee_cushion",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/whoopee_cushion",
           "weight": 2
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:charm_of_sinking",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/charm_of_sinking",
           "weight": 2
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:shock_pendant"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/shock_pendant"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:umbrella"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/umbrella"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:scarf_of_invisibility"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/scarf_of_invisibility"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:universal_attractor"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/universal_attractor"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:vampiric_glove"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/vampiric_glove"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:onion_ring"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/onion_ring"
         }
       ],
       "rolls": 1.0

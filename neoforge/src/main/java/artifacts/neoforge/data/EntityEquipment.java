@@ -15,8 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -25,7 +23,6 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 public class EntityEquipment {
 
@@ -36,7 +33,7 @@ public class EntityEquipment {
         this.lootTables = lootTables;
     }
 
-    public void addLootTables(CompletableFuture<HolderLookup.Provider> lookupProvider) {
+    public void addLootTables() {
         entityTypes.clear();
 
         addItems(EntityType.ZOMBIE,
@@ -53,9 +50,9 @@ public class EntityEquipment {
                 ModItems.FLIPPERS.value()
         );
         addEquipment(EntityType.SKELETON, LootPool.lootPool()
-                .add(item(ModItems.NIGHT_VISION_GOGGLES.value()))
+                .add(LootTables.item(ModItems.NIGHT_VISION_GOGGLES.value(), 1))
                 .add(LootTables.drinkingHat(1))
-                .add(item(ModItems.FLAME_PENDANT.value()))
+                .add(LootTables.item(ModItems.FLAME_PENDANT.value(), 1))
         );
         addItems(EntityType.STRAY,
                 ModItems.SNOWSHOES.value(),
@@ -80,32 +77,32 @@ public class EntityEquipment {
                 ModItems.STRIDER_SHOES.value()
         );
 
-        lookupProvider.thenAccept(registries -> {
-            LootPool.Builder pool = LootPool.lootPool();
-
-            for (Item item : List.of(
-                    ModItems.PLASTIC_DRINKING_HAT.value(),
-                    ModItems.ANGLERS_HAT.value(),
-                    ModItems.COWBOY_HAT.value(),
-                    ModItems.VILLAGER_HAT.value(),
-                    ModItems.NIGHT_VISION_GOGGLES.value(),
-                    ModItems.SNORKEL.value()
-            )) {
-                pool.add(item(item));
-            }
-            pool.apply(
-                    new SetEnchantmentsFunction.Builder().withEnchantment(registries.holderOrThrow(Enchantments.VANISHING_CURSE), ConstantValue.exactly(1))
-            ).apply(
-                    SetComponentsFunction.setComponent(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false)
-            );
-            LootTable.Builder builder = LootTable.lootTable().withPool(pool.when(IsAprilFools.builder()));
-            lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(EntityType.GHAST).location().getPath(), provider -> builder, LootContextParamSets.ALL_PARAMS);
-        });
+        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(EntityType.GHAST).location().getPath(), this::ghastLoot, LootContextParamSets.ALL_PARAMS);
         entityTypes.add(EntityType.GHAST);
 
         if (!entityTypes.equals(ModLootTables.ENTITY_EQUIPMENT.keySet())) {
             throw new IllegalStateException(Sets.symmetricDifference(entityTypes, ModLootTables.ENTITY_EQUIPMENT.keySet()).toString());
         }
+    }
+
+    private LootTable.Builder ghastLoot(HolderLookup.Provider registries) {
+        LootPool.Builder pool = LootPool.lootPool();
+
+        for (Item item : List.of(
+                ModItems.ANGLERS_HAT.value(),
+                ModItems.COWBOY_HAT.value(),
+                ModItems.VILLAGER_HAT.value(),
+                ModItems.NIGHT_VISION_GOGGLES.value(),
+                ModItems.SNORKEL.value()
+        )) {
+            pool.add(LootTables.item(item, 1));
+        }
+        pool.apply(
+                new SetEnchantmentsFunction.Builder().withEnchantment(registries.holderOrThrow(Enchantments.VANISHING_CURSE), ConstantValue.exactly(1))
+        ).apply(
+                SetComponentsFunction.setComponent(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false)
+        );
+        return LootTable.lootTable().withPool(pool.when(IsAprilFools.builder()));
     }
 
     public void addItems(EntityType<?> entityType, Item... items) {
@@ -115,16 +112,12 @@ public class EntityEquipment {
         LootPool.Builder pool = LootPool.lootPool();
         for (Item item : items) {
             if (item == ModItems.SCARF_OF_INVISIBILITY.value()) {
-                pool.add(item(item).apply(SetComponentsFunction.setComponent(ModDataComponents.HIDE_WHEN_INVISIBLE.get(), Value.of(false))));
+                pool.add(LootTables.item(item, 1).apply(SetComponentsFunction.setComponent(ModDataComponents.HIDE_WHEN_INVISIBLE.get(), Value.of(false))));
             } else {
-                pool.add(item(item));
+                pool.add(LootTables.item(item, 1));
             }
         }
         addEquipment(entityType, pool);
-    }
-
-    protected static LootPoolSingletonContainer.Builder<?> item(Item item) {
-        return LootItem.lootTableItem(item).setWeight(1);
     }
 
     public void addEquipment(EntityType<?> entityType, LootPool.Builder pool) {

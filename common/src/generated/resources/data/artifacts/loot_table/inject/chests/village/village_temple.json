@@ -11,20 +11,20 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:cross_necklace"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/cross_necklace"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:antidote_vessel"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/antidote_vessel"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:charm_of_sinking"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/charm_of_sinking"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:warp_drive"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/warp_drive"
         }
       ],
       "rolls": 1.0

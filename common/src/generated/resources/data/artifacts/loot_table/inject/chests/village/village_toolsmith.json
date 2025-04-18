@@ -11,12 +11,12 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:digging_claws"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/digging_claws"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:pocket_piston"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/pocket_piston"
         }
       ],
       "rolls": 1.0

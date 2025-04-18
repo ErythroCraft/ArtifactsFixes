@@ -10,12 +10,12 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:vampiric_glove"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/vampiric_glove"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:thorn_pendant"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/thorn_pendant"
         }
       ],
       "rolls": 1.0

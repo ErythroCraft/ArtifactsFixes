@@ -46,8 +46,7 @@ public class ReplaceWithLootTableFunction extends LootItemConditionalFunction {
         if (loot.size() > 1) {
             Artifacts.LOGGER.warn("Loot table {} in roll_loot_table function generated more than 1 item", lootTable.toString());
         } else if (loot.isEmpty()) {
-            Artifacts.LOGGER.warn("Failed to generate any loot from loot table {}", lootTable.toString());
-            return ItemStack.EMPTY;
+            return stack;
         }
         return loot.getFirst();
     }

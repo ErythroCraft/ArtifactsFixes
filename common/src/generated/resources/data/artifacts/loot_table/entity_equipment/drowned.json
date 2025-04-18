@@ -10,12 +10,12 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:snorkel"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/snorkel"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:flippers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/flippers"
         }
       ],
       "rolls": 1.0

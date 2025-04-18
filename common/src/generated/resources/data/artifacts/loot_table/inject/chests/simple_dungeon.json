@@ -11,20 +11,20 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:charm_of_shrinking"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/charm_of_shrinking"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:warp_drive"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/warp_drive"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:withered_bracelet"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/withered_bracelet"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:strider_shoes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/strider_shoes"
         }
       ],
       "rolls": 1.0

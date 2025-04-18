@@ -5,28 +5,28 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:aqua_dashers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/aqua_dashers"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:onion_ring"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/onion_ring"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:running_shoes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/running_shoes"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:bunny_hoppers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/bunny_hoppers"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:vampiric_glove"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/vampiric_glove"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:strider_shoes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/strider_shoes"
         }
       ],
       "rolls": 1.0

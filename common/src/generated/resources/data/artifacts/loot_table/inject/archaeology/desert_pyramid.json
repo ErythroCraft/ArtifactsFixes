@@ -5,32 +5,32 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:cowboy_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/cowboy_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:obsidian_skull"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/obsidian_skull"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:snorkel"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/snorkel"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:power_glove"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/power_glove"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:kitty_slippers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/kitty_slippers"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:night_vision_goggles"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/night_vision_goggles"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:shock_pendant"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/shock_pendant"
         }
       ],
       "rolls": 1.0

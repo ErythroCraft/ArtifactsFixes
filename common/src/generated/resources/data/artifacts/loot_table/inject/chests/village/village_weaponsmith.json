@@ -11,13 +11,13 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:feral_claws",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/feral_claws",
           "weight": 2
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:charm_of_shrinking"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/charm_of_shrinking"
         }
       ],
       "rolls": 1.0

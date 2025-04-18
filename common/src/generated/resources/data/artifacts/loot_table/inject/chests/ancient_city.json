@@ -11,36 +11,36 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:rooted_boots"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/rooted_boots"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:pickaxe_heater"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/pickaxe_heater"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:onion_ring"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/onion_ring"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:aqua_dashers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/aqua_dashers"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:charm_of_sinking"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/charm_of_sinking"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:shock_pendant"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/shock_pendant"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:helium_flamingo"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/helium_flamingo"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:warp_drive"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/warp_drive"
         }
       ],
       "rolls": 1.0

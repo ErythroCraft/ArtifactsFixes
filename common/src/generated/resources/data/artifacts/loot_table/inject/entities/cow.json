@@ -14,7 +14,7 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
+          "type": "minecraft:loot_table",
           "functions": [
             {
               "conditions": [
@@ -31,7 +31,7 @@
               "function": "minecraft:furnace_smelt"
             }
           ],
-          "name": "artifacts:everlasting_beef"
+          "value": "artifacts:items/everlasting_beef"
         }
       ],
       "rolls": 1.0

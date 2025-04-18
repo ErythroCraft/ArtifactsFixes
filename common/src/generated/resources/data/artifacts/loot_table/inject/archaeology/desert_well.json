@@ -5,24 +5,24 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:charm_of_sinking"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/charm_of_sinking"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:universal_attractor"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/universal_attractor"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:superstitious_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/superstitious_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:umbrella"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/umbrella"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:warp_drive"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/warp_drive"
         },
         {
           "type": "minecraft:loot_table",

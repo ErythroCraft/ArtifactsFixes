@@ -39,7 +39,14 @@ public class RollLootTableModifier extends LootModifier {
     @SuppressWarnings("deprecation")
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         if (replace) {
-            generatedLoot.clear();
+            ObjectArrayList<ItemStack> stacks = new ObjectArrayList<>(1);
+            context.getResolver().get(Registries.LOOT_TABLE, lootTable).ifPresent(
+                    table -> table.value().getRandomItemsRaw(context, stacks::add));
+            if (!stacks.isEmpty()) {
+                return stacks;
+            } else {
+                return generatedLoot;
+            }
         }
         context.getResolver().get(Registries.LOOT_TABLE, lootTable).ifPresent(
                 table -> table.value().getRandomItemsRaw(context, generatedLoot::add)

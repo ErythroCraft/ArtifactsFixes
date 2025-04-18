@@ -11,58 +11,58 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:snorkel",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/snorkel",
           "weight": 5
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:flippers",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/flippers",
           "weight": 5
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:umbrella",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/umbrella",
           "weight": 5
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:golden_hook",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/golden_hook",
           "weight": 5
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:feral_claws",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/feral_claws",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:digging_claws",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/digging_claws",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:kitty_slippers",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/kitty_slippers",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:bunny_hoppers",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/bunny_hoppers",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:lucky_scarf",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/lucky_scarf",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:aqua_dashers",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/aqua_dashers",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:anglers_hat",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/anglers_hat",
           "weight": 3
         },
         {

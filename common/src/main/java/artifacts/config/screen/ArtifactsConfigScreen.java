@@ -14,10 +14,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ArtifactsConfigScreen {
 
@@ -58,7 +55,10 @@ public class ArtifactsConfigScreen {
 
     private void addConfigs(ConfigManager config) {
         ConfigCategory configBuilder = builder.getOrCreateCategory(getTitle(config.getName()));
-        config.getValues().keySet().stream().sorted().forEach(key -> {
+        config.getValues().keySet()
+                .stream().sorted()
+                .sorted(Comparator.comparing(key -> !key.endsWith("generateAsLoot")))
+                .forEach(key -> {
             String[] names = key.split("\\.");
             Value.ConfigValue<?> value = config.getValues().get(key);
             AbstractConfigListEntry<?> field = createField(config, config.getName(), key, value, config.getDescription(key).size());
@@ -83,7 +83,7 @@ public class ArtifactsConfigScreen {
         String[] names = key.split("\\.");
         key = categoryName + '.' + key;
         String name = names[names.length - 1];
-        name = name.equals("cooldown") || name.equals("enabled") ? name : key;
+        name = name.equals("cooldown") || name.equals("enabled") || name.equals("generateAsLoot") ? name : key;
         Component[] tooltips = getTooltips(key, tooltipCount);
         FieldBuilder<?, ?, ?> configEntry = createConfigEntry(config, value, getTitle(name));
         if (configEntry instanceof AbstractFieldBuilder<?,?,?> fieldBuilder) {

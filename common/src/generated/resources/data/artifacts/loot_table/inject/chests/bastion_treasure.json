@@ -16,35 +16,35 @@
           "weight": 6
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:golden_hook",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/golden_hook",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:cross_necklace",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/cross_necklace",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:fire_gauntlet",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/fire_gauntlet",
           "weight": 2
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:steadfast_spikes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/steadfast_spikes"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:panic_necklace"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/panic_necklace"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:crystal_heart"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/crystal_heart"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:antidote_vessel"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/antidote_vessel"
         }
       ],
       "rolls": 1.0

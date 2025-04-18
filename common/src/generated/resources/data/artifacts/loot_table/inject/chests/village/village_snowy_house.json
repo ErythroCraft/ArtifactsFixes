@@ -11,12 +11,12 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:villager_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/villager_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:snowshoes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/snowshoes"
         }
       ],
       "rolls": 1.0

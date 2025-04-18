@@ -11,8 +11,8 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:villager_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/villager_hat"
         }
       ],
       "rolls": 1.0

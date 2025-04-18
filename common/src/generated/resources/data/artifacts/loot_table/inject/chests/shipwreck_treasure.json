@@ -11,49 +11,49 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:golden_hook",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/golden_hook",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:snorkel"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/snorkel"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:flippers"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/flippers"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:scarf_of_invisibility"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/scarf_of_invisibility"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:steadfast_spikes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/steadfast_spikes"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:universal_attractor"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/universal_attractor"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:feral_claws"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/feral_claws"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:night_vision_goggles"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/night_vision_goggles"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:obsidian_skull"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/obsidian_skull"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:running_shoes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/running_shoes"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:charm_of_sinking"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/charm_of_sinking"
         }
       ],
       "rolls": 1.0

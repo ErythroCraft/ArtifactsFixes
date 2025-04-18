@@ -16,33 +16,33 @@
           "weight": 5
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:bunny_hoppers",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/bunny_hoppers",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:flame_pendant",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/flame_pendant",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:cowboy_hat",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/cowboy_hat",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:pickaxe_heater",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/pickaxe_heater",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:withered_bracelet",
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/withered_bracelet",
           "weight": 3
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:everlasting_beef"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/everlasting_beef"
         }
       ],
       "rolls": 1.0

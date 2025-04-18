@@ -11,44 +11,44 @@
       ],
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "artifacts:panic_necklace"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/panic_necklace"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:pocket_piston"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/pocket_piston"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:steadfast_spikes"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/steadfast_spikes"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:power_glove"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/power_glove"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:cross_necklace"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/cross_necklace"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:scarf_of_invisibility"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/scarf_of_invisibility"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:crystal_heart"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/crystal_heart"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:cloud_in_a_bottle"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/cloud_in_a_bottle"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:superstitious_hat"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/superstitious_hat"
         },
         {
-          "type": "minecraft:item",
-          "name": "artifacts:rooted_boots"
+          "type": "minecraft:loot_table",
+          "value": "artifacts:items/rooted_boots"
         }
       ],
       "rolls": 1.0

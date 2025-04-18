@@ -7,13 +7,22 @@ import artifacts.config.value.ValueTypes;
 import artifacts.network.NetworkHandler;
 import artifacts.network.UpdateItemConfigPacket;
 import artifacts.registry.ModItems;
+import artifacts.registry.RegistryHolder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 // TODO marking a value as requiring a restart causes the entire category to require a restart https://github.com/shedaniel/cloth-config/issues/153
 public class ItemConfigs extends ConfigManager {
+
+    private final Map<ResourceKey<Item>, Value.ConfigValue<Boolean>> generateAsLoot = new HashMap<>();
 
     public final Value.ConfigValue<Boolean>
             antidoteVesselEnabled = defineBool(createKey(ModItems.ANTIDOTE_VESSEL, "enabled"),
@@ -49,6 +58,7 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Flame Pendant grants Fire Resistance after igniting an entity"),
             rootedBootsGrowPlantsAfterEating = defineBool(createKey(ModItems.ROOTED_BOOTS, "growPlantsAfterEating"),
                     "Whether the Rooted Boots apply a bone meal effect after eating food"),
+            // TODO fix name
             scarfOfInvisibilityHideWhenInvisible = defineBool(createKey(ModItems.SCARF_OF_INVISIBILITY, "hide_when_invisible"), false, false,
                     "Whether the Scarf of Invisibility is hidden when the wearer is invisible"),
             shockPendantCancelLightningDamage = defineBool(createKey(ModItems.SHOCK_PENDANT, "cancelLightningDamage"),
@@ -238,10 +248,25 @@ public class ItemConfigs extends ConfigManager {
 
     protected ItemConfigs() {
         super("items");
+        for (RegistryHolder<Item, ?> entry : ModItems.ITEMS.getEntries()) {
+            if (entry != ModItems.ETERNAL_STEAK && entry != ModItems.MIMIC_SPAWN_EGG) {
+                generateAsLoot.put(entry.unwrapKey().orElseThrow(), defineBool(createKey(entry, "generateAsLoot"),
+                        "Whether this item can be found in structures or drop from entities"
+                ));
+            }
+        }
     }
 
     private static String createKey(Holder<? extends Item> holder, String name) {
         return holder.unwrapKey().orElseThrow().location().getPath() + '.' + name;
+    }
+
+    public Value<Boolean> generatesAsLoot(Item item) {
+        Optional<ResourceKey<Item>> key = BuiltInRegistries.ITEM.getResourceKey(item);
+        if (key.isEmpty() || !generateAsLoot.containsKey(key.get())) {
+            return null;
+        }
+        return generateAsLoot.get(key.get());
     }
 
     @Override
