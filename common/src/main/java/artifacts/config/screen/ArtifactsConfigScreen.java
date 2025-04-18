@@ -115,7 +115,11 @@ public class ArtifactsConfigScreen {
                 tooltips[i] = Component.translatable("%s.config.%s.description.%s".formatted(Artifacts.MOD_ID, name, i));
             }
         } else {
-            tooltips[0] = Component.translatable("%s.config.%s.description".formatted(Artifacts.MOD_ID, name));
+            if (name.endsWith("generateAsLoot")) {
+                tooltips[0] = Component.translatable("%s.config.%s.description".formatted(Artifacts.MOD_ID, "generateAsLoot"));
+            } else {
+                tooltips[0] = Component.translatable("%s.config.%s.description".formatted(Artifacts.MOD_ID, name));
+            }
         }
         return tooltips;
     }

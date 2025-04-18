@@ -307,14 +307,14 @@ public class ModItems {
             .addAttributeModifier(Attributes.JUMP_STRENGTH, Artifacts.CONFIG.items.bunnyHoppersJumpStrengthBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(Attributes.FALL_DAMAGE_MULTIPLIER, Artifacts.CONFIG.items.bunnyHoppersFallDamageMultiplier, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(Attributes.SAFE_FALL_DISTANCE, Artifacts.CONFIG.items.bunnyHoppersSafeFallDistanceBonus, AttributeModifier.Operation.ADD_VALUE)
-            .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.RABBIT_HURT)))
+            .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.RABBIT_HURT), Artifacts.CONFIG.items.bunnyHoppersModifyHurtSounds))
     );
     public static final Holder<Item> KITTY_SLIPPERS = wearableItem("kitty_slippers", builder -> builder
             .equipSound(SoundEvents.CAT_AMBIENT)
             // TODO (>1.21.1) rename to repelCreepers, add repelPhantoms config
             .component(ModDataComponents.CREEPER_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersEnabled)
             .component(ModDataComponents.PHANTOM_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersEnabled)
-            .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT)))
+            .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT), Artifacts.CONFIG.items.kittySlippersModifyHurtSounds))
     );
     public static final Holder<Item> RUNNING_SHOES = wearableItem("running_shoes", builder -> builder
             .addAttributeModifier(ModAttributes.SPRINTING_SPEED, Artifacts.CONFIG.items.runningShoesSprintingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)

@@ -1,6 +1,5 @@
 package artifacts.event;
 
-import artifacts.Artifacts;
 import artifacts.attribute.DynamicAttributeModifier;
 import artifacts.component.SwimData;
 import artifacts.component.ability.PostDamageCooldown;
@@ -146,9 +145,11 @@ public class ArtifactHooks {
     }
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
-        if (Artifacts.CONFIG.general.modifyHurtSounds.get()) {
-            EquipmentHelper.iterateComponents(ModDataComponents.HURT_SOUND.get(), entity, (stack, ability) -> entity.playSound(ability.soundEvent().value(), volume, pitch));
-        }
+        EquipmentHelper.iterateComponents(ModDataComponents.HURT_SOUND.get(), entity, (stack, ability) -> {
+            if (ability.enabled().get()) {
+                entity.playSound(ability.soundEvent().value(), volume, pitch);
+            }
+        });
     }
 
     public static ItemStack applySmeltOresAbility(ItemStack original, @Nullable Entity entity, @Nullable BlockState state, Consumer<Integer> experienceConsumer) {

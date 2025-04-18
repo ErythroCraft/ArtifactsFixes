@@ -9,16 +9,11 @@ public class GeneralConfig extends ConfigManager {
             "Values above 1 will make artifacts rarer, values between 0 and 1 will make artifacts more common",
             "Doubling this value will make artifacts approximately twice as hard to find, and vice versa",
             "To prevent artifacts from appearing as chest loot, set this to 10000.");
-    // TODO move to item configs
-    public final Supplier<Double> everlastingBeefChance = defineFraction("everlastingBeefChance", 1 / 500D,
-            "The chance everlasting beef drops when a cow or mooshroom is killed by a player");
+
     public final Supplier<Double> entityEquipmentChance = defineFraction("entityEquipmentChance", 0.0015D,
             "The chance that a skeleton, zombie or piglin spawns with an artifact equipped");
     public final Supplier<Double> archaeologyChance = defineFraction("archaeologyChance", 1 / 16D,
             "The chance that an artifact generates in suspicious sand or gravel");
-    // TODO move to item configs
-    public final Supplier<Boolean> modifyHurtSounds = defineBool("modifyHurtSounds", true, false,
-            "Whether the Kitty Slippers and Bunny Hoppers change the player's hurt sounds");
 
     public final Campsite campsite = new Campsite();
 

@@ -177,7 +177,7 @@ public class Language extends LanguageProvider {
         config.getValues().forEach((key, value) -> {
             String[] words = key.split("\\.");
             String name = words[words.length - 1];
-            if (!name.equals("cooldown") && !name.equals("enabled")) {
+            if (!name.equals("cooldown") && !name.equals("enabled") && !name.equals("generateAsLoot")) {
                 String translation = fromCamelCasedString(name);
                 key = config.getName() + '.' + key;
                 add(configTitle(key), translation);
@@ -194,6 +194,9 @@ public class Language extends LanguageProvider {
 
     private void addConfigTooltips(ConfigManager config) {
         config.getValues().forEach((key, value) -> {
+            if (key.endsWith("generateAsLoot")) {
+                return;
+            }
             List<String> tooltips = config.getDescription(key);
             key = config.getName() + '.' + key;
             if (tooltips.size() == 1) {

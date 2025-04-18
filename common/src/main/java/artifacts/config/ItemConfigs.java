@@ -75,7 +75,11 @@ public class ItemConfigs extends ConfigManager {
             umbrellaIsGlider = defineBool(createKey(ModItems.UMBRELLA, "isGlider"),
                     "Whether the Umbrella slows the player's falling speed when held"),
             warpDriveNullifyEnderPearlDamage = defineBool(createKey(ModItems.WARP_DRIVE, "nullifyEnderPearlDamage"),
-                    "Whether the Warp Drive causes Ender Pearls not to deal any damage");
+                    "Whether the Warp Drive causes Ender Pearls not to deal any damage"),
+            bunnyHoppersModifyHurtSounds = defineBool(createKey(ModItems.BUNNY_HOPPERS, "modifyHurtSounds"),
+                    "Whether the Bunny Hoppers change the player's hurt sounds"),
+            kittySlippersModifyHurtSounds = defineBool(createKey(ModItems.KITTY_SLIPPERS, "modifyHurtSounds"),
+                    "Whether the Kitty Slippers change the player's hurt sounds");
 
     public final Value.ConfigValue<Double>
             cloudInABottleSprintJumpVerticalVelocity = defineNonNegativeDouble(createKey(ModItems.CLOUD_IN_A_BOTTLE, "sprintJumpVerticalVelocity"), 0.25,
@@ -162,7 +166,9 @@ public class ItemConfigs extends ConfigManager {
             vampiricGloveAbsorptionChance = defineFraction(createKey(ModItems.VAMPIRIC_GLOVE, "absorptionChance"), 1,
                     "The probability that damage is absorbed when attacking an entity with the Vampiric Gloves"),
             witheredBraceletWitherChance = defineFraction(createKey(ModItems.WITHERED_BRACELET, "witherChance"), 0.3,
-                    "The probability that the Withered Bracelet inflicts a wither effect");
+                    "The probability that the Withered Bracelet inflicts a wither effect"),
+            everlastingBeefDropRate = defineFraction(createKey(ModItems.EVERLASTING_BEEF, "dropRate"), 1 / 500D,
+                    "The probability that Everlasting Beef drops when a cow or mooshroom is killed by a player");
 
     public final Value.ConfigValue<Integer>
             chorusTotemHealthRestored = defineNonNegativeInt(createKey(ModItems.CHORUS_TOTEM, "healthRestored"), 10,
