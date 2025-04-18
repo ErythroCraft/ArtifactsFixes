@@ -19,6 +19,14 @@
         },
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "artifacts:hide_when_invisible": false
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
           "name": "artifacts:scarf_of_invisibility"
         }
       ],

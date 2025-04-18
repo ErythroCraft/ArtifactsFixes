@@ -1,6 +1,8 @@
 package artifacts.client.item.renderer;
 
 import artifacts.Artifacts;
+import artifacts.config.value.Value;
+import artifacts.registry.ModDataComponents;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -9,10 +11,32 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public interface ArtifactRenderer {
+
+    default void renderVisible(
+            ItemStack stack,
+            LivingEntity entity,
+            int slotIndex,
+            PoseStack poseStack,
+            MultiBufferSource multiBufferSource,
+            int light,
+            float limbSwing,
+            float limbSwingAmount,
+            float partialTicks,
+            float ageInTicks,
+            float netHeadYaw,
+            float headPitch
+    ) {
+        Value<Boolean> hideWhenInvisible = stack.get(ModDataComponents.HIDE_WHEN_INVISIBLE.get());
+        if (hideWhenInvisible != null && hideWhenInvisible.get() && entity.hasEffect(MobEffects.INVISIBILITY)) {
+            return;
+        }
+        render(stack, entity, slotIndex, poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+    }
 
     void render(
             ItemStack stack,

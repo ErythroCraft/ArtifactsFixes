@@ -44,7 +44,7 @@ public class AccessoriesRenderingHandler implements EquipmentRenderingHandler {
     public record ArtifactAccessoryRenderer(ArtifactRenderer renderer) implements AccessoryRenderer {
         @Override
         public <M extends LivingEntity> void render(ItemStack stack, SlotReference reference, PoseStack matrices, EntityModel<M> model, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            renderer.render(stack, reference.entity(), reference.slot(), matrices, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+            renderer.renderVisible(stack, reference.entity(), reference.slot(), matrices, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }
 
         @Override

@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-18T23:55:56.8520673	Loot Tables
+// 1.21.1	2025-04-18T15:56:01.8887566	Loot Tables
 7931880ecf49d5ef863b59293e0c6b30d49a1c79 data/artifacts/loot_table/artifact.json
 91e2eaecc348b4654d9474d6ec3b6315447d12f3 data/artifacts/loot_table/chests/campsite_barrel.json
 bf33f27678bf8410ac7a8f3cb8643d5d8adda98d data/artifacts/loot_table/chests/campsite_barrel/cobblestone.json
@@ -21,7 +21,7 @@ e2a8baa64e5460ca995b949bb14c983a8d934391 data/artifacts/loot_table/entity_equipm
 999793c401f75f0a7ee477a24c8773944a55585b data/artifacts/loot_table/entity_equipment/skeleton.json
 e031f55170263230511c6440c33cd57b2351f888 data/artifacts/loot_table/entity_equipment/stray.json
 55ff508e710b5510229f2ac73f1f723b8ca5b61d data/artifacts/loot_table/entity_equipment/wither_skeleton.json
-5cf83143f962c162c4dcad4e6590b1ffb08652e7 data/artifacts/loot_table/entity_equipment/zombie.json
+dbc47237bb5f306933977f0af350bb857838b8ca data/artifacts/loot_table/entity_equipment/zombie.json
 6d8346c9abb52d77f1f590b4463946fc21d20a1b data/artifacts/loot_table/entity_equipment/zombified_piglin.json
 ddfac48a1c5239e7130bca1dca25726fbc094cfc data/artifacts/loot_table/inject/archaeology/desert_pyramid.json
 24e029b47393e89f43550e1626cb09d1169fd745 data/artifacts/loot_table/inject/archaeology/desert_well.json

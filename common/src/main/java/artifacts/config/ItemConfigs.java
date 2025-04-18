@@ -12,6 +12,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 
+// TODO marking a value as requiring a restart causes the entire category to require a restart https://github.com/shedaniel/cloth-config/issues/153
 public class ItemConfigs extends ConfigManager {
 
     public final Value.ConfigValue<Boolean>
@@ -48,6 +49,8 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Flame Pendant grants Fire Resistance after igniting an entity"),
             rootedBootsGrowPlantsAfterEating = defineBool(createKey(ModItems.ROOTED_BOOTS, "growPlantsAfterEating"),
                     "Whether the Rooted Boots apply a bone meal effect after eating food"),
+            scarfOfInvisibilityHideWhenInvisible = defineBool(createKey(ModItems.SCARF_OF_INVISIBILITY, "hide_when_invisible"), false, false,
+                    "Whether the Scarf of Invisibility is hidden when the wearer is invisible"),
             shockPendantCancelLightningDamage = defineBool(createKey(ModItems.SHOCK_PENDANT, "cancelLightningDamage"),
                     "Whether the Shock Pendant cancels damage from lightning"),
             snorkelIsInfinite = defineBool(createKey(ModItems.SNORKEL, "isInfinite"), false, true,
