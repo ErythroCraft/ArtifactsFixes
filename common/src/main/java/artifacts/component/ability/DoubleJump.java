@@ -18,11 +18,12 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public record DoubleJump(Value<Boolean> enabled, Value<Double> sprintHorizontalVelocity, Value<Double> sprintVerticalVelocity)
+public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultiplier, Value<Double> sprintHorizontalVelocity, Value<Double> sprintVerticalVelocity)
         implements EquipmentAbility {
 
     public static final Codec<DoubleJump> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(DoubleJump::enabled),
+            ValueTypes.FRACTION.codec().optionalFieldOf("fall_damage_multiplier", Value.of(0D)).forGetter(DoubleJump::fallDamageMultiplier),
             ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_horizontal_velocity", Value.of(0D)).forGetter(DoubleJump::sprintHorizontalVelocity),
             ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_vertical_velocity", Value.of(0D)).forGetter(DoubleJump::sprintVerticalVelocity)
     ).apply(instance, DoubleJump::new));
@@ -30,6 +31,8 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> sprintHorizontalV
     public static final StreamCodec<ByteBuf, DoubleJump> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.BOOLEAN.streamCodec(),
             DoubleJump::enabled,
+            ValueTypes.FRACTION.streamCodec(),
+            DoubleJump::fallDamageMultiplier,
             ValueTypes.NON_NEGATIVE_DOUBLE.streamCodec(),
             DoubleJump::sprintHorizontalVelocity,
             ValueTypes.NON_NEGATIVE_DOUBLE.streamCodec(),
@@ -37,8 +40,13 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> sprintHorizontalV
             DoubleJump::new
     );
 
-
     public static void jump(Player player) {
+        double fallDamageMultiplier = EquipmentHelper.minDouble(ModDataComponents.DOUBLE_JUMP.get(), player, 1D,
+                ability -> ability.fallDamageMultiplier().get(), true);
+        if (player.fallDistance > 0 && fallDamageMultiplier > 0) {
+            player.causeFallDamage(player.fallDistance, (float) fallDamageMultiplier, player.damageSources().fall());
+        }
+
         player.fallDistance = 0;
 
         double upwardsMotion = 0.5;

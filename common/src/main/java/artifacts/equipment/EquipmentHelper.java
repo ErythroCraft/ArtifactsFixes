@@ -52,6 +52,10 @@ public class EquipmentHelper {
         return reduceAbilities(type, entity, skipItemsOnCooldown, true, 0D, (ability, stack, d) -> Math.max(d, f.apply(ability)));
     }
 
+    public static <A extends EquipmentAbility> double minDouble(DataComponentType<A> type, LivingEntity entity, double init, Function<A, Double> f, boolean skipItemsOnCooldown) {
+        return reduceAbilities(type, entity, skipItemsOnCooldown, true, init, (ability, stack, d) -> Math.min(d, f.apply(ability)));
+    }
+
     public static <A extends EquipmentAbility> int maxInt(DataComponentType<A> type, LivingEntity entity, Function<A, Integer> f, boolean skipItemsOnCooldown) {
         return reduceAbilities(type, entity, skipItemsOnCooldown, true, 0, (ability, stack, d) -> Math.max(d, f.apply(ability)));
     }

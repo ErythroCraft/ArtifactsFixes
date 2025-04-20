@@ -77,6 +77,8 @@
   "artifacts.config.items.chorus_totem.teleportationChance.description": "The probability that the Chorus Totem activates when a player dies",
   "artifacts.config.items.chorus_totem.teleportationChance.title": "Teleportation Chance",
   "artifacts.config.items.cloud_in_a_bottle.enabled.description": "Whether the Cloud in a Bottle allows the wearer to double jump",
+  "artifacts.config.items.cloud_in_a_bottle.fallDamageMultiplier.description": "How much fall damage is dealt when double jumping with the Cloud in a Bottle",
+  "artifacts.config.items.cloud_in_a_bottle.fallDamageMultiplier.title": "Fall Damage Multiplier",
   "artifacts.config.items.cloud_in_a_bottle.safeFallDistanceBonus.description": "The amount of extra safe fall distance in blocks that is granted by the Cloud in a Bottle",
   "artifacts.config.items.cloud_in_a_bottle.safeFallDistanceBonus.title": "Safe Fall Distance Bonus",
   "artifacts.config.items.cloud_in_a_bottle.sprintJumpHorizontalVelocity.description": "The amount of extra horizontal velocity that is applied to players that double jump while sprinting using the Cloud in a Bottle",

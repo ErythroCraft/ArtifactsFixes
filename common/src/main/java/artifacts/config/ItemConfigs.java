@@ -168,7 +168,9 @@ public class ItemConfigs extends ConfigManager {
             witheredBraceletWitherChance = defineFraction(createKey(ModItems.WITHERED_BRACELET, "witherChance"), 0.3,
                     "The probability that the Withered Bracelet inflicts a wither effect"),
             everlastingBeefDropRate = defineFraction(createKey(ModItems.EVERLASTING_BEEF, "dropRate"), 1 / 500D,
-                    "The probability that Everlasting Beef drops when a cow or mooshroom is killed by a player");
+                    "The probability that Everlasting Beef drops when a cow or mooshroom is killed by a player"),
+            cloudInABottleFallDamageMultiplier = defineFraction(createKey(ModItems.CLOUD_IN_A_BOTTLE, "fallDamageMultiplier"), 0D,
+                    "How much fall damage is dealt when double jumping with the Cloud in a Bottle");
 
     public final Value.ConfigValue<Integer>
             chorusTotemHealthRestored = defineNonNegativeInt(createKey(ModItems.CHORUS_TOTEM, "healthRestored"), 10,

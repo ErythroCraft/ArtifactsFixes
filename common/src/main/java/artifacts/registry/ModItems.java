@@ -174,6 +174,7 @@ public class ModItems {
             .equipSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH)
             .component(ModDataComponents.DOUBLE_JUMP.get(), new DoubleJump(
                     Artifacts.CONFIG.items.cloudInABottleEnabled,
+                    Artifacts.CONFIG.items.cloudInABottleFallDamageMultiplier,
                     Artifacts.CONFIG.items.cloudInABottleSprintJumpHorizontalVelocity,
                     Artifacts.CONFIG.items.cloudInABottleSprintJumpVerticalVelocity
             ))
