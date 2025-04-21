@@ -69,6 +69,8 @@
   "artifacts.config.items.charm_of_shrinking.scaleModifier.description.2": "Values above 0 increase the player's scale",
   "artifacts.config.items.charm_of_shrinking.scaleModifier.title": "Scale Modifier",
   "artifacts.config.items.charm_of_sinking.enabled.description": "Whether the Charm of Sinking removes the wearer's collision with water",
+  "artifacts.config.items.charm_of_sinking.underwaterFallDamage.description": "Whether it is possible to take fall damage underwater when wearing the Charm of Sinking",
+  "artifacts.config.items.charm_of_sinking.underwaterFallDamage.title": "Underwater Fall Damage",
   "artifacts.config.items.chorus_totem.consumeOnUse.description": "Whether the Chorus Totem is consumed after activating",
   "artifacts.config.items.chorus_totem.consumeOnUse.title": "Consume on Use",
   "artifacts.config.items.chorus_totem.cooldown.description": "The duration in seconds the Chorus Totem goes on cooldown for after activating",

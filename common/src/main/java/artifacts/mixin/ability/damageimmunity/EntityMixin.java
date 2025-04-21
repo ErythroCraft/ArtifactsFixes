@@ -16,7 +16,8 @@ public class EntityMixin {
     @ModifyReturnValue(method = "isInvulnerableTo", at = @At("RETURN"))
     public boolean isInvulnerableTo(boolean original, DamageSource damageSource) {
         if (!original && ((Object) this) instanceof LivingEntity entity && EquipmentHelper.hasAbilityActive(
-                ModDataComponents.DAMAGE_IMMUNITY.get(), entity, true, ability -> damageSource.is(ability.tag())
+                ModDataComponents.DAMAGE_IMMUNITY.get(), entity, true,
+                ability -> ability.condition().test(entity) && damageSource.is(ability.tag())
         )) {
             return true;
         }

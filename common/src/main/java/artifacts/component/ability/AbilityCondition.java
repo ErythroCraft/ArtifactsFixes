@@ -16,6 +16,7 @@ public enum AbilityCondition implements StringRepresentable {
     ALWAYS("always", entity -> true),
     NEVER("never", entity -> false),
     ABOVE_WATER("above_water", entity -> !entity.isEyeInFluid(FluidTags.WATER)),
+    IN_WATER("in_water", Entity::isInWater),
     ON_GRASS("on_grass", entity -> entity.onGround() && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)),
     SNEAKING("while_sneaking", Entity::isCrouching),
     SPRINTING("while_sprinting", entity -> entity.isSprinting() && !entity.isUsingItem() && !entity.isCrouching());

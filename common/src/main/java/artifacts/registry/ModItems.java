@@ -137,7 +137,8 @@ public class ModItems {
                             Artifacts.CONFIG.items.shockPendantCooldown
                     ))
             )).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
-                    new DamageImmunity(Artifacts.CONFIG.items.shockPendantCancelLightningDamage, DamageTypeTags.IS_LIGHTNING)
+                    new DamageImmunity(Artifacts.CONFIG.items.shockPendantCancelLightningDamage,
+                            DamageTypeTags.IS_LIGHTNING, AbilityCondition.ALWAYS)
             )
     );
     public static final Holder<Item> FLAME_PENDANT = wearableItem("flame_pendant", builder -> builder
@@ -162,6 +163,11 @@ public class ModItems {
     );
     public static final Holder<Item> CHARM_OF_SINKING = wearableItem("charm_of_sinking", builder -> builder
             .component(ModDataComponents.SINKING.get(), Artifacts.CONFIG.items.charmOfSinkingEnabled)
+            .component(ModDataComponents.DAMAGE_IMMUNITY.get(), new DamageImmunity(
+                    Artifacts.CONFIG.items.charmOfSinkingEnabled,
+                    DamageTypeTags.IS_FALL,
+                    Artifacts.CONFIG.items.charmOfSinkingUnderwaterFallDamage.get() ? AbilityCondition.NEVER : AbilityCondition.IN_WATER
+            ))
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SINKING)
     );
     public static final Holder<Item> CHARM_OF_SHRINKING = wearableItem("charm_of_shrinking", builder -> builder
@@ -344,7 +350,7 @@ public class ModItems {
             .component(ModDataComponents.FLUID_COLLISION.get(), new FluidCollision(Artifacts.CONFIG.items.striderShoesEnabled,
                     Optional.of(FluidTags.LAVA), AbilityCondition.SNEAKING)
             ).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
-                    new DamageImmunity(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR)
+                    new DamageImmunity(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR, AbilityCondition.ALWAYS)
             )
     );
 

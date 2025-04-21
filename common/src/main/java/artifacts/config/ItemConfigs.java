@@ -78,7 +78,9 @@ public class ItemConfigs extends ConfigManager {
             kittySlippersRepelCreepers = defineBool(createKey(ModItems.KITTY_SLIPPERS, "repelCreepers"),
                     "Whether the Kitty Slippers scare nearby creepers"),
             kittySlippersRepelPhantoms = defineBool(createKey(ModItems.KITTY_SLIPPERS, "repelPhantoms"),
-                    "Whether the Kitty Slippers hiss at nearby phantoms");
+                    "Whether the Kitty Slippers hiss at nearby phantoms"),
+            charmOfSinkingUnderwaterFallDamage = defineBool(createKey(ModItems.CHARM_OF_SINKING, "underwaterFallDamage"), false, true,
+                    "Whether it is possible to take fall damage underwater when wearing the Charm of Sinking");
 
     public final Value.ConfigValue<Double>
             cloudInABottleSprintJumpVerticalVelocity = defineNonNegativeDouble(createKey(ModItems.CLOUD_IN_A_BOTTLE, "sprintJumpVerticalVelocity"), 0.25,
