@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO marking a value as requiring a restart causes the entire category to require a restart https://github.com/shedaniel/cloth-config/issues/153
 public class ItemConfigs extends ConfigManager {
 
     private final Map<ResourceKey<Item>, Value.ConfigValue<Boolean>> generateAsLoot = new HashMap<>();

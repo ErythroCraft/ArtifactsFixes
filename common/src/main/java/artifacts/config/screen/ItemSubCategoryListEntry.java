@@ -26,6 +26,18 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
         getValue().forEach(value -> value.appendSearchTags(searchTags));
     }
 
+    // https://github.com/shedaniel/cloth-config/issues/153
+    @Override
+    @SuppressWarnings("rawtypes")
+    public boolean isRequiresRestart() {
+        for (AbstractConfigListEntry entry : getValue()) {
+            if (entry.isRequiresRestart() && entry.isEdited()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void render(GuiGraphics graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isHovered, float delta) {
         super.render(graphics, index, y, x, entryWidth, entryHeight, mouseX, mouseY, isHovered, delta);
