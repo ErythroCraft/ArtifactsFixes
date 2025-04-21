@@ -1,4 +1,4 @@
-package artifacts.fabric.mixin.ability.scarecreepers;
+package artifacts.fabric.mixin.ability.creeperrepellent;
 
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;

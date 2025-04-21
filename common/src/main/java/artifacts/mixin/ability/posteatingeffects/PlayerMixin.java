@@ -1,4 +1,4 @@
-package artifacts.mixin.ability.applyeffectsaftereating;
+package artifacts.mixin.ability.posteatingeffects;
 
 import artifacts.component.ability.mobeffect.PostEatingEffects;
 import artifacts.event.ArtifactHooks;

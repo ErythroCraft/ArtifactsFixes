@@ -1,4 +1,4 @@
-package artifacts.mixin.ability.enderpearlscosthunger;
+package artifacts.mixin.ability.enderpearlhungercost;
 
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;

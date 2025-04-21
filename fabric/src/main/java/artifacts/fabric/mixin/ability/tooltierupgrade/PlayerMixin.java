@@ -1,4 +1,4 @@
-package artifacts.fabric.mixin.ability.upgradetooltier;
+package artifacts.fabric.mixin.ability.tooltierupgrade;
 
 import artifacts.component.ability.ToolTierUpgrade;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;

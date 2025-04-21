@@ -1,4 +1,4 @@
-package artifacts.mixin.ability.sprintonfluids;
+package artifacts.mixin.ability.fluidcollision;
 
 import artifacts.component.SwimData;
 import artifacts.equipment.EquipmentHelper;

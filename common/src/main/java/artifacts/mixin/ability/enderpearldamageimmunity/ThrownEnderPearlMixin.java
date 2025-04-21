@@ -1,4 +1,4 @@
-package artifacts.mixin.ability.nullifyenderpearldamage;
+package artifacts.mixin.ability.enderpearldamageimmunity;
 
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;

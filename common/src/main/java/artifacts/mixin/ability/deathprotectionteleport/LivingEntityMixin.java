@@ -1,4 +1,4 @@
-package artifacts.mixin.ability.teleportondeath;
+package artifacts.mixin.ability.deathprotectionteleport;
 
 import artifacts.component.ability.DeathProtectionTeleport;
 import artifacts.network.ChorusTotemUsedPacket;

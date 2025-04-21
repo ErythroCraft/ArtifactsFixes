@@ -1,4 +1,4 @@
-package artifacts.fabric.mixin.ability.smeltores;
+package artifacts.fabric.mixin.ability.autosmelt;
 
 import artifacts.event.ArtifactHooks;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;

@@ -1,4 +1,4 @@
-package artifacts.mixin.ability.makepiglinsneutral;
+package artifacts.mixin.ability.piglinloved;
 
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
