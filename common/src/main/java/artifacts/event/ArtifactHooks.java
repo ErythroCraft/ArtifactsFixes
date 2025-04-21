@@ -18,7 +18,6 @@ import artifacts.registry.ModTags;
 import artifacts.util.DamageSourceHelper;
 import be.florens.expandability.api.EventResult;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -270,22 +269,9 @@ public class ArtifactHooks {
         SwimData swimData = PlatformServices.platformHelper.getSwimData(entity);
         if (swimData == null || swimData.isWet() || swimData.isSwimming()) {
             return false;
-        } else if (canCollideWithFluid(entity, fluidState)) {
-            dealLavaDamage(entity, fluidState);
-            return true;
         }
-        return false;
-    }
-
-    private static boolean canCollideWithFluid(LivingEntity entity, FluidState fluidState) {
         return EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION.get(), entity, true, ability ->
                 ability.matchesFluid(fluidState) && ability.condition().test(entity)
         );
-    }
-
-    private static void dealLavaDamage(LivingEntity entity, FluidState fluidState) {
-        if (fluidState.is(FluidTags.LAVA) && !entity.fireImmune()) {
-            entity.hurt(entity.damageSources().hotFloor(), 1);
-        }
     }
 }

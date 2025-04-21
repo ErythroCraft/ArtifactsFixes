@@ -11,13 +11,14 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 
 import java.util.Optional;
 
 public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, AbilityCondition condition)
-        implements EquipmentAbility {
+        implements TickingAbility {
 
     public static Codec<FluidCollision> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(FluidCollision::enabled),
@@ -36,6 +37,14 @@ public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag
     );
 
     @Override
+    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        FluidState fluidState = entity.getBlockStateOn().getFluidState();
+        if (fluidState.is(FluidTags.LAVA) && !entity.fireImmune() && condition.test(entity)) {
+            entity.hurt(entity.damageSources().hotFloor(), 1);
+        }
+    }
+
+    @Override
     public boolean isNonCosmetic() {
         return enabled().get();
     }
@@ -48,7 +57,7 @@ public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag
     public void addToTooltip(TooltipWriter writer) {
         if (condition == AbilityCondition.SNEAKING && tag().isPresent() && tag().get().equals(FluidTags.LAVA)) {
             writer.add("sneaking.lava");
-        } else {
+        } else if (condition == AbilityCondition.SPRINTING && tag().isEmpty()){
             writer.add("sprinting");
         }
     }

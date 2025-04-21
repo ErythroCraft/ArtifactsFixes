@@ -110,7 +110,8 @@ public class ModDataComponents {
                 ATTRIBUTE_MODIFIERS,
                 REPLENISH_HUNGER_ON_GRASS,
                 CURE_EFFECTS,
-                MOB_EFFECTS
+                MOB_EFFECTS,
+                FLUID_COLLISION
         ));
         TOOLTIP_ORDER.addAll(List.of(
                 TOOL_TIER_UPGRADE,
