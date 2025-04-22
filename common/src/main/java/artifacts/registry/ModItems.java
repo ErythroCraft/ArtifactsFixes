@@ -225,7 +225,8 @@ public class ModItems {
             .equipSound(ModSoundEvents.POP)
             .component(ModDataComponents.SWIM_IN_AIR.get(), new SwimInAir(
                     Artifacts.CONFIG.items.heliumFlamingoFlightDuration,
-                    Artifacts.CONFIG.items.heliumFlamingoRechargeDuration
+                    Artifacts.CONFIG.items.heliumFlamingoRechargeDuration,
+                    Artifacts.CONFIG.items.heliumFlamingoCooldown
             ))
     );
     public static final Holder<Item> CHORUS_TOTEM = wearableItem("chorus_totem", builder -> builder

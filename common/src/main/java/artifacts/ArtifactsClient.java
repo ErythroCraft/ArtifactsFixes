@@ -5,6 +5,7 @@ import artifacts.client.ToggleKeyHandlers;
 import artifacts.client.item.ArtifactLayers;
 import artifacts.client.mimic.model.MimicChestLayerModel;
 import artifacts.client.mimic.model.MimicModel;
+import artifacts.event.SwimInAirInputHooks;
 import artifacts.integration.ModCompat;
 import artifacts.integration.accessories.AccessoriesCompatClient;
 import artifacts.integration.trinkets.TrinketsCompatClient;
@@ -33,7 +34,7 @@ public class ArtifactsClient {
     }
 
     public static void onClientTick(Minecraft instance) {
-        HeliumFlamingoInputEventHandler.onClientTick(instance);
+        SwimInAirInputHooks.onClientTick(instance);
         CloudInABottleInputHandler.onClientTick(instance);
         ToggleKeyHandlers.onClientTick();
     }

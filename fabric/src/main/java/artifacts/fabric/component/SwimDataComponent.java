@@ -9,15 +9,15 @@ public class SwimDataComponent extends SwimData implements ComponentV3 {
 
     @Override
     public void readFromNbt(CompoundTag tag, HolderLookup.Provider provider) {
-        shouldSwim = tag.getBoolean("ShouldSwim");
+        isSwimming = tag.getBoolean("ShouldSwim");
         hasTouchedWater = tag.getBoolean("HasTouchedWater");
-        swimTime = tag.getInt("SwimTime");
+        swimProgress = tag.getDouble("SwimProgress");
     }
 
     @Override
     public void writeToNbt(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.putBoolean("ShouldSwim", shouldSwim);
+        tag.putBoolean("ShouldSwim", isSwimming);
         tag.putBoolean("HasTouchedWater", hasTouchedWater);
-        tag.putInt("SwimTime", swimTime);
+        tag.putDouble("SwimProgress", swimProgress);
     }
 }

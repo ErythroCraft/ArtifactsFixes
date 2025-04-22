@@ -3,7 +3,6 @@ package artifacts.event;
 import artifacts.attribute.DynamicAttributeModifier;
 import artifacts.component.SwimData;
 import artifacts.component.ability.PostDamageCooldown;
-import artifacts.component.ability.SwimInAir;
 import artifacts.component.ability.TickingAbility;
 import artifacts.component.ability.mobeffect.AttackEffects;
 import artifacts.component.ability.mobeffect.PostDamageEffects;
@@ -48,8 +47,10 @@ public class ArtifactHooks {
 
     public static void livingUpdate(LivingEntity entity) {
         if (entity instanceof Player player) {
-            SwimInAir.onHeliumFlamingoTick(player);
-            onPlayerTick(player);
+            SwimData swimData = PlatformServices.platformHelper.getSwimData(entity);
+            if (swimData != null) {
+                swimData.update(player);
+            }
         }
         onItemTick(entity);
         DynamicAttributeModifier.tickModifiers(entity);
@@ -237,19 +238,6 @@ public class ArtifactHooks {
                 && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)
         ) {
             BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), entity.level(), entity.getOnPos());
-        }
-    }
-
-    public static void onPlayerTick(Player player) {
-        SwimData swimData = PlatformServices.platformHelper.getSwimData(player);
-        if (swimData != null) {
-            if (player.isInWater() || player.isInLava() || player.fallDistance > 6) {
-                if (!swimData.isWet()) {
-                    swimData.setWet(true);
-                }
-            } else if (player.onGround() || player.getAbilities().flying) {
-                swimData.setWet(false);
-            }
         }
     }
 

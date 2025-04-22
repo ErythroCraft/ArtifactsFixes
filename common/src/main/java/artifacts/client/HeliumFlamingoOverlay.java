@@ -27,25 +27,22 @@ public class HeliumFlamingoOverlay {
         if (swimData == null) {
             return false;
         }
-        int swimTime = swimData.getSwimTime();
+        double progress = 1 - swimData.getSwimProgress();
 
         RenderSystem.enableBlend();
 
         int left = screenWidth / 2 + 91;
         int top = screenHeight - height;
 
-        int maxProgressTime;
-        if (Math.abs(swimTime) == 0) {
+        if (progress == 1) {
             return false;
-        } else if (swimTime > 0) {
-            maxProgressTime = SwimInAir.getFlightDuration(player);
-        } else {
-            maxProgressTime = SwimInAir.getRechargeDuration(player);
         }
 
-        float progress = 1 - Math.abs(swimTime) / (float) maxProgressTime;
+        int duration = swimData.isSwimming()
+                ? SwimInAir.getFlightDuration(player)
+                : SwimInAir.getRechargeDuration(player);
 
-        int full = Mth.ceil((progress - 2D / maxProgressTime) * 10);
+        int full = Mth.ceil((progress - 2D / duration) * 10);
         int partial = Mth.ceil(progress * 10) - full;
 
         for (int i = 0; i < full + partial; ++i) {

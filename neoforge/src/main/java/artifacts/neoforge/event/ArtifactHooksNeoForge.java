@@ -53,7 +53,7 @@ public class ArtifactHooksNeoForge {
         ArtifactHooks.onLivingDamaged(event.getEntity(), event.getSource(), event.getNewDamage());
     }
 
-    private static void onLivingUpdate(EntityTickEvent.Pre event) {
+    private static void onLivingUpdate(EntityTickEvent.Post event) {
         if (event.getEntity() instanceof LivingEntity entity) {
             onKittySlippersLivingUpdate(entity);
             ArtifactHooks.livingUpdate(entity);

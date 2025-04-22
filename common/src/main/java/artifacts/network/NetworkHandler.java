@@ -23,6 +23,7 @@ public class NetworkHandler {
         registerClientbound(ChorusTotemUsedPacket.TYPE, ChorusTotemUsedPacket.CODEC, ChorusTotemUsedPacket::apply);
         registerClientbound(PlaySoundAtPlayerPacket.TYPE, PlaySoundAtPlayerPacket.CODEC, PlaySoundAtPlayerPacket::apply);
         registerClientbound(UpdateItemConfigPacket.TYPE, UpdateItemConfigPacket.CODEC, UpdateItemConfigPacket::apply);
+        registerClientbound(SwimPacket.TYPE, SwimPacket.CODEC, SwimPacket::apply);
 
         registerServerbound(DoubleJumpPacket.TYPE, DoubleJumpPacket.CODEC, DoubleJumpPacket::apply);
         registerServerbound(SwimPacket.TYPE, SwimPacket.CODEC, SwimPacket::apply);

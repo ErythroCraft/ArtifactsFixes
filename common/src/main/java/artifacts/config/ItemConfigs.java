@@ -207,6 +207,8 @@ public class ItemConfigs extends ConfigManager {
                     "The amount of time in seconds a player can fly with the Helium Flamingo before needing to recharge"),
             heliumFlamingoRechargeDuration = defineDuration(createKey(ModItems.HELIUM_FLAMINGO, "rechargeDuration"), 15,
                     "The amount of time in seconds it takes for the Helium Flamingo to recharge"),
+            heliumFlamingoCooldown = defineDuration(createKey(ModItems.HELIUM_FLAMINGO, "cooldown"), 3,
+                    "The duration in seconds the Helium Flamingo goes on cooldown for when stopping flight"),
             obsidianSkullCooldown = defineDuration(createKey(ModItems.OBSIDIAN_SKULL, "cooldown"), 60,
                     "The amount of time in seconds the Obsidian Skull goes on cooldown for after taking fire damage"),
             obsidianSkullFireResistanceDuration = defineDuration(createKey(ModItems.OBSIDIAN_SKULL, "fireResistanceDuration"), 30,
