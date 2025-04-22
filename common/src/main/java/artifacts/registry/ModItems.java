@@ -42,8 +42,8 @@ import java.util.function.Supplier;
 
 public class ModItems {
 
-    public static final Register<Item> ITEMS = PlatformServices.platformHelper.createRegister(Registries.ITEM);
-    public static final Register<CreativeModeTab> CREATIVE_MODE_TABS = PlatformServices.platformHelper.createRegister(Registries.CREATIVE_MODE_TAB);
+    public static final Register<Item> ITEMS = Register.create(Registries.ITEM);
+    public static final Register<CreativeModeTab> CREATIVE_MODE_TABS = Register.create(Registries.CREATIVE_MODE_TAB);
 
     static {
         @SuppressWarnings({"ConstantConditions", "unused"})

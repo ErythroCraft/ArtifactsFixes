@@ -1,6 +1,7 @@
 package artifacts.mixin.attribute.flatulence;
 
 import artifacts.registry.ModAttributes;
+import artifacts.registry.ModGameEvents;
 import artifacts.registry.ModSoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +24,7 @@ public abstract class EntityMixin {
         if (isDown && !isShiftKeyDown() && ((Entity) (Object) this) instanceof LivingEntity entity && !entity.level().isClientSide()) {
             double chance = entity.getAttributeValue(ModAttributes.FLATULENCE);
             if (entity.getRandom().nextFloat() < chance) {
+                entity.gameEvent(ModGameEvents.FART);
                 entity.level().playSound(null, entity, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + entity.getRandom().nextFloat() * 0.2F);
             }
         }

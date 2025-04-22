@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public class ModAttributes {
 
-    public static final Register<Attribute> ATTRIBUTES = PlatformServices.platformHelper.createRegister(Registries.ATTRIBUTE);
+    public static final Register<Attribute> ATTRIBUTES = Register.create(Registries.ATTRIBUTE);
 
     public static final List<Holder<Attribute>> PLAYER_ATTRIBUTES = new ArrayList<>();
     public static final List<Holder<Attribute>> GENERIC_ATTRIBUTES = new ArrayList<>();

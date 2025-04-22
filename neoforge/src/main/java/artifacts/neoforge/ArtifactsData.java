@@ -33,8 +33,10 @@ public class ArtifactsData {
         generator.addProvider(event.includeServer(), new EntityTypeTags(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new MobEffectTags(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new DamageTypeTags(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new GameEventTags(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new SoundDefinitions(packOutput, existingFileHelper));
         generator.addProvider(event.includeServer(), new Advancements(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new DataMaps(packOutput, lookupProvider));
 
         generator.addProvider(event.includeClient(), new Language(packOutput));
         generator.addProvider(event.includeClient(), new ItemModels(packOutput, existingFileHelper));

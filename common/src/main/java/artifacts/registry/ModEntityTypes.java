@@ -2,7 +2,6 @@ package artifacts.registry;
 
 import artifacts.Artifacts;
 import artifacts.entity.MimicEntity;
-import artifacts.platform.PlatformServices;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,7 +12,7 @@ import java.util.function.BiConsumer;
 
 public class ModEntityTypes {
 
-    public static final Register<EntityType<?>> ENTITY_TYPES = PlatformServices.platformHelper.createRegister(Registries.ENTITY_TYPE);
+    public static final Register<EntityType<?>> ENTITY_TYPES = Register.create(Registries.ENTITY_TYPE);
 
     public static final RegistryHolder<EntityType<?>, EntityType<MimicEntity>> MIMIC = ENTITY_TYPES.register("mimic",
             () -> EntityType.Builder.of(MimicEntity::new, MobCategory.MISC)

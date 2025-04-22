@@ -5,6 +5,7 @@ import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModAttributes;
 import artifacts.registry.ModDataComponents;
+import artifacts.registry.ModGameEvents;
 import artifacts.registry.ModSoundEvents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -88,6 +89,7 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultipl
         if (!player.level().isClientSide()) {
             double chance = player.getAttributeValue(ModAttributes.FLATULENCE);
             if (player.getRandom().nextFloat() < chance) {
+                player.gameEvent(ModGameEvents.FART);
                 player.level().playSound(null, player, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + player.getRandom().nextFloat() * 0.2F);
             } else {
                 player.level().playSound(null, player, SoundEvents.WOOL_FALL, SoundSource.PLAYERS, 1, 0.9F + player.getRandom().nextFloat() * 0.2F);

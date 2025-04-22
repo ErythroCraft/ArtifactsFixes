@@ -13,10 +13,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -37,11 +35,6 @@ public class FabricPlatformHelper implements PlatformHelper {
     @Override
     public Holder<Attribute> getSwimSpeedAttribute() {
         return ModAttributesFabric.SWIM_SPEED;
-    }
-
-    @Override
-    public boolean isEyeInWater(Player player) {
-        return player.isEyeInFluid(FluidTags.WATER);
     }
 
     @Override

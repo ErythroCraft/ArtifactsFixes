@@ -1,7 +1,6 @@
 package artifacts.registry;
 
 import artifacts.Artifacts;
-import artifacts.platform.PlatformServices;
 import artifacts.world.CampsiteFeature;
 import artifacts.world.CampsiteFeatureConfiguration;
 import net.minecraft.core.registries.Registries;
@@ -11,7 +10,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class ModFeatures {
 
-    public static final Register<Feature<?>> FEATURES = PlatformServices.platformHelper.createRegister(Registries.FEATURE);
+    public static final Register<Feature<?>> FEATURES = Register.create(Registries.FEATURE);
 
     public static final RegistryHolder<Feature<?>, Feature<CampsiteFeatureConfiguration>> CAMPSITE = FEATURES.register("campsite", CampsiteFeature::new);
 

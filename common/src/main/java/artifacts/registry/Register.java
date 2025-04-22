@@ -1,6 +1,7 @@
 package artifacts.registry;
 
 import artifacts.Artifacts;
+import artifacts.platform.PlatformServices;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -19,6 +20,10 @@ public abstract class Register<R> implements Iterable<R> {
 
     public Register(ResourceKey<Registry<R>> registry) {
         this.registry = registry;
+    }
+
+    public static <R> Register<R> create(ResourceKey<Registry<R>> registry) {
+        return PlatformServices.platformHelper.createRegister(registry);
     }
 
     public ResourceKey<Registry<R>> getRegistry() {

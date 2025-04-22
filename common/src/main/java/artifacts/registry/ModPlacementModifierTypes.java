@@ -1,6 +1,5 @@
 package artifacts.registry;
 
-import artifacts.platform.PlatformServices;
 import artifacts.world.placement.CampsiteCountPlacement;
 import artifacts.world.placement.CampsiteHeightRangePlacement;
 import artifacts.world.placement.CeilingHeightFilter;
@@ -11,7 +10,7 @@ import java.util.function.Supplier;
 
 public class ModPlacementModifierTypes {
 
-    public static final Register<PlacementModifierType<?>> PLACEMENT_MODIFIER_TYPES = PlatformServices.platformHelper.createRegister(Registries.PLACEMENT_MODIFIER_TYPE);
+    public static final Register<PlacementModifierType<?>> PLACEMENT_MODIFIER_TYPES = Register.create(Registries.PLACEMENT_MODIFIER_TYPE);
 
     public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<CeilingHeightFilter>> CEILING_HEIGHT_FILTER = register("ceiling_height_filter", () -> () -> CeilingHeightFilter.CODEC);
     public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<CampsiteCountPlacement>> CAMPSITE_COUNT = register("campsite_count", () -> () -> CampsiteCountPlacement.CODEC);

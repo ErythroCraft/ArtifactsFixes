@@ -12,7 +12,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
@@ -38,11 +37,6 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public Holder<Attribute> getSwimSpeedAttribute() {
         return NeoForgeMod.SWIM_SPEED;
-    }
-
-    @Override
-    public boolean isEyeInWater(Player player) {
-        return player.isEyeInFluidType(NeoForgeMod.WATER_TYPE.value());
     }
 
     @Override

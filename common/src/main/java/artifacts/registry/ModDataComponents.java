@@ -10,7 +10,6 @@ import artifacts.component.ability.mobeffect.PostEatingEffects;
 import artifacts.component.ability.retaliation.RetaliationEffects;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.platform.PlatformServices;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -30,7 +29,7 @@ import java.util.function.UnaryOperator;
 
 public class ModDataComponents {
 
-    public static final Register<DataComponentType<?>> DATA_COMPONENT_TYPES = PlatformServices.platformHelper.createRegister(Registries.DATA_COMPONENT_TYPE);
+    public static final Register<DataComponentType<?>> DATA_COMPONENT_TYPES = Register.create(Registries.DATA_COMPONENT_TYPE);
 
     public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
     public static final List<Supplier<? extends DataComponentType<? extends EquipmentAbility>>> TOOLTIP_ORDER = new ArrayList<>();

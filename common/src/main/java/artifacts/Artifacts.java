@@ -68,6 +68,7 @@ public class Artifacts {
         ModItems.ITEMS.register();
         ModItems.CREATIVE_MODE_TABS.register();
         ModFeatures.FEATURES.register();
+        ModGameEvents.GAME_EVENTS.register();
     }
 
     public static void initConfigs() {

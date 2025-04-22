@@ -121,6 +121,7 @@
   "artifacts.config.items.flippers.swimSpeedBonus.title": "Swim Speed Bonus",
   "artifacts.config.items.golden_hook.entityExperienceBonus.description": "The amount of extra experience dropped by entities that are killed by players wearing the Golden Hook",
   "artifacts.config.items.golden_hook.entityExperienceBonus.title": "Entity Experience Bonus",
+  "artifacts.config.items.helium_flamingo.cooldown.description": "The duration in seconds the Helium Flamingo goes on cooldown for when stopping flight",
   "artifacts.config.items.helium_flamingo.flightDuration.description": "The amount of time in seconds a player can fly with the Helium Flamingo before needing to recharge",
   "artifacts.config.items.helium_flamingo.flightDuration.title": "Flight Duration",
   "artifacts.config.items.helium_flamingo.rechargeDuration.description": "The amount of time in seconds it takes for the Helium Flamingo to recharge",

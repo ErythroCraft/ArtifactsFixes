@@ -22,7 +22,9 @@
           "functions": [
             {
               "components": {
-                "artifacts:hide_when_invisible": false
+                "artifacts:hide_when_invisible": {
+                  "enabled": false
+                }
               },
               "function": "minecraft:set_components"
             }

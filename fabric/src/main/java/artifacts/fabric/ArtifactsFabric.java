@@ -7,11 +7,13 @@ import artifacts.fabric.network.FabricNetworkHandler;
 import artifacts.fabric.registry.ModFeaturesFabric;
 import artifacts.fabric.registry.ModLootTablesFabric;
 import artifacts.registry.ModEntityTypes;
+import artifacts.registry.ModGameEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.registry.SculkSensorFrequencyRegistry;
 
 public class ArtifactsFabric implements ModInitializer {
 
@@ -26,6 +28,10 @@ public class ArtifactsFabric implements ModInitializer {
         ModEntityTypes.registerMobAttributes(FabricDefaultAttributeRegistry::register);
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> ArtifactHooks.onEntityAdded(entity));
+
+        ModGameEvents.VIBRATION_FREQUENCIES.forEach((holder, frequency) ->
+                SculkSensorFrequencyRegistry.register(holder.unwrapKey().orElseThrow(), frequency)
+        );
 
         ServerLifecycleEvents.SERVER_STARTING.register(Artifacts::onServerStarting);
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> Artifacts.onServerStopping());
