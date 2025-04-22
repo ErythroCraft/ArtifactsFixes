@@ -168,6 +168,9 @@ public class ModItems {
                     DamageTypeTags.IS_FALL,
                     Artifacts.CONFIG.items.charmOfSinkingUnderwaterFallDamage.get() ? AbilityCondition.NEVER : AbilityCondition.IN_WATER
             ))
+            .addAttributeModifier(Attributes.OXYGEN_BONUS, Artifacts.CONFIG.items.charmOfSinkingEnabled.get() ?
+                    Artifacts.CONFIG.items.charmOfSinkingOxygenBonus : Value.of(0D), AttributeModifier.Operation.ADD_VALUE
+            )
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SINKING)
     );
     public static final Holder<Item> CHARM_OF_SHRINKING = wearableItem("charm_of_shrinking", builder -> builder

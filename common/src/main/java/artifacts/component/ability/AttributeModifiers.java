@@ -44,7 +44,8 @@ public record AttributeModifiers(List<Entry> entries) implements TickingComposit
                 Attributes.JUMP_STRENGTH,
                 Attributes.KNOCKBACK_RESISTANCE,
                 Attributes.MAX_HEALTH,
-                Attributes.SAFE_FALL_DISTANCE
+                Attributes.SAFE_FALL_DISTANCE,
+                Attributes.OXYGEN_BONUS
         ));
     }
 

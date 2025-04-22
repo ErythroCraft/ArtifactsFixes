@@ -28,7 +28,7 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Antidote Vessel reduces the duration of negative effects"),
             aquaDashersEnabled = defineBool(createKey(ModItems.AQUA_DASHERS, "enabled"),
                     "Whether the Aqua-Dashers allow the wearer to sprint on water"),
-            charmOfSinkingEnabled = defineBool(createKey(ModItems.CHARM_OF_SINKING, "enabled"),
+            charmOfSinkingEnabled = defineBool(createKey(ModItems.CHARM_OF_SINKING, "enabled"), true, true,
                     "Whether the Charm of Sinking removes the wearer's collision with water"),
             cloudInABottleEnabled = defineBool(createKey(ModItems.CLOUD_IN_A_BOTTLE, "enabled"),
                     "Whether the Cloud in a Bottle allows the wearer to double jump"),
@@ -148,7 +148,9 @@ public class ItemConfigs extends ConfigManager {
             steadfastSpikesSlipperinessReduction = defineAttributeModifier(createKey(ModItems.STEADFAST_SPIKES, "slipperinessReduction"), 1.00,
                     "How much the Steadfast Spikes reduce the slipperiness of ice"),
             villagerHatReputationBonus = defineAttributeModifier(createKey(ModItems.VILLAGER_HAT, "reputationBonus"), 75,
-                    "The amount of extra reputation that is granted by the Villager Hat when trading with villagers");
+                    "The amount of extra reputation that is granted by the Villager Hat when trading with villagers"),
+            charmOfSinkingOxygenBonus = defineAttributeModifier(createKey(ModItems.CHARM_OF_SINKING, "oxygenBonus"), 1.5D,
+                    "How much longer players wearing the Charm of Sinking can stay underwater");
 
     public final Value.ConfigValue<Double>
             whoopeeCushionFartChance = defineFraction(createKey(ModItems.WHOOPEE_CUSHION, "fartChance"), 0.12,
