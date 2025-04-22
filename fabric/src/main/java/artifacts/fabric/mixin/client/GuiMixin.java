@@ -1,70 +1,19 @@
 package artifacts.fabric.mixin.client;
 
-import artifacts.Artifacts;
-import artifacts.equipment.EquipmentHelper;
-import artifacts.registry.ModDataComponents;
+import artifacts.client.CooldownOverlayRenderer;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.world.entity.player.Player;
-import org.apache.commons.lang3.mutable.MutableInt;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.function.Supplier;
-
 @Mixin(Gui.class)
 public abstract class GuiMixin {
 
-    @Final
-    @Shadow
-    private Minecraft minecraft;
-
-    @Shadow
-    protected abstract Player getCameraPlayer();
-
     @Inject(method = "renderHotbarAndDecorations", at = @At(value = "TAIL"))
     private void renderHotbarAndDecorations(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
-        Player player = this.getCameraPlayer();
-        if (!Artifacts.CONFIG.client.enableCooldownOverlay.get() || player == null) {
-            return;
-        }
-
-        int y = guiGraphics.guiHeight() - 16 - 3;
-        int cooldownOverlayOffset = Artifacts.CONFIG.client.cooldownOverlayOffset.get();
-
-        final int start, step;
-        if (cooldownOverlayOffset < 0) {
-            step = -20;
-            start = guiGraphics.guiWidth() / 2 - 91 - 16 + cooldownOverlayOffset;
-        } else {
-            step = 20;
-            start = guiGraphics.guiWidth() / 2 + 91 + cooldownOverlayOffset;
-        }
-
-        MutableInt k = new MutableInt(0);
-        EquipmentHelper.iterateEquipment(player, stack -> {
-            if (player.getCooldowns().isOnCooldown(stack.getItem())) {
-                boolean canApplyCooldown = false;
-                for (Supplier<? extends DataComponentType<?>> type : ModDataComponents.APPLIES_COOLDOWN) {
-                    if (stack.has(type.get())) {
-                        canApplyCooldown = true;
-                        break;
-                    }
-                }
-                if (canApplyCooldown) {
-                    int x = start + step * k.intValue();
-                    k.add(1);
-                    guiGraphics.renderItem(player, stack, x, y, k.intValue() + 1);
-                    guiGraphics.renderItemDecorations(minecraft.font, stack, x, y);
-                }
-            }
-        });
+        CooldownOverlayRenderer.render(guiGraphics, deltaTracker);
     }
 }

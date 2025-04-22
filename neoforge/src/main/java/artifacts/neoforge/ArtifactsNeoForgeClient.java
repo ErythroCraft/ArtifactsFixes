@@ -2,12 +2,12 @@ package artifacts.neoforge;
 
 import artifacts.Artifacts;
 import artifacts.ArtifactsClient;
+import artifacts.client.CooldownOverlayRenderer;
 import artifacts.client.item.ArtifactRenderers;
 import artifacts.client.mimic.MimicRenderer;
 import artifacts.integration.ModCompat;
 import artifacts.integration.trinkets.ArtifactRendererReloadListener;
 import artifacts.neoforge.client.ArmRenderHandler;
-import artifacts.neoforge.client.ArtifactCooldownOverlayRenderer;
 import artifacts.neoforge.client.HeliumFlamingoOverlayRenderer;
 import artifacts.neoforge.client.UmbrellaArmPoseHandler;
 import artifacts.neoforge.integration.curios.CuriosCompatClient;
@@ -72,7 +72,7 @@ public class ArtifactsNeoForgeClient {
 
     public void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAbove(VanillaGuiLayers.AIR_LEVEL, Artifacts.id("helium_flamingo_charge"), HeliumFlamingoOverlayRenderer::render);
-        event.registerAbove(VanillaGuiLayers.HOTBAR, Artifacts.id("artifact_cooldowns"), ArtifactCooldownOverlayRenderer::render);
+        event.registerAbove(VanillaGuiLayers.HOTBAR, Artifacts.id("artifact_cooldowns"), CooldownOverlayRenderer::render);
     }
 
     public void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {

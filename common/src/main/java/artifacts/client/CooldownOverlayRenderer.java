@@ -1,4 +1,4 @@
-package artifacts.neoforge.client;
+package artifacts.client;
 
 import artifacts.Artifacts;
 import artifacts.equipment.EquipmentHelper;
@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-public class ArtifactCooldownOverlayRenderer {
+public class CooldownOverlayRenderer {
 
     @SuppressWarnings("unused")
     public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
