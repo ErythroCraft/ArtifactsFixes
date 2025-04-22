@@ -65,8 +65,8 @@ public class SwimData {
     public void toggleSwimming(Player player) {
         if (isSwimming || SwimInAir.canSwim(player)) {
             isSwimming = !isSwimming;
-            if (!isSwimming && !player.level().isClientSide()) {
-                if (!player.onGround() && !player.isSilent()) {
+            if (!isSwimming && !player.level().isClientSide() && !player.onGround()) {
+                if (!player.isSilent()) {
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                             ModSoundEvents.POP.value(), player.getSoundSource(), 1F, 1F
                     );
