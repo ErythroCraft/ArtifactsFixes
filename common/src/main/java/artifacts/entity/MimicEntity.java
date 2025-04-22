@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -85,10 +86,11 @@ public class MimicEntity extends Mob implements Enemy {
         super.registerGoals();
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new AttackGoal(this));
-        goalSelector.addGoal(3, new FaceRandomGoal(this));
+        goalSelector.addGoal(3, new PanicGoal());
+        goalSelector.addGoal(4, new FaceRandomGoal(this));
         goalSelector.addGoal(5, new HopGoal(this));
         // noinspection ConstantConditions
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 1, true, false, (entity) -> !isDormant || distanceTo(entity) < getAttribute(Attributes.FOLLOW_RANGE).getValue() / 2.5));
+        targetSelector.addGoal(1, new NearestPlayerTargetGoal());
     }
 
     @Override
@@ -275,6 +277,55 @@ public class MimicEntity extends Mob implements Enemy {
         }
     }
 
+    protected class PanicGoal extends Goal {
+
+        private int timeRemaining;
+
+        public PanicGoal() {
+            setFlags(EnumSet.of(Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity target = getTarget();
+
+            return level().getDifficulty() == Difficulty.PEACEFUL
+                    && target instanceof Player player
+                    && player.isAlive()
+                    && !player.getAbilities().invulnerable;
+        }
+
+        @Override
+        public void start() {
+            timeRemaining = 300;
+            super.start();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            LivingEntity target = getTarget();
+
+            return target instanceof Player player
+                    && player.isAlive()
+                    && player.getCommandSenderWorld().getDifficulty() == Difficulty.PEACEFUL
+                    && !player.getAbilities().invulnerable
+                    && --timeRemaining > 0;
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+
+            if (isDormant) {
+                return;
+            }
+
+            if (onGround() && getMoveControl() instanceof MimicMovementController controller && controller.jumpDelay >= 10) {
+                controller.setDirection(controller.rotationDegrees + random.nextFloat() * 180 - 90, true);
+            }
+        }
+    }
+
     protected static class FaceRandomGoal extends Goal {
 
         private final MimicEntity mimic;
@@ -353,6 +404,17 @@ public class MimicEntity extends Mob implements Enemy {
             if (mimic.getMoveControl() instanceof MimicMovementController controller) {
                 controller.setSpeed(1);
             }
+        }
+    }
+
+    private class NearestPlayerTargetGoal extends NearestAttackableTargetGoal<Player> {
+
+        public NearestPlayerTargetGoal() {
+            super(MimicEntity.this, Player.class, 1, true, false, null);
+            // noinspection ConstantConditions
+            super.targetConditions = TargetingConditions.forNonCombat().range(this.getFollowDistance()).selector(
+                    (entity) -> entity.canBeSeenAsEnemy() && (!isDormant || distanceTo(entity) < getAttribute(Attributes.FOLLOW_RANGE).getValue() / 2.5)
+            );
         }
     }
 
