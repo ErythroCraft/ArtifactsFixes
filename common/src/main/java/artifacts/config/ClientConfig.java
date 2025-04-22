@@ -10,7 +10,7 @@ public class ClientConfig extends ConfigManager {
             "Whether artifacts have tooltips explaining their effects");
     public final Supplier<Boolean> useModdedMimicTextures = defineBool("useModdedMimicTextures", true, false,
             "Whether mimics can use textures from Lootr or Quark");
-    public final Supplier<Boolean> enableCooldownOverlay = defineBool("enableCooldownOverlay", false, false,
+    public final Supplier<Boolean> enableCooldownOverlay = defineBool("enableCooldownOverlay", true, false,
             "Display artifacts on cooldown next to the hotbar");
     public final Supplier<Integer> cooldownOverlayOffset = defineInt("cooldownOverlayOffset", 10,
             "Location of the artifact cooldown gui element",
