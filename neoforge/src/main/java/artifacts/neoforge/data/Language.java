@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,12 +56,12 @@ public class Language extends LanguageProvider {
 
     private void addMiscTranslations() {
         add("artifacts.creative_tab", "Artifacts");
-        add("artifacts.key.helium_flamingo.activate", "Activate Helium Flamingo");
-        add("artifacts.key.charm_of_shrinking.toggle", "Toggle Charm of Shrinking");
-        add("artifacts.key.charm_of_sinking.toggle", "Toggle Charm of Sinking");
-        add("artifacts.key.night_vision_goggles.toggle", "Toggle Night Vision Goggles");
-        add("artifacts.key.universal_attractor.toggle", "Toggle Universal Attractor");
-        add("artifacts.key.scarf_of_invisibility.toggle", "Toggle Scarf of Invisibility");
+        ModKeyMappings.register(keyMapping -> {
+            List<String> list = Arrays.asList(keyMapping.getName().split("\\."));
+            String action = fromSnakeCasedString(list.getLast());
+            String itemName = fromSnakeCasedString(list.get(list.size() - 2));
+            add(keyMapping.getName(), "%s %s".formatted(action, itemName));
+        });
         add("artifacts.key_category", "Artifacts");
         add(ModSoundEvents.FART.value(), "Fart");
         add("curios.identifier.feet", "Feet");

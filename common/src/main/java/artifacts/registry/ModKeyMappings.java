@@ -3,20 +3,27 @@ package artifacts.registry;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.Item;
 
 import java.util.function.Consumer;
 
 public class ModKeyMappings {
 
-    private static final KeyMapping ACTIVATE_HELIUM_FLAMINGO = createUnboundKeyMapping("artifacts.key.helium_flamingo.activate");
-    public static final KeyMapping TOGGLE_CHARM_OF_SHRINKING = createUnboundKeyMapping("artifacts.key.charm_of_shrinking.activate");
-    public static final KeyMapping TOGGLE_CHARM_OF_SINKING = createUnboundKeyMapping("artifacts.key.charm_of_sinking.activate");
-    public static final KeyMapping TOGGLE_NIGHT_VISION_GOGGLES = createUnboundKeyMapping("artifacts.key.night_vision_goggles.toggle");
-    public static final KeyMapping TOGGLE_SCARF_OF_INVISIBILITY = createUnboundKeyMapping("artifacts.key.scarf_of_invisibility.toggle");
-    public static final KeyMapping TOGGLE_UNIVERSAL_ATTRACTOR = createUnboundKeyMapping("artifacts.key.universal_attractor.toggle");
+    private static final KeyMapping ACTIVATE_HELIUM_FLAMINGO = createUnboundKeyMapping(ModItems.HELIUM_FLAMINGO, "activate");
+    public static final KeyMapping TOGGLE_CHARM_OF_SHRINKING = createToggleKeyMapping(ModItems.CHARM_OF_SHRINKING);
+    public static final KeyMapping TOGGLE_CHARM_OF_SINKING = createToggleKeyMapping(ModItems.CHARM_OF_SINKING);
+    public static final KeyMapping TOGGLE_NIGHT_VISION_GOGGLES = createToggleKeyMapping(ModItems.NIGHT_VISION_GOGGLES);
+    public static final KeyMapping TOGGLE_SCARF_OF_INVISIBILITY = createToggleKeyMapping(ModItems.SCARF_OF_INVISIBILITY);
+    public static final KeyMapping TOGGLE_UNIVERSAL_ATTRACTOR = createToggleKeyMapping(ModItems.UNIVERSAL_ATTRACTOR);
 
-    private static KeyMapping createUnboundKeyMapping(String name) {
-        return new KeyMapping(name, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), "artifacts.key_category");
+    private static KeyMapping createToggleKeyMapping(Holder<Item> item) {
+        return createUnboundKeyMapping(item, "toggle");
+    }
+
+    private static KeyMapping createUnboundKeyMapping(Holder<Item> item, String action) {
+        String id = "artifacts.key.%s.%s".formatted(item.unwrapKey().orElseThrow().location().getPath(), action);
+        return new KeyMapping(id, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), "artifacts.key_category");
     }
 
     public static KeyMapping getHeliumFlamingoKey() {
