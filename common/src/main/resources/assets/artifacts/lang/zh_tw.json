@@ -191,7 +191,6 @@
   "artifacts.config.items.umbrella.isGlider.title": "滑翔傘",
   "artifacts.config.items.umbrella.isShield.description": "雨傘是否可以用作盾牌",
   "artifacts.config.items.umbrella.isShield.title": "盾牌",
-  "artifacts.config.items.universal_attractor.enabled.description": "萬能吸引器是否會吸引附近的物品",
   "artifacts.config.items.vampiric_glove.absorptionChance.description": "使用吸血鬼手套攻擊實體時吸收傷害的機率",
   "artifacts.config.items.vampiric_glove.absorptionChance.title": "吸收機率",
   "artifacts.config.items.vampiric_glove.absorptionRatio.description": "吸血鬼手套吸收的近戰傷害比例",

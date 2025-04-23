@@ -191,7 +191,6 @@
   "artifacts.config.items.umbrella.isGlider.title": "Es planeador",
   "artifacts.config.items.umbrella.isShield.description": "Si el Paraguas puede ser utilizado como escudo",
   "artifacts.config.items.umbrella.isShield.title": "Es escudo",
-  "artifacts.config.items.universal_attractor.enabled.description": "Si el Imán Universal atrae objetos cercanos",
   "artifacts.config.items.vampiric_glove.absorptionChance.description": "La probabilidad de que se absorba daño al atacar a una entidad con los Guantes Vampíricos",
   "artifacts.config.items.vampiric_glove.absorptionChance.title": "Probabilidad de Absorción",
   "artifacts.config.items.vampiric_glove.absorptionRatio.description": "La proporción del daño cuerpo a cuerpo infligido que es absorbida por el Guante Vampírico",

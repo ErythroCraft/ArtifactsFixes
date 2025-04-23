@@ -207,7 +207,6 @@
   "artifacts.config.items.umbrella.isGlider.title": "Is Glider",
   "artifacts.config.items.umbrella.isShield.description": "Whether the Umbrella can be used as a shield",
   "artifacts.config.items.umbrella.isShield.title": "Is Shield",
-  "artifacts.config.items.universal_attractor.enabled.description": "Whether the Universal Attractor attracts nearby items",
   "artifacts.config.items.universal_attractor.magnetismLevel.description": "The level of the magnetism effect that is applied by the Universal Attractor",
   "artifacts.config.items.universal_attractor.magnetismLevel.title": "Magnetism Level",
   "artifacts.config.items.vampiric_glove.absorptionChance.description": "The probability that damage is absorbed when attacking an entity with the Vampiric Gloves",

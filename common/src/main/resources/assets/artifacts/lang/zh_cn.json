@@ -191,7 +191,6 @@
   "artifacts.config.items.umbrella.isGlider.title": "可滑翔",
   "artifacts.config.items.umbrella.isShield.description": "雨伞能否作为盾牌使用",
   "artifacts.config.items.umbrella.isShield.title": "可阻挡",
-  "artifacts.config.items.universal_attractor.enabled.description": "强力磁铁能否吸引附近物品",
   "artifacts.config.items.vampiric_glove.absorptionRatio.description": "吸血手套能吸收的近战伤害比例值",
   "artifacts.config.items.vampiric_glove.absorptionRatio.title": "吸收比例",
   "artifacts.config.items.vampiric_glove.maxHealingPerHit.description": "吸血手套每次攻击的最大恢复量",

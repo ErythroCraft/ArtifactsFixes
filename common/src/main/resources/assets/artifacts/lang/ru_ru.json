@@ -191,7 +191,6 @@
   "artifacts.config.items.umbrella.isGlider.title": "Зонт-планер",
   "artifacts.config.items.umbrella.isShield.description": "Можно ли использовать зонт в качестве щита",
   "artifacts.config.items.umbrella.isShield.title": "Зонт-щит",
-  "artifacts.config.items.universal_attractor.enabled.description": "Притягивает ли универсальный магнит близлежащие предметы",
   "artifacts.config.items.vampiric_glove.absorptionRatio.description": "Доля нанесённого урона в ближнем бою, поглощаемая вампирской перчаткой",
   "artifacts.config.items.vampiric_glove.absorptionRatio.title": "Коэффициент поглощения",
   "artifacts.config.items.vampiric_glove.maxHealingPerHit.description": "Максимальное количество исцеления, которое можно поглотить за один удар при атаке объекта с использованием вампирской перчатки",
