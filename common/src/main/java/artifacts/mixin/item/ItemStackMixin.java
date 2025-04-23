@@ -8,7 +8,6 @@ import artifacts.item.WearableArtifactItem;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.TooltipHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -58,12 +57,8 @@ public abstract class ItemStackMixin {
         }
 
         ToggleIdentifier toggleKey = stack.get(ModDataComponents.TOGGLE_KEY.get());
-        if (toggleKey != null && !TooltipHelper.isCosmetic(stack)) {
-            KeyMapping key = ToggleKeyHandlers.getKeyMapping(toggleKey);
-            if (key != null && player != null && (!key.isUnbound() || stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()))) {
-                tooltip.add(Component.translatable("%s.tooltip.toggle_keymapping".formatted(Artifacts.MOD_ID), key.getTranslatedKeyMessage())
-                        .withStyle(ChatFormatting.GRAY));
-            }
+        if (toggleKey != null && !TooltipHelper.isCosmetic(stack) && player != null && !player.level().isClientSide()) {
+            ToggleKeyHandlers.addTooltip(toggleKey, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()), tooltip::add);
         }
     }
 

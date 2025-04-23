@@ -1,13 +1,17 @@
 package artifacts.client;
 
+import artifacts.Artifacts;
 import artifacts.component.ToggleIdentifier;
 import artifacts.network.NetworkHandler;
 import artifacts.network.ToggleKeyPressedPacket;
 import artifacts.registry.ModKeyMappings;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class ToggleKeyHandlers {
 
@@ -34,6 +38,14 @@ public class ToggleKeyHandlers {
             }
         }
         throw new IllegalArgumentException();
+    }
+
+    public static void addTooltip(ToggleIdentifier identifier, boolean addWhenUnbound, Consumer<Component> consumer) {
+        KeyMapping key = ToggleKeyHandlers.getKeyMapping(identifier);
+        if (key != null && (!key.isUnbound() || addWhenUnbound)) {
+            consumer.accept(Component.translatable("%s.tooltip.toggle_keymapping".formatted(Artifacts.MOD_ID), key.getTranslatedKeyMessage())
+                    .withStyle(ChatFormatting.GRAY));
+        }
     }
 
     private static class ToggleInputListener {
