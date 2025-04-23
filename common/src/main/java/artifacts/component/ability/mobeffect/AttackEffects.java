@@ -59,7 +59,7 @@ public record AttackEffects(List<Entry> entries) implements CompositeAbility<Att
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 MobEffectProvider.codec(true).fieldOf("effect").forGetter(Entry::provider),
                 ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(Entry::chance),
-                ValueTypes.DURATION.codec().optionalFieldOf("cooldown", Value.of(1)).forGetter(Entry::cooldown)
+                ValueTypes.DURATION.codec().optionalFieldOf("cooldown", Value.of(0)).forGetter(Entry::cooldown)
         ).apply(instance, Entry::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, Entry> STREAM_CODEC = StreamCodec.composite(
