@@ -1,7 +1,7 @@
 package artifacts.component.ability.mobeffect;
 
-import artifacts.component.ability.AbilityCondition;
 import artifacts.component.ability.CompositeAbility;
+import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
@@ -52,7 +52,7 @@ public record PostEatingEffects(List<Entry> entries) implements CompositeAbility
 
         @Override
         public void addToTooltip(TooltipWriter writer) {
-            if (provider.mobEffect().equals(MobEffects.DIG_SPEED) && provider.condition() == AbilityCondition.ALWAYS) {
+            if (provider.mobEffect().equals(MobEffects.DIG_SPEED) && provider.condition() == EntityCondition.ALWAYS) {
                 writer.add("haste");
             }
         }

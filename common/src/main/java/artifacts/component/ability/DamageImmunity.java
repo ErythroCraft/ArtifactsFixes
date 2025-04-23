@@ -15,7 +15,7 @@ import net.minecraft.world.damagesource.DamageType;
 
 import java.util.Set;
 
-public record DamageImmunity(Value<Boolean> enabled, TagKey<DamageType> tag, AbilityCondition condition)
+public record DamageImmunity(Value<Boolean> enabled, TagKey<DamageType> tag, EntityCondition condition)
         implements EquipmentAbility {
 
     private static final Set<TagKey<DamageType>> CUSTOM_TOOLTIP_TAGS = Set.of(
@@ -26,7 +26,7 @@ public record DamageImmunity(Value<Boolean> enabled, TagKey<DamageType> tag, Abi
     public static final Codec<DamageImmunity> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(DamageImmunity::enabled),
             TagKey.codec(Registries.DAMAGE_TYPE).fieldOf("tag").forGetter(DamageImmunity::tag),
-            AbilityCondition.CODEC.optionalFieldOf("condition", AbilityCondition.ALWAYS).forGetter(DamageImmunity::condition)
+            EntityCondition.CODEC.optionalFieldOf("condition", EntityCondition.ALWAYS).forGetter(DamageImmunity::condition)
     ).apply(instance, DamageImmunity::new));
 
     public static final StreamCodec<ByteBuf, DamageImmunity> STREAM_CODEC = StreamCodec.composite(
@@ -34,7 +34,7 @@ public record DamageImmunity(Value<Boolean> enabled, TagKey<DamageType> tag, Abi
             DamageImmunity::enabled,
             ModCodecs.tagKeyStreamCodec(Registries.DAMAGE_TYPE),
             DamageImmunity::tag,
-            AbilityCondition.STREAM_CODEC,
+            EntityCondition.STREAM_CODEC,
             DamageImmunity::condition,
             DamageImmunity::new
     );
@@ -46,7 +46,7 @@ public record DamageImmunity(Value<Boolean> enabled, TagKey<DamageType> tag, Abi
 
     @Override
     public void addToTooltip(TooltipWriter writer) {
-        if (CUSTOM_TOOLTIP_TAGS.contains(tag()) && condition() == AbilityCondition.ALWAYS) {
+        if (CUSTOM_TOOLTIP_TAGS.contains(tag()) && condition() == EntityCondition.ALWAYS) {
             writer.add(tag().location().getPath());
         }
     }

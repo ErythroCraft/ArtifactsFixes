@@ -76,11 +76,11 @@ public class ModItems {
     );
     public static final Holder<Item> SNORKEL = wearableItem("snorkel", builder -> builder
             .mobEffect(MobEffects.WATER_BREATHING, Value.of(1), Artifacts.CONFIG.items.snorkelWaterBreathingDuration,
-                    Artifacts.CONFIG.items.snorkelIsInfinite.get() ? AbilityCondition.ALWAYS : AbilityCondition.ABOVE_WATER
+                    Artifacts.CONFIG.items.snorkelIsInfinite.get() ? EntityCondition.ALWAYS : EntityCondition.ABOVE_WATER
             )
     );
     public static final Holder<Item> NIGHT_VISION_GOGGLES = wearableItem("night_vision_goggles", builder -> builder
-            .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), AbilityCondition.ALWAYS)
+            .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), EntityCondition.ALWAYS)
             .component(ModDataComponents.REDUCED_NIGHT_VISION.get(), Artifacts.CONFIG.items.nightVisionGogglesStrength)
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.NIGHT_VISION_GOGGLES)
     );
@@ -106,7 +106,7 @@ public class ModItems {
     );
     public static final Holder<Item> SCARF_OF_INVISIBILITY = wearableItem("scarf_of_invisibility", builder -> builder
             .mobEffect(MobEffects.INVISIBILITY, Value.of(1), Value.of(10),
-                    Artifacts.CONFIG.items.scarfOfInvisibilityEnabled.get() ? AbilityCondition.ALWAYS : AbilityCondition.NEVER
+                    Artifacts.CONFIG.items.scarfOfInvisibilityEnabled.get() ? EntityCondition.ALWAYS : EntityCondition.NEVER
             )
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.SCARF_OF_INVISIBILITY)
             .component(ModDataComponents.HIDE_WHEN_INVISIBLE.get(), Artifacts.CONFIG.items.scarfOfInvisibilityHideWhenInvisible)
@@ -120,7 +120,7 @@ public class ModItems {
     public static final Holder<Item> PANIC_NECKLACE = wearableItem("panic_necklace", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new PostDamageEffects(List.of(new PostDamageEffects.Entry(
-                    new MobEffectProvider(MobEffects.MOVEMENT_SPEED, Artifacts.CONFIG.items.panicNecklaceSpeedLevel, Artifacts.CONFIG.items.panicNecklaceSpeedDuration, Value.of(true), Value.of(true), AbilityCondition.ALWAYS),
+                    new MobEffectProvider(MobEffects.MOVEMENT_SPEED, Artifacts.CONFIG.items.panicNecklaceSpeedLevel, Artifacts.CONFIG.items.panicNecklaceSpeedDuration, Value.of(true), Value.of(true), EntityCondition.ALWAYS),
                     Optional.empty(),
                     Value.of(1D)
             ))))
@@ -138,7 +138,7 @@ public class ModItems {
                     ))
             )).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
                     new DamageImmunity(Artifacts.CONFIG.items.shockPendantCancelLightningDamage,
-                            DamageTypeTags.IS_LIGHTNING, AbilityCondition.ALWAYS)
+                            DamageTypeTags.IS_LIGHTNING, EntityCondition.ALWAYS)
             )
     );
     public static final Holder<Item> FLAME_PENDANT = wearableItem("flame_pendant", builder -> builder
@@ -166,7 +166,7 @@ public class ModItems {
             .component(ModDataComponents.DAMAGE_IMMUNITY.get(), new DamageImmunity(
                     Artifacts.CONFIG.items.charmOfSinkingEnabled,
                     DamageTypeTags.IS_FALL,
-                    Artifacts.CONFIG.items.charmOfSinkingUnderwaterFallDamage.get() ? AbilityCondition.NEVER : AbilityCondition.IN_WATER
+                    Artifacts.CONFIG.items.charmOfSinkingUnderwaterFallDamage.get() ? EntityCondition.NEVER : EntityCondition.IN_WATER
             ))
             .addAttributeModifier(Attributes.OXYGEN_BONUS, Artifacts.CONFIG.items.charmOfSinkingEnabled.get() ?
                     Artifacts.CONFIG.items.charmOfSinkingOxygenBonus : Value.of(0D), AttributeModifier.Operation.ADD_VALUE
@@ -192,7 +192,7 @@ public class ModItems {
     public static final Holder<Item> OBSIDIAN_SKULL = wearableItem("obsidian_skull", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
             .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new PostDamageEffects(List.of(new PostDamageEffects.Entry(
-                    new MobEffectProvider(MobEffects.FIRE_RESISTANCE, Value.of(1), Artifacts.CONFIG.items.obsidianSkullFireResistanceDuration, Value.of(true), Value.of(true), AbilityCondition.ALWAYS),
+                    new MobEffectProvider(MobEffects.FIRE_RESISTANCE, Value.of(1), Artifacts.CONFIG.items.obsidianSkullFireResistanceDuration, Value.of(true), Value.of(true), EntityCondition.ALWAYS),
                     Optional.of(DamageTypeTags.IS_FIRE),
                     Value.of(1D)
             ))))
@@ -211,7 +211,7 @@ public class ModItems {
     );
     public static final Holder<Item> UNIVERSAL_ATTRACTOR = wearableItem("universal_attractor", builder -> builder
             .component(ModDataComponents.PIGLIN_LOVED.get())
-            .mobEffect(ModMobEffects.MAGNETISM, Artifacts.CONFIG.items.universalAttractorMagnetismLevel, Value.of(10), AbilityCondition.ALWAYS)
+            .mobEffect(ModMobEffects.MAGNETISM, Artifacts.CONFIG.items.universalAttractorMagnetismLevel, Value.of(10), EntityCondition.ALWAYS)
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.UNIVERSAL_ATTRACTOR)
     );
     public static final Holder<Item> CRYSTAL_HEART = wearableItem("crystal_heart", builder -> builder
@@ -282,7 +282,7 @@ public class ModItems {
                             MobEffects.DIG_SPEED,
                             Artifacts.CONFIG.items.onionRingHasteLevel,
                             Artifacts.CONFIG.items.onionRingHasteDurationPerFoodPoint,
-                            Value.of(true), Value.of(true), AbilityCondition.ALWAYS
+                            Value.of(true), Value.of(true), EntityCondition.ALWAYS
                     )))
             ))
     );
@@ -297,7 +297,7 @@ public class ModItems {
                                     MobEffects.WITHER,
                                     Artifacts.CONFIG.items.witheredBraceletWitherLevel,
                                     Artifacts.CONFIG.items.witheredBraceletWitherDuration,
-                                    Value.of(true), Value.of(true), AbilityCondition.ALWAYS
+                                    Value.of(true), Value.of(true), EntityCondition.ALWAYS
                             ),
                             Artifacts.CONFIG.items.witheredBraceletWitherChance,
                             Artifacts.CONFIG.items.witheredBraceletCooldown
@@ -308,7 +308,7 @@ public class ModItems {
     // feet
     public static final Holder<Item> AQUA_DASHERS = wearableItem("aqua_dashers", builder -> builder
             .component(ModDataComponents.FLUID_COLLISION.get(), new FluidCollision(Artifacts.CONFIG.items.aquaDashersEnabled,
-                    Optional.empty(), AbilityCondition.SPRINTING)
+                    Optional.empty(), EntityCondition.SPRINTING)
             )
     );
     public static final Holder<Item> BUNNY_HOPPERS = wearableItem("bunny_hoppers", builder -> builder
@@ -349,9 +349,9 @@ public class ModItems {
     public static final Holder<Item> STRIDER_SHOES = wearableItem("strider_shoes", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
             .component(ModDataComponents.FLUID_COLLISION.get(), new FluidCollision(Artifacts.CONFIG.items.striderShoesEnabled,
-                    Optional.of(FluidTags.LAVA), AbilityCondition.SNEAKING)
+                    Optional.of(FluidTags.LAVA), EntityCondition.SNEAKING)
             ).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
-                    new DamageImmunity(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR, AbilityCondition.ALWAYS)
+                    new DamageImmunity(Artifacts.CONFIG.items.striderShoesCancelHotFloorDamage, ModTags.IS_HOT_FLOOR, EntityCondition.ALWAYS)
             )
     );
 

@@ -1,7 +1,7 @@
 package artifacts.component.ability.mobeffect;
 
-import artifacts.component.ability.AbilityCondition;
 import artifacts.component.ability.CompositeAbility;
+import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.TickingAbility;
 import artifacts.component.ability.TickingCompositeAbility;
 import artifacts.config.value.Value;
@@ -81,7 +81,7 @@ public record EquipmentMobEffects(List<Entry> entries) implements TickingComposi
                 }
             }
             if (provider.mobEffect().value() == net.minecraft.world.effect.MobEffects.WATER_BREATHING.value()) {
-                if (provider.condition() == AbilityCondition.ALWAYS) {
+                if (provider.condition() == EntityCondition.ALWAYS) {
                     writer.add("water_breathing.infinite");
                 } else {
                     writer.add("water_breathing.limited");

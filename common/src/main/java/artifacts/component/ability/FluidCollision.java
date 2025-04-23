@@ -17,13 +17,13 @@ import net.minecraft.world.level.material.FluidState;
 
 import java.util.Optional;
 
-public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, AbilityCondition condition)
+public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, EntityCondition condition)
         implements TickingAbility {
 
     public static Codec<FluidCollision> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(FluidCollision::enabled),
             TagKey.codec(Registries.FLUID).optionalFieldOf("tag").forGetter(FluidCollision::tag),
-            AbilityCondition.CODEC.optionalFieldOf("condition", AbilityCondition.ALWAYS).forGetter(FluidCollision::condition)
+            EntityCondition.CODEC.optionalFieldOf("condition", EntityCondition.ALWAYS).forGetter(FluidCollision::condition)
     ).apply(instance, FluidCollision::new));
 
     public static StreamCodec<ByteBuf, FluidCollision> STREAM_CODEC = StreamCodec.composite(
@@ -31,7 +31,7 @@ public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag
             FluidCollision::enabled,
             ByteBufCodecs.optional(ModCodecs.tagKeyStreamCodec(Registries.FLUID)),
             FluidCollision::tag,
-            AbilityCondition.STREAM_CODEC,
+            EntityCondition.STREAM_CODEC,
             FluidCollision::condition,
             FluidCollision::new
     );
@@ -55,9 +55,9 @@ public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag
 
     @Override
     public void addToTooltip(TooltipWriter writer) {
-        if (condition == AbilityCondition.SNEAKING && tag().isPresent() && tag().get().equals(FluidTags.LAVA)) {
+        if (condition == EntityCondition.SNEAKING && tag().isPresent() && tag().get().equals(FluidTags.LAVA)) {
             writer.add("sneaking.lava");
-        } else if (condition == AbilityCondition.SPRINTING && tag().isEmpty()){
+        } else if (condition == EntityCondition.SPRINTING && tag().isEmpty()){
             writer.add("sprinting");
         }
     }

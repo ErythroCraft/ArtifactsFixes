@@ -1,9 +1,9 @@
 package artifacts.item;
 
 import artifacts.Artifacts;
-import artifacts.component.ability.AbilityCondition;
 import artifacts.component.ability.AttributeModifiers;
 import artifacts.component.ability.EnchantmentLevelModifiers;
+import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.SimpleAbility;
 import artifacts.component.ability.mobeffect.EquipmentMobEffects;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
@@ -84,7 +84,7 @@ public class WearableArtifactItem extends Item {
             return this;
         }
 
-        public Builder mobEffect(Holder<MobEffect> effect, Value<Integer> level, Value<Integer> duration, AbilityCondition condition) {
+        public Builder mobEffect(Holder<MobEffect> effect, Value<Integer> level, Value<Integer> duration, EntityCondition condition) {
             return component(ModDataComponents.MOB_EFFECTS.get(), new EquipmentMobEffects(List.of(
                     new EquipmentMobEffects.Entry(new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition))
             )));

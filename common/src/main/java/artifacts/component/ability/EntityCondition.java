@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.function.Predicate;
 
-public enum AbilityCondition implements StringRepresentable {
+public enum EntityCondition implements StringRepresentable {
     ALWAYS("always", entity -> true),
     NEVER("never", entity -> false),
     ABOVE_WATER("above_water", entity -> !entity.isEyeInFluid(FluidTags.WATER)),
@@ -21,13 +21,13 @@ public enum AbilityCondition implements StringRepresentable {
     SNEAKING("while_sneaking", Entity::isCrouching),
     SPRINTING("while_sprinting", entity -> entity.isSprinting() && !entity.isUsingItem() && !entity.isCrouching());
 
-    public static final Codec<AbilityCondition> CODEC = StringRepresentable.fromValues(AbilityCondition::values);
-    public static final StreamCodec<ByteBuf, AbilityCondition> STREAM_CODEC = ByteBufCodecs.idMapper(i -> AbilityCondition.values()[i], AbilityCondition::ordinal);
+    public static final Codec<EntityCondition> CODEC = StringRepresentable.fromValues(EntityCondition::values);
+    public static final StreamCodec<ByteBuf, EntityCondition> STREAM_CODEC = ByteBufCodecs.idMapper(i -> EntityCondition.values()[i], EntityCondition::ordinal);
 
     private final String name;
     private final Predicate<LivingEntity> predicate;
 
-    AbilityCondition(String name, Predicate<LivingEntity> predicate) {
+    EntityCondition(String name, Predicate<LivingEntity> predicate) {
         this.name = name;
         this.predicate = predicate;
     }

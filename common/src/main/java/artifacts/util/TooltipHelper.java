@@ -1,7 +1,7 @@
 package artifacts.util;
 
-import artifacts.component.ability.AbilityCondition;
 import artifacts.component.ability.AttributeModifiers;
+import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.component.ability.mobeffect.*;
 import artifacts.registry.ModDataComponents;
@@ -73,7 +73,7 @@ public class TooltipHelper {
         getAbility(ModDataComponents.MOB_EFFECTS.get(), stack).ifPresent(ability -> {
             for (EquipmentMobEffects.Entry entry : ability.entries()) {
                 MobEffectProvider provider = entry.provider();
-                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, provider.condition() == AbilityCondition.ALWAYS);
+                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, provider.condition() == EntityCondition.ALWAYS);
             }
         });
     }
