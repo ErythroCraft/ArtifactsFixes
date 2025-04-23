@@ -1,5 +1,6 @@
 package artifacts.effect;
 
+import artifacts.extensions.mobeffect.magnetism.ItemEntityExtensions;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,7 +32,7 @@ public class MagnetismMobEffect extends MobEffect {
         List<ItemEntity> items = entity.level().getEntitiesOfClass(ItemEntity.class, new AABB(pos.x - range, pos.y - range, pos.z - range, pos.x + range, pos.y + range, pos.z + range));
         int amountPulled = 0;
         for (ItemEntity item : items) {
-            if (item.isAlive() && !item.hasPickUpDelay() && (item.getOwner() == null ||!entity.is(item.getOwner()))) {
+            if (item.isAlive() && !item.hasPickUpDelay() && ((ItemEntityExtensions) item).artifacts$wasThrownBy(entity)) {
                 if (amountPulled++ > 50) {
                     break;
                 }

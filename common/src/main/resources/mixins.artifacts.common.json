@@ -31,7 +31,9 @@
     "debug.TagLoaderMixin",
     "item.ItemStackMixin",
     "item.NaturalSpawnerMixin",
-    "item.umbrella.EntityMixin"
+    "item.umbrella.EntityMixin",
+    "mobeffect.magnetism.ItemEntityMixin",
+    "mobeffect.magnetism.PlayerMixin"
   ],
   "client": [
     "ability.hurtsound.client.LivingEntityMixin",
