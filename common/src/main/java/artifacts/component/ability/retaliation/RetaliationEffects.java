@@ -16,8 +16,8 @@ public record RetaliationEffects(Optional<ThornsEffect> thorns, Optional<FireEff
 
     public static final Codec<RetaliationEffects> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ThornsEffect.CODEC.optionalFieldOf("thorns").forGetter(RetaliationEffects::thorns),
-            FireEffect.CODEC.optionalFieldOf("thorns").forGetter(RetaliationEffects::fire),
-            LightningEffect.CODEC.optionalFieldOf("thorns").forGetter(RetaliationEffects::lightning)
+            FireEffect.CODEC.optionalFieldOf("fire").forGetter(RetaliationEffects::fire),
+            LightningEffect.CODEC.optionalFieldOf("lightning").forGetter(RetaliationEffects::lightning)
     ).apply(instance, RetaliationEffects::new));
 
     public static final StreamCodec<ByteBuf, RetaliationEffects> STREAM_CODEC = StreamCodec.composite(
