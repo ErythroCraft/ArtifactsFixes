@@ -24,7 +24,7 @@ body:
     id: artifacts_version
     attributes:
       label: Artifacts version
-      description: "Please also verify you do not have RAR-Compat installed. RAR-Compat makes numerous changes to this mod to bring it more in line with Relics' systems. Any issues encountered while playing with it should be reported [here](https://github.com/Octo-Studios/rar-compat/issues) instead."
+      description: "⚠️ Please also verify you do not have **Relics: Artifacts Compat** installed. RAR-Compat makes numerous changes to this mod to bring it more in line with Relics' systems. Any issues encountered while playing with it should be reported [here](https://github.com/Octo-Studios/rar-compat/issues) instead."
       placeholder: ex. 12.1.0
     validations:
       required: true
