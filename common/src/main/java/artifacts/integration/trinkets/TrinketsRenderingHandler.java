@@ -4,6 +4,7 @@ import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.equipment.client.EquipmentRenderingHandler;
 import artifacts.item.WearableArtifactItem;
+import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
@@ -26,14 +27,14 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
     
     @Override
     public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
-        TrinketRendererRegistry.registerRenderer(item, new ArtifactTrinketRenderer(rendererSupplier.get()));
+        TrinketRendererRegistry.registerRenderer(item, new ArtifactTrinketRenderer(Suppliers.memoize(rendererSupplier::get)));
     }
 
     @Override
     public @Nullable ArtifactRenderer getArtifactRenderer(Item item) {
         Optional<TrinketRenderer> renderer = TrinketRendererRegistry.getRenderer(item);
         if (renderer.isPresent() && renderer.get() instanceof ArtifactTrinketRenderer artifactTrinketRenderer) {
-            return artifactTrinketRenderer.renderer();
+            return artifactTrinketRenderer.renderer().get();
         }
         return null;
     }
@@ -54,12 +55,12 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
         });
     }
 
-    public record ArtifactTrinketRenderer(ArtifactRenderer renderer) implements TrinketRenderer {
+    public record ArtifactTrinketRenderer(Supplier<ArtifactRenderer> renderer) implements TrinketRenderer {
 
         @Override
         public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> entityModel, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             int index = slotReference.index() + (slotReference.inventory().getSlotType().getGroup().equals("hand") ? 0 : 1);
-            renderer.renderVisible(stack, entity, index, poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+            renderer.get().renderVisible(stack, entity, index, poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }
     }
 }
