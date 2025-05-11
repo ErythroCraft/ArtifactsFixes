@@ -6,7 +6,6 @@ import artifacts.client.CooldownOverlayRenderer;
 import artifacts.client.item.ArtifactRenderers;
 import artifacts.client.mimic.MimicRenderer;
 import artifacts.integration.ModCompat;
-import artifacts.integration.trinkets.ArtifactRendererReloadListener;
 import artifacts.neoforge.client.ArmRenderHandler;
 import artifacts.neoforge.client.HeliumFlamingoOverlayRenderer;
 import artifacts.neoforge.client.UmbrellaArmPoseHandler;
@@ -25,7 +24,6 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 
 public class ArtifactsNeoForgeClient {
 
@@ -48,7 +46,6 @@ public class ArtifactsNeoForgeClient {
             CuriosCompatClient.setup(modBus);
         }
 
-        NeoForge.EVENT_BUS.addListener(this::addReloadListeners);
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> ArtifactsClient.onClientTick(Minecraft.getInstance()));
     }
 
@@ -64,10 +61,6 @@ public class ArtifactsNeoForgeClient {
         ArtifactRenderers.register();
         UmbrellaArmPoseHandler.setup();
         ArtifactsClient.registerItemPropertyFunctions(ItemProperties::register);
-    }
-
-    public void addReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(new ArtifactRendererReloadListener());
     }
 
     public void registerGuiLayers(RegisterGuiLayersEvent event) {
