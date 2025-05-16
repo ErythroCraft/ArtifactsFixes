@@ -50,17 +50,20 @@ public class ArtifactsNeoForgeClient {
     }
 
     public void onClientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(
-                () -> ItemProperties.register(
-                        ModItems.UMBRELLA.value(),
-                        Artifacts.id("blocking"),
-                        (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0
-                )
-        );
-        event.enqueueWork(ArtifactsClient::onClientStarted);
-        ArtifactRenderers.register();
         UmbrellaArmPoseHandler.setup();
-        ArtifactsClient.registerItemPropertyFunctions(ItemProperties::register);
+
+        event.enqueueWork(
+                () -> {
+                    ItemProperties.register(
+                            ModItems.UMBRELLA.value(),
+                            Artifacts.id("blocking"),
+                            (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0
+                    );
+                    ArtifactsClient.registerItemPropertyFunctions(ItemProperties::register);
+                    ArtifactRenderers.register();
+                    ArtifactsClient.onClientStarted();
+                }
+        );
     }
 
     public void registerGuiLayers(RegisterGuiLayersEvent event) {
