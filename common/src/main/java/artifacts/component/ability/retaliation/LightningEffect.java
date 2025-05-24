@@ -37,7 +37,7 @@ public class LightningEffect extends RetaliationEffect {
             LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(attacker.level());
             if (lightningBolt != null) {
                 lightningBolt.moveTo(Vec3.atBottomCenterOf(attacker.blockPosition()));
-                lightningBolt.setCause(attacker instanceof ServerPlayer player ? player : null);
+                lightningBolt.setCause(target instanceof ServerPlayer player ? player : null);
                 attacker.level().addFreshEntity(lightningBolt);
             }
         }
