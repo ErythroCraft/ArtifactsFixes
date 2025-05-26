@@ -2,7 +2,9 @@ package artifacts.neoforge.registry;
 
 import artifacts.Artifacts;
 import artifacts.component.SwimData;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -21,6 +23,9 @@ public class ModAttachmentTypes {
     @Deprecated(forRemoval = true, since = "1.21.5")
     public static final Supplier<AttachmentType<Unit>> ABILITY_TOGGLES = ATTACHMENT_TYPES.register("ability_toggles", () ->
             AttachmentType.builder(() -> Unit.INSTANCE)
-                    .serialize(Codec.unit(Unit.INSTANCE), unit -> false).build()
+                    .serialize(Codec.either(
+                            Codec.unit(Unit.INSTANCE),
+                            ResourceLocation.CODEC.listOf()
+                    ).xmap(e -> Unit.INSTANCE, Either::left), unit -> false).build()
     );
 }
