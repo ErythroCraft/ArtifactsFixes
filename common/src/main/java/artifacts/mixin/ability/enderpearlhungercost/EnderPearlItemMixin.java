@@ -25,7 +25,7 @@ public abstract class EnderPearlItemMixin extends Item {
     private void shouldConsumeEnderPearl(ItemStack stack, int amount, LivingEntity entity, Operation<Void> operation) {
         if (EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), entity, true) && entity instanceof Player player) {
             int cost = EquipmentHelper.minInt(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), player, 20, ability -> ability.cost().get(), true);
-            if (player.getFoodData().getFoodLevel() >= cost) {
+            if (player.getFoodData().getFoodLevel() >= cost || player.isCreative()) {
                 if (cost > 0 && !player.isCreative()) {
                     player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() - cost);
                     entity.level().playSound(
@@ -40,9 +40,7 @@ public abstract class EnderPearlItemMixin extends Item {
                     );
                 }
                 int cooldown = EquipmentHelper.maxInt(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), player, ability -> ability.cooldown().get(), true);
-                if (!player.isCreative()) {
-                    player.getCooldowns().addCooldown(this, cooldown * 20);
-                }
+                player.getCooldowns().addCooldown(this, cooldown * 20);
                 return;
             }
         }
