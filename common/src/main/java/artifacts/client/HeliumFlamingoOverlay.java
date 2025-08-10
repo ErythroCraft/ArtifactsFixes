@@ -31,6 +31,7 @@ public class HeliumFlamingoOverlay {
 
         RenderSystem.enableBlend();
 
+        height = height + Artifacts.CONFIG.client.heliumFlamingoOverlayOffset.get();
         int left = screenWidth / 2 + 91;
         int top = screenHeight - height;
 
