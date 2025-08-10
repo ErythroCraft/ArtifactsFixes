@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 
 import java.util.List;
 
+// TODO improve rendering compatibility https://github.com/ochotonida/artifacts/issues/405
 public class UmbrellaItem extends ArtifactItem {
 
     public UmbrellaItem() {

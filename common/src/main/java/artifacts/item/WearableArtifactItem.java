@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+// TODO (>1.21.1 to avoid breaking RAR-Compat) migrate the missing dependency check/tooltip to an ability, delete this class
 public class WearableArtifactItem extends Item {
 
     public WearableArtifactItem(Item.Properties properties) {

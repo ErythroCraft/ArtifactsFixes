@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
 
+// TODO rewrite/redesign everlasting foods to avoid mod conflicts https://github.com/ochotonida/artifacts/issues/56, https://github.com/ochotonida/artifacts/issues/201
 public class EverlastingFoodItem extends ArtifactItem {
 
     private final Supplier<Integer> eatingCooldown;
