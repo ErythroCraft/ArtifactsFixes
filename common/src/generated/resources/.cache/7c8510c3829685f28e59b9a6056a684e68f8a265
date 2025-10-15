@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-17T18:40:46.144073	Global Loot Modifiers : artifacts
+// 1.21.1	2025-10-15T18:59:26.4318547	Global Loot Modifiers : artifacts
 ba95f50c61a97088c58cc642890a73ba9cb9a6fc data/artifacts/loot_modifiers/inject/archaeology/desert_pyramid.json
 76a69218530b08b9cfd000933b2d6ad25708d976 data/artifacts/loot_modifiers/inject/archaeology/desert_well.json
 ea0ee3af9800b63f118a9cf5b79e109908853d72 data/artifacts/loot_modifiers/inject/archaeology/ocean_ruin_cold.json
@@ -36,4 +36,4 @@ e6d653b382eb1203d087c893cb91e661bba79e9f data/artifacts/loot_modifiers/inject/ch
 486af8f1052cd78c1001a6e0b0d9d7d6eb86ce27 data/artifacts/loot_modifiers/inject/chests/woodland_mansion.json
 4255e4ce0fcfb5b679f537aa3ac86ed4dee1bcdc data/artifacts/loot_modifiers/inject/entities/cow.json
 98a0f4b248cc0649a1d41403d41f8866c0639387 data/artifacts/loot_modifiers/inject/entities/mooshroom.json
-f6d8a4a14251226d6d1692fd8b57004b18bc1d98 data/neoforge/loot_modifiers/global_loot_modifiers.json
+a9190a44904e8bca3423fafff20618d87a5a4a11 data/neoforge/loot_modifiers/global_loot_modifiers.json

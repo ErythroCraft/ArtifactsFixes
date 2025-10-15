@@ -22,6 +22,7 @@ public class ItemTags extends ItemTagsProvider {
     public static final TagKey<Item>
             ARTIFACTS = createTag("artifacts"),
             HEAD = createTag("slot/head"),
+            FACE = createTag("slot/face"),
             NECKLACE = createTag("slot/necklace"),
             HANDS = createTag("slot/hands"),
             BELT = createTag("slot/belt"),
@@ -48,12 +49,14 @@ public class ItemTags extends ItemTagsProvider {
         tag(HEAD).add(
                 ModItems.PLASTIC_DRINKING_HAT.value(),
                 ModItems.NOVELTY_DRINKING_HAT.value(),
-                ModItems.SNORKEL.value(),
-                ModItems.NIGHT_VISION_GOGGLES.value(),
                 ModItems.VILLAGER_HAT.value(),
                 ModItems.SUPERSTITIOUS_HAT.value(),
                 ModItems.COWBOY_HAT.value(),
                 ModItems.ANGLERS_HAT.value()
+        );
+        tag(FACE).add(
+                ModItems.SNORKEL.value(),
+                ModItems.NIGHT_VISION_GOGGLES.value()
         );
         tag(NECKLACE).add(
                 ModItems.LUCKY_SCARF.value(),

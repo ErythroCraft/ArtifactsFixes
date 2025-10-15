@@ -13,6 +13,20 @@
         }
       },
       {
+        "directory": "overlay_add_face_slot",
+        "condition": {
+          "condition": "artifacts:config_value",
+          "value": "slots.addFaceSlot"
+        }
+      },
+      {
+        "directory": "overlay_remove_slot_restrictions",
+        "condition": {
+          "condition": "artifacts:config_value",
+          "value": "slots.removeSlotRestrictions"
+        }
+      },
+      {
         "directory": "overlay_disable_accessories",
         "condition": {
           "condition": "fabric:not",

@@ -223,6 +223,7 @@ public class Language extends LanguageProvider {
         add(ItemTags.ARTIFACTS, "Artifacts");
         add(ItemTags.ALL, "Any Slot Equipable Artifacts");
         add(ItemTags.BELT, "Belt Slot Equipable Artifacts");
+        add(ItemTags.FACE, "Face Slot Equipable Artifacts");
         add(ItemTags.FEET, "Feet Slot Equipable Artifacts");
         add(ItemTags.HANDS, "Hands Slot Equipable Artifacts");
         add(ItemTags.HEAD, "Head Slot Equipable Artifacts");

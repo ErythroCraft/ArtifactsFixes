@@ -7,6 +7,26 @@
   "overlays": {
     "entries": [
       {
+        "directory": "overlay_add_face_slot",
+        "formats": [0, 2147483647],
+        "neoforge:conditions": [
+          {
+            "type": "artifacts:config_value",
+            "value": "slots.addFaceSlot"
+          }
+        ]
+      },
+      {
+        "directory": "overlay_remove_slot_restrictions",
+        "formats": [0, 2147483647],
+        "neoforge:conditions": [
+          {
+            "type": "artifacts:config_value",
+            "value": "slots.removeSlotRestrictions"
+          }
+        ]
+      },
+      {
         "directory": "overlay_disable_accessories",
         "formats": [0, 2147483647],
         "neoforge:conditions": [
