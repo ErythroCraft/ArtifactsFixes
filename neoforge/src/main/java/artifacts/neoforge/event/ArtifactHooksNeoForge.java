@@ -34,7 +34,7 @@ public class ArtifactHooksNeoForge {
             NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onPlayerSwim);
             NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onAquaDashersFluidCollision);
         }
-        NeoForge.EVENT_BUS.addListener(EventPriority.LOW, ArtifactHooksNeoForge::onLivingDamage);
+        NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, ArtifactHooksNeoForge::onLivingDamage);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onEntityAdded);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onLivingUpdate);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onDrinkingHatItemUse);
@@ -49,7 +49,7 @@ public class ArtifactHooksNeoForge {
         ArtifactHooks.onEntityAdded(event.getEntity());
     }
 
-    private static void onLivingDamage(LivingDamageEvent.Post event) {
+    private static void onLivingDamage(LivingDamageEvent.Pre event) {
         ArtifactHooks.onLivingDamaged(event.getEntity(), event.getSource(), event.getNewDamage());
     }
 
