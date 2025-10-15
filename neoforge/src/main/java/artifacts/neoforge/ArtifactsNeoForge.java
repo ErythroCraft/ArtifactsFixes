@@ -7,6 +7,7 @@ import artifacts.neoforge.event.ArtifactHooksNeoForge;
 import artifacts.neoforge.integration.curios.CuriosCompat;
 import artifacts.neoforge.network.NeoForgeNetworkHandler;
 import artifacts.neoforge.registry.ModAttachmentTypes;
+import artifacts.neoforge.registry.ModConditions;
 import artifacts.neoforge.registry.ModLootModifiers;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModEntityTypes;
@@ -37,6 +38,7 @@ public class ArtifactsNeoForge {
             new ArtifactsNeoForgeClient(modBus);
         }
 
+        ModConditions.CONDITIONS.register(modBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modBus);
         ModAttachmentTypes.ATTACHMENT_TYPES.register(modBus);
 

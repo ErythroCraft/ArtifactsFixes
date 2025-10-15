@@ -1,0 +1,50 @@
+{
+  "pack": {
+    "description": "Artifacts' resources",
+    "pack_format": 0,
+    "supported_formats": [0, 2147483647]
+  },
+  "overlays": {
+    "entries": [
+      {
+        "directory": "overlay_disable_accessories",
+        "formats": [0, 2147483647],
+        "neoforge:conditions": [
+          {
+            "type": "neoforge:not",
+            "value": {
+              "type": "artifacts:config_value",
+              "value": "slots.enableAccessoriesCompat"
+            }
+          }
+        ]
+      },
+      {
+        "directory": "overlay_disable_curios",
+        "formats": [0, 2147483647],
+        "neoforge:conditions": [
+          {
+            "type": "neoforge:not",
+            "value": {
+              "type": "artifacts:config_value",
+              "value": "slots.enableCuriosCompat"
+            }
+          }
+        ]
+      },
+      {
+        "directory": "overlay_disable_trinkets",
+        "formats": [0, 2147483647],
+        "neoforge:conditions": [
+          {
+            "type": "neoforge:not",
+            "value": {
+              "type": "artifacts:config_value",
+              "value": "slots.enableTrinketsCompat"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

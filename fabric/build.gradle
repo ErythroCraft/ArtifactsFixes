@@ -51,6 +51,7 @@ dependencies {
     modCompileOnly("io.github.apace100:apoli:2.12.0-alpha.15+mc.1.21.1")
 
     modImplementation("io.wispforest:accessories-fabric:${project.accessories_version}")
+    modCompileOnly("io.wispforest:owo-lib:${project.owo_version}")
 }
 
 processResources {

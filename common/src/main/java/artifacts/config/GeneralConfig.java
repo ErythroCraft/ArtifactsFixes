@@ -1,5 +1,10 @@
 package artifacts.config;
 
+import artifacts.Artifacts;
+import artifacts.config.value.Value;
+import com.mojang.serialization.Codec;
+import net.minecraft.util.StringRepresentable;
+
 import java.util.function.Supplier;
 
 public class GeneralConfig extends ConfigManager {
@@ -32,6 +37,31 @@ public class GeneralConfig extends ConfigManager {
                 "Whether to use wooden chests from other mods when generating campsites");
         public final Supplier<Boolean> allowLightSources = defineBool("campsite.allowLightSources", true, false,
                 "Whether campsites can contain blocks that emit light");
+    }
+
+    public final Slots slots = new Slots();
+
+    // FIXME: These don't work in dev
+    public class Slots {
+
+        public final Value.ConfigValue<Boolean> enableAccessoriesCompat = defineBool("slots.enableAccessoriesCompat", true, true,
+                "Whether Artifacts should add slots to the Accessories menu,",
+                "and allow artifacts to be equipped in them");
+        public final Value.ConfigValue<Boolean> enableCuriosCompat = defineBool("slots.enableCuriosCompat", true, true,
+                "Whether Artifacts should add slots to the Curios menu,",
+                "and allow artifacts to be equipped in them");
+        public final Value.ConfigValue<Boolean> enableTrinketsCompat = defineBool("slots.enableTrinketsCompat", true, true,
+                "Whether Artifacts should add slots to the Trinket menu,",
+                "and allow artifacts to be equipped in them");
+
+        @SuppressWarnings("unchecked")
+        public Codec<Value.ConfigValue<Boolean>> codec() {
+            return StringRepresentable.fromValues(() -> new Value.ConfigValue[]{
+                    Artifacts.CONFIG.general.slots.enableAccessoriesCompat,
+                    Artifacts.CONFIG.general.slots.enableCuriosCompat,
+                    Artifacts.CONFIG.general.slots.enableTrinketsCompat
+            });
+        }
     }
 
     protected GeneralConfig() {

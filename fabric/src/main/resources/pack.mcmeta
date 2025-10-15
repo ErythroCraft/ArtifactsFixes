@@ -1,14 +1,45 @@
 {
   "pack": {
-    "pack_format": 48,
+    "pack_format": 0,
+    "supported_formats": [0, 2147483647],
     "description": "Artifacts' resources"
   },
   "fabric:overlays": {
     "entries": [
       {
-        "directory": "overlay",
+        "directory": "overlay_default",
         "condition": {
           "condition": "fabric:true"
+        }
+      },
+      {
+        "directory": "overlay_disable_accessories",
+        "condition": {
+          "condition": "fabric:not",
+          "value": {
+            "condition": "artifacts:config_value",
+            "value": "slots.enableAccessoriesCompat"
+          }
+        }
+      },
+      {
+        "directory": "overlay_disable_curios",
+        "condition": {
+          "condition": "fabric:not",
+          "value": {
+            "condition": "artifacts:config_value",
+            "value": "slots.enableCuriosCompat"
+          }
+        }
+      },
+      {
+        "directory": "overlay_disable_trinkets",
+        "condition": {
+          "condition": "fabric:not",
+          "value": {
+            "condition": "artifacts:config_value",
+            "value": "slots.enableTrinketsCompat"
+          }
         }
       }
     ]
