@@ -16,6 +16,7 @@ import artifacts.registry.ModItems;
 import artifacts.registry.ModKeyMappings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -49,6 +50,7 @@ public class ArtifactsNeoForgeClient {
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> ArtifactsClient.onClientTick(Minecraft.getInstance()));
     }
 
+    @SuppressWarnings("deprecation")
     public void onClientSetup(FMLClientSetupEvent event) {
         UmbrellaArmPoseHandler.setup();
 
@@ -57,9 +59,9 @@ public class ArtifactsNeoForgeClient {
                     ItemProperties.register(
                             ModItems.UMBRELLA.value(),
                             Artifacts.id("blocking"),
-                            (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0
+                            (ItemPropertyFunction) (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0
                     );
-                    ArtifactsClient.registerItemPropertyFunctions(ItemProperties::register);
+                    ArtifactsClient.registerItemPropertyFunctions((item, id, f) -> ItemProperties.register(item, id, (ItemPropertyFunction) f));
                     ArtifactRenderers.register();
                     ArtifactsClient.onClientStarted();
                 }
