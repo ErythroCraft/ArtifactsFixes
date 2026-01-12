@@ -1,9 +1,6 @@
 package artifacts.registry;
 
-import artifacts.world.placement.CampsiteCountPlacement;
-import artifacts.world.placement.CampsiteHeightRangePlacement;
-import artifacts.world.placement.CeilingHeightFilter;
-import artifacts.world.placement.ConfigValueFilter;
+import artifacts.world.placement.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
@@ -17,6 +14,7 @@ public class ModPlacementModifierTypes {
     public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<CampsiteCountPlacement>> CAMPSITE_COUNT = register("campsite_count", () -> () -> CampsiteCountPlacement.CODEC);
     public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<CampsiteHeightRangePlacement>> CAMPSITE_HEIGHT_RANGE = register("campsite_height_range", () -> () -> CampsiteHeightRangePlacement.CODEC);
     public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<ConfigValueFilter>> CONFIG_VALUE_FILTER = register("config_value_filter", () -> () -> ConfigValueFilter.CODEC);
+    public static final RegistryHolder<PlacementModifierType<?>, PlacementModifierType<SurfaceFlatnessFilter>> SURFACE_FLATNESS_FILTER = register("surface_flatness_filter", () -> () -> SurfaceFlatnessFilter.CODEC);
 
     private static <T extends PlacementModifierType<?>> RegistryHolder<PlacementModifierType<?>, T> register(String name, Supplier<T> supplier) {
         return PLACEMENT_MODIFIER_TYPES.register(name, supplier);

@@ -16,20 +16,24 @@ public class ConfigValueFilter extends PlacementFilter {
 
     public static final MapCodec<ConfigValueFilter> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Artifacts.CONFIG.general.campsite.codec().fieldOf("value").forGetter(f -> f.value),
-            Codec.BOOL.fieldOf("invert").forGetter(f -> f.invert)
+            Codec.BOOL.fieldOf("expected").forGetter(f -> f.expected)
     ).apply(instance, ConfigValueFilter::new));
 
     private final Value.ConfigValue<Boolean> value;
-    private final boolean invert;
+    private final boolean expected;
 
-    private ConfigValueFilter(Value.ConfigValue<Boolean> value, boolean invert) {
+    private ConfigValueFilter(Value.ConfigValue<Boolean> value, boolean expected) {
         this.value = value;
-        this.invert = invert;
+        this.expected = expected;
+    }
+
+    public static ConfigValueFilter checkValue(Value.ConfigValue<Boolean> value, boolean expected) {
+        return new ConfigValueFilter(value, expected);
     }
 
     @Override
     protected boolean shouldPlace(PlacementContext placementContext, RandomSource randomSource, BlockPos blockPos) {
-        return value.get() ^ !invert;
+        return value.get() ^ !expected;
     }
 
     @Override

@@ -41,10 +41,6 @@ public class CampsiteFeature extends Feature<CampsiteFeatureConfiguration> {
         RandomSource random = context.random();
         CampsiteFeatureConfiguration config = context.config();
 
-        if (!isSufficientlyFlat(level, origin)) {
-            return false;
-        }
-
         BlockPos.betweenClosedStream(origin.offset(-2, 0, -2), origin.offset(2, 2, 2))
                 .filter(pos -> Math.abs(pos.getX() - origin.getX()) < 2 ||  Math.abs(pos.getZ() - origin.getZ()) < 2)
                 .filter(pos -> !level.getBlockState(pos).isAir())
@@ -90,13 +86,6 @@ public class CampsiteFeature extends Feature<CampsiteFeatureConfiguration> {
         placeChest(level, positions.removeFirst(), random, direction.getOpposite());
 
         return true;
-    }
-
-    private boolean isSufficientlyFlat(WorldGenLevel level, BlockPos origin) {
-        return BlockPos.betweenClosedStream(origin.offset(-2, 0, -2), origin.offset(2, 0, 2))
-                .filter(pos -> level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP))
-                .filter(pos -> level.getBlockState(pos).isAir())
-                .count() >= 6;
     }
 
     private void placeFloor(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos origin, RandomSource random) {

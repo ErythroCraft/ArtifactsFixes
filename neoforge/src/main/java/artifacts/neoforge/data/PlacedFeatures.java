@@ -1,9 +1,8 @@
 package artifacts.neoforge.data;
 
+import artifacts.Artifacts;
 import artifacts.registry.ModFeatures;
-import artifacts.world.placement.CampsiteCountPlacement;
-import artifacts.world.placement.CampsiteHeightRangePlacement;
-import artifacts.world.placement.CeilingHeightFilter;
+import artifacts.world.placement.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -25,23 +24,29 @@ public class PlacedFeatures {
 
         PlacedFeature undergroundCampsite = new PlacedFeature(
                 campsite,
-                List.of(
-                        CampsiteCountPlacement.campsiteCount(),
-                        RarityFilter.onAverageOnceEvery(10),
-                        InSquarePlacement.spread(),
-                        CampsiteHeightRangePlacement.campsiteHeightRange(),
-                        EnvironmentScanPlacement.scanningFor(
-                                Direction.DOWN,
-                                BlockPredicate.solid(),
-                                BlockPredicate.ONLY_IN_AIR_PREDICATE,
-                                8
-                        ),
-                        RandomOffsetPlacement.vertical(ConstantInt.of(1)),
-                        CeilingHeightFilter.maxCeilingHeight(6),
-                        BiomeFilter.biome()
-                )
+                createModifiers()
         );
 
         context.register(ModFeatures.UNDERGROUND_CAMPSITE, undergroundCampsite);
+    }
+
+    private static List<PlacementModifier> createModifiers() {
+        return List.of(
+                ConfigValueFilter.checkValue(Artifacts.CONFIG.general.campsite.minimalistCampsites, false),
+                CampsiteCountPlacement.campsiteCount(),
+                RarityFilter.onAverageOnceEvery(10),
+                InSquarePlacement.spread(),
+                CampsiteHeightRangePlacement.campsiteHeightRange(),
+                EnvironmentScanPlacement.scanningFor(
+                        Direction.DOWN,
+                        BlockPredicate.solid(),
+                        BlockPredicate.ONLY_IN_AIR_PREDICATE,
+                        8
+                ),
+                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                CeilingHeightFilter.maxCeilingHeight(6),
+                SurfaceFlatnessFilter.checkSurfaceFlatness(),
+                BiomeFilter.biome()
+        );
     }
 }
