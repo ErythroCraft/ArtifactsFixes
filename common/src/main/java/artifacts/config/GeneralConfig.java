@@ -37,6 +37,15 @@ public class GeneralConfig extends ConfigManager {
                 "Whether to use wooden chests from other mods when generating campsites");
         public final Supplier<Boolean> allowLightSources = defineBool("campsite.allowLightSources", true, false,
                 "Whether campsites can contain blocks that emit light");
+        public final Value.ConfigValue<Boolean> minimalistCampsites = defineBool("campsite.minimalistCampsites", false, false,
+                "Replaces campsites with a single chest/mimic"); // TODO implement
+
+        @SuppressWarnings("unchecked")
+        public Codec<Value.ConfigValue<Boolean>> codec() {
+            return StringRepresentable.fromValues(() -> new Value.ConfigValue[]{
+                    Artifacts.CONFIG.general.campsite.minimalistCampsites
+            });
+        }
     }
 
     public final Slots slots = new Slots();
