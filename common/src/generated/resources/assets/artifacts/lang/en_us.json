@@ -40,6 +40,8 @@
   "artifacts.config.general.campsite.mimicChance.title": "Mimic Chance",
   "artifacts.config.general.campsite.minY.description": "The minimum height campsites can spawn at",
   "artifacts.config.general.campsite.minY.title": "Min Y",
+  "artifacts.config.general.campsite.minimalistCampsites.description": "Replaces campsites with a single chest/mimic",
+  "artifacts.config.general.campsite.minimalistCampsites.title": "Minimalist Campsites",
   "artifacts.config.general.campsite.title": "Campsite",
   "artifacts.config.general.campsite.useModdedChests.description": "Whether to use wooden chests from other mods when generating campsites",
   "artifacts.config.general.campsite.useModdedChests.title": "Use Modded Chests",

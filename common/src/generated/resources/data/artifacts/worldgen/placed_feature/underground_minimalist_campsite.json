@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "artifacts:config_value_filter",
-      "expected": false,
+      "expected": true,
       "value": "campsite.minimalistCampsites"
     },
     {
