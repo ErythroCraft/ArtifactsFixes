@@ -6,6 +6,7 @@ import artifacts.entity.MimicEntity;
 import artifacts.loot.ArtifactRarityAdjustedChance;
 import artifacts.loot.ConfigValueCondition;
 import artifacts.registry.ModItems;
+import artifacts.world.AbstractCampsiteFeature;
 import artifacts.world.CampsiteFeature;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.Holder;
@@ -284,7 +285,7 @@ public class LootTables extends LootTableProvider {
                 )
         );
 
-        addLootTable(CampsiteFeature.CHEST_LOOT.location().getPath(), provider -> new LootTable.Builder()
+        addLootTable(AbstractCampsiteFeature.CHEST_LOOT.location().getPath(), provider -> new LootTable.Builder()
                 .withPool(new LootPool.Builder()
                         .name("tools")
                         .setRolls(UniformGenerator.between(1, 3))

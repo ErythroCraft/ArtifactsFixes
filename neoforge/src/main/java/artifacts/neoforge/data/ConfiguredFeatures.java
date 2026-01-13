@@ -3,6 +3,7 @@ package artifacts.neoforge.data;
 import artifacts.Artifacts;
 import artifacts.registry.ModFeatures;
 import artifacts.world.CampsiteFeatureConfiguration;
+import artifacts.world.SuspiciousChestFeatureConfiguration;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -16,9 +17,15 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 public class ConfiguredFeatures {
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> CAMPSITE = Artifacts.key(Registries.CONFIGURED_FEATURE, "campsite");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MINIMALIST_CAMPSITE = Artifacts.key(Registries.CONFIGURED_FEATURE, "minimalist_campsite");
 
     public static void create(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        ConfiguredFeature<?, ?> campsite = new ConfiguredFeature<>(ModFeatures.CAMPSITE.get(), new CampsiteFeatureConfiguration(
+        context.register(CAMPSITE, createCampsite());
+        context.register(MINIMALIST_CAMPSITE, createMinimalistCampsite());
+    }
+
+    private static ConfiguredFeature<?, ?> createCampsite() {
+        return new ConfiguredFeature<>(ModFeatures.CAMPSITE.get(), new CampsiteFeatureConfiguration(
                 new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
                         .add(Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 9)
                         .add(Blocks.SOUL_CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 1)
@@ -77,6 +84,11 @@ public class ConfiguredFeatures {
                 ), // unlit light sources
                 SimpleStateProvider.simple(Blocks.OAK_PLANKS) // floor
         ));
-        context.register(CAMPSITE, campsite);
+    }
+
+    private static ConfiguredFeature<?, ?> createMinimalistCampsite() {
+        return new ConfiguredFeature<>(ModFeatures.SUSPICIOUS_CHEST.get(), new SuspiciousChestFeatureConfiguration(
+
+        ));
     }
 }

@@ -24,15 +24,20 @@ public class PlacedFeatures {
 
         PlacedFeature undergroundCampsite = new PlacedFeature(
                 campsite,
-                createModifiers()
+                createModifiers(false)
+        );
+        PlacedFeature undergroundMinimalistCampsite = new PlacedFeature(
+                campsite,
+                createModifiers(true)
         );
 
         context.register(ModFeatures.UNDERGROUND_CAMPSITE, undergroundCampsite);
+        context.register(ModFeatures.UNDERGROUND_MINIMALIST_CAMPSITE, undergroundMinimalistCampsite);
     }
 
-    private static List<PlacementModifier> createModifiers() {
+    private static List<PlacementModifier> createModifiers(boolean isMinimalist) {
         return List.of(
-                ConfigValueFilter.checkValue(Artifacts.CONFIG.general.campsite.minimalistCampsites, false),
+                ConfigValueFilter.checkValue(Artifacts.CONFIG.general.campsite.minimalistCampsites, isMinimalist),
                 CampsiteCountPlacement.campsiteCount(),
                 RarityFilter.onAverageOnceEvery(10),
                 InSquarePlacement.spread(),
