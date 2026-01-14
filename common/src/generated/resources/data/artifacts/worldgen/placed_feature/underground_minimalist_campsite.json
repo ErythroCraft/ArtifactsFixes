@@ -1,5 +1,5 @@
 {
-  "feature": "artifacts:campsite",
+  "feature": "artifacts:minimalist_campsite",
   "placement": [
     {
       "type": "artifacts:config_value_filter",

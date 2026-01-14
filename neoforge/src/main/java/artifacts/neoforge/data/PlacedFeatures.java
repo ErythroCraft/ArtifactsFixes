@@ -21,13 +21,14 @@ public class PlacedFeatures {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
         Holder<ConfiguredFeature<?, ?>> campsite = configuredFeatures.getOrThrow(ConfiguredFeatures.CAMPSITE);
+        Holder<ConfiguredFeature<?, ?>> minimalistCampsite = configuredFeatures.getOrThrow(ConfiguredFeatures.MINIMALIST_CAMPSITE);
 
         PlacedFeature undergroundCampsite = new PlacedFeature(
                 campsite,
                 createModifiers(false)
         );
         PlacedFeature undergroundMinimalistCampsite = new PlacedFeature(
-                campsite,
+                minimalistCampsite,
                 createModifiers(true)
         );
 
