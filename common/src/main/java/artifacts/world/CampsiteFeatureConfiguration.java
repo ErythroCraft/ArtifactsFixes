@@ -6,6 +6,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public record CampsiteFeatureConfiguration(
+        CampsiteChestConfiguration chestConfig,
         BlockStateProvider litCampfires,
         BlockStateProvider unlitCampfires,
         BlockStateProvider decorations,
@@ -20,6 +21,7 @@ public record CampsiteFeatureConfiguration(
 
     public static final Codec<CampsiteFeatureConfiguration> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
+                    CampsiteChestConfiguration.CODEC.fieldOf("chest").forGetter(CampsiteFeatureConfiguration::chestConfig),
                     BlockStateProvider.CODEC.fieldOf("lit_campfires").forGetter(CampsiteFeatureConfiguration::litCampfires),
                     BlockStateProvider.CODEC.fieldOf("unlit_campfires").forGetter(CampsiteFeatureConfiguration::unlitCampfires),
                     BlockStateProvider.CODEC.fieldOf("decorations").forGetter(CampsiteFeatureConfiguration::decorations),

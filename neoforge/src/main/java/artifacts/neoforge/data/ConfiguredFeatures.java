@@ -2,6 +2,7 @@ package artifacts.neoforge.data;
 
 import artifacts.Artifacts;
 import artifacts.registry.ModFeatures;
+import artifacts.world.CampsiteChestConfiguration;
 import artifacts.world.CampsiteFeatureConfiguration;
 import artifacts.world.SuspiciousChestFeatureConfiguration;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+
+import java.util.Optional;
 
 public class ConfiguredFeatures {
 
@@ -26,6 +29,7 @@ public class ConfiguredFeatures {
 
     private static ConfiguredFeature<?, ?> createCampsite() {
         return new ConfiguredFeature<>(ModFeatures.CAMPSITE.get(), new CampsiteFeatureConfiguration(
+                createChestConfig(),
                 new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
                         .add(Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 9)
                         .add(Blocks.SOUL_CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 1)
@@ -87,8 +91,10 @@ public class ConfiguredFeatures {
     }
 
     private static ConfiguredFeature<?, ?> createMinimalistCampsite() {
-        return new ConfiguredFeature<>(ModFeatures.SUSPICIOUS_CHEST.get(), new SuspiciousChestFeatureConfiguration(
+        return new ConfiguredFeature<>(ModFeatures.SUSPICIOUS_CHEST.get(), new SuspiciousChestFeatureConfiguration(createChestConfig()));
+    }
 
-        ));
+    private static CampsiteChestConfiguration createChestConfig() {
+        return new CampsiteChestConfiguration(Optional.empty(), 0.125, Optional.of(LootTables.CHEST_LOOT));
     }
 }

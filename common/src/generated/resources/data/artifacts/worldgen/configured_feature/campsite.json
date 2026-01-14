@@ -72,6 +72,10 @@
         }
       ]
     },
+    "chest": {
+      "chest_loot_table": "artifacts:chests/campsite_chest",
+      "trapped_chest_chance": 0.125
+    },
     "crafting_stations": {
       "type": "minecraft:weighted_state_provider",
       "entries": [

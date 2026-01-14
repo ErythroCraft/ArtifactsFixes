@@ -20,7 +20,7 @@ public class SuspiciousChestFeature extends AbstractCampsiteFeature<SuspiciousCh
         SuspiciousChestFeatureConfiguration config = context.config();
 
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-        placeChest(level, origin, random, direction.getOpposite());
+        placeChest(level, origin, random, direction.getOpposite(), config.chestConfig());
 
         return true;
     }

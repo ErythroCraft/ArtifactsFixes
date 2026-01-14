@@ -6,7 +6,6 @@ import artifacts.entity.MimicEntity;
 import artifacts.loot.ArtifactRarityAdjustedChance;
 import artifacts.loot.ConfigValueCondition;
 import artifacts.registry.ModItems;
-import artifacts.world.AbstractCampsiteFeature;
 import artifacts.world.CampsiteFeature;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.Holder;
@@ -15,6 +14,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
@@ -39,6 +39,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 public class LootTables extends LootTableProvider {
+
+    public static final ResourceKey<LootTable> CHEST_LOOT = Artifacts.key(Registries.LOOT_TABLE, "chests/campsite_chest");
 
     private final List<SubProviderEntry> tables = new ArrayList<>();
 
@@ -285,7 +287,7 @@ public class LootTables extends LootTableProvider {
                 )
         );
 
-        addLootTable(AbstractCampsiteFeature.CHEST_LOOT.location().getPath(), provider -> new LootTable.Builder()
+        addLootTable(CHEST_LOOT.location().getPath(), provider -> new LootTable.Builder()
                 .withPool(new LootPool.Builder()
                         .name("tools")
                         .setRolls(UniformGenerator.between(1, 3))

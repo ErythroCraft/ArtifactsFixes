@@ -1,4 +1,9 @@
 {
   "type": "artifacts:suspicious_chest",
-  "config": {}
+  "config": {
+    "chest": {
+      "chest_loot_table": "artifacts:chests/campsite_chest",
+      "trapped_chest_chance": 0.125
+    }
+  }
 }

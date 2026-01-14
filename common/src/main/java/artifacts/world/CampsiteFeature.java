@@ -80,7 +80,7 @@ public class CampsiteFeature extends AbstractCampsiteFeature<CampsiteFeatureConf
 
         placeCraftingStation(config, level, positions.removeFirst(), random, direction.getOpposite());
         placeFurnace(config, level, positions.removeFirst(), random, direction.getOpposite());
-        placeChest(level, positions.removeFirst(), random, direction.getOpposite());
+        placeChest(level, positions.removeFirst(), random, direction.getOpposite(), config.chestConfig());
 
         return true;
     }
