@@ -29,7 +29,7 @@ public class ConfiguredFeatures {
 
     private static ConfiguredFeature<?, ?> createCampsite() {
         return new ConfiguredFeature<>(ModFeatures.CAMPSITE.get(), new CampsiteFeatureConfiguration(
-                createChestConfig(),
+                createChestConfig(0.125),
                 new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
                         .add(Blocks.CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 9)
                         .add(Blocks.SOUL_CAMPFIRE.defaultBlockState().setValue(CampfireBlock.LIT, true), 1)
@@ -91,10 +91,10 @@ public class ConfiguredFeatures {
     }
 
     private static ConfiguredFeature<?, ?> createMinimalistCampsite() {
-        return new ConfiguredFeature<>(ModFeatures.SUSPICIOUS_CHEST.get(), new SuspiciousChestFeatureConfiguration(createChestConfig()));
+        return new ConfiguredFeature<>(ModFeatures.SUSPICIOUS_CHEST.get(), new SuspiciousChestFeatureConfiguration(createChestConfig(0)));
     }
 
-    private static CampsiteChestConfiguration createChestConfig() {
-        return new CampsiteChestConfiguration(Optional.empty(), 0.125, Optional.of(LootTables.CHEST_LOOT));
+    private static CampsiteChestConfiguration createChestConfig(double trappedChestChance) {
+        return new CampsiteChestConfiguration(Optional.empty(), trappedChestChance, Optional.of(LootTables.CHEST_LOOT));
     }
 }
