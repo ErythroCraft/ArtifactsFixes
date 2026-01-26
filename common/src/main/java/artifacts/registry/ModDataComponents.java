@@ -35,10 +35,6 @@ public class ModDataComponents {
     public static final List<Supplier<? extends DataComponentType<? extends EquipmentAbility>>> TOOLTIP_ORDER = new ArrayList<>();
     public static final Set<Supplier<? extends DataComponentType<?>>> APPLIES_COOLDOWN = new LinkedHashSet<>();
 
-    // TODO (>1.21.1) remove
-    @SuppressWarnings("unused")
-    public static final Supplier<DataComponentType<Unit>> ABILITIES = DATA_COMPONENT_TYPES.register("abilities", () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).build());
-
     public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
     public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE = registerSynced("disabled_by_toggle", Codec.unit(Unit.INSTANCE), StreamCodec.unit(Unit.INSTANCE));
     public static final Supplier<DataComponentType<SoundEvent>> EQUIP_SOUND = registerSynced("equip_sound",
