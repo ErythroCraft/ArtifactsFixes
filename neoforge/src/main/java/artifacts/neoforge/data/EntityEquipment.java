@@ -77,7 +77,7 @@ public class EntityEquipment {
                 ModItems.STRIDER_SHOES.value()
         );
 
-        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(EntityType.GHAST).location().getPath(), this::ghastLoot, LootContextParamSets.ALL_PARAMS);
+        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(EntityType.GHAST).identifier().getPath(), this::ghastLoot, LootContextParamSets.ALL_PARAMS);
         entityTypes.add(EntityType.GHAST);
 
         if (!entityTypes.equals(ModLootTables.ENTITY_EQUIPMENT.keySet())) {
@@ -124,6 +124,6 @@ public class EntityEquipment {
         entityTypes.add(entityType);
         LootTable.Builder builder = LootTable.lootTable();
         builder.withPool(pool.when(ConfigValueChance.entityEquipmentChance()));
-        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(entityType).location().getPath(), provider -> builder, LootContextParamSets.ALL_PARAMS);
+        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(entityType).identifier().getPath(), provider -> builder, LootContextParamSets.ALL_PARAMS);
     }
 }

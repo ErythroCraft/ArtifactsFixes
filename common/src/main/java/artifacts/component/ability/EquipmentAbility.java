@@ -4,7 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -29,7 +29,7 @@ public interface EquipmentAbility {
 
         public TooltipWriter(DataComponentType<? extends EquipmentAbility> type, Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
             this.tooltip = tooltip;
-            ResourceLocation id = Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(type));
+            Identifier id = Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(type));
             this.namespace = id.getNamespace();
             this.path = id.getPath();
             this.context = context;

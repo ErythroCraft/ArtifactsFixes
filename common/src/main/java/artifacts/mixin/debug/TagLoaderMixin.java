@@ -3,7 +3,7 @@ package artifacts.mixin.debug;
 import artifacts.Artifacts;
 import artifacts.integration.ModCompat;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.TagLoader;
@@ -19,7 +19,7 @@ import java.util.Map;
 public class TagLoaderMixin {
 
     @Inject(method = "load", require = 1, at = @At(value = "INVOKE", target = "Ljava/util/List;clear()V"))
-    private void detectClear(ResourceManager resourceManager, CallbackInfoReturnable<Map<ResourceLocation, List<TagLoader.EntryWithSource>>> cir, @Local(ordinal = 0) ResourceLocation resourceLocation, @Local Resource resource) {
+    private void detectClear(ResourceManager resourceManager, CallbackInfoReturnable<Map<Identifier, List<TagLoader.EntryWithSource>>> cir, @Local(ordinal = 0) Identifier resourceLocation, @Local Resource resource) {
         String namespace = resourceLocation.getNamespace();
 
         if (namespace.equals(ModCompat.TRINKETS) || namespace.equals(ModCompat.CURIOS) || namespace.equals(ModCompat.ACCESSORIES) || namespace.equals("artifacts")) {

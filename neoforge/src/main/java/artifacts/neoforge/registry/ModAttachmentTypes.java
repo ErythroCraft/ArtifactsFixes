@@ -4,7 +4,7 @@ import artifacts.Artifacts;
 import artifacts.component.SwimData;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -25,7 +25,7 @@ public class ModAttachmentTypes {
             AttachmentType.builder(() -> Unit.INSTANCE)
                     .serialize(Codec.either(
                             Codec.unit(Unit.INSTANCE),
-                            ResourceLocation.CODEC.listOf()
+                            Identifier.CODEC.listOf()
                     ).xmap(e -> Unit.INSTANCE, Either::left), unit -> false).build()
     );
 }

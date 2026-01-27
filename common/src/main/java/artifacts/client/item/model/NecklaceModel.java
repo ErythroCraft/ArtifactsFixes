@@ -9,13 +9,13 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.entity.LivingEntity;
 
 public class NecklaceModel extends HumanoidModel<LivingEntity> {
 
     public NecklaceModel(ModelPart part) {
-        super(part, RenderType::entityTranslucent);
+        super(part, RenderTypes::entityTranslucent);
     }
 
     @Override

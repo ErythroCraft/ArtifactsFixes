@@ -14,9 +14,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.util.context.ContextKeySet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -24,7 +25,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.*;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -63,10 +63,10 @@ public class LootTables extends LootTableProvider {
         new EntityEquipment(this).addLootTables();
 
         for (LootModifiers.Builder lootBuilder : lootModifiers.lootBuilders) {
-            addLootTable("inject/" + lootBuilder.getName(), provider -> lootBuilder.createLootTable(), lootBuilder.getParameterSet());
+            addLootTable("inject/" + lootBuilder.getName(), provider -> lootBuilder.createLootTable(), lootBuilder.getContextKeySet());
         }
 
-        addLootTable(MimicEntity.LOOT_TABLE.location().getPath(), new LootTable.Builder().withPool(new LootPool.Builder().add(artifact(1))));
+        addLootTable(MimicEntity.LOOT_TABLE.identifier().getPath(), new LootTable.Builder().withPool(new LootPool.Builder().add(artifact(1))));
 
         return tables;
     }
@@ -127,7 +127,7 @@ public class LootTables extends LootTableProvider {
                     ModItems.PLASTIC_DRINKING_HAT.value(),
                     ModItems.NOVELTY_DRINKING_HAT.value()
             ).contains(item.value())) {
-                addLootTable("items/%s".formatted(item.unwrapKey().orElseThrow().location().getPath()), LootTable.lootTable()
+                addLootTable("items/%s".formatted(item.unwrapKey().orElseThrow().identifier().getPath()), LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
                                         .name("main")
@@ -143,7 +143,7 @@ public class LootTables extends LootTableProvider {
     }
 
     private void addChestLootTables() {
-        String barrel = CampsiteFeature.BARREL_LOOT.location().getPath();
+        String barrel = CampsiteFeature.BARREL_LOOT.identifier().getPath();
         addLootTable(barrel, new LootTable.Builder()
                 .withPool(new LootPool.Builder()
                         .when(LootItemRandomChanceCondition.randomChance(0.7F))
@@ -287,7 +287,7 @@ public class LootTables extends LootTableProvider {
                 )
         );
 
-        addLootTable(CHEST_LOOT.location().getPath(), provider -> new LootTable.Builder()
+        addLootTable(CHEST_LOOT.identifier().getPath(), provider -> new LootTable.Builder()
                 .withPool(new LootPool.Builder()
                         .name("tools")
                         .setRolls(UniformGenerator.between(1, 3))
@@ -382,12 +382,12 @@ public class LootTables extends LootTableProvider {
         return NestedLootTable.lootTableReference(Artifacts.key(Registries.LOOT_TABLE, lootTable)).setWeight(weight);
     }
 
-    public void addLootTable(String location, Function<HolderLookup.Provider, LootTable.Builder> lootTable, LootContextParamSet lootParameterSet) {
+    public void addLootTable(String location, Function<HolderLookup.Provider, LootTable.Builder> lootTable, ContextKeySet contextKeySet) {
         if (location.startsWith("inject/")) {
             String actualLocation = location.replace("inject/", "");
-            Preconditions.checkArgument(existingFileHelper.exists(ResourceLocation.parse(Registries.LOOT_TABLE.location().getPath() + "/" + actualLocation + ".json"), PackType.SERVER_DATA), "Loot table %s does not exist in any known data pack", actualLocation);
+            Preconditions.checkArgument(existingFileHelper.exists(Identifier.withDefaultNamespace(Registries.LOOT_TABLE.identifier().getPath() + "/" + actualLocation + ".json"), PackType.SERVER_DATA), "Loot table %s does not exist in any known data pack", actualLocation);
         }
-        tables.add(new SubProviderEntry(provider -> biConsumer -> biConsumer.accept(Artifacts.key(Registries.LOOT_TABLE, location), lootTable.apply(provider)), lootParameterSet));
+        tables.add(new SubProviderEntry(provider -> biConsumer -> biConsumer.accept(Artifacts.key(Registries.LOOT_TABLE, location), lootTable.apply(provider)), contextKeySet));
     }
 
     private void addLootTable(String location, Function<HolderLookup.Provider, LootTable.Builder> lootTable) {

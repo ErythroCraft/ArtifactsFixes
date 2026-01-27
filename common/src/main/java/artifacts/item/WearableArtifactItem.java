@@ -80,7 +80,7 @@ public class WearableArtifactItem extends Item {
 
         public Builder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, boolean ignoreCooldown) {
             attributes.add(new AttributeModifiers.Entry(attribute, amount, operation,
-                    Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().location().getPath()), ignoreCooldown)
+                    Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().identifier().getPath()), ignoreCooldown)
             );
             return this;
         }

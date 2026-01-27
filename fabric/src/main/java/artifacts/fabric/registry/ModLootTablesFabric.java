@@ -28,6 +28,6 @@ public class ModLootTablesFabric {
     }
 
     private static ResourceKey<LootTable> getInjectName(ResourceKey<LootTable> name) {
-        return Artifacts.key(Registries.LOOT_TABLE, "inject/" + name.location().getPath());
+        return Artifacts.key(Registries.LOOT_TABLE, "inject/" + name.identifier().getPath());
     }
 }

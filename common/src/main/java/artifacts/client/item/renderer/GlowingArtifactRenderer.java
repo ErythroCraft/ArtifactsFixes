@@ -5,22 +5,22 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 
 public class GlowingArtifactRenderer extends GenericArtifactRenderer {
 
-    private final ResourceLocation glowTexture;
+    private final Identifier glowTexture;
 
     public GlowingArtifactRenderer(String name, HumanoidModel<LivingEntity> model) {
         super(ArtifactRenderer.getTexturePath(name, name), model);
         this.glowTexture = ArtifactRenderer.getTexturePath(name, "%s_overlay".formatted(name));
     }
 
-    private ResourceLocation getGlowTexture() {
+    private Identifier getGlowTexture() {
         return glowTexture;
     }
 

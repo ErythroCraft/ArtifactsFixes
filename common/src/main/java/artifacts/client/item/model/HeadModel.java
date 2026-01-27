@@ -7,20 +7,21 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.function.Function;
 
 public class HeadModel extends HumanoidModel<LivingEntity> {
 
-    public HeadModel(ModelPart part, Function<ResourceLocation, RenderType> renderType) {
+    public HeadModel(ModelPart part, Function<Identifier, RenderType> renderType) {
         super(part, renderType);
     }
 
     public HeadModel(ModelPart part) {
-        this(part, RenderType::entityCutoutNoCull);
+        this(part, RenderTypes::entityCutoutNoCull);
     }
 
     @Override

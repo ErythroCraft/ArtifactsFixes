@@ -15,9 +15,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
-import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -47,7 +46,7 @@ public class ArtifactsClient {
         ToggleKeyHandlers.init();
     }
 
-    public static void registerItemPropertyFunctions(TriConsumer<Item, ResourceLocation, ClampedItemPropertyFunction> registration) {
+    public static void registerItemPropertyFunctions(TriConsumer<Item, Identifier, ClampedItemPropertyFunction> registration) {
         registration.accept(
                 ModItems.UMBRELLA.value(),
                 Artifacts.id("blocking"),

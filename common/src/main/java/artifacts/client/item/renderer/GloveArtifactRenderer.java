@@ -7,15 +7,15 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.PlayerModelType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,8 +23,8 @@ import java.util.function.Function;
 
 public class GloveArtifactRenderer implements ArtifactRenderer {
 
-    private final ResourceLocation wideTexture;
-    private final ResourceLocation slimTexture;
+    private final Identifier wideTexture;
+    private final Identifier slimTexture;
     private final ArmsModel wideModel;
     private final ArmsModel slimModel;
 
@@ -36,7 +36,7 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
         this(ArtifactRenderer.getTexturePath(wideTexture), ArtifactRenderer.getTexturePath(slimTexture), model);
     }
 
-    public GloveArtifactRenderer(ResourceLocation wideTexture, ResourceLocation slimTexture, Function<Boolean, ArmsModel> model) {
+    public GloveArtifactRenderer(Identifier wideTexture, Identifier slimTexture, Function<Boolean, ArmsModel> model) {
         this.wideTexture = wideTexture;
         this.slimTexture = slimTexture;
         this.wideModel = model.apply(false);
@@ -51,7 +51,7 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
         return null;
     }
 
-    protected ResourceLocation getTexture(boolean hasSlimArms) {
+    protected Identifier getTexture(boolean hasSlimArms) {
         return hasSlimArms ? slimTexture : wideTexture;
     }
 
@@ -60,7 +60,7 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
     }
 
     protected static boolean hasSlimArms(Entity entity) {
-        return entity instanceof AbstractClientPlayer player && player.getSkin().model() == PlayerSkin.Model.SLIM;
+        return entity instanceof AbstractClientPlayer player && player.getSkin().model() == PlayerModelType.SLIM;
     }
 
     @Override

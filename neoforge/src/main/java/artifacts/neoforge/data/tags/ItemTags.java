@@ -8,7 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -29,10 +29,11 @@ public class ItemTags extends ItemTagsProvider {
             FEET = createTag("slot/feet"),
             ALL = createTag("slot/all");
 
-    public static final TagKey<Item> ORIGINS_MEAT = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("origins", "meat"));
-    public static final TagKey<Item> ORIGINS_SHIELDS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("origins", "shields"));
+    public static final TagKey<Item> ORIGINS_MEAT = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("origins", "meat"));
+    public static final TagKey<Item> ORIGINS_SHIELDS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("origins", "shields"));
 
-    public static final TagKey<Item> PASSTHROUGH_DEATH_WHEN_HELD = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("hardcorerevival", "passthrough_death_when_held"));
+    // TODO remove
+    public static final TagKey<Item> PASSTHROUGH_DEATH_WHEN_HELD = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("hardcorerevival", "passthrough_death_when_held"));
 
     private static TagKey<Item> createTag(String name) {
         return TagKey.create(Registries.ITEM, Artifacts.id(name));

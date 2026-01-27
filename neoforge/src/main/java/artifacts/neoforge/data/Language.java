@@ -10,7 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffects;
@@ -70,8 +70,8 @@ public class Language extends LanguageProvider {
 
     private void addAbilities() {
         addAbilityTooltip(ModDataComponents.POST_DAMAGE_EFFECTS.get(), MobEffects.FIRE_RESISTANCE, "Applies a temporary fire resistance effect after taking fire damage");
-        addAbilityTooltip(ModDataComponents.POST_DAMAGE_EFFECTS.get(), MobEffects.MOVEMENT_SPEED, "Increases the wearer's movement speed after taking damage");
-        addAbilityTooltip(ModDataComponents.POST_EATING_EFFECTS.get(), MobEffects.DIG_SPEED, "Grants a temporary boost to mining speed after eating food");
+        addAbilityTooltip(ModDataComponents.POST_DAMAGE_EFFECTS.get(), MobEffects.SPEED, "Increases the wearer's movement speed after taking damage");
+        addAbilityTooltip(ModDataComponents.POST_EATING_EFFECTS.get(), MobEffects.HASTE, "Grants a temporary boost to mining speed after eating food");
         addAbilityTooltip(ModDataComponents.DAMAGE_ABSORPTION.get(), "chance", "The wearer's melee attacks have a %s%% chance to absorb health");
         addAbilityTooltip(ModDataComponents.DAMAGE_ABSORPTION.get(), "constant", "Causes the wearer's melee attacks to absorb health");
         addAbilityTooltip(ModDataComponents.ATTACK_EFFECTS.get(), MobEffects.WITHER, "chance", "Melee attacks have a chance to inflict a wither effect");
@@ -147,14 +147,14 @@ public class Language extends LanguageProvider {
 
     private void addAttributes() {
         for (RegistryHolder<Attribute, ?> attribute : ModAttributes.ATTRIBUTES.getEntries()) {
-            add(attribute.get().getDescriptionId(), fromSnakeCasedString(attribute.unwrapKey().orElseThrow().location().getPath().split("\\.")[1]));
+            add(attribute.get().getDescriptionId(), fromSnakeCasedString(attribute.unwrapKey().orElseThrow().identifier().getPath().split("\\.")[1]));
         }
         add("generic.swim_speed", "Swim Speed");
     }
 
     private void addEntities() {
         for (RegistryHolder<EntityType<?>, ?> entityType : ModEntityTypes.ENTITY_TYPES.getEntries()) {
-            add(entityType.get().getDescriptionId(), fromSnakeCasedString(entityType.unwrapKey().orElseThrow().location().getPath()));
+            add(entityType.get().getDescriptionId(), fromSnakeCasedString(entityType.unwrapKey().orElseThrow().identifier().getPath()));
         }
         add(ModSoundEvents.MIMIC_CLOSE.value(), "Mimic closes");
         add(ModSoundEvents.MIMIC_DEATH.value(), "Mimic dies");
@@ -213,7 +213,7 @@ public class Language extends LanguageProvider {
 
     private void addItems() {
         for (Holder<Item> item : ModItems.ITEMS.getEntries()) {
-            add(item.value(), fromSnakeCasedString(item.unwrapKey().orElseThrow().location().getPath()));
+            add(item.value(), fromSnakeCasedString(item.unwrapKey().orElseThrow().identifier().getPath()));
         }
         override(ModItems.ANGLERS_HAT.value().getDescriptionId(), "Angler's Hat");
         override(ModItems.AQUA_DASHERS.value().getDescriptionId(), "Aqua-Dashers");
@@ -267,13 +267,13 @@ public class Language extends LanguageProvider {
         add("%s.subtitles.%s", BuiltInRegistries.SOUND_EVENT.getKey(soundEvent), value);
     }
 
-    private void add(String key, ResourceLocation id, String value) {
+    private void add(String key, Identifier id, String value) {
         add(key.formatted(id.getNamespace(), id.getPath()), value);
     }
 
     private void addAbilityTooltip(DataComponentType<?> type, Holder<?> holder, String... s) {
         List<String> list = new java.util.ArrayList<>(List.of(s));
-        list.addFirst(holder.unwrapKey().orElseThrow().location().getPath());
+        list.addFirst(holder.unwrapKey().orElseThrow().identifier().getPath());
         addAbilityTooltip(type, list.toArray(String[]::new));
     }
 

@@ -8,8 +8,8 @@ import com.mojang.serialization.DynamicOps;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Registry;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 
 import java.util.function.Function;
@@ -17,7 +17,7 @@ import java.util.function.Function;
 public class ModCodecs {
 
     public static <T> StreamCodec<ByteBuf, TagKey<T>> tagKeyStreamCodec(ResourceKey<? extends Registry<T>> registry) {
-        return ResourceLocation.STREAM_CODEC.map(
+        return Identifier.STREAM_CODEC.map(
                 id -> TagKey.create(registry, id),
                 TagKey::location
         );

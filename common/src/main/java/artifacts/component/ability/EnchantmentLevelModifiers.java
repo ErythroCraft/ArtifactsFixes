@@ -35,7 +35,7 @@ public record EnchantmentLevelModifiers(List<Entry> entries) implements Composit
                 ResourceKey.codec(Registries.ENCHANTMENT)
                         .validate(enchantment -> ALLOWED_ENCHANTMENTS.contains(enchantment)
                                 ? DataResult.success(enchantment)
-                                : DataResult.error(() -> "Unsupported enchantment: %s".formatted(enchantment.location())))
+                                : DataResult.error(() -> "Unsupported enchantment: %s".formatted(enchantment.identifier())))
                         .fieldOf("enchantment").forGetter(Entry::enchantment),
                 ValueTypes.ENCHANTMENT_LEVEL.codec().optionalFieldOf("level", Value.of(1)).forGetter(Entry::amount)
         ).apply(instance, Entry::new));
@@ -56,7 +56,7 @@ public record EnchantmentLevelModifiers(List<Entry> entries) implements Composit
 
         @Override
         public void addToTooltip(TooltipWriter writer) {
-            String enchantmentName = enchantment().location().getPath();
+            String enchantmentName = enchantment().identifier().getPath();
             if (amount().get() == 1) {
                 writer.add("%s.single_level".formatted(enchantmentName));
             } else {

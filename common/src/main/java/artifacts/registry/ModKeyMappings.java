@@ -22,7 +22,7 @@ public class ModKeyMappings {
     }
 
     private static KeyMapping createUnboundKeyMapping(Holder<Item> item, String action) {
-        String id = "artifacts.key.%s.%s".formatted(item.unwrapKey().orElseThrow().location().getPath(), action);
+        String id = "artifacts.key.%s.%s".formatted(item.unwrapKey().orElseThrow().identifier().getPath(), action);
         return new KeyMapping(id, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), "artifacts.key_category");
     }
 

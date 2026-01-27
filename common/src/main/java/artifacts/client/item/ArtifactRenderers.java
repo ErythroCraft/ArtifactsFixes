@@ -7,7 +7,7 @@ import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.item.Item;
 
 import java.util.function.Supplier;
@@ -18,16 +18,16 @@ public class ArtifactRenderers {
         // head
         register(ModItems.PLASTIC_DRINKING_HAT.value(), () -> new GenericArtifactRenderer("plastic_drinking_hat", new HeadModel(bakeLayer(ArtifactLayers.DRINKING_HAT))));
         register(ModItems.NOVELTY_DRINKING_HAT.value(), () -> new GenericArtifactRenderer("novelty_drinking_hat", new HeadModel(bakeLayer(ArtifactLayers.DRINKING_HAT))));
-        register(ModItems.SNORKEL.value(), () -> new GenericArtifactRenderer("snorkel", new HeadModel(bakeLayer(ArtifactLayers.SNORKEL), RenderType::entityTranslucent)));
+        register(ModItems.SNORKEL.value(), () -> new GenericArtifactRenderer("snorkel", new HeadModel(bakeLayer(ArtifactLayers.SNORKEL), RenderTypes::entityTranslucent)));
         register(ModItems.NIGHT_VISION_GOGGLES.value(), () -> new GlowingArtifactRenderer("night_vision_goggles", new HeadModel(bakeLayer(ArtifactLayers.NIGHT_VISION_GOGGLES))));
-        register(ModItems.SUPERSTITIOUS_HAT.value(), () -> new GenericArtifactRenderer("superstitious_hat", new HeadModel(bakeLayer(ArtifactLayers.SUPERSTITIOUS_HAT), RenderType::entityCutoutNoCull)));
+        register(ModItems.SUPERSTITIOUS_HAT.value(), () -> new GenericArtifactRenderer("superstitious_hat", new HeadModel(bakeLayer(ArtifactLayers.SUPERSTITIOUS_HAT), RenderTypes::entityCutoutNoCull)));
         register(ModItems.VILLAGER_HAT.value(), () -> new GenericArtifactRenderer("villager_hat", new HeadModel(bakeLayer(ArtifactLayers.BRIMMED_HAT))));
         register(ModItems.COWBOY_HAT.value(), () -> new GenericArtifactRenderer("cowboy_hat", new HeadModel(bakeLayer(ArtifactLayers.COWBOY_HAT))));
         register(ModItems.ANGLERS_HAT.value(), () -> new GenericArtifactRenderer("anglers_hat", new HeadModel(bakeLayer(ArtifactLayers.ANGLERS_HAT))));
 
         // necklace
-        register(ModItems.LUCKY_SCARF.value(), () -> new GenericArtifactRenderer("lucky_scarf", new ScarfModel(bakeLayer(ArtifactLayers.SCARF), RenderType::entityCutoutNoCull)));
-        register(ModItems.SCARF_OF_INVISIBILITY.value(), () -> new GenericArtifactRenderer("scarf_of_invisibility",  new ScarfModel(bakeLayer(ArtifactLayers.SCARF), RenderType::entityTranslucent)));
+        register(ModItems.LUCKY_SCARF.value(), () -> new GenericArtifactRenderer("lucky_scarf", new ScarfModel(bakeLayer(ArtifactLayers.SCARF), RenderTypes::entityCutoutNoCull)));
+        register(ModItems.SCARF_OF_INVISIBILITY.value(), () -> new GenericArtifactRenderer("scarf_of_invisibility",  new ScarfModel(bakeLayer(ArtifactLayers.SCARF), RenderTypes::entityTranslucent)));
         register(ModItems.CROSS_NECKLACE.value(), () -> new GenericArtifactRenderer("cross_necklace", new NecklaceModel(bakeLayer(ArtifactLayers.CROSS_NECKLACE))));
         register(ModItems.PANIC_NECKLACE.value(), () -> new GenericArtifactRenderer("panic_necklace", new NecklaceModel(bakeLayer(ArtifactLayers.PANIC_NECKLACE))));
         register(ModItems.SHOCK_PENDANT.value(), () -> new GenericArtifactRenderer("shock_pendant", new NecklaceModel(bakeLayer(ArtifactLayers.PENDANT))));

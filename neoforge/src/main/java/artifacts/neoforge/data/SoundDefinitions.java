@@ -3,7 +3,7 @@ package artifacts.neoforge.data;
 import artifacts.Artifacts;
 import artifacts.registry.ModSoundEvents;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -29,12 +29,12 @@ public class SoundDefinitions extends SoundDefinitionsProvider {
 
         addSubtitled(ModSoundEvents.FART.value()).with(sounds("fart", 2));
 
-        add(ModSoundEvents.POP.value()).with(sound(ResourceLocation.parse("random/pop")).pitch(0.75).volume(0.5));
+        add(ModSoundEvents.POP.value()).with(sound(Identifier.withDefaultNamespace("random/pop")).pitch(0.75).volume(0.5));
 
     }
 
     protected static SoundDefinition.Sound sound(SoundEvent soundEvent) {
-        return sound(soundEvent.getLocation(), SoundDefinition.SoundType.EVENT);
+        return sound(soundEvent.location(), SoundDefinition.SoundType.EVENT);
     }
 
     protected static SoundDefinition.Sound sound(String path) {

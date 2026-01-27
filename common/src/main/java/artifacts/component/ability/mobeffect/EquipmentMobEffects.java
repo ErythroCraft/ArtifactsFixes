@@ -12,7 +12,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -69,7 +69,7 @@ public record EquipmentMobEffects(List<Entry> entries) implements TickingComposi
         @Override
         public void addToTooltip(TooltipWriter writer) {
             if (CUSTOM_TOOLTIP_MOB_EFFECTS.contains(provider.mobEffect())) {
-                ResourceLocation id = BuiltInRegistries.MOB_EFFECT.getKey(provider.mobEffect().value());
+                Identifier id = BuiltInRegistries.MOB_EFFECT.getKey(provider.mobEffect().value());
                 writer.add(Objects.requireNonNull(id).getPath());
             }
             if (provider.mobEffect().value() == net.minecraft.world.effect.MobEffects.NIGHT_VISION.value()) {

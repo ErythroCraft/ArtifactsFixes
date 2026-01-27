@@ -5,7 +5,7 @@ import artifacts.client.mimic.MimicChestLayer;
 import artifacts.registry.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -28,7 +28,7 @@ public class BlockTags extends BlockTagsProvider {
 
         tag(ModTags.CAMPSITE_CHESTS).add(Blocks.CHEST);
         for (String chestType : MimicChestLayer.QUARK_CHEST_MATERIALS) {
-            tag(ModTags.CAMPSITE_CHESTS).addOptional(ResourceLocation.fromNamespaceAndPath("quark", "%s_chest".formatted(chestType)));
+            tag(ModTags.CAMPSITE_CHESTS).addOptional(Identifier.fromNamespaceAndPath("quark", "%s_chest".formatted(chestType)));
         }
 
         tag(ModTags.ROOTED_BOOTS_GRASS).add(

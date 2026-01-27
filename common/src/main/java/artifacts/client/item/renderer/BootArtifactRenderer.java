@@ -5,10 +5,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 public class BootArtifactRenderer implements ArtifactRenderer {
 
-    private final ResourceLocation texture;
+    private final Identifier texture;
     private final LegsModel model;
     private final LegsModel armorModel;
 
@@ -27,7 +27,7 @@ public class BootArtifactRenderer implements ArtifactRenderer {
         this.armorModel = model.apply(true);
     }
 
-    protected ResourceLocation getTexture() {
+    protected Identifier getTexture() {
         return texture;
     }
 

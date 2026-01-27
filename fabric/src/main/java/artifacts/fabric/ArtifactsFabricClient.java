@@ -19,7 +19,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -45,7 +45,7 @@ public class ArtifactsFabricClient implements ClientModInitializer {
 
     private static class IdentifiableArtifactRendererReloadListener implements ResourceManagerReloadListener, IdentifiableResourceReloadListener {
 
-        private static final ResourceLocation ID = Artifacts.id("renderers");
+        private static final Identifier ID = Artifacts.id("renderers");
 
         @Override
         public void onResourceManagerReload(ResourceManager resourceManager) {
@@ -53,7 +53,7 @@ public class ArtifactsFabricClient implements ClientModInitializer {
         }
 
         @Override
-        public ResourceLocation getFabricId() {
+        public Identifier getFabricId() {
             return ID;
         }
     }

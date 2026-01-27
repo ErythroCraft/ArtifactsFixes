@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(PiglinAi.class)
 public abstract class PiglinAiMixin {
 
-    @ModifyReturnValue(method = "isWearingGold", at = @At("RETURN"))
+    @ModifyReturnValue(method = "isWearingSafeArmor", at = @At("RETURN"))
     private static boolean isWearingGold(boolean original, LivingEntity entity) {
         return original || EquipmentHelper.hasComponent(ModDataComponents.PIGLIN_LOVED.get(), entity);
     }

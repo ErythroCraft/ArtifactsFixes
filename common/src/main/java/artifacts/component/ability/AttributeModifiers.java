@@ -11,7 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -55,13 +55,13 @@ public record AttributeModifiers(List<Entry> entries) implements TickingComposit
             CompositeAbility.streamCodec(Entry.STREAM_CODEC, AttributeModifiers::new, AttributeModifiers::entries);
 
     public record Entry(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation,
-                        ResourceLocation id, boolean ignoreCooldown) implements TickingAbility {
+                        Identifier id, boolean ignoreCooldown) implements TickingAbility {
 
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BuiltInRegistries.ATTRIBUTE.holderByNameCodec().fieldOf("attribute").forGetter(Entry::attribute),
                 ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT.codec().fieldOf("amount").forGetter(Entry::amount),
                 AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(Entry::operation),
-                ResourceLocation.CODEC.fieldOf("id").forGetter(Entry::id),
+                Identifier.CODEC.fieldOf("id").forGetter(Entry::id),
                 Codec.BOOL.optionalFieldOf("ignore_cooldown", true).forGetter(Entry::ignoreCooldown)
         ).apply(instance, Entry::new));
 
@@ -72,7 +72,7 @@ public record AttributeModifiers(List<Entry> entries) implements TickingComposit
                 Entry::amount,
                 AttributeModifier.Operation.STREAM_CODEC,
                 Entry::operation,
-                ResourceLocation.STREAM_CODEC,
+                Identifier.STREAM_CODEC,
                 Entry::id,
                 ByteBufCodecs.BOOL,
                 Entry::ignoreCooldown,
@@ -126,7 +126,7 @@ public record AttributeModifiers(List<Entry> entries) implements TickingComposit
 
         @Override
         public void addToTooltip(TooltipWriter writer) {
-            String attributeName = attribute().unwrapKey().orElseThrow().location().getPath();
+            String attributeName = attribute().unwrapKey().orElseThrow().identifier().getPath();
             if (attributeName.equals("swim_speed")) { // neoforge swim speed
                 attributeName = "generic.swim_speed";
             }

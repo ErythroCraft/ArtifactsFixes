@@ -6,18 +6,18 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.function.Function;
 
 public class GlowingGloveArtifactRenderer extends GloveArtifactRenderer {
 
-    private final ResourceLocation wideGlowTexture;
-    private final ResourceLocation slimGlowTexture;
+    private final Identifier wideGlowTexture;
+    private final Identifier slimGlowTexture;
 
     public GlowingGloveArtifactRenderer(String name, Function<Boolean, ArmsModel> model) {
         super(name, model);
@@ -25,7 +25,7 @@ public class GlowingGloveArtifactRenderer extends GloveArtifactRenderer {
         slimGlowTexture = ArtifactRenderer.getTexturePath(name, "%s_slim_overlay".formatted(name));
     }
 
-    private ResourceLocation getGlowTexture(boolean hasSlimArms) {
+    private Identifier getGlowTexture(boolean hasSlimArms) {
         return hasSlimArms ? slimGlowTexture : wideGlowTexture;
     }
 

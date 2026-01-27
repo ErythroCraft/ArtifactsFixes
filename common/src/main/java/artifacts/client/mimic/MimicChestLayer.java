@@ -12,13 +12,13 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,8 +86,8 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
     }
 
     private static Material createMaterial(String modId, String location) {
-        ResourceLocation chestAtlas = ResourceLocation.parse("textures/atlas/chest.png");
-        return new Material(chestAtlas, ResourceLocation.fromNamespaceAndPath(modId, location));
+        Identifier chestAtlas = Identifier.withDefaultNamespace("textures/atlas/chest.png");
+        return new Material(chestAtlas, Identifier.fromNamespaceAndPath(modId, location));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
             getParentModel().copyPropertiesTo(chestModel);
             chestModel.prepareMobModel(mimic, limbSwing, limbSwingAmount, partialTicks);
             chestModel.setupAnim(mimic, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            VertexConsumer builder = getChestMaterial(mimic).buffer(buffer, RenderType::entityCutout);
+            VertexConsumer builder = getChestMaterial(mimic).buffer(buffer, RenderTypes::entityCutout);
             chestModel.renderToBuffer(matrixStack, builder, packedLight, LivingEntityRenderer.getOverlayCoords(mimic, 0), 0xFFFFFFFF);
 
             matrixStack.popPose();

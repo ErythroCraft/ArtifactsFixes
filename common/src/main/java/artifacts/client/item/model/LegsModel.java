@@ -7,13 +7,13 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.entity.LivingEntity;
 
 public class LegsModel extends HumanoidModel<LivingEntity> {
 
     public LegsModel(ModelPart part) {
-        super(part, RenderType::entityCutoutNoCull);
+        super(part, RenderTypes::entityCutoutNoCull);
     }
 
     @Override

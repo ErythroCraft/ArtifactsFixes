@@ -12,7 +12,7 @@ import me.shedaniel.clothconfig2.impl.builders.FieldBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
@@ -42,7 +42,7 @@ public class ArtifactsConfigScreen {
             ConfigCategory category = builder.getOrCreateCategory(getTitle(key.split("\\.")[0]));
             AbstractConfigListEntry<?> subCategory;
             String name = key.substring(key.lastIndexOf('.') + 1);
-            if (ResourceLocation.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
+            if (Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
                 subCategory = new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.get(Artifacts.id(name)), subCategories.get(key));
             } else {
                 subCategory = builder.entryBuilder().startSubCategory(getTitle(key), List.copyOf(subCategories.get(key))).build();
@@ -102,7 +102,7 @@ public class ArtifactsConfigScreen {
 
     private static Component getTitle(String categoryKey) {
         String name = categoryKey.substring(categoryKey.lastIndexOf('.') + 1);
-        if (ResourceLocation.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
+        if (Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
             return BuiltInRegistries.ITEM.get(Artifacts.id(name)).getDescription();
         }
         return Component.translatable("%s.config.%s.title".formatted(Artifacts.MOD_ID, categoryKey));

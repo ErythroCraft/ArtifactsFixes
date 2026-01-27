@@ -12,6 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.context.ContextKeySet;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
@@ -45,7 +45,7 @@ public class LootModifiers extends GlobalLootModifierProvider {
             lootBuilders.add(
                     new Builder(lootTable)
                             .lootPoolCondition(ConfigValueChance.everlastingBeefChance())
-                            .lootModifierCondition(LootTableIdCondition.builder(lootTable.location()))
+                            .lootModifierCondition(LootTableIdCondition.builder(lootTable.identifier()))
                             .parameterSet(LootContextParamSets.ENTITY)
                             .lootPoolCondition(LootItemKilledByPlayerCondition.killedByPlayer())
                             .everlastingBeef()
@@ -298,7 +298,7 @@ public class LootModifiers extends GlobalLootModifierProvider {
         }
         Builder builder = new Builder(lootTable);
         builder.lootPoolCondition(ArtifactRarityAdjustedChance.adjustedChance(baseChance));
-        builder.lootModifierCondition(LootTableIdCondition.builder(lootTable.location()));
+        builder.lootModifierCondition(LootTableIdCondition.builder(lootTable.identifier()));
         lootBuilders.add(builder);
         return builder;
     }
@@ -308,7 +308,7 @@ public class LootModifiers extends GlobalLootModifierProvider {
             throw new IllegalArgumentException("Missing archaeology loot table: %s".formatted(lootTable));
         }
         Builder builder = new Builder(lootTable).replace();
-        builder.lootModifierCondition(LootTableIdCondition.builder(lootTable.location()));
+        builder.lootModifierCondition(LootTableIdCondition.builder(lootTable.identifier()));
         builder.lootModifierCondition(ConfigValueChance.archaeologyChance());
         lootBuilders.add(builder);
         return builder;
@@ -330,7 +330,7 @@ public class LootModifiers extends GlobalLootModifierProvider {
         private final List<LootItemCondition> conditions;
         private boolean replace = false;
 
-        private LootContextParamSet paramSet = LootContextParamSets.CHEST;
+        private ContextKeySet contextKeySet = LootContextParamSets.CHEST;
 
         private Builder(ResourceKey<LootTable> lootTable) {
             this.lootTable = lootTable;
@@ -345,16 +345,16 @@ public class LootModifiers extends GlobalLootModifierProvider {
             return new LootTable.Builder().withPool(lootPool);
         }
 
-        public LootContextParamSet getParameterSet() {
-            return paramSet;
+        public ContextKeySet getContextKeySet() {
+            return contextKeySet;
         }
 
         protected String getName() {
-            return lootTable.location().getPath();
+            return lootTable.identifier().getPath();
         }
 
-        private Builder parameterSet(LootContextParamSet paramSet) {
-            this.paramSet = paramSet;
+        private Builder parameterSet(ContextKeySet contextKeySet) {
+            this.contextKeySet = contextKeySet;
             return this;
         }
 

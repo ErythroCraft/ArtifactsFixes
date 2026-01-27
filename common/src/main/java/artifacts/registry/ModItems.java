@@ -118,7 +118,7 @@ public class ModItems {
     public static final Holder<Item> PANIC_NECKLACE = wearableItem("panic_necklace", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new PostDamageEffects(List.of(new PostDamageEffects.Entry(
-                    new MobEffectProvider(MobEffects.MOVEMENT_SPEED, Artifacts.CONFIG.items.panicNecklaceSpeedLevel, Artifacts.CONFIG.items.panicNecklaceSpeedDuration, Value.of(true), Value.of(true), EntityCondition.ALWAYS),
+                    new MobEffectProvider(MobEffects.SPEED, Artifacts.CONFIG.items.panicNecklaceSpeedLevel, Artifacts.CONFIG.items.panicNecklaceSpeedDuration, Value.of(true), Value.of(true), EntityCondition.ALWAYS),
                     Optional.empty(),
                     Value.of(1D)
             ))))

@@ -18,15 +18,15 @@ public class LootTableMixin {
 
     @ModifyReturnValue(method = "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;", at = @At("RETURN"))
     public ObjectArrayList<ItemStack> modifyBlockDrops(ObjectArrayList<ItemStack> original, LootContext context) {
-        if (context.hasParam(LootContextParams.ORIGIN)) {
-            Vec3 origin = context.getParam(LootContextParams.ORIGIN);
+        if (context.hasParameter(LootContextParams.ORIGIN)) {
+            Vec3 origin = context.getParameter(LootContextParams.ORIGIN);
             MutableInt experience = new MutableInt(0);
             ObjectArrayList<ItemStack> result = new ObjectArrayList<>(original.size());
             for (ItemStack stack : original) {
                 result.add(ArtifactHooks.applySmeltOresAbility(
                         stack,
-                        context.getParamOrNull(LootContextParams.THIS_ENTITY),
-                        context.getParamOrNull(LootContextParams.BLOCK_STATE),
+                        context.getOptionalParameter(LootContextParams.THIS_ENTITY),
+                        context.getOptionalParameter(LootContextParams.BLOCK_STATE),
                         experience::add
                 ));
             }

@@ -9,8 +9,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -24,7 +25,7 @@ public class BeltModel extends HumanoidModel<LivingEntity> {
     private final float zOffset;
     private final float rotation;
 
-    public BeltModel(ModelPart part, Function<ResourceLocation, RenderType> renderType, float xOffset, float zOffset, float rotation) {
+    public BeltModel(ModelPart part, Function<Identifier, RenderType> renderType, float xOffset, float zOffset, float rotation) {
         super(part, renderType);
         this.xOffset = xOffset;
         this.zOffset = zOffset;
@@ -32,7 +33,7 @@ public class BeltModel extends HumanoidModel<LivingEntity> {
     }
 
     public BeltModel(ModelPart part, float xOffset, float zOffset, float rotation) {
-        this(part, RenderType::entityCutoutNoCull, xOffset, zOffset, rotation);
+        this(part, RenderTypes::entityCutoutNoCull, xOffset, zOffset, rotation);
     }
 
     public void setCharmPosition(int slot) {
@@ -56,7 +57,7 @@ public class BeltModel extends HumanoidModel<LivingEntity> {
     }
 
     public static BeltModel createCloudInABottleModel() {
-        return new BeltModel(RendererUtil.bakeLayer(ArtifactLayers.CLOUD_IN_A_BOTTLE), RenderType::entityTranslucent, 3, -3, -0.5F) {
+        return new BeltModel(RendererUtil.bakeLayer(ArtifactLayers.CLOUD_IN_A_BOTTLE), RenderTypes::entityTranslucent, 3, -3, -0.5F) {
             private final ModelPart cloud = charm.getChild("cloud");
 
             @Override
@@ -70,7 +71,7 @@ public class BeltModel extends HumanoidModel<LivingEntity> {
 
     public static HumanoidModel<LivingEntity> createHeliumFlamingoModel() {
         ModelPart part = RendererUtil.bakeLayer(ArtifactLayers.HELIUM_FLAMINGO);
-        return new HumanoidModel<>(part, RenderType::entityCutoutNoCull) {
+        return new HumanoidModel<>(part, RenderTypes::entityCutoutNoCull) {
             @Override
             protected Iterable<ModelPart> headParts() {
                 return ImmutableList.of();
@@ -96,7 +97,7 @@ public class BeltModel extends HumanoidModel<LivingEntity> {
     }
 
     public static BeltModel createCrystalHeartModel() {
-        return new BeltModel(RendererUtil.bakeLayer(ArtifactLayers.CRYSTAL_HEART), RenderType::entityTranslucent, 2.5F, -3.01F, 0);
+        return new BeltModel(RendererUtil.bakeLayer(ArtifactLayers.CRYSTAL_HEART), RenderTypes::entityTranslucent, 2.5F, -3.01F, 0);
     }
 
     public static BeltModel createChorusTotemModel() {

@@ -28,8 +28,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -186,9 +186,9 @@ public class ArtifactHooks {
         if (originalDuration <= 0) {
             return originalDuration;
         }
-        if (item.getUseAnimation() == UseAnim.EAT) {
+        if (item.getUseAnimation() == ItemUseAnimation.EAT) {
             return (int) Math.max(1, Math.round(originalDuration / entity.getAttributeValue(ModAttributes.EATING_SPEED)));
-        } else if (item.getUseAnimation() == UseAnim.DRINK) {
+        } else if (item.getUseAnimation() == ItemUseAnimation.DRINK) {
             return (int) Math.max(1, Math.round(originalDuration / entity.getAttributeValue(ModAttributes.DRINKING_SPEED)));
         }
         return originalDuration;

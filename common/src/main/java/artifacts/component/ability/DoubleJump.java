@@ -51,9 +51,9 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultipl
         player.fallDistance = 0;
 
         double upwardsMotion = 0.5;
-        if (player.hasEffect(MobEffects.JUMP)) {
+        if (player.hasEffect(MobEffects.JUMP_BOOST)) {
             // noinspection ConstantConditions
-            upwardsMotion += 0.1 * (player.getEffect(MobEffects.JUMP).getAmplifier() + 1);
+            upwardsMotion += 0.1 * (player.getEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1);
         }
         if (player.isSprinting()) {
             upwardsMotion *= 1 + EquipmentHelper.maxDouble(

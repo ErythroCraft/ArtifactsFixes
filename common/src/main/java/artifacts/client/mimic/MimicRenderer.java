@@ -7,11 +7,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class MimicRenderer extends MobRenderer<MimicEntity, MimicModel> {
 
-    private static final ResourceLocation TEXTURE = Artifacts.id("textures/entity/mimic.png");
+    private static final Identifier TEXTURE = Artifacts.id("textures/entity/mimic.png");
 
     public MimicRenderer(EntityRendererProvider.Context context) {
         super(context, new MimicModel(context.bakeLayer(MimicModel.LAYER_LOCATION)), 0.45F);
@@ -24,7 +24,7 @@ public class MimicRenderer extends MobRenderer<MimicEntity, MimicModel> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MimicEntity entity) {
+    public Identifier getTextureLocation(MimicEntity entity) {
         return TEXTURE;
     }
 }

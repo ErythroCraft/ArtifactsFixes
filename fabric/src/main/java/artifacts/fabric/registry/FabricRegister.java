@@ -15,11 +15,11 @@ public class FabricRegister<R> extends Register<R> {
 
     @Override
     protected <T extends R> void bind(RegistryHolder<R, T> holder) {
-        holder.bind(Registry.registerForHolder(getRegistry(getRegistry()), Artifacts.key(getRegistry(), holder.unwrapKey().orElseThrow().location().getPath()), holder.getFactory().get()));
+        holder.bind(Registry.registerForHolder(getRegistry(getRegistry()), Artifacts.key(getRegistry(), holder.unwrapKey().orElseThrow().identifier().getPath()), holder.getFactory().get()));
     }
 
     @SuppressWarnings("unchecked")
     private static <R> Registry<R> getRegistry(ResourceKey<Registry<R>> key) {
-        return (Registry<R>) BuiltInRegistries.REGISTRY.get(key.location());
+        return (Registry<R>) BuiltInRegistries.REGISTRY.get(key.identifier());
     }
 }

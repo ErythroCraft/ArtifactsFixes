@@ -8,8 +8,8 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -19,7 +19,7 @@ public class ScarfModel extends HumanoidModel<LivingEntity> {
 
     private final ModelPart cloak = body.getChild("cloak");
 
-    public ScarfModel(ModelPart part, Function<ResourceLocation, RenderType> renderType) {
+    public ScarfModel(ModelPart part, Function<Identifier, RenderType> renderType) {
         super(part, renderType);
     }
 

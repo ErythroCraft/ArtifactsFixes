@@ -11,8 +11,8 @@ import artifacts.network.NetworkHandler;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.*;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import org.apache.logging.log4j.LogManager;
@@ -29,12 +29,12 @@ public class Artifacts {
     @Nullable
     private static MinecraftServer currentServer;
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 
-    public static ResourceLocation id(String path, String... args) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, String.format(path, (Object[]) args));
+    public static Identifier id(String path, String... args) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, String.format(path, (Object[]) args));
     }
 
     public static <T> ResourceKey<T> key(ResourceKey<? extends Registry<T>> registry, String path) {

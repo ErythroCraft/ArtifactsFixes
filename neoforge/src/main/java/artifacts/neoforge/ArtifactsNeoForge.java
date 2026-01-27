@@ -34,7 +34,7 @@ public class ArtifactsNeoForge {
         ArtifactsNeoForge.modBus = modBus;
 
         Artifacts.setup();
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
             new ArtifactsNeoForgeClient(modBus);
         }
 

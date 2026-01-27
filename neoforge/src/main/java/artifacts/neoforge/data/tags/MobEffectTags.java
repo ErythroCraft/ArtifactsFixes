@@ -30,11 +30,11 @@ public class MobEffectTags extends IntrinsicHolderTagsProvider<MobEffect> {
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModTags.ANTIDOTE_VESSEL_CANCELLABLE).add(
                 MobEffects.BLINDNESS.value(),
-                MobEffects.CONFUSION.value(),
-                MobEffects.DIG_SLOWDOWN.value(),
+                MobEffects.NAUSEA.value(),
+                MobEffects.MINING_FATIGUE.value(),
                 MobEffects.HUNGER.value(),
                 MobEffects.LEVITATION.value(),
-                MobEffects.MOVEMENT_SLOWDOWN.value(),
+                MobEffects.SLOWNESS.value(),
                 MobEffects.POISON.value(),
                 MobEffects.WEAKNESS.value(),
                 MobEffects.WITHER.value()

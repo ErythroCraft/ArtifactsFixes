@@ -9,13 +9,13 @@ import artifacts.registry.ModDataComponents;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
 public class HeliumFlamingoOverlay {
 
-    private static final ResourceLocation HELIUM_FLAMINGO_ICON = Artifacts.id("textures/gui/icons.png");
+    private static final Identifier HELIUM_FLAMINGO_ICON = Artifacts.id("textures/gui/icons.png");
 
     public static boolean renderOverlay(int height, GuiGraphics guiGraphics, int screenWidth, int screenHeight) {
         if (!(Minecraft.getInstance().getCameraEntity() instanceof LivingEntity player)

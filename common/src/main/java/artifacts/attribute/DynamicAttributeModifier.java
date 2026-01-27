@@ -6,12 +6,12 @@ import artifacts.mixin.accessors.EntityAccessor;
 import artifacts.registry.ModAttributes;
 import artifacts.registry.ModTags;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.Saddleable;
+import net.minecraft.world.entity.PlayerRideable;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -116,9 +116,9 @@ public abstract class DynamicAttributeModifier {
 
     private final Holder<Attribute> attribute;
     private final AttributeModifier.Operation operation;
-    private final ResourceLocation id;
+    private final Identifier id;
 
-    public DynamicAttributeModifier(ResourceLocation id, Holder<Attribute> attribute, AttributeModifier.Operation operation) {
+    public DynamicAttributeModifier(Identifier id, Holder<Attribute> attribute, AttributeModifier.Operation operation) {
         this.attribute = attribute;
         this.operation = operation;
         this.id = id;
@@ -171,7 +171,7 @@ public abstract class DynamicAttributeModifier {
         if (entity instanceof Player) {
             UMBRELLA_GRAVITY.tick(entity);
         }
-        if (entity instanceof Saddleable) {
+        if (entity instanceof PlayerRideable) {
             MOUNT_SPEED.tick(entity);
         }
     }
