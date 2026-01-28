@@ -5,7 +5,7 @@ import artifacts.config.value.Value;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.RegistryOps;
 import org.jetbrains.annotations.Nullable;
 
 public record ConfigValueCondition(Value.ConfigValue<Boolean> value) implements ResourceCondition {
@@ -21,7 +21,7 @@ public record ConfigValueCondition(Value.ConfigValue<Boolean> value) implements 
     }
 
     @Override
-    public boolean test(@Nullable HolderLookup.Provider provider) {
+    public boolean test(@Nullable RegistryOps.RegistryInfoLookup lookup) {
         return value.get();
     }
 }

@@ -5,7 +5,7 @@ import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,13 +52,12 @@ public class UmbrellaItem extends ArtifactItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!Artifacts.CONFIG.items.umbrellaIsShield.get()) {
             return super.use(level, player, hand);
         }
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(stack);
+        return InteractionResult.CONSUME;
     }
 
     public static void onLivingUpdate(LivingEntity entity) {

@@ -27,6 +27,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.ArrayList;
@@ -40,16 +41,17 @@ public class WearableArtifactItem extends Item {
         super(properties);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay display, Consumer<Component> list, TooltipFlag tooltipFlag) {
         if (Artifacts.CONFIG.client.showTooltips.get()
                 && !PlatformServices.getModList().isModLoaded(ModCompat.CURIOS)
                 && !PlatformServices.getModList().isModLoaded(ModCompat.TRINKETS)
                 && !PlatformServices.getModList().isModLoaded(ModCompat.ACCESSORIES)
         ) {
-            list.add(Component.translatable("%s.tooltip.missing_dependency".formatted(Artifacts.MOD_ID)).withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+            list.accept(Component.translatable("%s.tooltip.missing_dependency".formatted(Artifacts.MOD_ID)).withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
         } else {
-            super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
+            super.appendHoverText(itemStack, tooltipContext, display, list, tooltipFlag);
         }
     }
 

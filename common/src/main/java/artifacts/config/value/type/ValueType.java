@@ -7,10 +7,10 @@ import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.Util;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.Util;
 
 import java.util.Arrays;
 import java.util.List;

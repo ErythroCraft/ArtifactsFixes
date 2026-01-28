@@ -277,7 +277,7 @@ public class ModItems {
             .properties(properties -> properties.food(new FoodProperties.Builder().nutrition(2).build()))
             .component(ModDataComponents.POST_EATING_EFFECTS.get(), new PostEatingEffects(
                     List.of(new PostEatingEffects.Entry(new MobEffectProvider(
-                            MobEffects.DIG_SPEED,
+                            MobEffects.HASTE,
                             Artifacts.CONFIG.items.onionRingHasteLevel,
                             Artifacts.CONFIG.items.onionRingHasteDurationPerFoodPoint,
                             Value.of(true), Value.of(true), EntityCondition.ALWAYS

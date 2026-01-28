@@ -75,7 +75,7 @@ public class EquipmentHelper {
         return reduceEquipment(entity, init, (stack, init_) -> {
             ABILITY ability = stack.get(type);
             if (ability != null) {
-                boolean checkCooldown = !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(stack.getItem());
+                boolean checkCooldown = !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(stack);
                 boolean checkDisabled = !skipDisabledItems || !stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get());
                 boolean checkCosmetic = !skipDisabledItems || ability.isNonCosmetic();
                 if (checkCooldown && checkDisabled && checkCosmetic) {

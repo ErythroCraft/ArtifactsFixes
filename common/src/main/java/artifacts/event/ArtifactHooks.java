@@ -109,7 +109,7 @@ public class ArtifactHooks {
         }
         for (var type : ModDataComponents.TICKING_COMPONENTS) {
             EquipmentHelper.iterateAbilities(type.get(), entity, false, false, (ability, stack) -> {
-                boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(stack.getItem());
+                boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(stack);
                 ability.wornTick(entity, isOnCooldown, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
             });
         }

@@ -58,8 +58,9 @@ public class FabricPlatformHelper implements PlatformHelper {
         return new FabricRegister<>(registry);
     }
 
+    // TODO move to common
     @Override
     public SpawnEggItem createMimicSpawnEgg(Item.Properties properties) {
-        return new SpawnEggItem(ModEntityTypes.MIMIC.get(), 0xFFFFFF, 0xFFFFFF, properties);
+        return new SpawnEggItem(properties.spawnEgg(ModEntityTypes.MIMIC.get()));
     }
 }

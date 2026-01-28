@@ -19,7 +19,7 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
 
     @SuppressWarnings("deprecation")
     public ItemSubCategoryListEntry(Item item, List<AbstractConfigListEntry<?>> entries) {
-        super(item.getDescription(), List.copyOf(entries), false);
+        super(item.getName(), List.copyOf(entries), false);
         this.stack = new ItemStack(item);
         List<String> searchTags = List.of(getFieldName().getString().split(" "));
         // noinspection unchecked
@@ -56,19 +56,19 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
         boolean hasError = this.getConfigError().isPresent();
         boolean isEdited = this.isEdited();
         if (hasError) {
-            text = text.withStyle(ChatFormatting.RED);
+            text.withStyle(ChatFormatting.RED);
         }
 
         if (isEdited) {
-            text = text.withStyle(ChatFormatting.ITALIC);
+            text.withStyle(ChatFormatting.ITALIC);
         }
 
         if (!hasError && !isEdited) {
-            text = text.withStyle(ChatFormatting.GRAY);
+            text.withStyle(ChatFormatting.GRAY);
         }
 
         if (!this.isEnabled()) {
-            text = text.withStyle(ChatFormatting.DARK_GRAY);
+            text.withStyle(ChatFormatting.DARK_GRAY);
         }
 
         return text;

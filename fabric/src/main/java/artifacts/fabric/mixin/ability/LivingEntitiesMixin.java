@@ -24,7 +24,7 @@ public abstract class LivingEntitiesMixin extends Entity {
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "actuallyHurt", allow = 1, at = @At(value = "JUMP", opcode = Opcodes.IFNE))
     private void onEntityDamaged(DamageSource source, float amount, CallbackInfo info) {
-        if (!this.isInvulnerableTo(source)) {
+        if (!this.isInvulnerableTo(level(), source)) {
             LivingEntity self = (LivingEntity) (Object) this;
             ArtifactHooks.onLivingDamaged(self, source, amount);
         }

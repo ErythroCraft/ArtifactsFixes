@@ -43,7 +43,7 @@ public class ArtifactsConfigScreen {
             AbstractConfigListEntry<?> subCategory;
             String name = key.substring(key.lastIndexOf('.') + 1);
             if (Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
-                subCategory = new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.get(Artifacts.id(name)), subCategories.get(key));
+                subCategory = new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.getValue(Artifacts.id(name)), subCategories.get(key));
             } else {
                 subCategory = builder.entryBuilder().startSubCategory(getTitle(key), List.copyOf(subCategories.get(key))).build();
             }
@@ -103,7 +103,7 @@ public class ArtifactsConfigScreen {
     private static Component getTitle(String categoryKey) {
         String name = categoryKey.substring(categoryKey.lastIndexOf('.') + 1);
         if (Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
-            return BuiltInRegistries.ITEM.get(Artifacts.id(name)).getDescription();
+            return BuiltInRegistries.ITEM.getValue(Artifacts.id(name)).getName();
         }
         return Component.translatable("%s.config.%s.title".formatted(Artifacts.MOD_ID, categoryKey));
     }

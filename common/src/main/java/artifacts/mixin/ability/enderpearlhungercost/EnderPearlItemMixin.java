@@ -40,7 +40,7 @@ public abstract class EnderPearlItemMixin extends Item {
                     );
                 }
                 int cooldown = EquipmentHelper.maxInt(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), player, ability -> ability.cooldown().get(), true);
-                player.getCooldowns().addCooldown(this, cooldown * 20);
+                player.getCooldowns().addCooldown(stack, cooldown * 20);
                 return;
             }
         }

@@ -3,6 +3,7 @@ package artifacts.registry;
 import artifacts.Artifacts;
 import artifacts.entity.MimicEntity;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -18,7 +19,7 @@ public class ModEntityTypes {
             () -> EntityType.Builder.of(MimicEntity::new, MobCategory.MISC)
                     .sized(14 / 16F, 14 / 16F)
                     .clientTrackingRange(8)
-                    .build(Artifacts.id("mimic").toString())
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Artifacts.id("mimic")))
     );
 
     public static void registerMobAttributes(BiConsumer<EntityType<? extends LivingEntity>, AttributeSupplier> consumer) {

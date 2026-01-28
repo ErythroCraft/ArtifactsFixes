@@ -3,11 +3,11 @@ package artifacts.config.value.type;
 import artifacts.config.screen.ConfigEntries;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.Util;
 
 import java.util.Arrays;
 import java.util.List;

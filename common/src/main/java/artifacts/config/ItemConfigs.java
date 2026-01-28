@@ -269,7 +269,7 @@ public class ItemConfigs extends ConfigManager {
     }
 
     private static String createKey(Holder<? extends Item> holder, String name) {
-        return holder.unwrapKey().orElseThrow().location().getPath() + '.' + name;
+        return holder.unwrapKey().orElseThrow().identifier().getPath() + '.' + name;
     }
 
     public Value<Boolean> generatesAsLoot(Item item) {

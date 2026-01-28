@@ -4,7 +4,6 @@ import artifacts.Artifacts;
 import artifacts.registry.ModSoundEvents;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -26,9 +25,12 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.EnumSet;
+import java.util.Locale;
 
 public class MimicEntity extends Mob implements Enemy {
 
@@ -94,25 +96,21 @@ public class MimicEntity extends Mob implements Enemy {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putInt("ticksInAir", ticksInAir);
-        compound.putBoolean("isDormant", isDormant);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("ticksInAir", ticksInAir);
+        output.putBoolean("isDormant", isDormant);
         if (facing != null) {
-            compound.putString("facing", facing.name());
+            output.putString("facing", facing.name());
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        ticksInAir = compound.getInt("ticksInAir");
-        if (compound.contains("facing")) {
-            setFacing(Direction.byName(compound.getString("facing").toLowerCase()));
-        } else {
-            setFacing(null);
-        }
-        setDormant(compound.getBoolean("isDormant"));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        ticksInAir = input.getIntOr("ticksInAir", 0);
+        setFacing(Direction.byName(input.getStringOr("facing", "").toLowerCase(Locale.ENGLISH)));
+        setDormant(input.getBooleanOr("isDormant", false));
     }
 
     @Override
@@ -241,7 +239,7 @@ public class MimicEntity extends Mob implements Enemy {
 
             return target instanceof Player player
                     && player.isAlive()
-                    && player.getCommandSenderWorld().getDifficulty() != Difficulty.PEACEFUL
+                    && player.level().getDifficulty() != Difficulty.PEACEFUL
                     && !player.getAbilities().invulnerable;
         }
 
@@ -257,7 +255,7 @@ public class MimicEntity extends Mob implements Enemy {
 
             return target instanceof Player player
                     && player.isAlive()
-                    && player.getCommandSenderWorld().getDifficulty() != Difficulty.PEACEFUL
+                    && player.level().getDifficulty() != Difficulty.PEACEFUL
                     && !player.getAbilities().invulnerable
                     && --timeRemaining > 0;
         }
@@ -307,7 +305,7 @@ public class MimicEntity extends Mob implements Enemy {
 
             return target instanceof Player player
                     && player.isAlive()
-                    && player.getCommandSenderWorld().getDifficulty() == Difficulty.PEACEFUL
+                    && player.level().getDifficulty() == Difficulty.PEACEFUL
                     && !player.getAbilities().invulnerable
                     && --timeRemaining > 0;
         }
@@ -413,7 +411,7 @@ public class MimicEntity extends Mob implements Enemy {
             super(MimicEntity.this, Player.class, 1, true, false, null);
             // noinspection ConstantConditions
             super.targetConditions = TargetingConditions.forNonCombat().range(this.getFollowDistance()).selector(
-                    (entity) -> entity.canBeSeenAsEnemy() && (!isDormant || distanceTo(entity) < getAttribute(Attributes.FOLLOW_RANGE).getValue() / 2.5)
+                    (entity, level) -> entity.canBeSeenAsEnemy() && (!isDormant || distanceTo(entity) < getAttribute(Attributes.FOLLOW_RANGE).getValue() / 2.5)
             );
         }
     }
