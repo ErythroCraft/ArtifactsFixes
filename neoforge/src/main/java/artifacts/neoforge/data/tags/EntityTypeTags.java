@@ -9,17 +9,15 @@ import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class EntityTypeTags extends EntityTypeTagsProvider {
 
-    public EntityTypeTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(packOutput, lookupProvider, Artifacts.MOD_ID, existingFileHelper);
+    public EntityTypeTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(packOutput, lookupProvider, Artifacts.MOD_ID);
     }
 
     @Override
@@ -44,7 +42,9 @@ public class EntityTypeTags extends EntityTypeTagsProvider {
                 "snowy_creeper"
         );
         for (String creeper : creepers) {
-            tag(ModTags.CREEPERS).addOptional(Identifier.fromNamespaceAndPath("creeperoverhaul", creeper));
+            getOrCreateRawBuilder(ModTags.CREEPERS).addOptionalElement(
+                    Identifier.fromNamespaceAndPath("creeperoverhaul", creeper)
+            );
         }
     }
 }

@@ -5,13 +5,11 @@ import artifacts.registry.ModItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class ItemModels extends ItemModelProvider {
 
-    public ItemModels(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
-        super(packOutput, Artifacts.MOD_ID, existingFileHelper);
+    public ItemModels(PackOutput packOutput) {
+        super(packOutput, Artifacts.MOD_ID);
     }
 
     @Override

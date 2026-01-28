@@ -5,14 +5,13 @@ import artifacts.registry.ModGameEvents;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.GameEventTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
 public class GameEventTags extends GameEventTagsProvider {
 
-    public GameEventTags(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, ExistingFileHelper existingFileHelper) {
-        super(arg, completableFuture, Artifacts.MOD_ID, existingFileHelper);
+    public GameEventTags(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture) {
+        super(arg, completableFuture, Artifacts.MOD_ID);
     }
 
     @Override

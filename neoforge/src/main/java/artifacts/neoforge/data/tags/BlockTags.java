@@ -8,15 +8,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class BlockTags extends BlockTagsProvider {
 
-    public BlockTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(packOutput, lookupProvider, Artifacts.MOD_ID, existingFileHelper);
+    public BlockTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(packOutput, lookupProvider, Artifacts.MOD_ID);
     }
 
     @Override
@@ -28,7 +26,7 @@ public class BlockTags extends BlockTagsProvider {
 
         tag(ModTags.CAMPSITE_CHESTS).add(Blocks.CHEST);
         for (String chestType : MimicChestLayer.QUARK_CHEST_MATERIALS) {
-            tag(ModTags.CAMPSITE_CHESTS).addOptional(Identifier.fromNamespaceAndPath("quark", "%s_chest".formatted(chestType)));
+            getOrCreateRawBuilder(ModTags.CAMPSITE_CHESTS).addOptionalElement(Identifier.fromNamespaceAndPath("quark", "%s_chest".formatted(chestType)));
         }
 
         tag(ModTags.ROOTED_BOOTS_GRASS).add(

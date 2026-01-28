@@ -8,15 +8,17 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,32 +31,35 @@ public class Advancements extends AdvancementProvider {
 
     public static final Map<String, String> TRANSLATIONS = new HashMap<>();
 
-    public Advancements(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
-        super(output, registries, existingFileHelper, List.of(Advancements::generate));
+    public Advancements(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, List.of(Advancements::generate));
     }
 
     @SuppressWarnings("removal")
-    private static void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver, ExistingFileHelper existingFileHelper) {
+    private static void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver) {
+        HolderLookup.RegistryLookup<Item> items = registries.lookupOrThrow(Registries.ITEM);
+        HolderLookup.RegistryLookup<EntityType<?>> entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
+
         Identifier amateurArcheologist = Artifacts.id("amateur_archaeologist");
         AdvancementHolder parent = advancement(amateurArcheologist, ModItems.FLAME_PENDANT.value(), "Amateur Archaeologist", "Find an Artifact")
                 .parent(Identifier.withDefaultNamespace("adventure/root"))
                 .addCriterion("find_artifact", InventoryChangeTrigger.TriggerInstance.hasItems(
-                        ItemPredicate.Builder.item().of(ItemTags.ARTIFACTS).build()
-                )).save(saver, amateurArcheologist, existingFileHelper);
+                        ItemPredicate.Builder.item().of(items, ItemTags.ARTIFACTS).build()
+                )).save(saver, amateurArcheologist);
 
         Identifier chestSlayer = Artifacts.id("chest_slayer");
         advancement(chestSlayer, ModItems.MIMIC_SPAWN_EGG.value(), "Chest Slayer", "Kill a Mimic")
                 .parent(parent)
                 .addCriterion("kill_mimic", KilledTrigger.TriggerInstance.playerKilledEntity(
-                        EntityPredicate.Builder.entity().of(ModEntityTypes.MIMIC.value())
-                )).save(saver, chestSlayer, existingFileHelper);
+                        EntityPredicate.Builder.entity().of(entityTypes, ModEntityTypes.MIMIC.value())
+                )).save(saver, chestSlayer);
 
         Identifier adventurousEater = Artifacts.id("adventurous_eater");
         advancement(adventurousEater, ModItems.ONION_RING.value(), "Adventurous Eater", "Eat an Artifact", true)
                 .parent(parent)
                 .addCriterion("eat_artifact", ConsumeItemTrigger.TriggerInstance.usedItem(
-                        ItemPredicate.Builder.item().of(ModItems.ONION_RING.value())
-                )).save(saver, adventurousEater, existingFileHelper);
+                        ItemPredicate.Builder.item().of(items, ModItems.ONION_RING.value())
+                )).save(saver, adventurousEater);
     }
 
     private static Advancement.Builder advancement(Identifier id, ItemLike icon, String title, String description) {

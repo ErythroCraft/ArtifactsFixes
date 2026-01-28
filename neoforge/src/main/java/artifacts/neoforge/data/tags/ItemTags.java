@@ -6,18 +6,14 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
-public class ItemTags extends ItemTagsProvider {
+public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
 
     public static final TagKey<Item>
             ARTIFACTS = createTag("artifacts"),
@@ -39,8 +35,8 @@ public class ItemTags extends ItemTagsProvider {
         return TagKey.create(Registries.ITEM, Artifacts.id(name));
     }
 
-    public ItemTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
-        super(packOutput, lookupProvider, blockTags, Artifacts.MOD_ID, existingFileHelper);
+    public ItemTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(packOutput, Registries.ITEM, lookupProvider, (item) -> item.builtInRegistryHolder().key(), Artifacts.MOD_ID);
     }
 
     @Override

@@ -6,14 +6,13 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SoundDefinition;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 
 public class SoundDefinitions extends SoundDefinitionsProvider {
 
-    public SoundDefinitions(PackOutput output, ExistingFileHelper helper) {
-        super(output, Artifacts.MOD_ID, helper);
+    public SoundDefinitions(PackOutput output) {
+        super(output, Artifacts.MOD_ID);
     }
 
     @Override
@@ -56,6 +55,6 @@ public class SoundDefinitions extends SoundDefinitionsProvider {
     }
 
     private SoundDefinition addSubtitled(SoundEvent soundEvent) {
-        return add(soundEvent).subtitle("%s.subtitles.%s".formatted(Artifacts.MOD_ID, soundEvent.getLocation().getPath()));
+        return add(soundEvent).subtitle("%s.subtitles.%s".formatted(Artifacts.MOD_ID, soundEvent.location().getPath()));
     }
 }

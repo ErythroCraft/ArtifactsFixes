@@ -29,7 +29,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,12 +43,10 @@ public class LootTables extends LootTableProvider {
 
     private final List<SubProviderEntry> tables = new ArrayList<>();
 
-    private final ExistingFileHelper existingFileHelper;
     private final LootModifiers lootModifiers;
 
-    public LootTables(PackOutput packOutput, ExistingFileHelper existingFileHelper, LootModifiers lootModifiers, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+    public LootTables(PackOutput packOutput, LootModifiers lootModifiers, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(packOutput, Set.of(), List.of(), lookupProvider);
-        this.existingFileHelper = existingFileHelper;
         this.lootModifiers = lootModifiers;
     }
 
