@@ -34,7 +34,7 @@ dependencies {
     include("com.electronwill.night-config:core:${rootProject.night_config_version}")
     include(implementation("com.electronwill.night-config:toml:${rootProject.night_config_version}"))
 
-    modImplementation("dev.emi:trinkets:${rootProject.trinkets_version}")
+    modImplementation("maven.modrinth:trinkets-canary:${project.trinkets_version}")
 
     modImplementation("com.terraformersmc:modmenu:${rootProject.mod_menu_version}") {
         transitive = false

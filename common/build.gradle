@@ -20,7 +20,7 @@ dependencies {
         exclude(group: 'net.fabricmc.fabric-api')
     }
 
-    modCompileOnly("dev.emi:trinkets:${rootProject.trinkets_version}"){
+    modCompileOnly("maven.modrinth:trinkets-canary:${rootProject.trinkets_version}"){
         exclude(group: 'net.fabricmc.fabric-api')
     }
 
