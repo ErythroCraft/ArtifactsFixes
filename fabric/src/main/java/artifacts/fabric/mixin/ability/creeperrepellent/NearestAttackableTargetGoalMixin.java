@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -16,13 +17,11 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import java.util.function.Predicate;
-
 @Mixin(NearestAttackableTargetGoal.class)
 public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> extends TargetGoal {
 
     @Unique
-    private static final Predicate<LivingEntity> NOT_WEARING_KITTY_SLIPPERS = entity ->
+    private static final TargetingConditions.Selector NOT_WEARING_KITTY_SLIPPERS = (entity, level) ->
             !EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), entity, true);
 
     @Shadow
@@ -34,11 +33,13 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> e
         throw new UnsupportedOperationException();
     }
 
-    @ModifyArg(method = "<init>(Lnet/minecraft/world/entity/Mob;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;selector(Ljava/util/function/Predicate;)Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;"))
-    private @Nullable Predicate<LivingEntity> addCreeperTargetPredicate(@Nullable Predicate<LivingEntity> targetPredicate) {
+    @ModifyArg(method = "<init>(Lnet/minecraft/world/entity/Mob;Ljava/lang/Class;IZZLnet/minecraft/world/entity/ai/targeting/TargetingConditions$Selector;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;selector(Lnet/minecraft/world/entity/ai/targeting/TargetingConditions$Selector;)Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;"))
+    private TargetingConditions.Selector addCreeperTargetPredicate(@Nullable TargetingConditions.Selector selector) {
         if (mob.getType().is(ModTags.CREEPERS) && this.targetType == Player.class) {
-            return targetPredicate == null ? NOT_WEARING_KITTY_SLIPPERS : targetPredicate.and(NOT_WEARING_KITTY_SLIPPERS);
+            return selector == null
+                    ? NOT_WEARING_KITTY_SLIPPERS
+                    : (entity, level) -> selector.test(entity, level) && NOT_WEARING_KITTY_SLIPPERS.test(entity, level);
         }
-        return targetPredicate;
+        return selector;
     }
 }

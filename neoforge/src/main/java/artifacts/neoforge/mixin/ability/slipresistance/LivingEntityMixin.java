@@ -22,7 +22,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @SuppressWarnings("ConstantConditions")
-    @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getFriction(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;)F"))
+    @WrapOperation(method = "travelInAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getFriction(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;)F"))
     public float travel(BlockState state, LevelReader level, BlockPos pos, Entity entity, Operation<Float> original) {
         return ArtifactHooks.getModifiedFriction(
                 original.call(state, level, pos, entity),

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Villager.class)
 public abstract class VillagerMixin {
 
-    @ModifyExpressionValue(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/npc/Villager;getPlayerReputation(Lnet/minecraft/world/entity/player/Player;)I"))
+    @ModifyExpressionValue(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/npc/villager/Villager;getPlayerReputation(Lnet/minecraft/world/entity/player/Player;)I"))
     private int increaseReputation(int original, Player player) {
         return original + (int) player.getAttributeValue(ModAttributes.VILLAGER_REPUTATION);
     }

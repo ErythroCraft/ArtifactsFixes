@@ -18,7 +18,7 @@
     "ability.hurtsound.LivingEntityMixin",
     "ability.phantomrepellent.PhantomSweepAttackGoalMixin",
     "ability.piglinloved.PiglinAiMixin",
-    "ability.posteatingeffects.PlayerMixin",
+    "ability.posteatingeffects.FoodPropertiesMixin",
     "ability.retaliation.EnchantmentHelperMixin",
     "ability.walkonpowdersnow.PowderSnowBlockMixin",
     "accessors.EntityAccessor",
@@ -35,7 +35,7 @@
     "item.NaturalSpawnerMixin",
     "item.umbrella.EntityMixin",
     "mobeffect.magnetism.ItemEntityMixin",
-    "mobeffect.magnetism.PlayerMixin"
+    "mobeffect.magnetism.LivingEntityMixin"
   ],
   "client": [
     "ability.hurtsound.client.LivingEntityMixin",

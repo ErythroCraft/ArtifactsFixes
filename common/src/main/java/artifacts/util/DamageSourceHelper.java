@@ -30,7 +30,8 @@ public class DamageSourceHelper {
 
     public static boolean wasLastHurtByPlayer(LivingEntity entity) {
         if (entity instanceof LivingEntityAccessor mob) {
-            return mob.getLastHurtByPlayerTime() > 0 && mob.getLastHurtByPlayer() != null;
+            // FIXME getLastHurtByPlayer is never null
+            return mob.getLastHurtByPlayerMemoryTime() > 0 && mob.getLastHurtByPlayer() != null;
         }
         return false;
     }
