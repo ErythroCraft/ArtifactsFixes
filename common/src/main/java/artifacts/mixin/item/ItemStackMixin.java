@@ -15,21 +15,22 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemLore;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.component.TooltipDisplay;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
 
-    @Inject(method = "getTooltipLines", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V"))
-    private void getTooltipLines(Item.TooltipContext context, @Nullable Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, List<Component> tooltip) {
+    @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V"))
+    private void getTooltipLines(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltip, CallbackInfo ci) {
         if (!Artifacts.CONFIG.client.showTooltips.get()) {
             return;
         }
@@ -39,26 +40,26 @@ public abstract class ItemStackMixin {
 
         if (stack.getItem() instanceof WearableArtifactItem) {
             if (TooltipHelper.isCosmetic(stack)) {
-                tooltip.add(Component.translatable("%s.tooltip.cosmetic".formatted(Artifacts.MOD_ID))
+                tooltip.accept(Component.translatable("%s.tooltip.cosmetic".formatted(Artifacts.MOD_ID))
                         .withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY));
             }
         }
 
         ItemLore lore = stack.get(ModDataComponents.ABILITY_LORE.get());
         if (lore != null) {
-            lore.addToTooltip(context, tooltip::add, tooltipFlag);
+            lore.addToTooltip(context, tooltip, tooltipFlag, stack);
         }
 
         for (Supplier<? extends DataComponentType<? extends EquipmentAbility>> type : ModDataComponents.TOOLTIP_ORDER) {
             EquipmentAbility provider = stack.get(type.get());
             if (provider != null && provider.isNonCosmetic()) {
-                provider.addToTooltip(new EquipmentAbility.TooltipWriter(type.get(), tooltip::add, context, stack));
+                provider.addToTooltip(new EquipmentAbility.TooltipWriter(type.get(), tooltip, context, stack));
             }
         }
 
         ToggleIdentifier toggleKey = stack.get(ModDataComponents.TOGGLE_KEY.get());
         if (toggleKey != null && !TooltipHelper.isCosmetic(stack) && player != null && !player.level().isClientSide()) {
-            ToggleKeyHandlers.addTooltip(toggleKey, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()), tooltip::add);
+            ToggleKeyHandlers.addTooltip(toggleKey, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()), tooltip);
         }
     }
 
@@ -66,8 +67,8 @@ public abstract class ItemStackMixin {
      * On NeoForge the call to addAttributeTooltips is replaced with a call to AttributeUtil.addAttributeTooltips, this is only injected on Fabric.
      * An AddAttributeTooltipsEvent listener calls TooltipHelper.addAttributeTooltips on NeoForge
      */
-    @Inject(method = "getTooltipLines", require = 0, locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/item/ItemStack;addAttributeTooltips(Ljava/util/function/Consumer;Lnet/minecraft/world/entity/player/Player;)V"))
-    private void addAttributeTooltips(Item.TooltipContext context, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir, List<Component> tooltip) {
-        TooltipHelper.addAttributeTooltips(tooltip::add, (ItemStack) (Object) this, context);
+    @Inject(method = "addDetailsToTooltip", require = 0, locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/item/ItemStack;addAttributeTooltips(Ljava/util/function/Consumer;Lnet/minecraft/world/item/component/TooltipDisplay;Lnet/minecraft/world/entity/player/Player;)V"))
+    private void addAttributeTooltips(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltip, CallbackInfo ci) {
+        TooltipHelper.addAttributeTooltips(tooltip, (ItemStack) (Object) this, context);
     }
 }

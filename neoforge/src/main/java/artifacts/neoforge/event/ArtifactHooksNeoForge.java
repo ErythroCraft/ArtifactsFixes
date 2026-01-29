@@ -13,8 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.client.event.AddAttributeTooltipsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddAttributeTooltipsEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -101,7 +101,7 @@ public class ArtifactHooksNeoForge {
                 event.getState(),
                 experience::add
         )));
-        event.setDroppedExperience(event.getDroppedExperience() + experience.getValue());
+        event.setDroppedExperience(event.getDroppedExperience() + experience.get().intValue());
     }
 
     private static void addAttributeTooltips(AddAttributeTooltipsEvent event) {

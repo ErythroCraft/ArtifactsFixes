@@ -16,6 +16,7 @@ import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.DamageSourceHelper;
 import be.florens.expandability.api.EventResult;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -139,7 +140,7 @@ public class ArtifactHooks {
         if (entity instanceof PathfinderMob creeper && creeper.getType().is(ModTags.CREEPERS)) {
             Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target, true);
             ((MobAccessor) creeper).getGoalSelector().addGoal(3,
-                    new AvoidEntityGoal<>(creeper, Player.class, predicate, 6, 1, 1.3, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test)
+                    new AvoidEntityGoal<>(creeper, Player.class, predicate, 6, 1, 1.3, EntitySelector.NO_CREATIVE_OR_SPECTATOR)
             );
         }
     }
@@ -154,18 +155,20 @@ public class ArtifactHooks {
 
     public static ItemStack applySmeltOresAbility(ItemStack original, @Nullable Entity entity, @Nullable BlockState state, Consumer<Integer> experienceConsumer) {
         if (entity instanceof LivingEntity livingEntity
+                && livingEntity.level() instanceof ServerLevel serverLevel
                 && EquipmentHelper.hasAbilityActive(ModDataComponents.AUTO_SMELT.get(), livingEntity, true)
                 && state != null
                 && state.is(ModTags.ORES)
         ) {
             if (original.is(ModTags.RAW_MATERIALS)) {
-                Optional<RecipeHolder<SmeltingRecipe>> recipe = livingEntity.level()
-                        .getRecipeManager()
-                        .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(original), livingEntity.level());
+                SingleRecipeInput input = new SingleRecipeInput(original);
+                Optional<RecipeHolder<SmeltingRecipe>> recipe = serverLevel
+                        .recipeAccess()
+                        .getRecipeFor(RecipeType.SMELTING, input, livingEntity.level());
                 if (recipe.isPresent()) {
-                    ItemStack smeltingResult = recipe.get().value().getResultItem(livingEntity.level().registryAccess());
+                    ItemStack smeltingResult = recipe.get().value().assemble(input, livingEntity.level().registryAccess());
                     if (!smeltingResult.isEmpty()) {
-                        experienceConsumer.accept(getExperience(recipe.get().value().getExperience()));
+                        experienceConsumer.accept(getExperience(recipe.get().value().experience()));
                         return smeltingResult.copyWithCount(smeltingResult.getCount() * original.getCount());
                     }
                 }
@@ -222,7 +225,7 @@ public class ArtifactHooks {
     }
 
     public static float getModifiedFriction(float friction, LivingEntity entity, Block block) {
-        if (friction > 0.6F && ModTags.isInTag(block, BlockTags.ICE)) {
+        if (friction > 0.6F && block.defaultBlockState().is(BlockTags.ICE)) {
             double slipperinessReduction = entity.getAttributeValue(ModAttributes.SLIP_RESISTANCE);
             return Mth.lerp(((float) slipperinessReduction), friction, 0.6F);
         }

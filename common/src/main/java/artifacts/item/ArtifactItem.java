@@ -9,9 +9,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class ArtifactItem extends Item {
 
@@ -20,11 +22,11 @@ public abstract class ArtifactItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltipList, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipList, TooltipFlag tooltipFlag) {
         if (Artifacts.CONFIG.client.showTooltips.get()) {
             List<MutableComponent> tooltip = new ArrayList<>();
             addTooltip(tooltip);
-            tooltip.forEach(line -> tooltipList.add(line.withStyle(ChatFormatting.GRAY)));
+            tooltip.forEach(line -> tooltipList.accept(line.withStyle(ChatFormatting.GRAY)));
         }
     }
 

@@ -36,7 +36,7 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> e
 
     @ModifyArg(method = "<init>(Lnet/minecraft/world/entity/Mob;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;selector(Ljava/util/function/Predicate;)Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;"))
     private @Nullable Predicate<LivingEntity> addCreeperTargetPredicate(@Nullable Predicate<LivingEntity> targetPredicate) {
-        if (ModTags.isInTag(mob.getType(), ModTags.CREEPERS) && this.targetType == Player.class) {
+        if (mob.getType().is(ModTags.CREEPERS) && this.targetType == Player.class) {
             return targetPredicate == null ? NOT_WEARING_KITTY_SLIPPERS : targetPredicate.and(NOT_WEARING_KITTY_SLIPPERS);
         }
         return targetPredicate;

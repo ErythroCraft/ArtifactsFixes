@@ -45,7 +45,7 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
 
         int maxEffectDuration = maxEffectDuration().get() * 20;
         entity.getActiveEffectsMap().forEach((effect, instance) -> {
-            if (ModTags.isInTag(effect.value(), ModTags.ANTIDOTE_VESSEL_CANCELLABLE) && !instance.endsWithin(maxEffectDuration) && !instance.isInfiniteDuration()) {
+            if (effect.is(ModTags.ANTIDOTE_VESSEL_CANCELLABLE) && !instance.endsWithin(maxEffectDuration) && !instance.isInfiniteDuration()) {
                 effects.put(effect, instance);
             }
         });

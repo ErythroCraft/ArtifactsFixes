@@ -91,7 +91,6 @@ public class MimicEntity extends Mob implements Enemy {
         goalSelector.addGoal(3, new PanicGoal());
         goalSelector.addGoal(4, new FaceRandomGoal(this));
         goalSelector.addGoal(5, new HopGoal(this));
-        // noinspection ConstantConditions
         targetSelector.addGoal(1, new NearestPlayerTargetGoal());
     }
 

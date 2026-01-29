@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
@@ -34,14 +35,17 @@ public class EverlastingFoodItem extends ArtifactItem {
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity) {
-        if (stack.has(DataComponents.FOOD)) {
-            entity.eat(world, stack.copy());
-            if (eatingCooldown.get() > 0 && !entity.level().isClientSide() && entity instanceof Player player) {
-                player.getCooldowns().addCooldown(this, eatingCooldown.get() * 20);
-            }
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        // TODO add a separate data component for infinite consumables
+        Consumable consumable = stack.get(DataComponents.CONSUMABLE);
+        if (consumable == null) {
+            return stack;
         }
-
+        consumable.onConsume(level, entity, stack.copy());
+        // TODO move this to a consumablelistener data component
+        if (eatingCooldown.get() > 0 && !entity.level().isClientSide() && entity instanceof Player player) {
+            player.getCooldowns().addCooldown(stack, eatingCooldown.get() * 20);
+        }
         return stack;
     }
 

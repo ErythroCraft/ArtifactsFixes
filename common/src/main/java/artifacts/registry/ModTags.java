@@ -1,9 +1,7 @@
 package artifacts.registry;
 
 import artifacts.Artifacts;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -33,20 +31,5 @@ public class ModTags {
 
     private static <T> TagKey<T> conventionTag(ResourceKey<Registry<T>> registry, String name) {
         return TagKey.create(registry, Identifier.fromNamespaceAndPath("c", name));
-    }
-
-    // yeet 🤠
-    public static <T> HolderSet<T> getTag(TagKey<T> tagKey) {
-        // noinspection unchecked
-        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(tagKey.registry().identifier());
-        // noinspection ConstantConditions
-        return registry.getOrCreateTag(tagKey);
-    }
-
-    public static <T> boolean isInTag(T value, TagKey<T> tagKey) {
-        // noinspection unchecked
-        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.get(tagKey.registry().identifier());
-        // noinspection ConstantConditions
-        return registry.getOrCreateTag(tagKey).contains(registry.wrapAsHolder(value));
     }
 }

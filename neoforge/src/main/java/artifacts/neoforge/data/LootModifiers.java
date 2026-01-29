@@ -6,8 +6,8 @@ import artifacts.loot.ConfigValueChance;
 import artifacts.neoforge.loot.RollLootTableModifier;
 import artifacts.registry.ModItems;
 import artifacts.registry.ModLootTables;
-import net.minecraft.advancements.critereon.EntityFlagsPredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.criterion.EntityFlagsPredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -41,7 +41,11 @@ public class LootModifiers extends GlobalLootModifierProvider {
     }
 
     private void addLoot() {
-        for (ResourceKey<LootTable> lootTable : List.of(EntityType.COW.getDefaultLootTable(), EntityType.MOOSHROOM.getDefaultLootTable())) {
+        List<ResourceKey<LootTable>> cowLootTables = List.of(
+                EntityType.COW.getDefaultLootTable().orElseThrow(),
+                EntityType.MOOSHROOM.getDefaultLootTable().orElseThrow()
+        );
+        for (ResourceKey<LootTable> lootTable : cowLootTables) {
             lootBuilders.add(
                     new Builder(lootTable)
                             .lootPoolCondition(ConfigValueChance.everlastingBeefChance())
@@ -338,7 +342,7 @@ public class LootModifiers extends GlobalLootModifierProvider {
         }
 
         private RollLootTableModifier build() {
-            return new RollLootTableModifier(conditions.toArray(new LootItemCondition[]{}), Artifacts.key(Registries.LOOT_TABLE, "inject/" + lootTable.location().getPath()), replace);
+            return new RollLootTableModifier(conditions.toArray(new LootItemCondition[]{}), Artifacts.key(Registries.LOOT_TABLE, "inject/" + lootTable.identifier().getPath()), replace);
         }
 
         protected LootTable.Builder createLootTable() {

@@ -6,7 +6,7 @@
   "plugin": "artifacts.ArtifactsMixinPlugin",
   "mixins": [
     "ability.LivingEntityMixin",
-    "ability.damageimmunity.EntityMixin",
+    "ability.damageimmunity.LivingEntityMixin",
     "ability.deathprotectionteleport.LivingEntityMixin",
     "ability.enchantment.ApplyBonusCountMixin",
     "ability.enchantment.EnchantedCountIncreaseFunctionMixin",

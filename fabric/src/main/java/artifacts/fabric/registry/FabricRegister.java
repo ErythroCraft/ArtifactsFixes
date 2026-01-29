@@ -20,6 +20,6 @@ public class FabricRegister<R> extends Register<R> {
 
     @SuppressWarnings("unchecked")
     private static <R> Registry<R> getRegistry(ResourceKey<Registry<R>> key) {
-        return (Registry<R>) BuiltInRegistries.REGISTRY.get(key.identifier());
+        return (Registry<R>) BuiltInRegistries.REGISTRY.getValue(key.identifier());
     }
 }
