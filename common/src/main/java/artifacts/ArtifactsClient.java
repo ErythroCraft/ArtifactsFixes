@@ -14,13 +14,11 @@ import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.Item;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+// TODO fix umbrella model using vanilla `is_using_item` & `display_context` model properties
 public class ArtifactsClient {
 
     public static void setup() {
@@ -44,14 +42,6 @@ public class ArtifactsClient {
             return;
         }
         ToggleKeyHandlers.init();
-    }
-
-    public static void registerItemPropertyFunctions(TriConsumer<Item, Identifier, ClampedItemPropertyFunction> registration) {
-        registration.accept(
-                ModItems.UMBRELLA.value(),
-                Artifacts.id("blocking"),
-                (stack, level, entity, i) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0
-        );
     }
 
     public static void registerLayerDefinitions(BiConsumer<ModelLayerLocation, Supplier<LayerDefinition>> registration) {
