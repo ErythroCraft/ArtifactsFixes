@@ -21,6 +21,7 @@ public abstract class ArtifactItem extends Item {
         super(properties.stacksTo(1).rarity(Rarity.RARE).fireResistant());
     }
 
+    // TODO migrate to itemstack mixin, apply tooltips based on item components
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipList, TooltipFlag tooltipFlag) {
         if (Artifacts.CONFIG.client.showTooltips.get()) {

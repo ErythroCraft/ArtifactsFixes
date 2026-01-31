@@ -20,13 +20,13 @@ import java.util.Optional;
 public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, EntityCondition condition)
         implements TickingAbility {
 
-    public static Codec<FluidCollision> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public final static Codec<FluidCollision> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(FluidCollision::enabled),
             TagKey.codec(Registries.FLUID).optionalFieldOf("tag").forGetter(FluidCollision::tag),
             EntityCondition.CODEC.optionalFieldOf("condition", EntityCondition.ALWAYS).forGetter(FluidCollision::condition)
     ).apply(instance, FluidCollision::new));
 
-    public static StreamCodec<ByteBuf, FluidCollision> STREAM_CODEC = StreamCodec.composite(
+    public final static StreamCodec<ByteBuf, FluidCollision> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.BOOLEAN.streamCodec(),
             FluidCollision::enabled,
             ByteBufCodecs.optional(ModCodecs.tagKeyStreamCodec(Registries.FLUID)),

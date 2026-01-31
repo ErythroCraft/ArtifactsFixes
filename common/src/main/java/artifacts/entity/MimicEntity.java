@@ -1,10 +1,7 @@
 package artifacts.entity;
 
-import artifacts.Artifacts;
 import artifacts.registry.ModSoundEvents;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -27,14 +24,11 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.EnumSet;
 import java.util.Locale;
 
 public class MimicEntity extends Mob implements Enemy {
-
-    public static final ResourceKey<LootTable> LOOT_TABLE = Artifacts.key(Registries.LOOT_TABLE, "entities/mimic");
 
     private static final int DORMANT_TICK_RATE = 20;
 
@@ -156,11 +150,9 @@ public class MimicEntity extends Mob implements Enemy {
         ) {
             attackCooldown = 20;
             DamageSource damageSource = this.damageSources().mobAttack(this);
-            // noinspection ConstantConditions
-            if (player.hurt(damageSource, (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue())) {
-                if (level() instanceof ServerLevel level) {
-                    EnchantmentHelper.doPostAttackEffects(level, player, damageSource);
-                }
+            float amount = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
+            if (player.hurtOrSimulate(damageSource, amount) && level() instanceof ServerLevel level) {
+                EnchantmentHelper.doPostAttackEffects(level, player, damageSource);
             }
         }
     }
@@ -182,7 +174,7 @@ public class MimicEntity extends Mob implements Enemy {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         if (source.getEntity() instanceof Player player) {
             setTarget(player);
         }
@@ -196,7 +188,7 @@ public class MimicEntity extends Mob implements Enemy {
             controller.setDirection(getRandom().nextInt(4) * 90, true);
         }
 
-        return super.hurt(source, amount);
+        return super.hurtServer(level, source, amount);
     }
 
     @Override
@@ -215,11 +207,6 @@ public class MimicEntity extends Mob implements Enemy {
 
     protected SoundEvent getLandingSound() {
         return ModSoundEvents.MIMIC_CLOSE.value();
-    }
-
-    @Override
-    protected ResourceKey<LootTable> getDefaultLootTable() {
-        return LOOT_TABLE;
     }
 
     protected static class AttackGoal extends Goal {

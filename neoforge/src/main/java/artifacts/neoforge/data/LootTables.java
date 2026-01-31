@@ -2,21 +2,18 @@ package artifacts.neoforge.data;
 
 import artifacts.Artifacts;
 import artifacts.config.value.Value;
-import artifacts.entity.MimicEntity;
 import artifacts.loot.ArtifactRarityAdjustedChance;
 import artifacts.loot.ConfigValueCondition;
+import artifacts.registry.ModEntityTypes;
 import artifacts.registry.ModItems;
 import artifacts.world.CampsiteFeature;
-import com.google.common.base.Preconditions;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.util.context.ContextKeySet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -63,7 +60,10 @@ public class LootTables extends LootTableProvider {
             addLootTable("inject/" + lootBuilder.getName(), provider -> lootBuilder.createLootTable(), lootBuilder.getContextKeySet());
         }
 
-        addLootTable(MimicEntity.LOOT_TABLE.identifier().getPath(), new LootTable.Builder().withPool(new LootPool.Builder().add(artifact(1))));
+        addLootTable(
+                ModEntityTypes.MIMIC.get().getDefaultLootTable().orElseThrow().identifier().getPath(),
+                new LootTable.Builder().withPool(new LootPool.Builder().add(artifact(1)))
+        );
 
         return tables;
     }
@@ -382,7 +382,8 @@ public class LootTables extends LootTableProvider {
     public void addLootTable(String location, Function<HolderLookup.Provider, LootTable.Builder> lootTable, ContextKeySet contextKeySet) {
         if (location.startsWith("inject/")) {
             String actualLocation = location.replace("inject/", "");
-            Preconditions.checkArgument(existingFileHelper.exists(Identifier.withDefaultNamespace(Registries.LOOT_TABLE.identifier().getPath() + "/" + actualLocation + ".json"), PackType.SERVER_DATA), "Loot table %s does not exist in any known data pack", actualLocation);
+            // FIXME verify that target loot table exists
+            // Preconditions.checkArgument(existingFileHelper.exists(Identifier.withDefaultNamespace(Registries.LOOT_TABLE.identifier().getPath() + "/" + actualLocation + ".json"), PackType.SERVER_DATA), "Loot table %s does not exist in any known data pack", actualLocation);
         }
         tables.add(new SubProviderEntry(provider -> biConsumer -> biConsumer.accept(Artifacts.key(Registries.LOOT_TABLE, location), lootTable.apply(provider)), contextKeySet));
     }

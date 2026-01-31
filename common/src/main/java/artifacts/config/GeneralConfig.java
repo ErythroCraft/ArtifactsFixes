@@ -38,7 +38,7 @@ public class GeneralConfig extends ConfigManager {
         public final Supplier<Boolean> allowLightSources = defineBool("campsite.allowLightSources", true, false,
                 "Whether campsites can contain blocks that emit light");
         public final Value.ConfigValue<Boolean> minimalistCampsites = defineBool("campsite.minimalistCampsites", false, false,
-                "Replaces campsites with a single chest/mimic"); // TODO implement
+                "Replaces campsites with a single chest/mimic");
 
         @SuppressWarnings("unchecked")
         public Codec<Value.ConfigValue<Boolean>> codec() {
