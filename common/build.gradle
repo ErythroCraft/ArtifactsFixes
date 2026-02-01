@@ -23,6 +23,7 @@ dependencies {
     modCompileOnly("maven.modrinth:trinkets-canary:${project.trinkets_version}"){
         exclude(group: 'net.fabricmc.fabric-api')
     }
+    modCompileOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cardinal_components_version}")
 
     modCompileOnly "noobanidus.mods.lootr:lootr-common:${project.lootr_version}"
     modCompileOnly "maven.modrinth:origins:5o5sFcLS"

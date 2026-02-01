@@ -2,7 +2,7 @@ package artifacts.integration.accessories;
 
 import artifacts.equipment.EquipmentSlotProvider;
 import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.EquipAction;
+import io.wispforest.accessories.api.equip.EquipAction;
 import io.wispforest.accessories.api.slot.SlotEntryReference;
 import io.wispforest.accessories.api.slot.SlotReference;
 import it.unimi.dsi.fastutil.Pair;

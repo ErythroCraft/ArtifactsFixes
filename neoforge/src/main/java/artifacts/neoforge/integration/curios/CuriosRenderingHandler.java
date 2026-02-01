@@ -8,33 +8,32 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class CuriosRenderingHandler implements EquipmentRenderingHandler {
 
     @Override
     public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
-        CuriosRendererRegistry.register(item, () -> new ArtifactCurioRenderer(rendererSupplier.get()));
+        ICurioRenderer.register(item, () -> new ArtifactCurioRenderer(rendererSupplier.get()));
     }
 
     @Override
     public @Nullable ArtifactRenderer getArtifactRenderer(Item item) {
-        Optional<ICurioRenderer> renderer = CuriosRendererRegistry.getRenderer(item);
-        if (renderer.isPresent() && renderer.get() instanceof ArtifactCurioRenderer artifactTrinketRenderer) {
+        if (ICurioRenderer.getOrNull(item) instanceof ArtifactCurioRenderer artifactTrinketRenderer) {
             return artifactTrinketRenderer.renderer();
         }
         return null;
@@ -69,8 +68,9 @@ public class CuriosRenderingHandler implements EquipmentRenderingHandler {
     public record ArtifactCurioRenderer(ArtifactRenderer renderer) implements ICurioRenderer {
 
         @Override
-        public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            renderer.renderVisible(stack, slotContext.entity(), slotContext.index(), poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+        public <S extends LivingEntityRenderState, M extends EntityModel<? super S>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight, S renderState, RenderLayerParent<S, M> renderLayerParent, EntityRendererProvider.Context context, float yRotation, float xRotation) {
+            // TODO fix curio rendering
+            // renderer.renderVisible(stack, slotContext.entity(), slotContext.index(), poseStack, multiBufferSource, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, yRotation, xRotation);
         }
     }
 }

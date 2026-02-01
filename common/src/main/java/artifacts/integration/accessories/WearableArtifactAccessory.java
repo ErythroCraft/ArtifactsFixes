@@ -3,9 +3,9 @@ package artifacts.integration.accessories;
 import artifacts.item.WearableArtifactItem;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.DamageSourceHelper;
-import io.wispforest.accessories.api.Accessory;
-import io.wispforest.accessories.api.DropRule;
 import io.wispforest.accessories.api.SoundEventData;
+import io.wispforest.accessories.api.core.Accessory;
+import io.wispforest.accessories.api.events.DropRule;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -33,7 +33,7 @@ public record WearableArtifactAccessory(WearableArtifactItem item) implements Ac
     }
 
     @Override
-    public boolean canEquipFromUse(ItemStack stack) {
-        return stack.get(DataComponents.FOOD) == null;
+    public boolean canEquipFromUse(ItemStack stack, SlotReference slot) {
+        return stack.get(DataComponents.FOOD) == null && Accessory.super.canEquipFromUse(stack, slot);
     }
 }

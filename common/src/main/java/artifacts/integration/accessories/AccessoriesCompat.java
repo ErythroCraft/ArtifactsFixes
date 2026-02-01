@@ -5,7 +5,7 @@ import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
-import io.wispforest.accessories.api.AccessoriesAPI;
+import io.wispforest.accessories.api.core.AccessoryRegistry;
 import io.wispforest.accessories.api.events.AccessoryChangeCallback;
 
 public class AccessoriesCompat {
@@ -16,7 +16,7 @@ public class AccessoriesCompat {
         }
         PlatformServices.getPlatformHelper().addItemRegistryCallback(item -> {
             if (item instanceof WearableArtifactItem wearableArtifactItem) {
-                AccessoriesAPI.registerAccessory(item, new WearableArtifactAccessory(wearableArtifactItem));
+                AccessoryRegistry.register(item, new WearableArtifactAccessory(wearableArtifactItem));
             }
         });
 

@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import top.theillusivec4.curios.client.render.CuriosLayer;
+import top.theillusivec4.curios.client.CuriosLayer;
 
 import java.util.Set;
 
@@ -30,17 +30,17 @@ public class CuriosCompatClient {
         Set<EntityType<?>> entities = ModLootTables.ENTITY_EQUIPMENT.keySet();
         loop:
         for (EntityType<?> entity : entities) {
-            EntityRenderer<?> renderer = event.getRenderer(entity);
+            EntityRenderer<?, ?> renderer = event.getRenderer(entity);
             if (renderer == null) {
                 continue;
             }
-            LivingEntityRenderer livingEntityRenderer = (LivingEntityRenderer<?, ?>) renderer;
+            LivingEntityRenderer livingEntityRenderer = (LivingEntityRenderer<?, ?, ?>) renderer;
             for (RenderLayer<?, ?> layer : ((LivingEntityRendererAccessor<?, ?>) livingEntityRenderer).getLayers()) {
                 if (layer instanceof CuriosLayer<?, ?>) {
                     continue loop;
                 }
             }
-            livingEntityRenderer.addLayer(new CuriosLayer<>(livingEntityRenderer));
+            livingEntityRenderer.addLayer(new CuriosLayer<>(livingEntityRenderer, event.getContext()));
         }
     }
 }

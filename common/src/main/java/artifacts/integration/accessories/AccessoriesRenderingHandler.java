@@ -1,19 +1,18 @@
 package artifacts.integration.accessories;
 
 import artifacts.client.item.renderer.ArtifactRenderer;
-import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.equipment.client.EquipmentRenderingHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
-import io.wispforest.accessories.api.client.AccessoryRenderer;
-import io.wispforest.accessories.api.slot.SlotReference;
+import io.wispforest.accessories.api.client.renderers.AccessoryRenderer;
+import io.wispforest.accessories.api.slot.SlotPath;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -24,12 +23,13 @@ public class AccessoriesRenderingHandler implements EquipmentRenderingHandler {
 
     @Override
     public void registerArtifactRenderer(Item item, Supplier<ArtifactRenderer> rendererSupplier) {
-        AccessoriesRendererRegistry.registerRenderer(item, () -> new ArtifactAccessoryRenderer(rendererSupplier.get()));
+        Identifier id = BuiltInRegistries.ITEM.getKey(item);
+        AccessoriesRendererRegistry.bindItemToRenderer(item, id, () -> new ArtifactAccessoryRenderer(rendererSupplier.get()));
     }
 
     @Override
     public @Nullable ArtifactRenderer getArtifactRenderer(Item item) {
-        AccessoryRenderer renderer = AccessoriesRendererRegistry.getRender(item);
+        AccessoryRenderer renderer = AccessoriesRendererRegistry.getRenderer(item);
         if (renderer instanceof ArtifactAccessoryRenderer artifactAccessoryRenderer) {
             return artifactAccessoryRenderer.renderer();
         }
@@ -42,13 +42,16 @@ public class AccessoriesRenderingHandler implements EquipmentRenderingHandler {
     }
 
     public record ArtifactAccessoryRenderer(ArtifactRenderer renderer) implements AccessoryRenderer {
+
         @Override
-        public <M extends LivingEntity> void render(ItemStack stack, SlotReference reference, PoseStack matrices, EntityModel<M> model, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-            renderer.renderVisible(stack, reference.entity(), reference.slot(), matrices, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+        public <S extends LivingEntityRenderState> void render(ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int light, float partialTicks) {
+            // TODO fix accessory rendering
+            // renderer.renderVisible(stack, reference.entity(), reference.slot(), matrices, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }
 
         @Override
-        public <M extends LivingEntity> void renderOnFirstPerson(HumanoidArm side, ItemStack stack, SlotReference reference, PoseStack matrices, EntityModel<M> model, MultiBufferSource multiBufferSource, int light) {
+        public <S extends LivingEntityRenderState> void renderOnFirstPerson(HumanoidArm side, ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int light, float partialTicks) {
+            /* TODO fix first-person accessory rendering
             if (!(reference.entity() instanceof LocalPlayer player)) {
                 return;
             }
@@ -56,9 +59,10 @@ public class AccessoriesRenderingHandler implements EquipmentRenderingHandler {
 
             GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
 
-            if (gloveRenderer != null && reference.slot() % 2 == (hand == InteractionHand.MAIN_HAND ? 0 : 1)) {
+            if (gloveRenderer != null && path.index() % 2 == (hand == InteractionHand.MAIN_HAND ? 0 : 1)) {
                 gloveRenderer.renderFirstPersonArm(matrices, multiBufferSource, light, (AbstractClientPlayer) reference.entity(), side, stack.hasFoil());
             }
+            */
         }
     }
 }
