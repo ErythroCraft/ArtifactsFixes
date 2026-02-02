@@ -3,8 +3,7 @@ package artifacts;
 import artifacts.client.CloudInABottleInputHandler;
 import artifacts.client.ToggleKeyHandlers;
 import artifacts.client.item.ArtifactLayers;
-import artifacts.client.mimic.model.MimicChestLayerModel;
-import artifacts.client.mimic.model.MimicModel;
+import artifacts.client.mimic.MimicModel;
 import artifacts.event.SwimInAirInputHooks;
 import artifacts.integration.ModCompat;
 import artifacts.integration.accessories.AccessoriesCompatClient;
@@ -47,6 +46,6 @@ public class ArtifactsClient {
     public static void registerLayerDefinitions(BiConsumer<ModelLayerLocation, Supplier<LayerDefinition>> registration) {
         ArtifactLayers.register(registration);
         registration.accept(MimicModel.LAYER_LOCATION, MimicModel::createLayer);
-        registration.accept(MimicChestLayerModel.LAYER_LOCATION, MimicChestLayerModel::createLayer);
+        registration.accept(MimicModel.CHEST_LAYER_LOCATION, MimicModel::createChestLayer);
     }
 }

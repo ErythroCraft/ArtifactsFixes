@@ -1,30 +1,37 @@
 package artifacts.client.mimic;
 
 import artifacts.Artifacts;
-import artifacts.client.mimic.model.MimicModel;
 import artifacts.entity.MimicEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-public class MimicRenderer extends MobRenderer<MimicEntity, MimicModel> {
+public class MimicRenderer extends MobRenderer<MimicEntity, MimicRenderState, MimicModel> {
 
     private static final Identifier TEXTURE = Artifacts.id("textures/entity/mimic.png");
 
+    private final MimicChestMaterials chestMaterials;
+
     public MimicRenderer(EntityRendererProvider.Context context) {
         super(context, new MimicModel(context.bakeLayer(MimicModel.LAYER_LOCATION)), 0.45F);
-        addLayer(new MimicChestLayer(this, context.getModelSet()));
+        this.chestMaterials = new MimicChestMaterials();
+        addLayer(new MimicChestLayer(this, context.getModelSet(), context.getMaterials()));
     }
 
     @Override
-    public void render(MimicEntity mimic, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
-        super.render(mimic, entityYaw, partialTicks, matrixStack, buffer, packedLight);
+    public MimicRenderState createRenderState() {
+        return new MimicRenderState();
     }
 
     @Override
-    public Identifier getTextureLocation(MimicEntity entity) {
+    public void extractRenderState(MimicEntity mimic, MimicRenderState renderState, float partialTicks) {
+        super.extractRenderState(mimic, renderState, partialTicks);
+        renderState.ticksInAir = mimic.ticksInAir > 0 ? mimic.ticksInAir - 1 + partialTicks : 0;
+        chestMaterials.setChestMaterial(mimic, renderState);
+    }
+
+    @Override
+    public Identifier getTextureLocation(MimicRenderState entity) {
         return TEXTURE;
     }
 }

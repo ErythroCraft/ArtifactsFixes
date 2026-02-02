@@ -1,9 +1,6 @@
-package artifacts.client.mimic.model;
+package artifacts.client.mimic;
 
 import artifacts.Artifacts;
-import artifacts.entity.MimicEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -13,42 +10,34 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 
-public class MimicModel extends EntityModel<MimicEntity> {
+public class MimicModel extends EntityModel<MimicRenderState> {
 
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Artifacts.id("mimic"), "mimic");
+    public static final ModelLayerLocation CHEST_LAYER_LOCATION = new ModelLayerLocation(Artifacts.id("mimic_overlay"), "mimic_overlay");
 
     protected final ModelPart bottom;
     protected final ModelPart lid;
 
-    public MimicModel(ModelPart part) {
-        bottom = part.getChild("bottom");
-        lid = part.getChild("lid");
+    public MimicModel(ModelPart root) {
+        super(root);
+        bottom = root.getChild("bottom");
+        lid = root.getChild("lid");
     }
 
     @Override
-    public void setupAnim(MimicEntity mimic, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
+    public void setupAnim(MimicRenderState renderState) {
+        super.setupAnim(renderState);
+        setChestRotations(renderState);
     }
 
-    @Override
-    public void prepareMobModel(MimicEntity mimic, float limbSwing, float limbSwingAmount, float partialTicks) {
-        setChestRotations(mimic, partialTicks, lid, bottom);
-    }
-
-    protected static void setChestRotations(MimicEntity mimic, float partialTicks, ModelPart lid, ModelPart bottom) {
-        if (mimic.ticksInAir > 0) {
-            lid.xRot = Math.max(-60, (mimic.ticksInAir - 1 + partialTicks) * -6) * 0.0174533F;
-            bottom.xRot = Math.min(30, (mimic.ticksInAir - 1 + partialTicks) * 3) * 0.0174533F;
+    protected void setChestRotations(MimicRenderState renderState) {
+        if (renderState.ticksInAir > 0) {
+            lid.xRot = Math.max(-60, renderState.ticksInAir * -6) * 0.0174533F;
+            bottom.xRot = Math.min(30, renderState.ticksInAir * 3) * 0.0174533F;
         } else {
             lid.xRot = 0;
             bottom.xRot = 0;
         }
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        lid.render(matrixStack, buffer, packedLight, packedOverlay, color);
-        bottom.render(matrixStack, buffer, packedLight, packedOverlay, color);
     }
 
     public static LayerDefinition createLayer() {
@@ -74,5 +63,28 @@ public class MimicModel extends EntityModel<MimicEntity> {
         );
 
         return LayerDefinition.create(mesh, 64, 32);
+    }
+
+    public static LayerDefinition createChestLayer() {
+        MeshDefinition mesh = new MeshDefinition();
+
+        mesh.getRoot().addOrReplaceChild(
+                "bottom",
+                CubeListBuilder.create()
+                        .texOffs(0, 19)
+                        .addBox(1, -9, 0, 14, 10, 14),
+                PartPose.offset(0, 9, 1)
+        );
+        mesh.getRoot().addOrReplaceChild(
+                "lid",
+                CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(1, 0, 0, 14, 5, 14)
+                        .texOffs(0, 0) // latch
+                        .addBox(7, -1 - 1, 15 - 1, 2, 4, 1),
+                PartPose.offset(0, 9, 1)
+        );
+
+        return LayerDefinition.create(mesh, 64, 64);
     }
 }
