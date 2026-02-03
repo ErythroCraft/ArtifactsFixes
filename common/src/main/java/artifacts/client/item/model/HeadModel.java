@@ -1,20 +1,19 @@
 package artifacts.client.item.model;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.LivingEntity;
 
 import java.util.function.Function;
 
-public class HeadModel extends HumanoidModel<LivingEntity> {
+public class HeadModel extends HumanoidModel<HumanoidRenderState> {
 
     public HeadModel(ModelPart part, Function<Identifier, RenderType> renderType) {
         super(part, renderType);
@@ -22,16 +21,6 @@ public class HeadModel extends HumanoidModel<LivingEntity> {
 
     public HeadModel(ModelPart part) {
         this(part, RenderTypes::entityCutoutNoCull);
-    }
-
-    @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of(head);
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of();
     }
 
     public static MeshDefinition createEmptyHat(CubeListBuilder head) {

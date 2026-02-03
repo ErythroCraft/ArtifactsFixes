@@ -2,8 +2,6 @@ package artifacts.client.item.model;
 
 import artifacts.client.item.ArtifactLayers;
 import artifacts.client.item.RendererUtil;
-import artifacts.extensions.pocketpiston.LivingEntityExtensions;
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
@@ -12,15 +10,15 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 
 import java.util.function.Function;
 
-public class ArmsModel extends HumanoidModel<LivingEntity> {
+public class ArmsModel extends HumanoidModel<HumanoidRenderState> {
 
     public ArmsModel(ModelPart part, Function<Identifier, RenderType> renderType) {
         super(part, renderType);
@@ -28,16 +26,6 @@ public class ArmsModel extends HumanoidModel<LivingEntity> {
 
     public ArmsModel(ModelPart part) {
         this(part, RenderTypes::entityCutoutNoCull);
-    }
-
-    @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of();
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(leftArm, rightArm);
     }
 
     public void renderArm(HumanoidArm handSide, PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
@@ -62,11 +50,11 @@ public class ArmsModel extends HumanoidModel<LivingEntity> {
         return new ArmsModel(RendererUtil.bakeLayer(ArtifactLayers.pocketPiston(hasSlimArms))) {
 
             @Override
-            public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-                super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                HumanoidArm mainHandSide = RendererUtil.getArmSide(entity, entity.swingingArm);
+            public void setupAnim(HumanoidRenderState renderState) {
+                super.setupAnim(renderState);
+                HumanoidArm mainHandSide = renderState.mainArm;
                 getPistonHead(mainHandSide.getOpposite()).y = 0;
-                getPistonHead(mainHandSide).y = ((LivingEntityExtensions) entity).artifacts$getPocketPistonLength() * 2;
+                // TODO getPistonHead(mainHandSide).y = renderState.pocketPistonExtension * 2;
             }
 
             private ModelPart getPistonHead(HumanoidArm arm) {

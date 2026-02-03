@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
@@ -31,8 +32,8 @@ public class BootArtifactRenderer implements ArtifactRenderer {
         return texture;
     }
 
-    protected HumanoidModel<LivingEntity> getModel(LivingEntity entity) {
-        return entity.getItemBySlot(EquipmentSlot.FEET).isEmpty() ? model : armorModel;
+    protected HumanoidModel<HumanoidRenderState> getModel(HumanoidRenderState renderState) {
+        return renderState.getItemBySlot(EquipmentSlot.FEET).isEmpty() ? model : armorModel;
     }
 
     @Override
@@ -50,11 +51,10 @@ public class BootArtifactRenderer implements ArtifactRenderer {
             float netHeadYaw,
             float headPitch
     ) {
-        HumanoidModel<LivingEntity> model = getModel(entity);
+        HumanoidModel<HumanoidRenderState> model = getModel(renderState);
 
-        model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-        ArtifactRenderer.followBodyRotations(entity, model);
+        model.setupAnim(renderState);
+        ArtifactRenderer.followBodyRotations(entityModel, model);
         render(model, poseStack, multiBufferSource, light, stack.hasFoil());
     }
 

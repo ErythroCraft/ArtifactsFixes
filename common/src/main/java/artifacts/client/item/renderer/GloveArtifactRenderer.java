@@ -83,9 +83,8 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
         InteractionHand hand = slotIndex % 2 == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         HumanoidArm handSide = hand == InteractionHand.MAIN_HAND ? entity.getMainArm() : entity.getMainArm().getOpposite();
 
-        model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-        ArtifactRenderer.followBodyRotations(entity, model);
+        model.setupAnim(renderState);
+        ArtifactRenderer.followBodyRotations(entityModel, model);
 
         renderArm(model, poseStack, multiBufferSource, handSide, light, hasSlimArms, stack.hasFoil());
     }
@@ -103,6 +102,7 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
 
             ModelPart arm = side == HumanoidArm.LEFT ? model.leftArm : model.rightArm;
 
+            /* TODO fix first person rendering
             model.setAllVisible(false);
             arm.visible = true;
 
@@ -110,6 +110,7 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
             model.attackTime = model.swimAmount = 0;
             model.setupAnim(player, 0, 0, 0, 0, 0);
             arm.xRot = 0;
+            */
 
             renderFirstPersonArm(model, arm, matrixStack, buffer, light, hasSlimArms, hasFoil);
         }

@@ -1,21 +1,18 @@
 package artifacts.client.item.model;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 
 import java.util.function.Function;
 
-public class ScarfModel extends HumanoidModel<LivingEntity> {
+public class ScarfModel extends HumanoidModel<HumanoidRenderState> {
 
     private final ModelPart cloak = body.getChild("cloak");
 
@@ -24,17 +21,10 @@ public class ScarfModel extends HumanoidModel<LivingEntity> {
     }
 
     @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of(head);
-    }
+    public void setupAnim(HumanoidRenderState renderState) {
+        super.setupAnim(renderState);
 
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(body);
-    }
-
-    @Override
-    public void prepareMobModel(LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+        /* TODO move this to extractRenderState
         if (entity instanceof AbstractClientPlayer player) {
             double x = Mth.lerp(partialTicks, player.xCloakO, player.xCloak) - Mth.lerp(partialTicks, player.xo, player.getX());
             double y = Mth.lerp(partialTicks, player.yCloakO, player.yCloak) - Mth.lerp(partialTicks, player.yo, player.getY());
@@ -55,6 +45,7 @@ public class ScarfModel extends HumanoidModel<LivingEntity> {
 
             cloak.xRot = body.xRot + (6 + f2 / 2 + f1) / 180 * (float) Math.PI;
         }
+        */
     }
 
     public static MeshDefinition createScarf() {

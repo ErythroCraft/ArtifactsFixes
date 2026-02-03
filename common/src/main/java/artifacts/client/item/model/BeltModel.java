@@ -2,24 +2,23 @@ package artifacts.client.item.model;
 
 import artifacts.client.item.ArtifactLayers;
 import artifacts.client.item.RendererUtil;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 
 import java.util.function.Function;
 
-public class BeltModel extends HumanoidModel<LivingEntity> {
+public class BeltModel extends HumanoidModel<HumanoidRenderState> {
 
-    protected final ModelPart charm = body.getChild("charm");
+    protected final ModelPart charm;
 
     private final float xOffset;
     private final float zOffset;
@@ -27,6 +26,7 @@ public class BeltModel extends HumanoidModel<LivingEntity> {
 
     public BeltModel(ModelPart part, Function<Identifier, RenderType> renderType, float xOffset, float zOffset, float rotation) {
         super(part, renderType);
+        this.charm = body.getChild("charm");
         this.xOffset = xOffset;
         this.zOffset = zOffset;
         this.rotation = rotation;
@@ -46,42 +46,22 @@ public class BeltModel extends HumanoidModel<LivingEntity> {
         charm.yRot = rotation;
     }
 
-    @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of();
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(body);
-    }
-
     public static BeltModel createCloudInABottleModel() {
         return new BeltModel(RendererUtil.bakeLayer(ArtifactLayers.CLOUD_IN_A_BOTTLE), RenderTypes::entityTranslucent, 3, -3, -0.5F) {
             private final ModelPart cloud = charm.getChild("cloud");
 
             @Override
-            public void setupAnim(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-                super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                cloud.yRot = (ageInTicks) / 50;
-                cloud.y = Mth.cos((ageInTicks) / 30) / 2;
+            public void setupAnim(HumanoidRenderState humanoidRenderState) {
+                super.setupAnim(humanoidRenderState);
+                cloud.yRot = (humanoidRenderState.ageInTicks) / 50;
+                cloud.y = Mth.cos((humanoidRenderState.ageInTicks) / 30) / 2;
             }
         };
     }
 
-    public static HumanoidModel<LivingEntity> createHeliumFlamingoModel() {
+    public static HumanoidModel<HumanoidRenderState> createHeliumFlamingoModel() {
         ModelPart part = RendererUtil.bakeLayer(ArtifactLayers.HELIUM_FLAMINGO);
-        return new HumanoidModel<>(part, RenderTypes::entityCutoutNoCull) {
-            @Override
-            protected Iterable<ModelPart> headParts() {
-                return ImmutableList.of();
-            }
-
-            @Override
-            protected Iterable<ModelPart> bodyParts() {
-                return ImmutableList.of(body);
-            }
-        };
+        return new HumanoidModel<>(part, RenderTypes::entityCutoutNoCull);
     }
 
     public static BeltModel createObsidianSkullModel() {

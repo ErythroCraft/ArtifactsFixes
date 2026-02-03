@@ -1,29 +1,18 @@
 package artifacts.client.item.model;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.world.entity.LivingEntity;
 
-public class LegsModel extends HumanoidModel<LivingEntity> {
+public class LegsModel extends HumanoidModel<HumanoidRenderState> {
 
     public LegsModel(ModelPart part) {
         super(part, RenderTypes::entityCutoutNoCull);
-    }
-
-    @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of();
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(leftLeg, rightLeg);
     }
 
     public static MeshDefinition createLegs(float delta, CubeListBuilder leftLeg, CubeListBuilder rightLeg) {

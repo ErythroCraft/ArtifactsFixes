@@ -1,33 +1,21 @@
 package artifacts.client.item.model;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.world.entity.LivingEntity;
 
-public class NecklaceModel extends HumanoidModel<LivingEntity> {
+public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
 
     public NecklaceModel(ModelPart part) {
         super(part, RenderTypes::entityTranslucent);
     }
 
-    @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of();
-    }
-
-    @Override
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(body);
-    }
-
+    /* TODO Replace this with a mesh transformer
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int light, int overlay, int color) {
         poseStack.pushPose();
@@ -42,6 +30,8 @@ public class NecklaceModel extends HumanoidModel<LivingEntity> {
         this.bodyParts().forEach((modelPart) -> modelPart.render(poseStack, buffer, light, overlay, color));
         poseStack.popPose();
     }
+    */
+
 
     public static MeshDefinition createNecklace(CubeListBuilder body) {
         MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0);

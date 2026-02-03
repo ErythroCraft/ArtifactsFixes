@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +21,7 @@ public class BeltArtifactRenderer implements ArtifactRenderer {
         this.model = model;
     }
 
-    protected ResourceLocation getTexture() {
+    protected Identifier getTexture() {
         return texture;
     }
 
@@ -45,10 +46,9 @@ public class BeltArtifactRenderer implements ArtifactRenderer {
     ) {
         BeltModel model = getModel();
 
-        model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+        model.setupAnim(renderState);
         model.setCharmPosition(slotIndex);
-        ArtifactRenderer.followBodyRotations(entity, model);
+        ArtifactRenderer.followBodyRotations(entityModel, model);
         render(poseStack, multiBufferSource, light, stack.hasFoil());
     }
 
