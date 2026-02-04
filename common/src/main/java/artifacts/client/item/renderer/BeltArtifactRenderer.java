@@ -3,12 +3,14 @@ package artifacts.client.item.renderer;
 import artifacts.client.item.model.BeltModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public class BeltArtifactRenderer implements ArtifactRenderer {
@@ -32,23 +34,21 @@ public class BeltArtifactRenderer implements ArtifactRenderer {
     @Override
     public void render(
             ItemStack stack,
-            LivingEntity entity,
+            LivingEntityRenderState renderState,
+            EntityModel<?> entityModel,
             int slotIndex,
             PoseStack poseStack,
             MultiBufferSource multiBufferSource,
             int light,
-            float limbSwing,
-            float limbSwingAmount,
-            float partialTicks,
-            float ageInTicks,
-            float netHeadYaw,
-            float headPitch
+            float partialTicks
     ) {
+        if (!(renderState instanceof HumanoidRenderState humanoidRenderState)) {
+            return;
+        }
         BeltModel model = getModel();
 
-        model.setupAnim(renderState);
         model.setCharmPosition(slotIndex);
-        ArtifactRenderer.followBodyRotations(entityModel, model);
+        ArtifactRenderer.loadPoseFrom(model, entityModel);
         render(poseStack, multiBufferSource, light, stack.hasFoil());
     }
 

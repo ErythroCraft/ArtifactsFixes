@@ -3,15 +3,15 @@ package artifacts.client.item.renderer;
 import artifacts.client.item.model.LegsModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Function;
@@ -33,32 +33,30 @@ public class BootArtifactRenderer implements ArtifactRenderer {
     }
 
     protected HumanoidModel<HumanoidRenderState> getModel(HumanoidRenderState renderState) {
-        return renderState.getItemBySlot(EquipmentSlot.FEET).isEmpty() ? model : armorModel;
+        return renderState.feetEquipment.isEmpty() ? model : armorModel;
     }
 
     @Override
     public void render(
             ItemStack stack,
-            LivingEntity entity,
+            LivingEntityRenderState renderState,
+            EntityModel<?> entityModel,
             int slotIndex,
             PoseStack poseStack,
             MultiBufferSource multiBufferSource,
             int light,
-            float limbSwing,
-            float limbSwingAmount,
-            float partialTicks,
-            float ageInTicks,
-            float netHeadYaw,
-            float headPitch
+            float partialTicks
     ) {
-        HumanoidModel<HumanoidRenderState> model = getModel(renderState);
+        if (!(renderState instanceof HumanoidRenderState humanoidRenderState)) {
+            return;
+        }
+        HumanoidModel<HumanoidRenderState> model = getModel(humanoidRenderState);
 
-        model.setupAnim(renderState);
-        ArtifactRenderer.followBodyRotations(entityModel, model);
+        ArtifactRenderer.loadPoseFrom(model, entityModel);
         render(model, poseStack, multiBufferSource, light, stack.hasFoil());
     }
 
-    protected void render(HumanoidModel<LivingEntity> model, PoseStack matrixStack, MultiBufferSource buffer, int light, boolean hasFoil) {
+    protected void render(EntityModel<?> model, PoseStack matrixStack, MultiBufferSource buffer, int light, boolean hasFoil) {
         RenderType renderType = model.renderType(getTexture());
         VertexConsumer vertexBuilder = ItemRenderer.getFoilBuffer(buffer, renderType, false, hasFoil);
         model.renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);

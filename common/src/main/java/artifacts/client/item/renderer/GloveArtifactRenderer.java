@@ -4,17 +4,19 @@ import artifacts.client.item.model.ArmsModel;
 import artifacts.equipment.client.EquipmentRenderingManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -59,32 +61,30 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
         return hasSlimArms ? slimModel : wideModel;
     }
 
-    protected static boolean hasSlimArms(Entity entity) {
-        return entity instanceof AbstractClientPlayer player && player.getSkin().model() == PlayerModelType.SLIM;
+    protected static boolean hasSlimArms(LivingEntityRenderState renderState) {
+        return renderState instanceof AvatarRenderState avatarRenderState && avatarRenderState.skin.model() == PlayerModelType.SLIM;
     }
 
     @Override
     public void render(
             ItemStack stack,
-            LivingEntity entity,
+            LivingEntityRenderState renderState,
+            EntityModel<?> entityModel,
             int slotIndex,
             PoseStack poseStack,
             MultiBufferSource multiBufferSource,
             int light,
-            float limbSwing,
-            float limbSwingAmount,
-            float partialTicks,
-            float ageInTicks,
-            float netHeadYaw,
-            float headPitch
+            float partialTicks
     ) {
-        boolean hasSlimArms = hasSlimArms(entity);
+        if (!(renderState instanceof HumanoidRenderState humanoidRenderState)) {
+            return;
+        }
+        boolean hasSlimArms = hasSlimArms(renderState);
         ArmsModel model = getModel(hasSlimArms);
         InteractionHand hand = slotIndex % 2 == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-        HumanoidArm handSide = hand == InteractionHand.MAIN_HAND ? entity.getMainArm() : entity.getMainArm().getOpposite();
+        HumanoidArm handSide = hand == InteractionHand.MAIN_HAND ? humanoidRenderState.mainArm : humanoidRenderState.mainArm.getOpposite();
 
-        model.setupAnim(renderState);
-        ArtifactRenderer.followBodyRotations(entityModel, model);
+        ArtifactRenderer.loadPoseFrom(model, entityModel);
 
         renderArm(model, poseStack, multiBufferSource, handSide, light, hasSlimArms, stack.hasFoil());
     }
@@ -97,12 +97,11 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
 
     public final void renderFirstPersonArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side, boolean hasFoil) {
         if (!player.isSpectator()) {
+            /* TODO fix first person rendering
             boolean hasSlimArms = hasSlimArms(player);
             ArmsModel model = getModel(hasSlimArms);
 
             ModelPart arm = side == HumanoidArm.LEFT ? model.leftArm : model.rightArm;
-
-            /* TODO fix first person rendering
             model.setAllVisible(false);
             arm.visible = true;
 
@@ -110,9 +109,10 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
             model.attackTime = model.swimAmount = 0;
             model.setupAnim(player, 0, 0, 0, 0, 0);
             arm.xRot = 0;
-            */
 
             renderFirstPersonArm(model, arm, matrixStack, buffer, light, hasSlimArms, hasFoil);
+
+            */
         }
     }
 

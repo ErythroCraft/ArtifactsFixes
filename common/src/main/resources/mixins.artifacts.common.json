@@ -41,6 +41,8 @@
     "ability.hurtsound.client.LivingEntityMixin",
     "ability.nightvision.client.GameRendererMixin",
     "accessors.client.LivingEntityRendererAccessor",
+    "client.LivingEntityRendererMixin",
+    "client.LivingEntityRenderStateMixin",
     "compat.trinkets.client.PlayerRendererMixin",
     "item.pocketpiston.client.LivingEntityMixin",
     "item.umbrella.client.HumanoidModelMixin"

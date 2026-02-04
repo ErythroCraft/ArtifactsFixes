@@ -59,9 +59,8 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
     public record ArtifactTrinketRenderer(Supplier<ArtifactRenderer> renderer) implements TrinketRenderer {
 
         @Override
-        public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntityRenderState> entityModel, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, LivingEntityRenderState livingEntityRenderState, float yRotation, float xRotation) {
+        public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntityRenderState> entityModel, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, LivingEntityRenderState renderState, float yRotation, float xRotation) {
             /* TODO fix trinket rendering
-            int index = slotReference.index() + (slotReference.inventory().getSlotType().getGroup().equals("hand") ? 0 : 1);
             renderer.get().renderVisible(stack, entity, index, poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, yRotation, xRotation);
             */
         }

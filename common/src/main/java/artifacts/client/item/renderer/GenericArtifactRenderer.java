@@ -2,15 +2,16 @@ package artifacts.client.item.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.state.GhastRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.item.ItemStack;
 
 public class GenericArtifactRenderer implements ArtifactRenderer {
@@ -38,25 +39,20 @@ public class GenericArtifactRenderer implements ArtifactRenderer {
     @Override
     public void render(
             ItemStack stack,
-            LivingEntity entity,
+            LivingEntityRenderState renderState,
+            EntityModel<?> entityModel,
             int slotIndex,
             PoseStack poseStack,
             MultiBufferSource multiBufferSource,
             int light,
-            float limbSwing,
-            float limbSwingAmount,
-            float partialTicks,
-            float ageInTicks,
-            float netHeadYaw,
-            float headPitch
+            float partialTicks
     ) {
         poseStack.pushPose();
         HumanoidModel<HumanoidRenderState> model = getModel();
 
-        model.setupAnim(renderState);
-        ArtifactRenderer.followBodyRotations(entityModel, model);
+        ArtifactRenderer.loadPoseFrom(model, entityModel);
 
-        if (entity instanceof Ghast) {
+        if (renderState instanceof GhastRenderState) {
             applyGhastTransforms(poseStack);
         }
 

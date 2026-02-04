@@ -9,47 +9,43 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
+/* TODO cleanup renderers
+ * - make render() a default method
+ * - add getModel(RenderState) method
+ * - add @Nullable getOverlayTexture(RenderState) method
+ * - split armed models into separate left- and right arm models, same for charms (or move logic to setupAnim if possible)
+ */
 public interface ArtifactRenderer {
 
     default void renderVisible(
             ItemStack stack,
-            LivingEntity entity,
+            LivingEntityRenderState renderState,
+            EntityModel<?> entityModel,
             int slotIndex,
             PoseStack poseStack,
             MultiBufferSource multiBufferSource,
             int light,
-            float limbSwing,
-            float limbSwingAmount,
-            float partialTicks,
-            float ageInTicks,
-            float netHeadYaw,
-            float headPitch
+            float partialTicks
     ) {
         Value<Boolean> hideWhenInvisible = stack.get(ModDataComponents.HIDE_WHEN_INVISIBLE.get());
-        if (hideWhenInvisible != null && hideWhenInvisible.get() && entity.hasEffect(MobEffects.INVISIBILITY)) {
+        if (hideWhenInvisible != null && hideWhenInvisible.get() && renderState.isInvisible) {
             return;
         }
-        render(stack, entity, slotIndex, poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+
+        render(stack, renderState, entityModel, slotIndex, poseStack, multiBufferSource, light, partialTicks);
     }
 
-    // TODO implement default method, add getModel(RenderState) method
     void render(
             ItemStack stack,
-            LivingEntity entity,
+            LivingEntityRenderState renderState,
+            EntityModel<?> entityModel,
             int slotIndex,
             PoseStack poseStack,
             MultiBufferSource multiBufferSource,
             int light,
-            float limbSwing,
-            float limbSwingAmount,
-            float partialTicks,
-            float ageInTicks,
-            float netHeadYaw,
-            float headPitch
+            float partialTicks
     );
 
     static Identifier getTexturePath(String... names) {
@@ -62,14 +58,15 @@ public interface ArtifactRenderer {
         return Artifacts.id(path.toString());
     }
 
-    static void followBodyRotations(EntityModel<? extends LivingEntityRenderState> source, HumanoidModel<?> model) {
-        if (source instanceof HumanoidModel<?> bipedModel) {
-            model.head.loadPose(bipedModel.head.storePose());
-            model.body.loadPose(bipedModel.body.storePose());
-            model.leftArm.loadPose(bipedModel.leftArm.storePose());
-            model.rightArm.loadPose(bipedModel.rightArm.storePose());
-            model.leftLeg.loadPose(bipedModel.leftLeg.storePose());
-            model.rightLeg.loadPose(bipedModel.rightLeg.storePose());
+    static void loadPoseFrom(HumanoidModel<?> model, EntityModel<?> source) {
+        if (source instanceof HumanoidModel<?> humanoidModel) {
+            // TODO storePose creates new PartPose instances
+            model.head.loadPose(humanoidModel.head.storePose());
+            model.body.loadPose(humanoidModel.body.storePose());
+            model.leftArm.loadPose(humanoidModel.leftArm.storePose());
+            model.rightArm.loadPose(humanoidModel.rightArm.storePose());
+            model.leftLeg.loadPose(humanoidModel.leftLeg.storePose());
+            model.rightLeg.loadPose(humanoidModel.rightLeg.storePose());
         }
     }
 }

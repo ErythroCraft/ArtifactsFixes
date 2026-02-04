@@ -1,7 +1,6 @@
 package artifacts.mixin.item.pocketpiston.client;
 
-import artifacts.extensions.pocketpiston.LivingEntityExtensions;
-import net.minecraft.client.Minecraft;
+import artifacts.extensions.item.pocketpiston.LivingEntityExtensions;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,9 +43,7 @@ public abstract class LivingEntityMixin implements LivingEntityExtensions {
 
     @Unique
     @Override
-    public float artifacts$getPocketPistonLength() {
-        Minecraft minecraft = Minecraft.getInstance();
-        float partialTicks = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+    public float artifacts$getPocketPistonLength(float partialTicks) {
         float d = (artifacts$pocketPistonTimeRemaining + partialTicks < RETRACTION_DURATION ? -1F : 1F) / RETRACTION_DURATION;
         return Math.max(0, Math.min(1, artifacts$pocketPistonLength + d * partialTicks));
     }

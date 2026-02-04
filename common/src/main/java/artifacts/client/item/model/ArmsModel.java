@@ -1,7 +1,7 @@
 package artifacts.client.item.model;
 
 import artifacts.client.item.ArtifactLayers;
-import artifacts.client.item.RendererUtil;
+import artifacts.client.item.ArtifactRenderers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
@@ -35,26 +35,26 @@ public class ArmsModel extends HumanoidModel<HumanoidRenderState> {
     }
 
     public static ArmsModel createClawsModel(boolean hasSlimArms) {
-        return new ArmsModel(RendererUtil.bakeLayer(ArtifactLayers.claws(hasSlimArms)));
+        return new ArmsModel(ArtifactRenderers.bakeLayer(ArtifactLayers.claws(hasSlimArms)));
     }
 
     public static ArmsModel createGloveModel(boolean hasSlimArms) {
-        return new ArmsModel(RendererUtil.bakeLayer(ArtifactLayers.glove(hasSlimArms)));
+        return new ArmsModel(ArtifactRenderers.bakeLayer(ArtifactLayers.glove(hasSlimArms)));
     }
 
     public static ArmsModel createGoldenHookModel(boolean hasSlimArms) {
-        return new ArmsModel(RendererUtil.bakeLayer(ArtifactLayers.goldenHook(hasSlimArms)));
+        return new ArmsModel(ArtifactRenderers.bakeLayer(ArtifactLayers.goldenHook(hasSlimArms)));
     }
 
     public static ArmsModel createPocketPistonModel(boolean hasSlimArms) {
-        return new ArmsModel(RendererUtil.bakeLayer(ArtifactLayers.pocketPiston(hasSlimArms))) {
+        return new ArmsModel(ArtifactRenderers.bakeLayer(ArtifactLayers.pocketPiston(hasSlimArms))) {
 
             @Override
             public void setupAnim(HumanoidRenderState renderState) {
                 super.setupAnim(renderState);
                 HumanoidArm mainHandSide = renderState.mainArm;
                 getPistonHead(mainHandSide.getOpposite()).y = 0;
-                // TODO getPistonHead(mainHandSide).y = renderState.pocketPistonExtension * 2;
+                // TODO getPistonHead(mainHandSide).y = renderState.pocketPistonExtensionLength * 2;
             }
 
             private ModelPart getPistonHead(HumanoidArm arm) {
@@ -66,15 +66,15 @@ public class ArmsModel extends HumanoidModel<HumanoidRenderState> {
     }
 
     public static ArmsModel createOnionRingModel(boolean hasSlimArms) {
-        return new ArmsModel(RendererUtil.bakeLayer(ArtifactLayers.onionRing(hasSlimArms)));
+        return new ArmsModel(ArtifactRenderers.bakeLayer(ArtifactLayers.onionRing(hasSlimArms)));
     }
 
     public static ArmsModel createPickaxeHeaterModel(boolean hasSlimArms) {
-        return new ArmsModel(RendererUtil.bakeLayer(ArtifactLayers.pickaxeHeater(hasSlimArms)));
+        return new ArmsModel(ArtifactRenderers.bakeLayer(ArtifactLayers.pickaxeHeater(hasSlimArms)));
     }
 
     public static ArmsModel createWitheredBraceletModel(boolean hasSlimArms) {
-        return new ArmsModel(RendererUtil.bakeLayer(ArtifactLayers.witheredBracelet(hasSlimArms)));
+        return new ArmsModel(ArtifactRenderers.bakeLayer(ArtifactLayers.witheredBracelet(hasSlimArms)));
     }
 
     public static MeshDefinition createEmptyArms(CubeListBuilder leftArm, CubeListBuilder rightArm, boolean hasSlimArms) {

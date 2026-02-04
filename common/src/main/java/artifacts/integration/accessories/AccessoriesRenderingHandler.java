@@ -44,13 +44,13 @@ public class AccessoriesRenderingHandler implements EquipmentRenderingHandler {
     public record ArtifactAccessoryRenderer(ArtifactRenderer renderer) implements AccessoryRenderer {
 
         @Override
-        public <S extends LivingEntityRenderState> void render(ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int light, float partialTicks) {
+        public <S extends LivingEntityRenderState> void render(ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int packedLight, float partialTicks) {
             // TODO fix accessory rendering
-            // renderer.renderVisible(stack, reference.entity(), reference.slot(), matrices, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+            // renderer.renderVisible(stack, reference.entity(), reference.slot(), matrices, multiBufferSource, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }
 
         @Override
-        public <S extends LivingEntityRenderState> void renderOnFirstPerson(HumanoidArm side, ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int light, float partialTicks) {
+        public <S extends LivingEntityRenderState> void renderOnFirstPerson(HumanoidArm side, ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int packedLight, float partialTicks) {
             /* TODO fix first-person accessory rendering
             if (!(reference.entity() instanceof LocalPlayer player)) {
                 return;
@@ -60,7 +60,7 @@ public class AccessoriesRenderingHandler implements EquipmentRenderingHandler {
             GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
 
             if (gloveRenderer != null && path.index() % 2 == (hand == InteractionHand.MAIN_HAND ? 0 : 1)) {
-                gloveRenderer.renderFirstPersonArm(matrices, multiBufferSource, light, (AbstractClientPlayer) reference.entity(), side, stack.hasFoil());
+                gloveRenderer.renderFirstPersonArm(matrices, multiBufferSource, packedLight, (AbstractClientPlayer) reference.entity(), side, stack.hasFoil());
             }
             */
         }
