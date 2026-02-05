@@ -25,7 +25,7 @@ public class CloudInABottleInputHandler {
         if ((player.onGround() || player.onClimbable()) && (!player.isInWater() || EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true))) {
             hasReleasedJumpKey = false;
             canDoubleJump = true;
-        } else if (!player.input.jumping) {
+        } else if (!player.input.keyPresses.jump()) {
             hasReleasedJumpKey = true;
         } else if (!player.getAbilities().flying && canDoubleJump && hasReleasedJumpKey) {
             canDoubleJump = false;

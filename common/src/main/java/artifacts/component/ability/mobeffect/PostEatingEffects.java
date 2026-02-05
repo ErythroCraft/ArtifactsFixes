@@ -52,7 +52,7 @@ public record PostEatingEffects(List<Entry> entries) implements CompositeAbility
 
         @Override
         public void addToTooltip(TooltipWriter writer) {
-            if (provider.mobEffect().equals(MobEffects.DIG_SPEED) && provider.condition() == EntityCondition.ALWAYS) {
+            if (provider.mobEffect().equals(MobEffects.HASTE) && provider.condition() == EntityCondition.ALWAYS) {
                 writer.add("haste");
             }
         }

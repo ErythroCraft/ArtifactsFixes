@@ -47,7 +47,7 @@ public record DeathProtectionTeleport(Value<Double> teleportationChance, Value<I
             DeathProtectionTeleport ability = handItem.get(ModDataComponents.DEATH_PROTECTION_TELEPORT.get());
             if (!handItem.has(ModDataComponents.DISABLED_BY_TOGGLE.get())
                     && ability != null && ability.isNonCosmetic()
-                    && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(handItem.getItem()))
+                    && !(entity instanceof Player player && player.getCooldowns().isOnCooldown(handItem))
             ) {
                 return handItem;
             }
@@ -66,7 +66,7 @@ public record DeathProtectionTeleport(Value<Double> teleportationChance, Value<I
 
         for (int i = 0; i < 32; ++i) {
             double newX = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * 32;
-            double newY = Mth.clamp(entity.getY() + entity.getRandom().nextInt(16) - 8, level.getMinBuildHeight(), level.getMinBuildHeight() + level.getLogicalHeight() - 1);
+            double newY = Mth.clamp(entity.getY() + entity.getRandom().nextInt(16) - 8, level.getMinY(), level.getMaxY());
             double newZ = entity.getZ() + (entity.getRandom().nextDouble() - 0.5) * 32;
 
             Vec3 oldPos = entity.position();

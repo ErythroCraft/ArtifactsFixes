@@ -15,8 +15,8 @@ import java.util.Map;
 public class ModLootTables {
 
     public static final List<ResourceKey<LootTable>> INJECTED_LOOT_TABLES = List.of(
-            EntityType.COW.getDefaultLootTable(),
-            EntityType.MOOSHROOM.getDefaultLootTable(),
+            EntityType.COW.getDefaultLootTable().orElseThrow(),
+            EntityType.MOOSHROOM.getDefaultLootTable().orElseThrow(),
             BuiltInLootTables.VILLAGE_DESERT_HOUSE,
             BuiltInLootTables.VILLAGE_PLAINS_HOUSE,
             BuiltInLootTables.VILLAGE_SAVANNA_HOUSE,

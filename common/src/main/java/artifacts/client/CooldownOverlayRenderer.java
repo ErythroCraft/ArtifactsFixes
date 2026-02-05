@@ -32,7 +32,7 @@ public class CooldownOverlayRenderer {
         MutableInt k = new MutableInt(0);
 
         EquipmentHelper.iterateEquipment(player, stack -> {
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableArtifactItem && player.getCooldowns().isOnCooldown(stack.getItem())) {
+            if (!stack.isEmpty() && stack.getItem() instanceof WearableArtifactItem && player.getCooldowns().isOnCooldown(stack)) {
                 int x = start + step * k.intValue();
                 k.add(1);
                 guiGraphics.renderItem(player, stack, x, y, k.intValue() + 1);

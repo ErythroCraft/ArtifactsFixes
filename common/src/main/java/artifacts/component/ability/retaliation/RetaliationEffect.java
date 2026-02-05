@@ -45,7 +45,7 @@ public abstract class RetaliationEffect implements EquipmentAbility {
         if (attacker != null && !stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()) && entity.getRandom().nextDouble() < strikeChance().get()) {
             applyEffect(entity, attacker);
             if (entity instanceof Player player && cooldown().get() > 0) {
-                player.getCooldowns().addCooldown(stack.getItem(), cooldown().get() * 20);
+                player.getCooldowns().addCooldown(stack, cooldown().get() * 20);
             }
         }
     }

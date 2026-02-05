@@ -1,5 +1,6 @@
 package artifacts.registry;
 
+import artifacts.Artifacts;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -9,6 +10,8 @@ import net.minecraft.world.item.Item;
 import java.util.function.Consumer;
 
 public class ModKeyMappings {
+
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Artifacts.id("artifacts"));
 
     private static final KeyMapping ACTIVATE_HELIUM_FLAMINGO = createUnboundKeyMapping(ModItems.HELIUM_FLAMINGO, "activate");
     public static final KeyMapping TOGGLE_CHARM_OF_SHRINKING = createToggleKeyMapping(ModItems.CHARM_OF_SHRINKING);
@@ -23,7 +26,7 @@ public class ModKeyMappings {
 
     private static KeyMapping createUnboundKeyMapping(Holder<Item> item, String action) {
         String id = "artifacts.key.%s.%s".formatted(item.unwrapKey().orElseThrow().identifier().getPath(), action);
-        return new KeyMapping(id, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), "artifacts.key_category");
+        return new KeyMapping(id, InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), CATEGORY);
     }
 
     public static KeyMapping getHeliumFlamingoKey() {

@@ -65,8 +65,8 @@ public record PostDamageEffects(List<Entry> entries) implements CompositeAbility
         public boolean shouldApply(DamageType type, LivingEntity entity) {
             return provider.canApply(entity)
                     && entity.getRandom().nextDouble() < chance.get()
-                    && (tag.isEmpty() || entity.level().registryAccess().registry(Registries.DAMAGE_TYPE)
-                    .flatMap(registry -> registry.getTag(tag.get()).map(tag -> tag.contains(registry.wrapAsHolder(type))))
+                    && (tag.isEmpty() || entity.level().registryAccess().get(Registries.DAMAGE_TYPE)
+                    .map(registry -> registry.value().wrapAsHolder(type).is(tag.get()))
                     .orElseThrow());
         }
 
@@ -79,7 +79,7 @@ public record PostDamageEffects(List<Entry> entries) implements CompositeAbility
         public void addToTooltip(TooltipWriter writer) {
             if (provider.mobEffect().equals(MobEffects.FIRE_RESISTANCE) && tag.isPresent() && tag.get().equals(DamageTypeTags.IS_FIRE) && chance.get() == 1) {
                 writer.add("fire_resistance");
-            } else if (provider.mobEffect().equals(MobEffects.MOVEMENT_SPEED) && tag.isEmpty() && chance.get() == 1) {
+            } else if (provider.mobEffect().equals(MobEffects.SPEED) && tag.isEmpty() && chance.get() == 1) {
                 writer.add("speed");
             }
         }

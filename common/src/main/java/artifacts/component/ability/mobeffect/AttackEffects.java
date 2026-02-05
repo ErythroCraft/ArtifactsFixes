@@ -46,7 +46,7 @@ public record AttackEffects(List<Entry> entries) implements CompositeAbility<Att
                     if (effect.shouldApply(entity)) {
                         entity.addEffect(effect.provider().createEffect(), attacker);
                         if (attacker instanceof Player player) {
-                            player.getCooldowns().addCooldown(stack.getItem(), effect.cooldown().get() * 20);
+                            player.getCooldowns().addCooldown(stack, effect.cooldown().get() * 20);
                         }
                     }
                 }

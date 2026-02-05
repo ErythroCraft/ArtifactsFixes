@@ -40,7 +40,7 @@ public record PostDamageCooldown(Value<Integer> cooldown, Optional<TagKey<Damage
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     int c = ability.cooldown().get() * 20;
                     if (c > 0) {
-                        player.getCooldowns().addCooldown(stack.getItem(), c);
+                        player.getCooldowns().addCooldown(stack, c);
                     }
                 }
             });
