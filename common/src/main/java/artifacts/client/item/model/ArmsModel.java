@@ -2,8 +2,7 @@ package artifacts.client.item.model;
 
 import artifacts.client.item.ArtifactLayers;
 import artifacts.client.item.ArtifactRenderers;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import artifacts.client.item.EquipmentRenderState;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -28,12 +27,6 @@ public class ArmsModel extends HumanoidModel<HumanoidRenderState> {
         this(part, RenderTypes::entityCutoutNoCull);
     }
 
-    public void renderArm(HumanoidArm handSide, PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        getArm(handSide).visible = true;
-        getArm(handSide.getOpposite()).visible = false;
-        renderToBuffer(matrixStack, buffer, packedLight, packedOverlay, color);
-    }
-
     public static ArmsModel createClawsModel(boolean hasSlimArms) {
         return new ArmsModel(ArtifactRenderers.bakeLayer(ArtifactLayers.claws(hasSlimArms)));
     }
@@ -54,7 +47,7 @@ public class ArmsModel extends HumanoidModel<HumanoidRenderState> {
                 super.setupAnim(renderState);
                 HumanoidArm mainHandSide = renderState.mainArm;
                 getPistonHead(mainHandSide.getOpposite()).y = 0;
-                // TODO getPistonHead(mainHandSide).y = renderState.pocketPistonExtensionLength * 2;
+                getPistonHead(mainHandSide).y = EquipmentRenderState.from(renderState).pocketPistonExtensionLength * 2;
             }
 
             private ModelPart getPistonHead(HumanoidArm arm) {

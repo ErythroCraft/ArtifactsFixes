@@ -3,17 +3,12 @@ package artifacts.client.item.renderer;
 import artifacts.client.item.model.ArmsModel;
 import artifacts.equipment.client.EquipmentRenderingManager;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
@@ -23,26 +18,41 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
-public class GloveArtifactRenderer implements ArtifactRenderer {
+public class GloveArtifactRenderer extends ArtifactRenderer {
 
     private final Identifier wideTexture;
     private final Identifier slimTexture;
+    private final Identifier wideGlowTexture;
+    private final Identifier slimGlowTexture;
     private final ArmsModel wideModel;
     private final ArmsModel slimModel;
 
-    public GloveArtifactRenderer(String name, Function<Boolean, ArmsModel> model) {
-        this(ArtifactRenderer.getTexturePath(name, "%s_wide".formatted(name)), ArtifactRenderer.getTexturePath(name, "%s_slim".formatted(name)), model);
-    }
-
-    public GloveArtifactRenderer(String wideTexture, String slimTexture, Function<Boolean, ArmsModel> model) {
-        this(ArtifactRenderer.getTexturePath(wideTexture), ArtifactRenderer.getTexturePath(slimTexture), model);
-    }
-
-    public GloveArtifactRenderer(Identifier wideTexture, Identifier slimTexture, Function<Boolean, ArmsModel> model) {
+    protected GloveArtifactRenderer(
+            Identifier wideTexture,
+            Identifier slimTexture,
+            @Nullable Identifier wideGlowTexture,
+            @Nullable Identifier slimGlowTexture,
+            ArmsModel wideModel,
+            ArmsModel slimModel
+    ) {
         this.wideTexture = wideTexture;
         this.slimTexture = slimTexture;
-        this.wideModel = model.apply(false);
-        this.slimModel = model.apply(true);
+        this.wideGlowTexture = wideGlowTexture;
+        this.slimGlowTexture = slimGlowTexture;
+        this.wideModel = wideModel;
+        this.slimModel = slimModel;
+    }
+
+    public static GloveArtifactRenderer create(String name, Function<Boolean, ArmsModel> modelFactory) {
+        return create("%s_wide".formatted(name), "%s_slim".formatted(name), modelFactory);
+    }
+
+    public static GloveArtifactRenderer create(String wideTextureName, String slimTextureName, Function<Boolean, ArmsModel> modelFactory) {
+        return create(getTextureId(wideTextureName), getTextureId(slimTextureName), modelFactory);
+    }
+
+    private static GloveArtifactRenderer create(Identifier wideTexture, Identifier slimTexture, Function<Boolean, ArmsModel> modelFactory) {
+        return new GloveArtifactRenderer(wideTexture, slimTexture, null, null, modelFactory.apply(false), modelFactory.apply(true));
     }
 
     @Nullable
@@ -53,51 +63,36 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
         return null;
     }
 
-    protected Identifier getTexture(boolean hasSlimArms) {
-        return hasSlimArms ? slimTexture : wideTexture;
+    @Override
+    protected Identifier getTexture(HumanoidRenderState renderState, int slotIndex) {
+        return hasSlimArms(renderState) ? slimTexture : wideTexture;
     }
 
-    protected ArmsModel getModel(boolean hasSlimArms) {
-        return hasSlimArms ? slimModel : wideModel;
+    @Override
+    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState, int slotIndex) {
+        return hasSlimArms(renderState) ? slimGlowTexture : wideGlowTexture;
+    }
+
+    @Override
+    protected HumanoidModel<HumanoidRenderState> getModel(HumanoidRenderState renderState, int slotIndex) {
+        HumanoidModel<HumanoidRenderState> model = hasSlimArms(renderState) ? slimModel : wideModel;
+        model.setAllVisible(false);
+        model.getArm(getArm(renderState, slotIndex)).visible = true;
+        return model;
     }
 
     protected static boolean hasSlimArms(LivingEntityRenderState renderState) {
         return renderState instanceof AvatarRenderState avatarRenderState && avatarRenderState.skin.model() == PlayerModelType.SLIM;
     }
 
-    @Override
-    public void render(
-            ItemStack stack,
-            LivingEntityRenderState renderState,
-            EntityModel<?> entityModel,
-            int slotIndex,
-            PoseStack poseStack,
-            MultiBufferSource multiBufferSource,
-            int light,
-            float partialTicks
-    ) {
-        if (!(renderState instanceof HumanoidRenderState humanoidRenderState)) {
-            return;
-        }
-        boolean hasSlimArms = hasSlimArms(renderState);
-        ArmsModel model = getModel(hasSlimArms);
+    private static HumanoidArm getArm(HumanoidRenderState renderState, int slotIndex) {
         InteractionHand hand = slotIndex % 2 == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-        HumanoidArm handSide = hand == InteractionHand.MAIN_HAND ? humanoidRenderState.mainArm : humanoidRenderState.mainArm.getOpposite();
-
-        ArtifactRenderer.loadPoseFrom(model, entityModel);
-
-        renderArm(model, poseStack, multiBufferSource, handSide, light, hasSlimArms, stack.hasFoil());
-    }
-
-    protected void renderArm(ArmsModel model, PoseStack matrixStack, MultiBufferSource buffer, HumanoidArm handSide, int light, boolean hasSlimArms, boolean hasFoil) {
-        RenderType renderType = model.renderType(getTexture(hasSlimArms));
-        VertexConsumer vertexBuilder = ItemRenderer.getFoilBuffer(buffer, renderType, false, hasFoil);
-        model.renderArm(handSide, matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
+        return hand == InteractionHand.MAIN_HAND ? renderState.mainArm : renderState.mainArm.getOpposite();
     }
 
     public final void renderFirstPersonArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side, boolean hasFoil) {
+        /* TODO fix first person rendering
         if (!player.isSpectator()) {
-            /* TODO fix first person rendering
             boolean hasSlimArms = hasSlimArms(player);
             ArmsModel model = getModel(hasSlimArms);
 
@@ -111,14 +106,7 @@ public class GloveArtifactRenderer implements ArtifactRenderer {
             arm.xRot = 0;
 
             renderFirstPersonArm(model, arm, matrixStack, buffer, light, hasSlimArms, hasFoil);
-
-            */
         }
-    }
-
-    protected void renderFirstPersonArm(ArmsModel model, ModelPart arm, PoseStack matrixStack, MultiBufferSource buffer, int light, boolean hasSlimArms, boolean hasFoil) {
-        RenderType renderType = model.renderType(getTexture(hasSlimArms));
-        VertexConsumer builder = ItemRenderer.getFoilBuffer(buffer, renderType, false, hasFoil);
-        arm.render(matrixStack, builder, light, OverlayTexture.NO_OVERLAY);
+        */
     }
 }

@@ -60,9 +60,7 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
 
         @Override
         public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntityRenderState> entityModel, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, LivingEntityRenderState renderState, float yRotation, float xRotation) {
-            /* TODO fix trinket rendering
-            renderer.get().renderVisible(stack, entity, index, poseStack, multiBufferSource, light, limbSwing, limbSwingAmount, partialTicks, ageInTicks, yRotation, xRotation);
-            */
+            renderer.get().render(stack, renderState, entityModel, slotReference.index(), poseStack, submitNodeCollector, light);
         }
     }
 }
