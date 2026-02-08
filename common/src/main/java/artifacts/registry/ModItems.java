@@ -16,7 +16,6 @@ import artifacts.config.value.Value;
 import artifacts.item.EverlastingFoodItem;
 import artifacts.item.UmbrellaItem;
 import artifacts.item.WearableArtifactItem;
-import artifacts.platform.PlatformServices;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -32,6 +31,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.enchantment.Enchantments;
 
@@ -53,7 +53,7 @@ public class ModItems {
             .build()
     );
 
-    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", () -> PlatformServices.getPlatformHelper().createMimicSpawnEgg(new Item.Properties()));
+    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", () -> new SpawnEggItem(new Item.Properties().spawnEgg(ModEntityTypes.MIMIC.get())));
     public static final Holder<Item> UMBRELLA = register("umbrella", UmbrellaItem::new);
     public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", () -> new EverlastingFoodItem(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build(), Artifacts.CONFIG.items.everlastingBeefCooldown, Artifacts.CONFIG.items.everlastingBeefEnabled));
     public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", () -> new EverlastingFoodItem(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build(), Artifacts.CONFIG.items.eternalSteakCooldown, Artifacts.CONFIG.items.eternalSteakEnabled));

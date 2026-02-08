@@ -69,6 +69,6 @@ public abstract class ItemStackMixin {
      */
     @Inject(method = "addDetailsToTooltip", require = 0, locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/item/ItemStack;addAttributeTooltips(Ljava/util/function/Consumer;Lnet/minecraft/world/item/component/TooltipDisplay;Lnet/minecraft/world/entity/player/Player;)V"))
     private void addAttributeTooltips(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltip, CallbackInfo ci) {
-        TooltipHelper.addAttributeTooltips(tooltip, (ItemStack) (Object) this, context);
+        TooltipHelper.addAttributeTooltips(tooltip, (ItemStack) (Object) this, context, display);
     }
 }

@@ -9,7 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -29,7 +28,4 @@ public interface PlatformHelper {
     void addItemRegistryCallback(Consumer<Item> consumer);
 
     <R> Register<R> createRegister(ResourceKey<Registry<R>> registry);
-
-    SpawnEggItem createMimicSpawnEgg(Item.Properties properties);
-
 }

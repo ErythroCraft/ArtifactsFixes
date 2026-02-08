@@ -41,6 +41,7 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultipl
             DoubleJump::new
     );
 
+    // TODO cleanup
     public static void jump(Player player) {
         double fallDamageMultiplier = EquipmentHelper.minDouble(ModDataComponents.DOUBLE_JUMP.get(), player, 1D,
                 ability -> ability.fallDamageMultiplier().get(), true);
@@ -77,13 +78,15 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultipl
                 Mth.cos(direction) * motionMultiplier)
         );
 
-        player.hasImpulse = true;
+        player.needsSync = true;
 
-        player.awardStat(Stats.JUMP);
-        if (player.isSprinting()) {
-            player.causeFoodExhaustion(0.2F);
-        } else {
-            player.causeFoodExhaustion(0.05F);
+        if (!player.level().isClientSide()) {
+            player.awardStat(Stats.JUMP);
+            if (player.isSprinting()) {
+                player.causeFoodExhaustion(0.2F);
+            } else {
+                player.causeFoodExhaustion(0.05F);
+            }
         }
 
         if (!player.level().isClientSide()) {

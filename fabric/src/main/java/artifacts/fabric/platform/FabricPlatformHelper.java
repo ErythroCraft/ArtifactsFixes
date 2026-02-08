@@ -5,7 +5,6 @@ import artifacts.fabric.registry.FabricRegister;
 import artifacts.fabric.registry.ModAttributesFabric;
 import artifacts.fabric.registry.ModComponents;
 import artifacts.platform.PlatformHelper;
-import artifacts.registry.ModEntityTypes;
 import artifacts.registry.Register;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -56,11 +54,5 @@ public class FabricPlatformHelper implements PlatformHelper {
     @Override
     public <R> Register<R> createRegister(ResourceKey<Registry<R>> registry) {
         return new FabricRegister<>(registry);
-    }
-
-    // TODO move to common
-    @Override
-    public SpawnEggItem createMimicSpawnEgg(Item.Properties properties) {
-        return new SpawnEggItem(properties.spawnEgg(ModEntityTypes.MIMIC.get()));
     }
 }

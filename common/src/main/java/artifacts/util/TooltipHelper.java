@@ -22,7 +22,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,10 +36,9 @@ import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUT
 
 public class TooltipHelper {
 
-    public static void addAttributeTooltips(Consumer<Component> consumer, ItemStack stack, Item.TooltipContext context) {
-        ItemAttributeModifiers itemAttributeModifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+    public static void addAttributeTooltips(Consumer<Component> consumer, ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay) {
         boolean hasSlotTooltip = false;
-        if (itemAttributeModifiers.showInTooltip()) {
+        if (tooltipDisplay.shows(DataComponents.ATTRIBUTE_MODIFIERS)) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 MutableBoolean b = new MutableBoolean(false);
                 stack.forEachModifier(slot, (holder, attributeModifier) -> b.setTrue());

@@ -105,7 +105,7 @@ public class ArtifactHooksNeoForge {
     }
 
     private static void addAttributeTooltips(AddAttributeTooltipsEvent event) {
-        TooltipHelper.addAttributeTooltips(event::addTooltipLines, event.getStack(), event.getContext());
+        TooltipHelper.addAttributeTooltips(event::addTooltipLines, event.getStack(), event.getContext(), event.getContext().tooltipDisplay());
     }
 
     public static void onPlayerSwim(PlayerSwimEvent event) {
