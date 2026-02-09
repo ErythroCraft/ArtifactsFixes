@@ -5,7 +5,9 @@ import artifacts.equipment.client.EquipmentRenderingManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,13 +19,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerRendererMixin {
 
     @Inject(method = "renderLeftHand", at = @At("TAIL"))
-    private void renderLeftGlove(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, CallbackInfo callbackInfo) {
-        artifacts$renderArm(matrixStack, buffer, light, player, HumanoidArm.LEFT);
+    private void renderLeftGlove(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, Identifier identifier, boolean bl, CallbackInfo ci) {
+        // TODO artifacts$renderArm(matrixStack, buffer, light, player, HumanoidArm.LEFT);
     }
 
     @Inject(method = "renderRightHand", at = @At("TAIL"))
-    private void renderRightGlove(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, CallbackInfo callbackInfo) {
-        artifacts$renderArm(matrixStack, buffer, light, player, HumanoidArm.RIGHT);
+    private void renderRightGlove(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, Identifier identifier, boolean bl, CallbackInfo ci) {
+        // TODO artifacts$renderArm(matrixStack, buffer, light, player, HumanoidArm.RIGHT);
     }
 
     @Unique
