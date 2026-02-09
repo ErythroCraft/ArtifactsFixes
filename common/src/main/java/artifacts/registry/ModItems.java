@@ -38,7 +38,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class ModItems {
 
@@ -53,10 +53,10 @@ public class ModItems {
             .build()
     );
 
-    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", () -> new SpawnEggItem(new Item.Properties().spawnEgg(ModEntityTypes.MIMIC.get())));
+    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(ModEntityTypes.MIMIC.get())));
     public static final Holder<Item> UMBRELLA = register("umbrella", UmbrellaItem::new);
-    public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", () -> new EverlastingFoodItem(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build(), Artifacts.CONFIG.items.everlastingBeefCooldown, Artifacts.CONFIG.items.everlastingBeefEnabled));
-    public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", () -> new EverlastingFoodItem(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build(), Artifacts.CONFIG.items.eternalSteakCooldown, Artifacts.CONFIG.items.eternalSteakEnabled));
+    public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", properties -> new EverlastingFoodItem(properties.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build()), Artifacts.CONFIG.items.everlastingBeefCooldown, Artifacts.CONFIG.items.everlastingBeefEnabled));
+    public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", properties -> new EverlastingFoodItem(properties.food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build()), Artifacts.CONFIG.items.eternalSteakCooldown, Artifacts.CONFIG.items.eternalSteakEnabled));
 
     // head
     public static final Holder<Item> PLASTIC_DRINKING_HAT = wearableItem("plastic_drinking_hat", builder -> builder
@@ -360,14 +360,14 @@ public class ModItems {
     );
 
     private static Holder<Item> wearableItem(String name, Consumer<WearableArtifactItem.Builder> consumer) {
-        return register(name, () -> {
-            WearableArtifactItem.Builder builder = new WearableArtifactItem.Builder(name);
+        return register(name, properties -> {
+            WearableArtifactItem.Builder builder = new WearableArtifactItem.Builder(name, properties);
             consumer.accept(builder);
             return builder.build();
         });
     }
 
-    private static Holder<Item> register(String name, Supplier<? extends Item> supplier) {
-        return ITEMS.register(name, supplier);
+    private static Holder<Item> register(String name, Function<Item.Properties, ? extends Item> factory) {
+        return ITEMS.register(name, () -> factory.apply(new Item.Properties().setId(Artifacts.key(Registries.ITEM, name))));
     }
 }

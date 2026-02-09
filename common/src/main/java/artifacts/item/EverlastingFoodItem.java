@@ -5,7 +5,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
@@ -18,8 +17,8 @@ public class EverlastingFoodItem extends ArtifactItem {
     private final Supplier<Integer> eatingCooldown;
     private final Supplier<Boolean> isEnabled;
 
-    public EverlastingFoodItem(FoodProperties food, Supplier<Integer> eatingCooldown, Supplier<Boolean> isEnabled) {
-        super(new Properties().food(food));
+    public EverlastingFoodItem(Properties properties, Supplier<Integer> eatingCooldown, Supplier<Boolean> isEnabled) {
+        super(properties);
         this.eatingCooldown = eatingCooldown;
         this.isEnabled = isEnabled;
     }

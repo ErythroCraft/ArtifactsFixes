@@ -58,12 +58,15 @@ public class WearableArtifactItem extends Item {
     public static class Builder {
 
         private final String itemName;
-        private final Item.Properties properties = new Item.Properties();
-        private final List<AttributeModifiers.Entry> attributes = new ArrayList<>();
-        private final List<EnchantmentLevelModifiers.Entry> enchantments = new ArrayList<>();
+        private final Item.Properties properties;
+        private final List<AttributeModifiers.Entry> attributes;
+        private final List<EnchantmentLevelModifiers.Entry> enchantments;
 
-        public Builder(String itemName) {
+        public Builder(String itemName, Item.Properties properties) {
             this.itemName = itemName;
+            this.properties = properties;
+            this.attributes = new ArrayList<>();
+            this.enchantments = new ArrayList<>();
             equipSound(SoundEvents.ARMOR_EQUIP_GENERIC);
         }
 
