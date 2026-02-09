@@ -41,13 +41,13 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle(project(path: ':common', configuration: 'transformProductionNeoForge'))
 
-    include modImplementation("be.florens:expandability-neoforge:${project.expandability_version}")
+    include modCompileOnly("be.florens:expandability-neoforge:${project.expandability_version}")
     modImplementation("me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}")
-    modImplementation("top.theillusivec4.curios:curios-neoforge:${project.curios_version}")
+    modCompileOnly("top.theillusivec4.curios:curios-neoforge:${project.curios_version}")
 
-    modRuntimeOnly("maven.modrinth:curious-armor-stands:${project.curious_armor_stands_version}")
+    // modRuntimeOnly("maven.modrinth:curious-armor-stands:${project.curious_armor_stands_version}")
 
-    modImplementation("io.wispforest:accessories-neoforge:${project.accessories_version}")
+    modCompileOnly("io.wispforest:accessories-neoforge:${project.accessories_version}")
     modCompileOnly("io.wispforest:owo-lib:${project.owo_version}")
 
     // Required due to issues with JIJ dependency resolving in arch or something

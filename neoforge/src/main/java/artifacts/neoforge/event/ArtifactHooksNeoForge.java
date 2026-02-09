@@ -3,6 +3,8 @@ package artifacts.neoforge.event;
 import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.event.ArtifactHooks;
+import artifacts.integration.ModCompat;
+import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.TooltipHelper;
@@ -12,7 +14,6 @@ import be.florens.expandability.api.forge.PlayerSwimEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.bus.api.EventPriority;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddAttributeTooltipsEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -30,7 +31,7 @@ import java.util.List;
 public class ArtifactHooksNeoForge {
 
     public static void register() {
-        if (ModList.get().isLoaded("expandability")) {
+        if (PlatformServices.platformHelper.isModLoaded(ModCompat.EXPANDABILITY)) {
             NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onPlayerSwim);
             NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onAquaDashersFluidCollision);
         }

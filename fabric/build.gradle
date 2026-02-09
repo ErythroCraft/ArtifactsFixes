@@ -45,10 +45,10 @@ dependencies {
     modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cardinal_components_version}")
     modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cardinal_components_version}")
 
-    modImplementation include("be.florens:expandability-fabric:${project.expandability_version}")
+    modCompileOnly include("be.florens:expandability-fabric:${project.expandability_version}")
 
     // Compat & integration
-    modImplementation("io.wispforest:accessories-fabric:${project.accessories_version}")
+    modCompileOnly("io.wispforest:accessories-fabric:${project.accessories_version}")
     modCompileOnly("io.wispforest:owo-lib:${project.owo_version}")
 }
 

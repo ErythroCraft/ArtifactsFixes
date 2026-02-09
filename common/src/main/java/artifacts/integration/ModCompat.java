@@ -4,6 +4,7 @@ import artifacts.platform.PlatformServices;
 
 public class ModCompat {
 
+    public static final String EXPANDABILITY = "expandability";
     public static final String CURIOS = "curios";
     public static final String TRINKETS = "trinkets";
     public static final String ACCESSORIES = "accessories";
