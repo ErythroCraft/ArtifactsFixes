@@ -1,8 +1,8 @@
 {
   "pack": {
-    "pack_format": 0,
-    "supported_formats": [0, 2147483647],
-    "description": "Artifacts' resources"
+    "description": "Artifacts' resources",
+    "min_format": 65,
+    "max_format": 2147483647
   },
   "fabric:overlays": {
     "entries": [
