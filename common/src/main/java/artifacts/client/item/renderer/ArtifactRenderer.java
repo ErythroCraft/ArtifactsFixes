@@ -8,6 +8,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.monster.ghast.GhastModel;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -60,7 +61,7 @@ public abstract class ArtifactRenderer {
 
         renderModelWithFoil(model, humanoidRenderState, poseStack, submitNodeCollector, texture, light, stack.hasFoil());
         if (glowTexture != null) {
-            renderModelWithFoil(model, humanoidRenderState, poseStack, submitNodeCollector, glowTexture, light, stack.hasFoil());
+            renderModelWithFoil(model, humanoidRenderState, poseStack, submitNodeCollector, glowTexture, LightTexture.FULL_BRIGHT, stack.hasFoil());
         }
     }
 
