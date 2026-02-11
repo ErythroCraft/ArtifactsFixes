@@ -1,7 +1,6 @@
 package artifacts.neoforge.client;
 
 import artifacts.Artifacts;
-import artifacts.equipment.client.EquipmentRenderingManager;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.client.event.RenderArmEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -17,6 +16,6 @@ public abstract class ArmRenderHandler {
             return;
         }
 
-        EquipmentRenderingManager.renderArm(event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPlayer(), event.getArm());
+        // TODO EquipmentRenderingManager.renderArm(event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getPlayer(), event.getArm());
     }
 }

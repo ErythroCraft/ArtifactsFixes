@@ -1,10 +1,8 @@
 package artifacts.neoforge.mixin.item;
 
-import artifacts.Artifacts;
 import artifacts.item.UmbrellaItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -18,6 +16,7 @@ public abstract class UmbrellaItemMixin extends Item {
 
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility toolAction) {
-        return ItemAbilities.DEFAULT_SHIELD_ACTIONS.contains(toolAction) && Artifacts.CONFIG.items.umbrellaIsShield.get();
+        //TODO return ItemAbilities.DEFAULT_SHIELD_ACTIONS.contains(toolAction) && Artifacts.CONFIG.items.umbrellaIsShield.get();
+        return super.canPerformAction(stack, toolAction);
     }
 }
