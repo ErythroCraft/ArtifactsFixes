@@ -16,7 +16,7 @@ public class NeoForgeNetworkHandler {
         PayloadRegistrar registrar = event.registrar("1");
         for (NetworkHandler.PayloadHandler<?> payloadHandler : NetworkHandler.SERVERBOUND_HANDLERS) {
             if (NetworkHandler.CLIENTBOUND_HANDLERS.stream().anyMatch(p -> p.type() == payloadHandler.type())) {
-                register(registrar::playBidirectional, payloadHandler);
+                register((BidirectionalPayloadRegistration) registrar::playBidirectional, payloadHandler);
             } else {
                 register(registrar::playToServer, payloadHandler);
             }
@@ -52,6 +52,24 @@ public class NeoForgeNetworkHandler {
                 CustomPacketPayload.Type<T> type,
                 StreamCodec<? super FriendlyByteBuf, T> reader,
                 IPayloadHandler<T> handler
+        );
+    }
+
+    @FunctionalInterface
+    private interface BidirectionalPayloadRegistration extends PayloadRegistration {
+        default <T extends CustomPacketPayload> void register(
+                CustomPacketPayload.Type<T> type,
+                StreamCodec<? super FriendlyByteBuf, T> reader,
+                IPayloadHandler<T> handler
+        ) {
+            register(type, reader, handler, handler);
+        }
+
+        <T extends CustomPacketPayload> void register(
+                CustomPacketPayload.Type<T> type,
+                StreamCodec<? super FriendlyByteBuf, T> reader,
+                IPayloadHandler<T> serverHandler,
+                IPayloadHandler<T> clientHandler
         );
     }
 }
