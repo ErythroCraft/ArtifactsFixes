@@ -1,14 +1,15 @@
 {
   "pack": {
     "description": "Artifacts' resources",
-    "pack_format": 0,
-    "supported_formats": [0, 2147483647]
+    "min_format": 65,
+    "max_format": 2147483647
   },
   "overlays": {
     "entries": [
       {
         "directory": "overlay_add_face_slot",
-        "formats": [0, 2147483647],
+        "min_format": 65,
+        "max_format": 2147483647,
         "neoforge:conditions": [
           {
             "type": "artifacts:config_value",
@@ -18,7 +19,8 @@
       },
       {
         "directory": "overlay_remove_slot_restrictions",
-        "formats": [0, 2147483647],
+        "min_format": 65,
+        "max_format": 2147483647,
         "neoforge:conditions": [
           {
             "type": "artifacts:config_value",
@@ -28,7 +30,8 @@
       },
       {
         "directory": "overlay_disable_accessories",
-        "formats": [0, 2147483647],
+        "min_format": 65,
+        "max_format": 2147483647,
         "neoforge:conditions": [
           {
             "type": "neoforge:not",
@@ -41,7 +44,8 @@
       },
       {
         "directory": "overlay_disable_curios",
-        "formats": [0, 2147483647],
+        "min_format": 65,
+        "max_format": 2147483647,
         "neoforge:conditions": [
           {
             "type": "neoforge:not",
@@ -54,7 +58,8 @@
       },
       {
         "directory": "overlay_disable_trinkets",
-        "formats": [0, 2147483647],
+        "min_format": 65,
+        "max_format": 2147483647,
         "neoforge:conditions": [
           {
             "type": "neoforge:not",
