@@ -20,10 +20,10 @@ public class SimpleArtifactRenderer extends ArtifactRenderer {
     public static ArtifactRenderer create(String name, HumanoidModel<HumanoidRenderState> model) {
         return new SimpleArtifactRenderer(getTextureId(name), null, model);
     }
+
     public static ArtifactRenderer createGlowing(String name, HumanoidModel<HumanoidRenderState> model) {
         return new SimpleArtifactRenderer(getTextureId(name), getTextureId(name).withSuffix("_overlay"), model);
     }
-
 
     @Override
     protected Identifier getTexture(HumanoidRenderState renderState, int slotIndex) {

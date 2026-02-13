@@ -48,6 +48,7 @@ public abstract class ArtifactRenderer {
         HumanoidRenderState humanoidRenderState = renderState instanceof HumanoidRenderState s ? s : DEFAULT_RENDER_STATE;
 
         HumanoidModel<HumanoidRenderState> model = getModel(humanoidRenderState, slotIndex);
+        model.setupAnim(humanoidRenderState);
         ArtifactRenderer.loadPoseFrom(model, entityModel, humanoidRenderState);
 
         if (entityModel instanceof GhastModel) {

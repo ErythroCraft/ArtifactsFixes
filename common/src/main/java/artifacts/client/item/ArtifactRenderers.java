@@ -37,13 +37,13 @@ public class ArtifactRenderers {
         register(ModItems.CHARM_OF_SHRINKING.value(), () -> SimpleArtifactRenderer.create("charm_of_shrinking", new NecklaceModel(bakeLayer(ArtifactLayers.CHARM_OF_SHRINKING))));
 
         // belt
-        register(ModItems.CLOUD_IN_A_BOTTLE.value(), () -> new BeltArtifactRenderer("cloud_in_a_bottle", BeltModel.createCloudInABottleModel()));
-        register(ModItems.OBSIDIAN_SKULL.value(), () -> new BeltArtifactRenderer("obsidian_skull", BeltModel.createObsidianSkullModel()));
-        register(ModItems.ANTIDOTE_VESSEL.value(), () -> new BeltArtifactRenderer("antidote_vessel", BeltModel.createAntidoteVesselModel()));
-        register(ModItems.UNIVERSAL_ATTRACTOR.value(), () -> new BeltArtifactRenderer("universal_attractor", BeltModel.createUniversalAttractorModel()));
-        register(ModItems.CRYSTAL_HEART.value(), () -> new BeltArtifactRenderer("crystal_heart", BeltModel.createCrystalHeartModel()));
+        register(ModItems.CLOUD_IN_A_BOTTLE.value(), () -> SimpleArtifactRenderer.create("cloud_in_a_bottle", BeltModel.createCloudInABottleModel()));
+        register(ModItems.OBSIDIAN_SKULL.value(), () -> SimpleArtifactRenderer.create("obsidian_skull", BeltModel.createObsidianSkullModel()));
+        register(ModItems.ANTIDOTE_VESSEL.value(), () -> SimpleArtifactRenderer.create("antidote_vessel", BeltModel.createAntidoteVesselModel()));
+        register(ModItems.UNIVERSAL_ATTRACTOR.value(), () -> SimpleArtifactRenderer.create("universal_attractor", BeltModel.createUniversalAttractorModel()));
+        register(ModItems.CRYSTAL_HEART.value(), () -> SimpleArtifactRenderer.create("crystal_heart", BeltModel.createCrystalHeartModel()));
         register(ModItems.HELIUM_FLAMINGO.value(), () -> SimpleArtifactRenderer.create("helium_flamingo", BeltModel.createHeliumFlamingoModel()));
-        register(ModItems.CHORUS_TOTEM.value(), () -> new BeltArtifactRenderer("chorus_totem", BeltModel.createChorusTotemModel()));
+        register(ModItems.CHORUS_TOTEM.value(), () -> SimpleArtifactRenderer.create("chorus_totem", BeltModel.createChorusTotemModel()));
         register(ModItems.WARP_DRIVE.value(), () -> new WarpDriveRenderer("warp_drive", BeltModel.createWarpDriveModel()));
 
         // hands

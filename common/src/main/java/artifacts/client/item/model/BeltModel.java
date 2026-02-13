@@ -37,6 +37,12 @@ public class BeltModel extends HumanoidModel<HumanoidRenderState> {
         this(part, RenderTypes::entityCutoutNoCull, xOffset, zOffset, rotation);
     }
 
+    @Override
+    public void setupAnim(HumanoidRenderState renderState) {
+        super.setupAnim(renderState);
+        setCharmPosition(0); // TODO add slot index to renderstate or split into separate models
+    }
+
     public void setCharmPosition(int slot) {
         float xOffset = slot % 2 == 0 ? this.xOffset : -this.xOffset;
         float zOffset = slot % 4 < 2 ? this.zOffset : -this.zOffset;
@@ -52,10 +58,10 @@ public class BeltModel extends HumanoidModel<HumanoidRenderState> {
             private final ModelPart cloud = charm.getChild("cloud");
 
             @Override
-            public void setupAnim(HumanoidRenderState humanoidRenderState) {
-                super.setupAnim(humanoidRenderState);
-                cloud.yRot = (humanoidRenderState.ageInTicks) / 50;
-                cloud.y = Mth.cos((humanoidRenderState.ageInTicks) / 30) / 2;
+            public void setupAnim(HumanoidRenderState renderState) {
+                super.setupAnim(renderState);
+                cloud.yRot = (renderState.ageInTicks) / 50;
+                cloud.y = Mth.cos((renderState.ageInTicks) / 30) / 2;
             }
         };
     }

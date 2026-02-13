@@ -6,6 +6,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
@@ -25,28 +26,10 @@ public class ScarfModel extends HumanoidModel<HumanoidRenderState> {
     public void setupAnim(HumanoidRenderState renderState) {
         super.setupAnim(renderState);
 
-        /* TODO move this to extractRenderState
-        if (entity instanceof AbstractClientPlayer player) {
-            double x = Mth.lerp(partialTicks, player.xCloakO, player.xCloak) - Mth.lerp(partialTicks, player.xo, player.getX());
-            double y = Mth.lerp(partialTicks, player.yCloakO, player.yCloak) - Mth.lerp(partialTicks, player.yo, player.getY());
-            double z = Mth.lerp(partialTicks, player.zCloakO, player.zCloak) - Mth.lerp(partialTicks, player.zo, player.getZ());
-            float f = player.yBodyRotO + (player.yBodyRot - player.yBodyRotO);
-            double d3 = Mth.sin(f * ((float) Math.PI / 180));
-            double d4 = -Mth.cos(f * ((float) Math.PI / 180));
-            float f1 = (float) y * 10;
-            f1 = Mth.clamp(f1, -6, 32);
-            float f2 = (float) (x * d3 + z * d4) * 100;
-            f2 = Mth.clamp(f2, 0, 150);
-            if (f2 < 0) {
-                f2 = 0;
-            }
-
-            float f4 = Mth.lerp(partialTicks, player.oBob, player.bob);
-            f1 = f1 + Mth.sin(Mth.lerp(partialTicks, player.walkDistO, player.walkDist) * 6) * 32 * f4;
-
-            cloak.xRot = body.xRot + (6 + f2 / 2 + f1) / 180 * (float) Math.PI;
+        // TODO fix rendering on non-player entities
+        if (renderState instanceof AvatarRenderState avatarRenderState) {
+            cloak.xRot = body.xRot + (6 + avatarRenderState.capeLean / 2 + avatarRenderState.capeFlap) / 180 * (float) Math.PI;
         }
-        */
     }
 
     public static MeshDefinition createScarf() {

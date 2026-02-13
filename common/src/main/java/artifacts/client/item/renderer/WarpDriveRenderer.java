@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class WarpDriveRenderer extends BeltArtifactRenderer {
+public class WarpDriveRenderer extends SimpleArtifactRenderer {
 
     private static final int OVERLAY_TEXTURE_COUNT = 4;
 
@@ -17,7 +17,7 @@ public class WarpDriveRenderer extends BeltArtifactRenderer {
     private final Random random = new Random();
 
     public WarpDriveRenderer(String name, BeltModel model) {
-        super("%s/%s".formatted(name, name), model);
+        super(ArtifactRenderer.getTextureId(name, name), null, model);
         overlayTextures = new ArrayList<>();
         for (int i = 0; i < OVERLAY_TEXTURE_COUNT; i++) {
             overlayTextures.add(ArtifactRenderer.getTextureId(name, "%s_overlay%s".formatted(name, i)));

@@ -17,23 +17,6 @@ public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
         super(part, RenderTypes::entityTranslucent);
     }
 
-    /* TODO Replace this with a mesh transformer
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int light, int overlay, int color) {
-        poseStack.pushPose();
-        if (this.young) {
-            float babyBodyScale = 2;
-            float scale = 1 / babyBodyScale;
-            poseStack.scale(scale, scale, scale);
-            float bodyYOffset = 24;
-            poseStack.translate(0, bodyYOffset / 16, 0);
-        }
-        poseStack.scale(0.51F, 0.51F, 0.51F);
-        this.bodyParts().forEach((modelPart) -> modelPart.render(poseStack, buffer, light, overlay, color));
-        poseStack.popPose();
-    }
-    */
-
 
     public static MeshDefinition createNecklace(CubeListBuilder body) {
         MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0);
@@ -42,7 +25,7 @@ public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
                 "body",
                 body.texOffs(0, 0)
                         .addBox(-(2 * 8) / 2F, -1 / 2F, -(2 * 4 + 1) / 2F, 2 * 8, 2 * 12 + 1, 2 * 4 + 1),
-                PartPose.ZERO
+                PartPose.ZERO.withScale(0.51F)
         );
 
         mesh.getRoot().retainExactParts(Set.of("body"));
@@ -57,7 +40,7 @@ public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
                 "body",
                 body.texOffs(0, 0)
                         .addBox(-(2 * 8 + 1) / 2F, -1 / 2F, -(2 * 4 + 1) / 2F, 2 * 8 + 1, 2 * 12 + 1, 2 * 4 + 1),
-                PartPose.ZERO
+                PartPose.ZERO.withScale(0.51F)
         );
 
         mesh.getRoot().retainExactParts(Set.of("body"));
@@ -116,8 +99,6 @@ public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
 
         body.texOffs(52, 3);
         body.addBox(-1F / 2, 6.5F, -5, 1, 1, 1);
-
-
 
         return createCenteredNecklace(body);
     }
