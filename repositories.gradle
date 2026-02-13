@@ -4,7 +4,7 @@ repositories {
         name 'Modrinth'
         url 'https://api.modrinth.com/maven'
         content {
-            includeGroup 'maven.modrinth' // Curious Armor Stands, Trinkets Canary
+            includeGroup 'maven.modrinth' // Curious Armor Stands
         }
     }
     maven {
@@ -12,6 +12,13 @@ repositories {
         url 'https://maven.theillusivec4.top/'
         content {
             includeGroupAndSubgroups 'top.theillusivec4' // Curios
+        }
+    }
+    maven {
+        name 'Nucleoid'
+        url 'https://maven.nucleoid.xyz/releases'
+        content {
+            includeGroupAndSubgroups("eu.pb4") // Trinkets
         }
     }
     maven {
