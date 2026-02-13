@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
+import java.util.Set;
 import java.util.function.Function;
 
 public class BeltModel extends HumanoidModel<HumanoidRenderState> {
@@ -105,6 +106,8 @@ public class BeltModel extends HumanoidModel<HumanoidRenderState> {
                 charm,
                 PartPose.ZERO
         );
+
+        mesh.getRoot().retainPartsAndChildren(Set.of("body"));
 
         return mesh;
     }

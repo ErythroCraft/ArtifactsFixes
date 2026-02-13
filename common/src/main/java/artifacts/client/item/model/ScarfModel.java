@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 
+import java.util.Set;
 import java.util.function.Function;
 
 public class ScarfModel extends HumanoidModel<HumanoidRenderState> {
@@ -66,6 +67,8 @@ public class ScarfModel extends HumanoidModel<HumanoidRenderState> {
                         .addBox(-5, 0, 0, 5, 12, 2),
                 PartPose.offset(0, 0, 1.99F)
         );
+
+        mesh.getRoot().retainPartsAndChildren(Set.of("body"));
 
         return mesh;
     }

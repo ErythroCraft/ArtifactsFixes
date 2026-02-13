@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
+import java.util.Set;
 import java.util.function.Function;
 
 public class HeadModel extends HumanoidModel<HumanoidRenderState> {
@@ -31,6 +32,8 @@ public class HeadModel extends HumanoidModel<HumanoidRenderState> {
                 head,
                 PartPose.ZERO
         );
+
+        mesh.getRoot().retainExactParts(Set.of("head"));
 
         return mesh;
     }

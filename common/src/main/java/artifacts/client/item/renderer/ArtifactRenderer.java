@@ -77,9 +77,9 @@ public abstract class ArtifactRenderer {
 
     private static <S> void renderModelWithFoil(Model<S> model, S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Identifier texture, int light, boolean hasFoil) {
         RenderType renderType = model.renderType(texture);
-        submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF, null);
+        submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, light, OverlayTexture.NO_OVERLAY, 0, null);
         if (hasFoil) {
-            submitNodeCollector.order(1).submitModel(model, renderState, poseStack, RenderTypes.armorEntityGlint(), light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF, null);
+            submitNodeCollector.order(1).submitModel(model, renderState, poseStack, RenderTypes.armorEntityGlint(), light, OverlayTexture.NO_OVERLAY, 0, null);
         }
     }
 

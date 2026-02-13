@@ -9,6 +9,8 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 
+import java.util.Set;
+
 public class LegsModel extends HumanoidModel<HumanoidRenderState> {
 
     public LegsModel(ModelPart part) {
@@ -31,6 +33,8 @@ public class LegsModel extends HumanoidModel<HumanoidRenderState> {
                         .addBox(-2, 0, -2, 4, 12, 4, deformation),
                 PartPose.offset(-1.9F, 12, 0)
         );
+
+        mesh.getRoot().retainExactParts(Set.of("left_leg", "right_leg"));
 
         return mesh;
     }

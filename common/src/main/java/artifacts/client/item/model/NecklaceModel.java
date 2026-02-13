@@ -9,6 +9,8 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 
+import java.util.Set;
+
 public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
 
     public NecklaceModel(ModelPart part) {
@@ -43,6 +45,8 @@ public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
                 PartPose.ZERO
         );
 
+        mesh.getRoot().retainExactParts(Set.of("body"));
+
         return mesh;
     }
 
@@ -55,6 +59,8 @@ public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
                         .addBox(-(2 * 8 + 1) / 2F, -1 / 2F, -(2 * 4 + 1) / 2F, 2 * 8 + 1, 2 * 12 + 1, 2 * 4 + 1),
                 PartPose.ZERO
         );
+
+        mesh.getRoot().retainExactParts(Set.of("body"));
 
         return mesh;
     }

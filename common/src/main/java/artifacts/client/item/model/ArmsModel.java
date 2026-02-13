@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
 
+import java.util.Set;
 import java.util.function.Function;
 
 public class ArmsModel extends HumanoidModel<HumanoidRenderState> {
@@ -87,6 +88,8 @@ public class ArmsModel extends HumanoidModel<HumanoidRenderState> {
                 rightArm,
                 PartPose.offset(1 - armWidth / 2, 10, 0)
         );
+
+        mesh.getRoot().retainExactParts(Set.of("left_arm", "right_arm"));
 
         return mesh;
     }
