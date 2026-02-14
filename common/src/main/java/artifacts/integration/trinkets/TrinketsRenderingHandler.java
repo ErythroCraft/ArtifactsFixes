@@ -60,7 +60,11 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
 
         @Override
         public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntityRenderState> entityModel, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, LivingEntityRenderState renderState, float yRotation, float xRotation) {
-            renderer.get().render(stack, renderState, entityModel, slotReference.index(), poseStack, submitNodeCollector, light);
+            int slotIndex = slotReference.index();
+            if (slotReference.inventory().getSlotType().getGroup().equals("offhand")) {
+                slotIndex += 1;
+            }
+            renderer.get().render(stack, renderState, entityModel, slotIndex, poseStack, submitNodeCollector, light);
         }
     }
 }

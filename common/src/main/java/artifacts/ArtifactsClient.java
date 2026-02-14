@@ -11,11 +11,6 @@ import artifacts.integration.trinkets.TrinketsCompatClient;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 // TODO fix umbrella model using vanilla `is_using_item` & `display_context` model properties
 public class ArtifactsClient {
@@ -43,9 +38,9 @@ public class ArtifactsClient {
         ToggleKeyHandlers.init();
     }
 
-    public static void registerLayerDefinitions(BiConsumer<ModelLayerLocation, Supplier<LayerDefinition>> registration) {
+    public static void registerLayerDefinitions(ArtifactLayers.LayerRegistration registration) {
         ArtifactLayers.register(registration);
-        registration.accept(MimicModel.LAYER_LOCATION, MimicModel::createLayer);
-        registration.accept(MimicModel.CHEST_LAYER_LOCATION, MimicModel::createChestLayer);
+        registration.register(MimicModel.LAYER_LOCATION, MimicModel::createLayer);
+        registration.register(MimicModel.CHEST_LAYER_LOCATION, MimicModel::createChestLayer);
     }
 }

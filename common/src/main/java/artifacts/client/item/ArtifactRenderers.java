@@ -47,16 +47,16 @@ public class ArtifactRenderers {
         register(ModItems.WARP_DRIVE.value(), () -> new WarpDriveRenderer("warp_drive", BeltModel.createWarpDriveModel()));
 
         // hands
-        register(ModItems.DIGGING_CLAWS.value(), () -> GloveArtifactRenderer.create("digging_claws", "digging_claws", ArmsModel::createClawsModel));
-        register(ModItems.FERAL_CLAWS.value(), () -> GloveArtifactRenderer.create("feral_claws", "feral_claws", ArmsModel::createClawsModel));
-        register(ModItems.POWER_GLOVE.value(), () -> GloveArtifactRenderer.create("power_glove", ArmsModel::createGloveModel));
-        register(ModItems.FIRE_GAUNTLET.value(), () -> GloveArtifactRenderer.create("fire_gauntlet", ArmsModel::createGloveModel));
-        register(ModItems.POCKET_PISTON.value(), () -> GloveArtifactRenderer.create("pocket_piston", ArmsModel::createPocketPistonModel));
-        register(ModItems.VAMPIRIC_GLOVE.value(), () -> GloveArtifactRenderer.create("vampiric_glove", ArmsModel::createGloveModel));
-        register(ModItems.GOLDEN_HOOK.value(), () -> GloveArtifactRenderer.create("golden_hook", ArmsModel::createGoldenHookModel));
-        register(ModItems.ONION_RING.value(), () -> GloveArtifactRenderer.create("onion_ring", ArmsModel::createOnionRingModel));
-        register(ModItems.PICKAXE_HEATER.value(), () -> GloveArtifactRenderer.create("pickaxe_heater", ArmsModel::createPickaxeHeaterModel));
-        register(ModItems.WITHERED_BRACELET.value(), () -> GloveArtifactRenderer.create("withered_bracelet", ArmsModel::createWitheredBraceletModel));
+        register(ModItems.DIGGING_CLAWS.value(), () -> GloveArtifactRenderer.create("digging_claws", "digging_claws", ArmsModelSet.bake(ArtifactLayers.CLAWS)));
+        register(ModItems.FERAL_CLAWS.value(), () -> GloveArtifactRenderer.create("feral_claws", "feral_claws", ArmsModelSet.bake(ArtifactLayers.CLAWS)));
+        register(ModItems.POWER_GLOVE.value(), () -> GloveArtifactRenderer.create("power_glove", ArmsModelSet.bake(ArtifactLayers.GLOVE)));
+        register(ModItems.FIRE_GAUNTLET.value(), () -> GloveArtifactRenderer.create("fire_gauntlet", ArmsModelSet.bake(ArtifactLayers.GLOVE)));
+        register(ModItems.POCKET_PISTON.value(), () -> GloveArtifactRenderer.create("pocket_piston", ArmsModelSet.bake(ArtifactLayers.POCKET_PISTON)));
+        register(ModItems.VAMPIRIC_GLOVE.value(), () -> GloveArtifactRenderer.create("vampiric_glove", ArmsModelSet.bake(ArtifactLayers.GLOVE)));
+        register(ModItems.GOLDEN_HOOK.value(), () -> GloveArtifactRenderer.create("golden_hook", ArmsModelSet.bake(ArtifactLayers.GOLDEN_HOOK)));
+        register(ModItems.ONION_RING.value(), () -> GloveArtifactRenderer.create("onion_ring", ArmsModelSet.bake(ArtifactLayers.ONION_RING)));
+        register(ModItems.PICKAXE_HEATER.value(), () -> GloveArtifactRenderer.create("pickaxe_heater", ArmsModelSet.bake(ArtifactLayers.PICKAXE_HEATER)));
+        register(ModItems.WITHERED_BRACELET.value(), () -> GloveArtifactRenderer.create("withered_bracelet", ArmsModelSet.bake(ArtifactLayers.WITHERED_BRACELET)));
 
         // feet
         register(ModItems.AQUA_DASHERS.value(), () -> new BootArtifactRenderer("aqua_dashers", hasArmor -> new LegsModel(bakeLayer(hasArmor ? ArtifactLayers.AQUA_DASHERS_LARGE : ArtifactLayers.AQUA_DASHERS_SMALL))));

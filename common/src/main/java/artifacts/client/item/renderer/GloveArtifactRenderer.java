@@ -1,6 +1,6 @@
 package artifacts.client.item.renderer;
 
-import artifacts.client.item.model.ArmsModel;
+import artifacts.client.item.model.ArmsModelSet;
 import artifacts.equipment.client.EquipmentRenderingManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
@@ -16,43 +16,38 @@ import net.minecraft.world.entity.player.PlayerModelType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Function;
-
 public class GloveArtifactRenderer extends ArtifactRenderer {
 
     private final Identifier wideTexture;
     private final Identifier slimTexture;
     private final Identifier wideGlowTexture;
     private final Identifier slimGlowTexture;
-    private final ArmsModel wideModel;
-    private final ArmsModel slimModel;
+    private final ArmsModelSet<HumanoidModel<HumanoidRenderState>> models;
 
     protected GloveArtifactRenderer(
             Identifier wideTexture,
             Identifier slimTexture,
             @Nullable Identifier wideGlowTexture,
             @Nullable Identifier slimGlowTexture,
-            ArmsModel wideModel,
-            ArmsModel slimModel
+            ArmsModelSet<HumanoidModel<HumanoidRenderState>> models
     ) {
         this.wideTexture = wideTexture;
         this.slimTexture = slimTexture;
         this.wideGlowTexture = wideGlowTexture;
         this.slimGlowTexture = slimGlowTexture;
-        this.wideModel = wideModel;
-        this.slimModel = slimModel;
+        this.models = models;
     }
 
-    public static GloveArtifactRenderer create(String name, Function<Boolean, ArmsModel> modelFactory) {
-        return create("%s_wide".formatted(name), "%s_slim".formatted(name), modelFactory);
+    public static GloveArtifactRenderer create(String name, ArmsModelSet<HumanoidModel<HumanoidRenderState>> models) {
+        return create("%s_wide".formatted(name), "%s_slim".formatted(name), models);
     }
 
-    public static GloveArtifactRenderer create(String wideTextureName, String slimTextureName, Function<Boolean, ArmsModel> modelFactory) {
-        return create(getTextureId(wideTextureName), getTextureId(slimTextureName), modelFactory);
+    public static GloveArtifactRenderer create(String wideTextureName, String slimTextureName, ArmsModelSet<HumanoidModel<HumanoidRenderState>> models) {
+        return create(getTextureId(wideTextureName), getTextureId(slimTextureName), models);
     }
 
-    private static GloveArtifactRenderer create(Identifier wideTexture, Identifier slimTexture, Function<Boolean, ArmsModel> modelFactory) {
-        return new GloveArtifactRenderer(wideTexture, slimTexture, null, null, modelFactory.apply(false), modelFactory.apply(true));
+    private static GloveArtifactRenderer create(Identifier wideTexture, Identifier slimTexture, ArmsModelSet<HumanoidModel<HumanoidRenderState>> models) {
+        return new GloveArtifactRenderer(wideTexture, slimTexture, null, null, models);
     }
 
     @Nullable
@@ -65,24 +60,27 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
 
     @Override
     protected Identifier getTexture(HumanoidRenderState renderState, int slotIndex) {
-        return hasSlimArms(renderState) ? slimTexture : wideTexture;
+        if (getArmType(renderState) == PlayerModelType.SLIM) {
+            return slimTexture;
+        }
+        return wideTexture;
     }
 
     @Override
     protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState, int slotIndex) {
-        return hasSlimArms(renderState) ? slimGlowTexture : wideGlowTexture;
+        if (getArmType(renderState) == PlayerModelType.SLIM) {
+            return slimGlowTexture;
+        }
+        return wideGlowTexture;
     }
 
     @Override
     protected HumanoidModel<HumanoidRenderState> getModel(HumanoidRenderState renderState, int slotIndex) {
-        HumanoidModel<HumanoidRenderState> model = hasSlimArms(renderState) ? slimModel : wideModel;
-        model.setAllVisible(false);
-        model.getArm(getArm(renderState, slotIndex)).visible = true;
-        return model;
+        return models.get(getArm(renderState, slotIndex), getArmType(renderState));
     }
 
-    protected static boolean hasSlimArms(LivingEntityRenderState renderState) {
-        return renderState instanceof AvatarRenderState avatarRenderState && avatarRenderState.skin.model() == PlayerModelType.SLIM;
+    protected static PlayerModelType getArmType(LivingEntityRenderState renderState) {
+        return renderState instanceof AvatarRenderState avatarRenderState ? avatarRenderState.skin.model() : PlayerModelType.WIDE;
     }
 
     private static HumanoidArm getArm(HumanoidRenderState renderState, int slotIndex) {
