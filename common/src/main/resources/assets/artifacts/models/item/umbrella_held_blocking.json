@@ -1,5 +1,5 @@
 {
-  "parent": "artifacts:item/umbrella_held_idle",
+  "parent": "artifacts:item/umbrella_held",
   "display": {
     "thirdperson_righthand": {
       "rotation": [-45, 0, -15],

@@ -40,7 +40,7 @@ public class UmbrellaItem extends ArtifactItem {
 
     @Override
     public ItemUseAnimation getUseAnimation(ItemStack stack) {
-        return ItemUseAnimation.BLOCK;
+        return ItemUseAnimation.NONE;
     }
 
     @Override
