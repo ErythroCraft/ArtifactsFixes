@@ -187,6 +187,7 @@ public class BeltModel extends HumanoidModel<HumanoidRenderState> {
                         .texOffs(0, 36).addBox(-2, 1, -9, 4, 11, 4),
                 PartPose.ZERO
         );
+        mesh.getRoot().retainExactParts(Set.of("body"));
 
         return mesh;
     }

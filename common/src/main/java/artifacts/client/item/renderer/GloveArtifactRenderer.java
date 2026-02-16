@@ -39,15 +39,21 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
     }
 
     public static GloveArtifactRenderer create(String name, ArmsModelSet<HumanoidModel<HumanoidRenderState>> models) {
-        return create("%s_wide".formatted(name), "%s_slim".formatted(name), models);
+        return create("%s/%s_wide".formatted(name, name), "%s/%s_slim".formatted(name, name), models);
     }
 
     public static GloveArtifactRenderer create(String wideTextureName, String slimTextureName, ArmsModelSet<HumanoidModel<HumanoidRenderState>> models) {
-        return create(getTextureId(wideTextureName), getTextureId(slimTextureName), models);
+        return new GloveArtifactRenderer(getTextureId(wideTextureName), getTextureId(slimTextureName), null, null, models);
     }
 
-    private static GloveArtifactRenderer create(Identifier wideTexture, Identifier slimTexture, ArmsModelSet<HumanoidModel<HumanoidRenderState>> models) {
-        return new GloveArtifactRenderer(wideTexture, slimTexture, null, null, models);
+    public static GloveArtifactRenderer createGlowing(String name, ArmsModelSet<HumanoidModel<HumanoidRenderState>> models) {
+        return new GloveArtifactRenderer(
+                getTextureId("%s/%s_wide".formatted(name, name)),
+                getTextureId("%s/%s_slim".formatted(name, name)),
+                getTextureId("%s/%s_wide_overlay".formatted(name, name)),
+                getTextureId("%s/%s_slim_overlay".formatted(name, name)),
+                models
+        );
     }
 
     @Nullable

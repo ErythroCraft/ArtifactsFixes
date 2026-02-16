@@ -22,7 +22,7 @@ public class SimpleArtifactRenderer extends ArtifactRenderer {
     }
 
     public static ArtifactRenderer createGlowing(String name, HumanoidModel<HumanoidRenderState> model) {
-        return new SimpleArtifactRenderer(getTextureId(name), getTextureId(name).withSuffix("_overlay"), model);
+        return new SimpleArtifactRenderer(getTextureId(name, name), getTextureId(name, "%s_overlay".formatted(name)), model);
     }
 
     @Override

@@ -50,12 +50,12 @@ public class ArtifactRenderers {
         register(ModItems.DIGGING_CLAWS.value(), () -> GloveArtifactRenderer.create("digging_claws", "digging_claws", ArmsModelSet.bake(ArtifactLayers.CLAWS)));
         register(ModItems.FERAL_CLAWS.value(), () -> GloveArtifactRenderer.create("feral_claws", "feral_claws", ArmsModelSet.bake(ArtifactLayers.CLAWS)));
         register(ModItems.POWER_GLOVE.value(), () -> GloveArtifactRenderer.create("power_glove", ArmsModelSet.bake(ArtifactLayers.GLOVE)));
-        register(ModItems.FIRE_GAUNTLET.value(), () -> GloveArtifactRenderer.create("fire_gauntlet", ArmsModelSet.bake(ArtifactLayers.GLOVE)));
-        register(ModItems.POCKET_PISTON.value(), () -> GloveArtifactRenderer.create("pocket_piston", ArmsModelSet.bake(ArtifactLayers.POCKET_PISTON)));
+        register(ModItems.FIRE_GAUNTLET.value(), () -> GloveArtifactRenderer.createGlowing("fire_gauntlet", ArmsModelSet.bake(ArtifactLayers.GLOVE)));
+        register(ModItems.POCKET_PISTON.value(), () -> GloveArtifactRenderer.create("pocket_piston", ArmsModelSet.bake(ArtifactLayers.POCKET_PISTON, PocketPistonModel::new)));
         register(ModItems.VAMPIRIC_GLOVE.value(), () -> GloveArtifactRenderer.create("vampiric_glove", ArmsModelSet.bake(ArtifactLayers.GLOVE)));
         register(ModItems.GOLDEN_HOOK.value(), () -> GloveArtifactRenderer.create("golden_hook", ArmsModelSet.bake(ArtifactLayers.GOLDEN_HOOK)));
         register(ModItems.ONION_RING.value(), () -> GloveArtifactRenderer.create("onion_ring", ArmsModelSet.bake(ArtifactLayers.ONION_RING)));
-        register(ModItems.PICKAXE_HEATER.value(), () -> GloveArtifactRenderer.create("pickaxe_heater", ArmsModelSet.bake(ArtifactLayers.PICKAXE_HEATER)));
+        register(ModItems.PICKAXE_HEATER.value(), () -> GloveArtifactRenderer.createGlowing("pickaxe_heater", ArmsModelSet.bake(ArtifactLayers.PICKAXE_HEATER)));
         register(ModItems.WITHERED_BRACELET.value(), () -> GloveArtifactRenderer.create("withered_bracelet", ArmsModelSet.bake(ArtifactLayers.WITHERED_BRACELET)));
 
         // feet

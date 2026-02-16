@@ -12,7 +12,6 @@ import artifacts.platform.PlatformServices;
 import artifacts.registry.ModItems;
 import net.minecraft.client.Minecraft;
 
-// TODO fix umbrella model using vanilla `is_using_item` & `display_context` model properties
 public class ArtifactsClient {
 
     public static void setup() {

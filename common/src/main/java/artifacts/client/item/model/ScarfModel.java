@@ -51,7 +51,8 @@ public class ScarfModel extends HumanoidModel<HumanoidRenderState> {
                 PartPose.offset(0, 0, 1.99F)
         );
 
-        mesh.getRoot().retainPartsAndChildren(Set.of("body"));
+        mesh.getRoot().getChild("head").clearRecursively();
+        mesh.getRoot().retainPartsAndChildren(Set.of("body", "head"));
 
         return mesh;
     }
