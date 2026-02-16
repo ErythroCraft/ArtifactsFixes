@@ -10,7 +10,7 @@ architectury {
 loom {
     runs {
         data {
-            data()
+            clientData()
             programArgs '--all', '--mod', "${project.mod_id}"
             programArgs '--output', project(':common').file('src/generated/resources').getAbsolutePath()
             programArgs '--existing', project(':common').file('src/main/resources').getAbsolutePath()

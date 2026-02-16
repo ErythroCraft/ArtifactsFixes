@@ -16,38 +16,30 @@ import java.util.concurrent.CompletableFuture;
 
 public class ArtifactsData {
 
-    public static void gatherServerData(GatherDataEvent.Server event) {
+    public static void gatherServerData(GatherDataEvent.Client event) {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> registries = event.getLookupProvider();
-        boolean includeServer = true;
 
         LootModifiers lootModifiers = new LootModifiers(packOutput, registries);
 
-        generator.addProvider(includeServer, new BlockTags(packOutput, registries));
-        generator.addProvider(includeServer, new ItemTags(packOutput, registries));
-        generator.addProvider(includeServer, lootModifiers);
-        generator.addProvider(includeServer, new LootTables(packOutput, lootModifiers, registries));
-        generator.addProvider(includeServer, new EntityTypeTags(packOutput, registries));
-        generator.addProvider(includeServer, new MobEffectTags(packOutput, registries));
-        generator.addProvider(includeServer, new DamageTypeTags(packOutput, registries));
-        generator.addProvider(includeServer, new GameEventTags(packOutput, registries));
-        generator.addProvider(includeServer, new SoundDefinitions(packOutput));
-        generator.addProvider(includeServer, new Advancements(packOutput, registries));
-        generator.addProvider(includeServer, new DataMaps(packOutput, registries));
+        event.addProvider(new BlockTags(packOutput, registries));
+        event.addProvider(new ItemTags(packOutput, registries));
+        event.addProvider(lootModifiers);
+        event.addProvider(new LootTables(packOutput, lootModifiers, registries));
+        event.addProvider(new EntityTypeTags(packOutput, registries));
+        event.addProvider(new MobEffectTags(packOutput, registries));
+        event.addProvider(new DamageTypeTags(packOutput, registries));
+        event.addProvider(new GameEventTags(packOutput, registries));
+        event.addProvider(new SoundDefinitions(packOutput));
+        event.addProvider(new Advancements(packOutput, registries));
+        event.addProvider(new DataMaps(packOutput, registries));
 
         var worldGen = new DatapackBuiltinEntriesProvider(packOutput, registries, createLevelProvider(), Set.of(Artifacts.MOD_ID));
-        generator.addProvider(includeServer, worldGen);
-    }
+        event.addProvider(worldGen);
 
-    public static void gatherClientData(GatherDataEvent.Client event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput packOutput = generator.getPackOutput();
-        boolean includeClient = true;
-
-        generator.addProvider(includeClient, new Language(packOutput));
-        generator.addProvider(includeClient, new ItemModels(packOutput));
-
+        event.addProvider(new Language(packOutput));
+        event.addProvider(new ItemModels(packOutput));
     }
 
     public static RegistrySetBuilder createLevelProvider() {
