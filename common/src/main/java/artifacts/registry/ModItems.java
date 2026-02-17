@@ -31,12 +31,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.component.BlocksAttacks;
-import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
@@ -66,6 +62,17 @@ public class ModItems {
                     ? new BlocksAttacks(0.25F, 1, List.of(new BlocksAttacks.DamageReduction(90, Optional.empty(), 0, 1)), new BlocksAttacks.ItemDamageFunction(3, 1, 1), Optional.of(DamageTypeTags.BYPASSES_SHIELD), Optional.of(SoundEvents.SHIELD_BLOCK), Optional.of(SoundEvents.SHIELD_BREAK))
                     : null
             )
+            .component(DataComponents.SWING_ANIMATION, new SwingAnimation(SwingAnimationType.STAB, 20))
+            .component(
+                    DataComponents.PIERCING_WEAPON,
+                    new PiercingWeapon(
+                            true,
+                            false,
+                            Optional.of(SoundEvents.SPEAR_WOOD_ATTACK
+                            ), Optional.of(SoundEvents.SPEAR_WOOD_HIT)
+                    )
+            )
+            .component(DataComponents.WEAPON, new Weapon(1))
             .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
     );
     public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", properties -> new EverlastingFoodItem(properties.food(Foods.BEEF), Artifacts.CONFIG.items.everlastingBeefCooldown, Artifacts.CONFIG.items.everlastingBeefEnabled));
