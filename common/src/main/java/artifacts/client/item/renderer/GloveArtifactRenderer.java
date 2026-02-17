@@ -1,6 +1,6 @@
 package artifacts.client.item.renderer;
 
-import artifacts.client.item.model.ArmsModelSet;
+import artifacts.client.item.ArmsModelSet;
 import artifacts.equipment.client.EquipmentRenderingManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
@@ -56,6 +56,15 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
         );
     }
 
+    private static PlayerModelType getModelType(LivingEntityRenderState renderState) {
+        return renderState instanceof AvatarRenderState avatarRenderState ? avatarRenderState.skin.model() : PlayerModelType.WIDE;
+    }
+
+    private static HumanoidArm getArm(HumanoidRenderState renderState, int slotIndex) {
+        InteractionHand hand = slotIndex % 2 == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+        return hand == InteractionHand.MAIN_HAND ? renderState.mainArm : renderState.mainArm.getOpposite();
+    }
+
     @Nullable
     public static GloveArtifactRenderer getGloveRenderer(ItemStack stack) {
         if (!stack.isEmpty() && EquipmentRenderingManager.getArtifactRenderer(stack.getItem()) instanceof GloveArtifactRenderer gloveRenderer) {
@@ -66,7 +75,7 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
 
     @Override
     protected Identifier getTexture(HumanoidRenderState renderState, int slotIndex) {
-        if (getArmType(renderState) == PlayerModelType.SLIM) {
+        if (getModelType(renderState) == PlayerModelType.SLIM) {
             return slimTexture;
         }
         return wideTexture;
@@ -74,7 +83,7 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
 
     @Override
     protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState, int slotIndex) {
-        if (getArmType(renderState) == PlayerModelType.SLIM) {
+        if (getModelType(renderState) == PlayerModelType.SLIM) {
             return slimGlowTexture;
         }
         return wideGlowTexture;
@@ -82,16 +91,7 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
 
     @Override
     protected HumanoidModel<HumanoidRenderState> getModel(HumanoidRenderState renderState, int slotIndex) {
-        return models.get(getArm(renderState, slotIndex), getArmType(renderState));
-    }
-
-    protected static PlayerModelType getArmType(LivingEntityRenderState renderState) {
-        return renderState instanceof AvatarRenderState avatarRenderState ? avatarRenderState.skin.model() : PlayerModelType.WIDE;
-    }
-
-    private static HumanoidArm getArm(HumanoidRenderState renderState, int slotIndex) {
-        InteractionHand hand = slotIndex % 2 == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-        return hand == InteractionHand.MAIN_HAND ? renderState.mainArm : renderState.mainArm.getOpposite();
+        return models.get(getArm(renderState, slotIndex), getModelType(renderState));
     }
 
     public final void renderFirstPersonArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side, boolean hasFoil) {

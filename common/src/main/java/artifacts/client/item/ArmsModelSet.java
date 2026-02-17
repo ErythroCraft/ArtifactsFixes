@@ -1,4 +1,4 @@
-package artifacts.client.item.model;
+package artifacts.client.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;

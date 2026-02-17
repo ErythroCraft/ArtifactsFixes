@@ -1,7 +1,7 @@
 package artifacts.client.item;
 
 import artifacts.Artifacts;
-import artifacts.client.item.model.*;
+import artifacts.client.item.mesh.*;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -78,49 +78,49 @@ public class ArtifactLayers {
     }
 
     public static void register(LayerRegistration registration) {
-        registration.register(DRINKING_HAT, layer(HeadModel::createDrinkingHat, 64, 32));
-        registration.register(SNORKEL, layer(HeadModel::createSnorkel, 64, 32));
-        registration.register(NIGHT_VISION_GOGGLES, layer(HeadModel::createNightVisionGoggles, 32, 32));
-        registration.register(SUPERSTITIOUS_HAT, layer(HeadModel::createSuperstitiousHat, 64, 32));
-        registration.register(BRIMMED_HAT, layer(() -> HeadModel.createBrimmedHat(CubeListBuilder.create()), 32, 32));
-        registration.register(COWBOY_HAT, layer(HeadModel::createCowboyHat, 32, 32));
-        registration.register(ANGLERS_HAT, layer(HeadModel::createAnglersHat, 32, 32));
+        registration.register(DRINKING_HAT, layer(HeadMeshDefinitions::createDrinkingHat, 64, 32));
+        registration.register(SNORKEL, layer(HeadMeshDefinitions::createSnorkel, 64, 32));
+        registration.register(NIGHT_VISION_GOGGLES, layer(HeadMeshDefinitions::createNightVisionGoggles, 32, 32));
+        registration.register(SUPERSTITIOUS_HAT, layer(HeadMeshDefinitions::createSuperstitiousHat, 64, 32));
+        registration.register(BRIMMED_HAT, layer(() -> HeadMeshDefinitions.createBrimmedHat(CubeListBuilder.create()), 32, 32));
+        registration.register(COWBOY_HAT, layer(HeadMeshDefinitions::createCowboyHat, 32, 32));
+        registration.register(ANGLERS_HAT, layer(HeadMeshDefinitions::createAnglersHat, 32, 32));
 
-        registration.register(SCARF, layer(ScarfModel::createScarf, 64, 32));
-        registration.register(CROSS_NECKLACE, layer(NecklaceModel::createCrossNecklace, 64, 48));
-        registration.register(PANIC_NECKLACE, layer(NecklaceModel::createPanicNecklace, 64, 48));
-        registration.register(PENDANT, layer(NecklaceModel::createPendant, 64, 48));
-        registration.register(CHARM_OF_SINKING, layer(NecklaceModel::createCharmOfSinking, 64, 48));
-        registration.register(CHARM_OF_SHRINKING, layer(NecklaceModel::createCharmOfShrinking, 64, 48));
+        registration.register(SCARF, layer(BodyMeshDefinitions::createScarf, 64, 32));
+        registration.register(CROSS_NECKLACE, layer(BodyMeshDefinitions::createCrossNecklace, 64, 48));
+        registration.register(PANIC_NECKLACE, layer(BodyMeshDefinitions::createPanicNecklace, 64, 48));
+        registration.register(PENDANT, layer(BodyMeshDefinitions::createPendant, 64, 48));
+        registration.register(CHARM_OF_SINKING, layer(BodyMeshDefinitions::createCharmOfSinking, 64, 48));
+        registration.register(CHARM_OF_SHRINKING, layer(BodyMeshDefinitions::createCharmOfShrinking, 64, 48));
 
-        registration.register(CLOUD_IN_A_BOTTLE, layer(BeltModel::createCloudInABottle, 32, 32));
-        registration.register(OBSIDIAN_SKULL, layer(BeltModel::createObsidianSkull, 32, 32));
-        registration.register(ANTIDOTE_VESSEL, layer(BeltModel::createAntidoteVessel, 32, 32));
-        registration.register(UNIVERSAL_ATTRACTOR, layer(BeltModel::createUniversalAttractor, 32, 32));
-        registration.register(CRYSTAL_HEART, layer(BeltModel::createCrystalHeart, 32, 32));
-        registration.register(HELIUM_FLAMINGO, layer(BeltModel::createHeliumFlamingo, 64, 64));
-        registration.register(CHORUS_TOTEM, layer(BeltModel::createChorusTotem, 32, 32));
-        registration.register(WARP_DRIVE, layer(BeltModel::createWarpDrive, 32, 32));
+        registration.register(CLOUD_IN_A_BOTTLE, layer(BeltMeshDefinitions::createCloudInABottle, 32, 32));
+        registration.register(OBSIDIAN_SKULL, layer(BeltMeshDefinitions::createObsidianSkull, 32, 32));
+        registration.register(ANTIDOTE_VESSEL, layer(BeltMeshDefinitions::createAntidoteVessel, 32, 32));
+        registration.register(UNIVERSAL_ATTRACTOR, layer(BeltMeshDefinitions::createUniversalAttractor, 32, 32));
+        registration.register(CRYSTAL_HEART, layer(BeltMeshDefinitions::createCrystalHeart, 32, 32));
+        registration.register(HELIUM_FLAMINGO, layer(BeltMeshDefinitions::createHeliumFlamingo, 64, 64));
+        registration.register(CHORUS_TOTEM, layer(BeltMeshDefinitions::createChorusTotem, 32, 32));
+        registration.register(WARP_DRIVE, layer(BeltMeshDefinitions::createWarpDrive, 32, 32));
 
-        registration.registerArms(CLAWS, ArmsModel::createClaws, 32, 16);
-        registration.registerArms(GLOVE, ArmsModel::createSleevedArms, 32, 32);
-        registration.registerArms(GOLDEN_HOOK, ArmsModel::createGoldenHook, 64, 32);
-        registration.registerArms(POCKET_PISTON, PocketPistonModel::createPocketPiston, 32, 16);
-        registration.registerArms(ONION_RING, b -> ArmsModel.createBracelet(b, 4, -4), 32, 32);
-        registration.registerArms(PICKAXE_HEATER, ArmsModel::createPickaxeHeater, 64, 32);
-        registration.registerArms(WITHERED_BRACELET, b -> ArmsModel.createBracelet(b, 3, -5), 32, 32);
+        registration.registerArms(CLAWS, ArmsMeshDefinitions::createClaws, 32, 16);
+        registration.registerArms(GLOVE, ArmsMeshDefinitions::createGlove, 32, 32);
+        registration.registerArms(GOLDEN_HOOK, ArmsMeshDefinitions::createGoldenHook, 64, 32);
+        registration.registerArms(POCKET_PISTON, ArmsMeshDefinitions::createPocketPiston, 32, 16);
+        registration.registerArms(ONION_RING, b -> ArmsMeshDefinitions.createBracelet(b, 4, -4), 32, 32);
+        registration.registerArms(PICKAXE_HEATER, ArmsMeshDefinitions::createPickaxeHeater, 64, 32);
+        registration.registerArms(WITHERED_BRACELET, b -> ArmsMeshDefinitions.createBracelet(b, 3, -5), 32, 32);
 
-        registration.register(AQUA_DASHERS_SMALL, layer(() -> LegsModel.createAquaDashers(0.5F), 32, 32));
-        registration.register(AQUA_DASHERS_LARGE, layer(() -> LegsModel.createAquaDashers(1.25F), 32, 32));
-        registration.register(BUNNY_HOPPERS, layer(LegsModel::createBunnyHoppers, 64, 32));
-        registration.register(KITTY_SLIPPERS, layer(LegsModel::createKittySlippers, 64, 32));
-        registration.register(BOOTS_SMALL, layer(() -> LegsModel.createBoots(0.5F), 32, 32));
-        registration.register(BOOTS_LARGE, layer(() -> LegsModel.createBoots(1.25F), 32, 32));
-        registration.register(SNOWSHOES, layer(LegsModel::createSnowshoes, 64, 64));
-        registration.register(STEADFAST_SPIKES, layer(LegsModel::createSteadfastSpikes, 64, 32));
-        registration.register(FLIPPERS, layer(LegsModel::createFlippers, 64, 64));
+        registration.register(AQUA_DASHERS_SMALL, layer(() -> LegsMeshDefinitions.createAquaDashers(0.5F), 32, 32));
+        registration.register(AQUA_DASHERS_LARGE, layer(() -> LegsMeshDefinitions.createAquaDashers(1.25F), 32, 32));
+        registration.register(BUNNY_HOPPERS, layer(LegsMeshDefinitions::createBunnyHoppers, 64, 32));
+        registration.register(KITTY_SLIPPERS, layer(LegsMeshDefinitions::createKittySlippers, 64, 32));
+        registration.register(BOOTS_SMALL, layer(() -> LegsMeshDefinitions.createBoots(0.5F), 32, 32));
+        registration.register(BOOTS_LARGE, layer(() -> LegsMeshDefinitions.createBoots(1.25F), 32, 32));
+        registration.register(SNOWSHOES, layer(LegsMeshDefinitions::createSnowshoes, 64, 64));
+        registration.register(STEADFAST_SPIKES, layer(LegsMeshDefinitions::createSteadfastSpikes, 64, 32));
+        registration.register(FLIPPERS, layer(LegsMeshDefinitions::createFlippers, 64, 64));
 
-        registration.register(WHOOPEE_CUSHION, layer(HeadModel::createWhoopeeCushion, 32, 16));
+        registration.register(WHOOPEE_CUSHION, layer(HeadMeshDefinitions::createWhoopeeCushion, 32, 16));
     }
 
     @FunctionalInterface
@@ -131,7 +131,7 @@ public class ArtifactLayers {
         default void registerArms(ArmsModelSet<ModelLayerLocation> layerLocations, Function<Boolean, MeshDefinition> factory, int textureWidth, int textureHeight) {
             for (PlayerModelType modelType : PlayerModelType.values()) {
                 for (HumanoidArm arm : HumanoidArm.values()) {
-                    register(layerLocations.get(arm, modelType), layer(() -> ArmsModel.retainArm(factory.apply(modelType == PlayerModelType.SLIM), arm), textureWidth, textureHeight));
+                    register(layerLocations.get(arm, modelType), layer(() -> ArmsMeshDefinitions.retainArm(factory.apply(modelType == PlayerModelType.SLIM), arm), textureWidth, textureHeight));
                 }
             }
         }

@@ -1,25 +1,19 @@
-package artifacts.client.item.model;
+package artifacts.client.item.mesh;
 
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 import java.util.Set;
 
-public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
+public final class BodyMeshDefinitions {
 
-    public NecklaceModel(ModelPart part) {
-        super(part, RenderTypes::entityTranslucent);
-    }
-
+    private BodyMeshDefinitions() { }
 
     public static MeshDefinition createNecklace(CubeListBuilder body) {
-        MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0);
+        MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 
         mesh.getRoot().addOrReplaceChild(
                 "body",
@@ -34,7 +28,7 @@ public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
     }
 
     public static MeshDefinition createCenteredNecklace(CubeListBuilder body) {
-        MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0);
+        MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 
         mesh.getRoot().addOrReplaceChild(
                 "body",
@@ -111,5 +105,30 @@ public class NecklaceModel extends HumanoidModel<HumanoidRenderState> {
         body.addBox(-1, 4.5F, -5, 2, 2, 1);
 
         return createNecklace(body);
+    }
+
+    public static MeshDefinition createScarf() {
+        MeshDefinition mesh = HumanoidModel.createMesh(new CubeDeformation(0.51F), 0);
+
+        mesh.getRoot().addOrReplaceChild(
+                "body",
+                CubeListBuilder.create()
+                        .texOffs(0, 16)
+                        .addBox(-6.01F, -2, -4, 12, 6, 8),
+                PartPose.ZERO
+        );
+
+        mesh.getRoot().getChild("body").addOrReplaceChild(
+                "cloak",
+                CubeListBuilder.create()
+                        .texOffs(32, 0)
+                        .addBox(-5, 0, 0, 5, 12, 2),
+                PartPose.offset(0, 0, 1.99F)
+        );
+
+        mesh.getRoot().getChild("head").clearRecursively();
+        mesh.getRoot().retainPartsAndChildren(Set.of("body", "head"));
+
+        return mesh;
     }
 }

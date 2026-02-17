@@ -1,6 +1,5 @@
 package artifacts.client.item.renderer;
 
-import artifacts.client.item.model.LegsModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
@@ -10,10 +9,10 @@ import java.util.function.Function;
 public class BootArtifactRenderer extends ArtifactRenderer {
 
     private final Identifier texture;
-    private final LegsModel model;
-    private final LegsModel armorModel;
+    private final HumanoidModel<HumanoidRenderState> model;
+    private final HumanoidModel<HumanoidRenderState> armorModel;
 
-    public BootArtifactRenderer(String name, Function<Boolean, LegsModel> model) {
+    public BootArtifactRenderer(String name, Function<Boolean, HumanoidModel<HumanoidRenderState>> model) {
         this.texture = ArtifactRenderer.getTextureId(name);
         this.model = model.apply(false);
         this.armorModel = model.apply(true);

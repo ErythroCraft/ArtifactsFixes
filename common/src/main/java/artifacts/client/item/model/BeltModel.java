@@ -1,40 +1,27 @@
 package artifacts.client.item.model;
 
-import artifacts.client.item.ArtifactLayers;
-import artifacts.client.item.ArtifactRenderers;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
 
-import java.util.Set;
 import java.util.function.Function;
 
 public class BeltModel extends HumanoidModel<HumanoidRenderState> {
 
     protected final ModelPart charm;
+    private final CharmPose charmPose;
 
-    private final float xOffset;
-    private final float zOffset;
-    private final float rotation;
-
-    public BeltModel(ModelPart part, Function<Identifier, RenderType> renderType, float xOffset, float zOffset, float rotation) {
+    public BeltModel(ModelPart part, Function<Identifier, RenderType> renderType, CharmPose charmPose) {
         super(part, renderType);
         this.charm = body.getChild("charm");
-        this.xOffset = xOffset;
-        this.zOffset = zOffset;
-        this.rotation = rotation;
+        this.charmPose = charmPose;
     }
 
-    public BeltModel(ModelPart part, float xOffset, float zOffset, float rotation) {
-        this(part, RenderTypes::entityCutoutNoCull, xOffset, zOffset, rotation);
+    public BeltModel(ModelPart part, CharmPose charmPose) {
+        this(part, RenderTypes::entityCutoutNoCull, charmPose);
     }
 
     @Override
@@ -44,214 +31,13 @@ public class BeltModel extends HumanoidModel<HumanoidRenderState> {
     }
 
     public void setCharmPosition(int slot) {
-        float xOffset = slot % 2 == 0 ? this.xOffset : -this.xOffset;
-        float zOffset = slot % 4 < 2 ? this.zOffset : -this.zOffset;
+        float xOffset = slot % 2 == 0 ? charmPose.xOffset() : -charmPose.xOffset();
+        float zOffset = slot % 4 < 2 ? charmPose.zOffset() : -charmPose.zOffset();
         charm.setPos(xOffset, 9, zOffset);
 
         float rotation = slot % 4 < 2 ? 0 : (float) -Math.PI;
-        rotation += slot % 2 == 0 ^ slot % 4 >= 2 ? this.rotation : -this.rotation;
+        rotation += slot % 2 == 0 ^ slot % 4 >= 2 ? charmPose.rotation() : -charmPose.rotation();
         charm.yRot = rotation;
     }
 
-    public static BeltModel createCloudInABottleModel() {
-        return new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.CLOUD_IN_A_BOTTLE), RenderTypes::entityTranslucent, 3, -3, -0.5F) {
-            private final ModelPart cloud = charm.getChild("cloud");
-
-            @Override
-            public void setupAnim(HumanoidRenderState renderState) {
-                super.setupAnim(renderState);
-                cloud.yRot = (renderState.ageInTicks) / 50;
-                cloud.y = Mth.cos((renderState.ageInTicks) / 30) / 2;
-            }
-        };
-    }
-
-    public static HumanoidModel<HumanoidRenderState> createHeliumFlamingoModel() {
-        ModelPart part = ArtifactRenderers.bakeLayer(ArtifactLayers.HELIUM_FLAMINGO);
-        return new HumanoidModel<>(part, RenderTypes::entityCutoutNoCull);
-    }
-
-    public static BeltModel createObsidianSkullModel() {
-        return new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.OBSIDIAN_SKULL), 4.5F, -4F, -0.5F);
-    }
-
-    public static BeltModel createAntidoteVesselModel() {
-        return new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.ANTIDOTE_VESSEL), 4, -3, -0.5F);
-    }
-
-    public static BeltModel createUniversalAttractorModel() {
-        return new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.UNIVERSAL_ATTRACTOR), 2.5F, -3, 0);
-    }
-
-    public static BeltModel createCrystalHeartModel() {
-        return new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.CRYSTAL_HEART), RenderTypes::entityTranslucent, 2.5F, -3.01F, 0);
-    }
-
-    public static BeltModel createChorusTotemModel() {
-        return new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.CHORUS_TOTEM), 4, -3, -0.5F);
-    }
-
-    public static BeltModel createWarpDriveModel() {
-        return new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.WARP_DRIVE), 3.5F, -3, -0.3F);
-    }
-
-    private static MeshDefinition createBelt(CubeListBuilder charm) {
-        CubeDeformation deformation = new CubeDeformation(0.5F);
-        MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0);
-
-        mesh.getRoot().addOrReplaceChild(
-                "body",
-                CubeListBuilder.create()
-                        .texOffs(0, 0)
-                        .addBox(-4, 0, -2, 8, 12, 4, deformation),
-                PartPose.ZERO
-        );
-
-        mesh.getRoot().getChild("body").addOrReplaceChild(
-                "charm",
-                charm,
-                PartPose.ZERO
-        );
-
-        mesh.getRoot().retainPartsAndChildren(Set.of("body"));
-
-        return mesh;
-    }
-
-    public static MeshDefinition createAntidoteVessel() {
-        CubeListBuilder charm = CubeListBuilder.create();
-
-        // jar
-        charm.texOffs(0, 16);
-        charm.addBox(-2, 0, -2, 4, 6, 4);
-
-        // lid
-        charm.texOffs(0, 26);
-        charm.addBox(-1, -1, -1, 2, 1, 2);
-
-        return createBelt(charm);
-    }
-
-    public static MeshDefinition createCloudInABottle() {
-        CubeListBuilder charm = CubeListBuilder.create();
-
-        // jar
-        charm.texOffs(0, 16);
-        charm.addBox(-2, 0, -2, 4, 5, 4);
-
-        // lid
-        charm.texOffs(0, 25);
-        charm.addBox(-1, -1, -1, 2, 1, 2);
-
-        MeshDefinition mesh = createBelt(charm);
-
-        mesh.getRoot().getChild("body").getChild("charm").addOrReplaceChild(
-                "cloud",
-                CubeListBuilder.create()
-                        .texOffs(8, 25) // cloud
-                        .addBox(-1, 1.5F, -1, 2, 2, 2),
-                PartPose.ZERO
-        );
-
-        return mesh;
-    }
-
-    public static MeshDefinition createCrystalHeart() {
-        CubeListBuilder charm = CubeListBuilder.create();
-
-        charm.texOffs(0, 16);
-        charm.addBox(-2.5F, 0, 0, 2, 3, 1);
-        charm.texOffs(6, 16);
-        charm.addBox(0.5F, 0, 0, 2, 3, 1);
-        charm.texOffs(0, 20);
-        charm.addBox(-0.5F, 1, 0, 1, 4, 1);
-        charm.texOffs(4, 20);
-        charm.addBox(-1.5F, 3, 0, 1, 1, 1);
-        charm.texOffs(8, 20);
-        charm.addBox(0.5F, 3, 0, 1, 1, 1);
-
-        return createBelt(charm);
-    }
-
-    public static MeshDefinition createHeliumFlamingo() {
-        MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0);
-
-        mesh.getRoot().addOrReplaceChild(
-                "body",
-                CubeListBuilder.create()
-                        .texOffs(16, 36).addBox(-1, 1, -14, 2, 3, 5)
-                        .texOffs(0, 18).addBox(4, 9, -7, 4, 4, 14)
-                        .texOffs(0, 0).addBox(-8, 9, -7, 4, 4, 14)
-                        .texOffs(36, 0).addBox(-4, 9, 3, 8, 4, 4)
-                        .texOffs(36, 8).addBox(-4, 9, -7, 8, 4, 4)
-                        .texOffs(0, 36).addBox(-2, 1, -9, 4, 11, 4),
-                PartPose.ZERO
-        );
-        mesh.getRoot().retainExactParts(Set.of("body"));
-
-        return mesh;
-    }
-
-    public static MeshDefinition createObsidianSkull() {
-        CubeListBuilder charm = CubeListBuilder.create();
-
-        // cranium
-        charm.texOffs(0, 16);
-        charm.addBox(-2.5F, 0, 0, 5, 3, 4);
-
-        // teeth
-        charm.texOffs(18, 16);
-        charm.addBox(-1.5F, 3, 0, 1, 1, 2);
-        charm.texOffs(18, 19);
-        charm.addBox(0.5F, 3, 0, 1, 1, 2);
-
-        return createBelt(charm);
-    }
-
-    public static MeshDefinition createUniversalAttractor() {
-        CubeListBuilder charm = CubeListBuilder.create();
-
-        charm.texOffs(0, 16);
-        charm.addBox(-2.5F, 0, 0, 5, 2, 1);
-        charm.texOffs(0, 19);
-        charm.addBox(-2.5F, 2, 0, 2, 4, 1);
-        charm.texOffs(6, 19);
-        charm.addBox(0.5F, 2, 0, 2, 4, 1);
-
-        return createBelt(charm);
-    }
-
-    public static MeshDefinition createChorusTotem() {
-        CubeListBuilder charm = CubeListBuilder.create();
-
-        charm.texOffs(0, 16);
-        charm.addBox(-1.5F, -1, -1, 3, 7, 2);
-        charm.texOffs(10, 16);
-        charm.addBox(-3.5F, 0, 1, 7, 4, 0);
-        charm.texOffs(0, 25);
-        charm.addBox(-2.5F, 3, -2, 5, 2, 2);
-        charm.texOffs(10, 20);
-        charm.addBox(-1, 1, -1.5F, 2, 2, 0);
-
-        return createBelt(charm);
-    }
-
-    public static MeshDefinition createWarpDrive() {
-        CubeListBuilder charm = CubeListBuilder.create();
-
-        charm.texOffs(0, 16);
-        charm.addBox(-2.5F, 0, -2, 5, 4, 4);
-        charm.texOffs(0, 24);
-        charm.addBox(-3, 1, -1, 1, 2, 2);
-        charm.texOffs(6, 24);
-        charm.addBox(2, 1, -1, 1, 2, 2);
-
-        // flash
-        charm.texOffs(0, 28);
-        charm.addBox(-2.5F, 1, 0, 5, 2, 0);
-        charm.texOffs(0, 30);
-        charm.addBox(-2.5F, 2, -1, 5, 0, 2);
-
-        return createBelt(charm);
-    }
 }

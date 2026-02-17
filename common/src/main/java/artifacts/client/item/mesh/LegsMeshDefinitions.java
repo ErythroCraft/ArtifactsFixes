@@ -1,25 +1,20 @@
-package artifacts.client.item.model;
+package artifacts.client.item.mesh;
 
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 import java.util.Set;
 
-public class LegsModel extends HumanoidModel<HumanoidRenderState> {
+public final class LegsMeshDefinitions {
 
-    public LegsModel(ModelPart part) {
-        super(part, RenderTypes::entityCutoutNoCull);
-    }
+    private LegsMeshDefinitions() { }
 
     public static MeshDefinition createLegs(float delta, CubeListBuilder leftLeg, CubeListBuilder rightLeg) {
         CubeDeformation deformation = new CubeDeformation(delta);
-        MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0);
+        MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 
         mesh.getRoot().addOrReplaceChild(
                 "left_leg",

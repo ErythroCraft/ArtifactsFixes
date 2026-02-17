@@ -1,4 +1,4 @@
-package artifacts.client.item.model;
+package artifacts.client.item.mesh;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,14 +9,16 @@ import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.Set;
 
-public final class ArmsModel {
+public final class ArmsMeshDefinitions {
+
+    private ArmsMeshDefinitions() { }
 
     public static MeshDefinition retainArm(MeshDefinition mesh, HumanoidArm arm) {
         mesh.getRoot().retainPartsAndChildren(Set.of(arm == HumanoidArm.LEFT ? "left_arm" : "right_arm"));
         return mesh;
     }
 
-    public static MeshDefinition createEmptyArms(CubeListBuilder leftArm, CubeListBuilder rightArm, boolean hasSlimArms) {
+    private static MeshDefinition createEmptyArms(CubeListBuilder leftArm, CubeListBuilder rightArm, boolean hasSlimArms) {
         MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 
         mesh.getRoot().addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.offset(5, 2, 0));
@@ -37,7 +39,7 @@ public final class ArmsModel {
         return mesh;
     }
 
-    public static MeshDefinition createArms(CubeListBuilder leftArm, CubeListBuilder rightArm, boolean hasSlimArms) {
+    private static MeshDefinition createArms(CubeListBuilder leftArm, CubeListBuilder rightArm, boolean hasSlimArms) {
         float armWidth = hasSlimArms ? 3 : 4;
 
         leftArm.texOffs(0, 0);
@@ -48,7 +50,7 @@ public final class ArmsModel {
         return createEmptyArms(leftArm, rightArm, hasSlimArms);
     }
 
-    public static MeshDefinition createSleevedArms(CubeListBuilder leftArm, CubeListBuilder rightArm, boolean hasSlimArms) {
+    private static MeshDefinition createSleevedArms(CubeListBuilder leftArm, CubeListBuilder rightArm, boolean hasSlimArms) {
         float armWidth = hasSlimArms ? 3 : 4;
 
         leftArm.texOffs(0, 16);
@@ -59,7 +61,7 @@ public final class ArmsModel {
         return createArms(leftArm, rightArm, hasSlimArms);
     }
 
-    public static MeshDefinition createSleevedArms(boolean hasSlimArms) {
+    public static MeshDefinition createGlove(boolean hasSlimArms) {
         return createSleevedArms(CubeListBuilder.create(), CubeListBuilder.create(), hasSlimArms);
     }
 
@@ -157,5 +159,49 @@ public final class ArmsModel {
         rightArm.addBox(- armWidth / 2 - 1.5F, 0.5F - 2 * deformationY - 1, -armDepth / 4, 1, 2, 2, deformation);
 
         return createSleevedArms(leftArm, rightArm, hasSlimArms);
+    }
+
+    public static MeshDefinition createPocketPiston(boolean hasSlimArms) {
+        CubeListBuilder leftArm = CubeListBuilder.create();
+        CubeListBuilder rightArm = CubeListBuilder.create();
+        CubeListBuilder leftPistonHead = CubeListBuilder.create();
+        CubeListBuilder rightPistonHead = CubeListBuilder.create();
+
+        float armWidth = hasSlimArms ? 3 : 4;
+        float armDepth = 4;
+        float d = 0.5F / 4 + 0.01F;
+
+        // piston base
+        CubeDeformation baseDeformation = new CubeDeformation(d * armWidth, d * 3, d * armDepth);
+        leftArm.texOffs(0, 0);
+        leftArm.addBox(-armWidth / 2, -3, -armDepth / 2, armWidth, 3, armDepth, baseDeformation);
+        rightArm.texOffs(16, 0);
+        rightArm.addBox(-armWidth / 2, -3, -armDepth / 2, armWidth, 3, armDepth, baseDeformation);
+
+        // piston rod
+        CubeDeformation rodDeformation = new CubeDeformation(d * armWidth / 2, 0, d * armDepth / 2);
+        leftPistonHead.texOffs(0, 12);
+        leftPistonHead.addBox(-(armWidth - 2) / 2, -2 + d * 3, -(armDepth - 2) / 2, armWidth - 2, 2, armDepth - 2, rodDeformation);
+        rightPistonHead.texOffs(16, 12);
+        rightPistonHead.addBox(-(armWidth - 2) / 2, -2 + d * 3, -(armDepth - 2) / 2, armWidth - 2, 2, armDepth - 2, rodDeformation);
+
+        // piston head
+        CubeDeformation headDeformation = new CubeDeformation(d * armWidth, d, d * armDepth);
+        leftPistonHead.texOffs(0, 7);
+        leftPistonHead.addBox(-armWidth / 2, d * 3 + d, -armDepth / 2, armWidth, 1, armDepth, headDeformation);
+        rightPistonHead.texOffs(16, 7);
+        rightPistonHead.addBox(-armWidth / 2, d * 3 + d, -armDepth / 2, armWidth, 1, armDepth, headDeformation);
+
+        MeshDefinition mesh = ArmsMeshDefinitions.createEmptyArms(leftArm, rightArm, hasSlimArms);
+        mesh.getRoot()
+                .getChild("left_arm")
+                .getChild("artifact")
+                .addOrReplaceChild("piston_head", leftPistonHead, PartPose.ZERO);
+        mesh.getRoot()
+                .getChild("right_arm")
+                .getChild("artifact")
+                .addOrReplaceChild("piston_head", rightPistonHead, PartPose.ZERO);
+
+        return mesh;
     }
 }

@@ -1,31 +1,19 @@
-package artifacts.client.item.model;
+package artifacts.client.item.mesh;
 
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.resources.Identifier;
 
 import java.util.Set;
-import java.util.function.Function;
 
-public class HeadModel extends HumanoidModel<HumanoidRenderState> {
+public final class HeadMeshDefinitions {
 
-    public HeadModel(ModelPart part, Function<Identifier, RenderType> renderType) {
-        super(part, renderType);
-    }
-
-    public HeadModel(ModelPart part) {
-        this(part, RenderTypes::entityCutoutNoCull);
-    }
+    private HeadMeshDefinitions() { }
 
     public static MeshDefinition createEmptyHat(CubeListBuilder head) {
-        MeshDefinition mesh = createMesh(CubeDeformation.NONE, 0);
+        MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0);
 
         mesh.getRoot().addOrReplaceChild(
                 "head",
