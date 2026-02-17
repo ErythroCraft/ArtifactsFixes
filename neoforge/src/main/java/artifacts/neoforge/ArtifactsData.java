@@ -34,6 +34,7 @@ public class ArtifactsData {
         event.addProvider(new SoundDefinitions(packOutput));
         event.addProvider(new Advancements(packOutput, registries));
         event.addProvider(new DataMaps(packOutput, registries));
+        event.addProvider(new Recipes.Runner(packOutput, registries));
 
         var worldGen = new DatapackBuiltinEntriesProvider(packOutput, registries, createLevelProvider(), Set.of(Artifacts.MOD_ID));
         event.addProvider(worldGen);

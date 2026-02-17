@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": "artifacts:eternal_steak",
+  "result": {
+    "count": 1,
+    "id": "artifacts:everlasting_beef"
+  }
+}
