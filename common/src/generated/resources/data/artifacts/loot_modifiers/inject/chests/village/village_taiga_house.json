@@ -1,10 +1,10 @@
 {
-  "type": "artifacts:roll_loot_table",
+  "type": "neoforge:add_table",
   "conditions": [
     {
       "condition": "neoforge:loot_table_id",
       "loot_table_id": "minecraft:chests/village/village_taiga_house"
     }
   ],
-  "lootTable": "artifacts:inject/chests/village/village_taiga_house"
+  "table": "artifacts:inject/chests/village/village_taiga_house"
 }

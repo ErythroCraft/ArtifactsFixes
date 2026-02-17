@@ -1,10 +1,10 @@
 {
-  "type": "artifacts:roll_loot_table",
+  "type": "neoforge:add_table",
   "conditions": [
     {
       "condition": "neoforge:loot_table_id",
       "loot_table_id": "minecraft:chests/igloo_chest"
     }
   ],
-  "lootTable": "artifacts:inject/chests/igloo_chest"
+  "table": "artifacts:inject/chests/igloo_chest"
 }

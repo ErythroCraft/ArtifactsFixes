@@ -1,5 +1,5 @@
 {
-  "type": "artifacts:roll_loot_table",
+  "type": "artifacts:replace_with_table",
   "conditions": [
     {
       "condition": "neoforge:loot_table_id",
@@ -10,6 +10,5 @@
       "config": "archaeology"
     }
   ],
-  "lootTable": "artifacts:inject/archaeology/trail_ruins_rare",
-  "replace": true
+  "table": "artifacts:inject/archaeology/trail_ruins_rare"
 }
