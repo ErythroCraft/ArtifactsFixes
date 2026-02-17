@@ -1,17 +1,16 @@
 package artifacts.neoforge.registry;
 
-import artifacts.Artifacts;
-import artifacts.neoforge.loot.RollLootTableModifier;
+import artifacts.neoforge.loot.ReplaceWithTableLootModifier;
+import artifacts.registry.Register;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Holder;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class ModLootModifiers {
 
-    public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, Artifacts.MOD_ID);
+    public static final Register<MapCodec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = Register.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS);
 
-    static {
-        LOOT_MODIFIERS.register("roll_loot_table", RollLootTableModifier.CODEC);
-    }
+    public static final Holder<MapCodec<? extends IGlobalLootModifier>> REPLACE_WITH_TABLE = LOOT_MODIFIERS.register("replace_with_table", () -> ReplaceWithTableLootModifier.CODEC);
+
 }

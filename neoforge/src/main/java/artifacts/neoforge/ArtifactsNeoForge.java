@@ -38,9 +38,9 @@ public class ArtifactsNeoForge {
             new ArtifactsNeoForgeClient(modBus);
         }
 
-        ModConditions.CONDITIONS.register(modBus);
-        ModLootModifiers.LOOT_MODIFIERS.register(modBus);
-        ModAttachmentTypes.ATTACHMENT_TYPES.register(modBus);
+        ModConditions.CONDITIONS.register();
+        ModLootModifiers.LOOT_MODIFIERS.register();
+        ModAttachmentTypes.ATTACHMENT_TYPES.register();
 
         modBus.addListener(ArtifactsData::gatherServerData);
         modBus.addListener(NeoForgeNetworkHandler::registerPayloadHandlers);

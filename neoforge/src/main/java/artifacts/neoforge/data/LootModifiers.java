@@ -3,7 +3,7 @@ package artifacts.neoforge.data;
 import artifacts.Artifacts;
 import artifacts.loot.ArtifactRarityAdjustedChance;
 import artifacts.loot.ConfigValueChance;
-import artifacts.neoforge.loot.RollLootTableModifier;
+import artifacts.neoforge.loot.ReplaceWithTableLootModifier;
 import artifacts.registry.ModItems;
 import artifacts.registry.ModLootTables;
 import net.minecraft.advancements.criterion.EntityFlagsPredicate;
@@ -25,6 +25,8 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
+import net.neoforged.neoforge.common.loot.AddTableLootModifier;
+import net.neoforged.neoforge.common.loot.LootModifier;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 
 import java.util.ArrayList;
@@ -341,8 +343,13 @@ public class LootModifiers extends GlobalLootModifierProvider {
             this.conditions = new ArrayList<>();
         }
 
-        private RollLootTableModifier build() {
-            return new RollLootTableModifier(conditions.toArray(new LootItemCondition[]{}), Artifacts.key(Registries.LOOT_TABLE, "inject/" + lootTable.identifier().getPath()), replace);
+        private LootModifier build() {
+            LootItemCondition[] conditions = this.conditions.toArray(new LootItemCondition[]{});
+            ResourceKey<LootTable> table = Artifacts.key(Registries.LOOT_TABLE, "inject/" + lootTable.identifier().getPath());
+            if (replace) {
+                return new ReplaceWithTableLootModifier(conditions, table);
+            }
+            return new AddTableLootModifier(conditions, table);
         }
 
         protected LootTable.Builder createLootTable() {
