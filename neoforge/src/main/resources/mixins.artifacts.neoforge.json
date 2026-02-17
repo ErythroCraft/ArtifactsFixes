@@ -6,8 +6,7 @@
   "plugin": "artifacts.ArtifactsMixinPlugin",
   "mixins": [
     "ability.sinking.PlayerMixin",
-    "ability.slipresistance.LivingEntityMixin",
-    "item.UmbrellaItemMixin"
+    "ability.slipresistance.LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

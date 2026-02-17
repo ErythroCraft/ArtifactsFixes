@@ -63,7 +63,7 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Snowshoes allow the wearer to walk on powdered snow"),
             striderShoesCancelHotFloorDamage = defineBool(createKey(ModItems.STRIDER_SHOES, "cancelHotFloorDamage"),
                     "Whether the Strider Shoes make the wearer immune to hot floor damage"),
-            umbrellaIsShield = defineBool(createKey(ModItems.UMBRELLA, "isShield"),
+            umbrellaIsShield = defineBool(createKey(ModItems.UMBRELLA, "isShield"), true, true,
                     "Whether the Umbrella can be used as a shield"),
             umbrellaIsGlider = defineBool(createKey(ModItems.UMBRELLA, "isGlider"),
                     "Whether the Umbrella slows the player's falling speed when held"),

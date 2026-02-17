@@ -18,6 +18,7 @@ import artifacts.item.UmbrellaItem;
 import artifacts.item.WearableArtifactItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -25,13 +26,16 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.enchantment.Enchantments;
 
@@ -39,6 +43,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ModItems {
 
@@ -53,10 +58,18 @@ public class ModItems {
             .build()
     );
 
-    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(ModEntityTypes.MIMIC.get())));
-    public static final Holder<Item> UMBRELLA = register("umbrella", UmbrellaItem::new);
-    public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", properties -> new EverlastingFoodItem(properties.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3F).build()), Artifacts.CONFIG.items.everlastingBeefCooldown, Artifacts.CONFIG.items.everlastingBeefEnabled));
-    public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", properties -> new EverlastingFoodItem(properties.food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build()), Artifacts.CONFIG.items.eternalSteakCooldown, Artifacts.CONFIG.items.eternalSteakEnabled));
+    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", SpawnEggItem::new, () -> new Item.Properties().spawnEgg(ModEntityTypes.MIMIC.get()));
+    @SuppressWarnings("DataFlowIssue")
+    public static final Holder<Item> UMBRELLA = register("umbrella", UmbrellaItem::new, () -> new Item.Properties()
+            .equippableUnswappable(EquipmentSlot.OFFHAND)
+            .component(DataComponents.BLOCKS_ATTACKS, Artifacts.CONFIG.items.umbrellaIsShield.get()
+                    ? new BlocksAttacks(0.25F, 1, List.of(new BlocksAttacks.DamageReduction(90, Optional.empty(), 0, 1)), new BlocksAttacks.ItemDamageFunction(3, 1, 1), Optional.of(DamageTypeTags.BYPASSES_SHIELD), Optional.of(SoundEvents.SHIELD_BLOCK), Optional.of(SoundEvents.SHIELD_BREAK))
+                    : null
+            )
+            .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
+    );
+    public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", properties -> new EverlastingFoodItem(properties.food(Foods.BEEF), Artifacts.CONFIG.items.everlastingBeefCooldown, Artifacts.CONFIG.items.everlastingBeefEnabled));
+    public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", properties -> new EverlastingFoodItem(properties.food(Foods.COOKED_BEEF), Artifacts.CONFIG.items.eternalSteakCooldown, Artifacts.CONFIG.items.eternalSteakEnabled));
 
     // head
     public static final Holder<Item> PLASTIC_DRINKING_HAT = wearableItem("plastic_drinking_hat", builder -> builder
@@ -368,6 +381,10 @@ public class ModItems {
     }
 
     private static Holder<Item> register(String name, Function<Item.Properties, ? extends Item> factory) {
-        return ITEMS.register(name, () -> factory.apply(new Item.Properties().setId(Artifacts.key(Registries.ITEM, name))));
+        return register(name, factory, Item.Properties::new);
+    }
+
+    private static Holder<Item> register(String name, Function<Item.Properties, ? extends Item> factory, Supplier<Item.Properties> properties) {
+        return ITEMS.register(name, () -> factory.apply(properties.get().setId(Artifacts.key(Registries.ITEM, name))));
     }
 }
