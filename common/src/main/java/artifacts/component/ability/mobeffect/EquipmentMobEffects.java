@@ -73,7 +73,7 @@ public record EquipmentMobEffects(List<Entry> entries) implements TickingComposi
                 writer.add(Objects.requireNonNull(id).getPath());
             }
             if (provider.mobEffect().value() == net.minecraft.world.effect.MobEffects.NIGHT_VISION.value()) {
-                Value<Double> nightVisionStrength = writer.stack().get(ModDataComponents.REDUCED_NIGHT_VISION.get());
+                Value<Double> nightVisionStrength = writer.components().get(ModDataComponents.REDUCED_NIGHT_VISION.get());
                 if (nightVisionStrength != null && nightVisionStrength.get() < 0.5) {
                     writer.add("night_vision.partial");
                 } else {
