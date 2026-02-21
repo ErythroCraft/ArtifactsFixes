@@ -36,40 +36,40 @@ import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUT
 
 public class TooltipHelper {
 
-    public static void addAttributeTooltips(Consumer<Component> consumer, ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay) {
+    public static void addAttributeTooltips(Consumer<Component> consumer, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
         boolean hasSlotTooltip = false;
-        if (tooltipDisplay.shows(DataComponents.ATTRIBUTE_MODIFIERS)) {
+        if (display.shows(DataComponents.ATTRIBUTE_MODIFIERS)) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 MutableBoolean b = new MutableBoolean(false);
                 stack.forEachModifier(slot, (holder, attributeModifier) -> b.setTrue());
                 if (b.booleanValue()) {
                     hasSlotTooltip = true;
-                    addAbilityAttributeTooltips(stack, context, consumer);
+                    addAbilityAttributeTooltips(consumer, stack, context, display);
                 }
             }
         }
         if (!hasSlotTooltip) {
-            if (getAbility(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack).isPresent()
-                    || getAbility(ModDataComponents.MOB_EFFECTS.get(), stack).isPresent()
+            if (getAbilityIfVisible(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack, display).isPresent()
+                    || getAbilityIfVisible(ModDataComponents.MOB_EFFECTS.get(), stack, display).isPresent()
             ) {
                 consumer.accept(CommonComponents.EMPTY);
                 consumer.accept(Component.translatable("item.modifiers.body").withStyle(ChatFormatting.GRAY));
             }
-            addAbilityAttributeTooltips(stack, context, consumer);
+            addAbilityAttributeTooltips(consumer, stack, context, display);
         }
-        addWhenHurtTooltips(consumer, context, stack);
-        addPerFoodPointEatenTooltip(consumer, context, stack);
-        addAttacksInflictTooltip(consumer, context, stack);
+        addWhenHurtTooltips(consumer, stack, context, display);
+        addPerFoodPointEatenTooltip(consumer, stack, context, display);
+        addAttacksInflictTooltip(consumer, stack, context, display);
     }
 
     @Unique
-    private static void addAbilityAttributeTooltips(ItemStack stack, Item.TooltipContext context, Consumer<Component> tooltip) {
-        getAbility(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack).ifPresent(ability -> {
+    private static void addAbilityAttributeTooltips(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
+        getAbilityIfVisible(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack, display).ifPresent(ability -> {
             for (AttributeModifiers.Entry entry : ability.entries()) {
                 addAbilityAttributeTooltip(tooltip, entry);
             }
         });
-        getAbility(ModDataComponents.MOB_EFFECTS.get(), stack).ifPresent(ability -> {
+        getAbilityIfVisible(ModDataComponents.MOB_EFFECTS.get(), stack, display).ifPresent(ability -> {
             for (EquipmentMobEffects.Entry entry : ability.entries()) {
                 MobEffectProvider provider = entry.provider();
                 addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, provider.condition() == EntityCondition.ALWAYS);
@@ -104,10 +104,10 @@ public class TooltipHelper {
     }
 
     @Unique
-    private static void addWhenHurtTooltips(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
+    private static void addWhenHurtTooltips(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
         MutableBoolean flag = new MutableBoolean(false);
         List<TagKey<DamageType>> list = new ArrayList<>();
-        getAbility(ModDataComponents.POST_DAMAGE_EFFECTS.get(), stack).ifPresent(ability -> {
+        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_EFFECTS.get(), stack, display).ifPresent(ability -> {
             for (PostDamageEffects.Entry entry : ability.entries()) {
                 if (entry.tag().isEmpty()) {
                     flag.setTrue();
@@ -116,7 +116,7 @@ public class TooltipHelper {
                 }
             }
         });
-        getAbility(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), stack).ifPresent(ability -> {
+        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), stack, display).ifPresent(ability -> {
             if (ability.tag().isEmpty()) {
                 flag.setTrue();
             } else if (!list.contains(ability.tag().get())) {
@@ -127,7 +127,7 @@ public class TooltipHelper {
         if (flag.booleanValue()) {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.when_hurt").withStyle(ChatFormatting.GRAY));
-            addWhenHurtTooltip(tooltip, context, stack, null);
+            addWhenHurtTooltip(tooltip, stack, context, display, null);
         }
         for (TagKey<DamageType> tag : list) {
             tooltip.accept(CommonComponents.EMPTY);
@@ -137,27 +137,27 @@ public class TooltipHelper {
                             .replace("minecraft:", "")
                             .replace(':', '.')
             )).withStyle(ChatFormatting.GRAY));
-            addWhenHurtTooltip(tooltip, context, stack, tag);
+            addWhenHurtTooltip(tooltip, stack, context, display, tag);
         }
     }
 
-    private static void addWhenHurtTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack, @Nullable TagKey<DamageType> tag) {
-        getAbility(ModDataComponents.POST_DAMAGE_EFFECTS.get(), stack).ifPresent(ability -> {
+    private static void addWhenHurtTooltip(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display, @Nullable TagKey<DamageType> tag) {
+        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_EFFECTS.get(), stack, display).ifPresent(ability -> {
             for (PostDamageEffects.Entry entry : ability.entries()) {
                 if (entry.tag().isEmpty() && tag == null || entry.tag().isPresent() && entry.tag().get().equals(tag)) {
                     addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), entry.chance().get(), false);
                 }
             }
         });
-        getAbility(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), stack).ifPresent(ability -> {
+        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), stack, display).ifPresent(ability -> {
             if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                 tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(context, ability.cooldown().get())).withStyle(ChatFormatting.GOLD));
             }
         });
     }
 
-    private static void addPerFoodPointEatenTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
-        getAbility(ModDataComponents.POST_EATING_EFFECTS.get(), stack).ifPresent(ability -> {
+    private static void addPerFoodPointEatenTooltip(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
+        getAbilityIfVisible(ModDataComponents.POST_EATING_EFFECTS.get(), stack, display).ifPresent(ability -> {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.per_food_point_restored").withStyle(ChatFormatting.GRAY));
             for (PostEatingEffects.Entry entry : ability.entries()) {
@@ -167,8 +167,8 @@ public class TooltipHelper {
         });
     }
 
-    private static void addAttacksInflictTooltip(Consumer<Component> tooltip, Item.TooltipContext context, ItemStack stack) {
-        getAbility(ModDataComponents.ATTACK_EFFECTS.get(), stack).ifPresent(ability -> {
+    private static void addAttacksInflictTooltip(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
+        getAbilityIfVisible(ModDataComponents.ATTACK_EFFECTS.get(), stack, display).ifPresent(ability -> {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.attacks_inflict").withStyle(ChatFormatting.GRAY));
             for (AttackEffects.Entry entry : ability.entries()) {
@@ -200,9 +200,14 @@ public class TooltipHelper {
         return Component.literal(StringUtil.formatTickDuration(seconds * 20, context.tickRate()));
     }
 
-    public static <A extends EquipmentAbility> Optional<A> getAbility(DataComponentType<A> type, ItemStack stack) {
-        if (stack.get(type) instanceof A ability && ability.isNonCosmetic()) {
-            return Optional.of(ability);
+    public static <A extends EquipmentAbility> Optional<A> getAbilityIfVisible(DataComponentType<A> type, ItemStack stack, TooltipDisplay display) {
+        return getComponentIfVisible(type, stack, display)
+                .filter(EquipmentAbility::isNonCosmetic);
+    }
+
+    public static <C> Optional<C> getComponentIfVisible(DataComponentType<C> type, ItemStack stack, TooltipDisplay display) {
+        if (display.shows(type)) {
+            return Optional.ofNullable(stack.get(type));
         }
         return Optional.empty();
     }

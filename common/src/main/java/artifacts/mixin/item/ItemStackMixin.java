@@ -2,7 +2,6 @@ package artifacts.mixin.item;
 
 import artifacts.Artifacts;
 import artifacts.client.ToggleKeyHandlers;
-import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.item.WearableArtifactItem;
 import artifacts.registry.ModDataComponents;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.component.TooltipDisplay;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +33,6 @@ public abstract class ItemStackMixin {
             return;
         }
 
-        // noinspection ConstantConditions
         ItemStack stack = (ItemStack) (Object) this;
 
         if (stack.getItem() instanceof WearableArtifactItem) {
@@ -45,22 +42,22 @@ public abstract class ItemStackMixin {
             }
         }
 
-        ItemLore lore = stack.get(ModDataComponents.ABILITY_LORE.get());
-        if (lore != null) {
-            lore.addToTooltip(context, tooltip, tooltipFlag, stack);
-        }
+        TooltipHelper.getComponentIfVisible(ModDataComponents.ABILITY_LORE.get(), stack, display).ifPresent(lore ->
+                lore.addToTooltip(context, tooltip, tooltipFlag, stack)
+        );
 
         for (Supplier<? extends DataComponentType<? extends EquipmentAbility>> type : ModDataComponents.TOOLTIP_ORDER) {
-            EquipmentAbility provider = stack.get(type.get());
-            if (provider != null && provider.isNonCosmetic()) {
-                provider.addToTooltip(new EquipmentAbility.TooltipWriter(type.get(), tooltip, context, stack));
-            }
+            TooltipHelper.getAbilityIfVisible(type.get(), stack, display).ifPresent(ability ->
+                    ability.addToTooltip(new EquipmentAbility.TooltipWriter(type.get(), tooltip, context, stack))
+            );
         }
 
-        ToggleIdentifier toggleKey = stack.get(ModDataComponents.TOGGLE_KEY.get());
-        if (toggleKey != null && !TooltipHelper.isCosmetic(stack) && player != null && !player.level().isClientSide()) {
-            ToggleKeyHandlers.addTooltip(toggleKey, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()), tooltip);
-        }
+        TooltipHelper.getComponentIfVisible(ModDataComponents.TOGGLE_KEY.get(), stack, display).ifPresent(toggleKey -> {
+            // TODO check if this works
+            if (!TooltipHelper.isCosmetic(stack) && player != null && player.level().isClientSide()) {
+                ToggleKeyHandlers.addTooltip(toggleKey, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()), tooltip);
+            }
+        });
     }
 
     /*
