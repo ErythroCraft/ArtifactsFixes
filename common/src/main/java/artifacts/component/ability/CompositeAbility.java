@@ -8,6 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import java.util.List;
 import java.util.function.Function;
 
+// TODO change this into a class
 public interface CompositeAbility<ENTRY extends EquipmentAbility> extends EquipmentAbility {
 
     static <E extends EquipmentAbility, A extends CompositeAbility<E>> Codec<A> codec(Codec<E> entryCodec, Function<List<E>, A> f, Function<A, List<E>> g) {

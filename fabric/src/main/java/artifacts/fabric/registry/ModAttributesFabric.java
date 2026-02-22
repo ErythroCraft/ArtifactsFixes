@@ -6,5 +6,5 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 
 public class ModAttributesFabric {
 
-    public static final Holder<Attribute> SWIM_SPEED = ModAttributes.addGenericAttribute("swim_speed", 1, 0, 1024);
+    public static final Holder<Attribute> SWIM_SPEED = ModAttributes.createAttribute("swim_speed", 1, 0, 1024);
 }

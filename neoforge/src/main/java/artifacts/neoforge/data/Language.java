@@ -95,7 +95,7 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), ModAttributes.MOVEMENT_SPEED_ON_SNOW, "Increases the wearer's walking speed on snow");
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), ModAttributes.SPRINTING_SPEED, "Increases the wearer's movement speed while sprinting");
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), ModAttributes.SPRINTING_STEP_HEIGHT, "Increases the wearer's step height while sprinting");
-        addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), "generic.swim_speed", "Improves agility in water");
+        addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), "swim_speed", "Improves agility in water");
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), Attributes.BLOCK_BREAK_SPEED, "Increases the wearer's mining speed");
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), ModAttributes.ENTITY_EXPERIENCE, "Increases experience dropped by creatures");
         addAbilityTooltip(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), ModAttributes.VILLAGER_REPUTATION, "Decreases the trading prices of villagers");
@@ -145,9 +145,11 @@ public class Language extends LanguageProvider {
 
     private void addAttributes() {
         for (RegistryHolder<Attribute, ?> attribute : ModAttributes.ATTRIBUTES.getEntries()) {
-            add(attribute.get().getDescriptionId(), fromSnakeCasedString(attribute.unwrapKey().orElseThrow().identifier().getPath().split("\\.")[1]));
+            String[] path = attribute.unwrapKey().orElseThrow().identifier().getPath().split("\\.");
+            String name = path[path.length - 1];
+            add(attribute.get().getDescriptionId(), fromSnakeCasedString(name));
         }
-        add("generic.swim_speed", "Swim Speed");
+        add("attribute.artifacts.swim_speed", "Swim Speed");
     }
 
     private void addEntities() {
