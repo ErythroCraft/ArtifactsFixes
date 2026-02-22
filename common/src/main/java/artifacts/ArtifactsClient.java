@@ -1,6 +1,7 @@
 package artifacts;
 
 import artifacts.client.CloudInABottleInputHandler;
+import artifacts.client.HeliumFlamingoOverlay;
 import artifacts.client.ToggleKeyHandlers;
 import artifacts.client.item.ArtifactLayers;
 import artifacts.client.mimic.MimicModel;
@@ -14,6 +15,8 @@ import net.minecraft.client.Minecraft;
 
 public class ArtifactsClient {
 
+    private static final HeliumFlamingoOverlay HELIUM_FLAMINGO_OVERLAY = new HeliumFlamingoOverlay();
+
     public static void setup() {
         if (PlatformServices.getModList().isModLoaded(ModCompat.TRINKETS)) {
             TrinketsCompatClient.setup();
@@ -21,6 +24,10 @@ public class ArtifactsClient {
         if (PlatformServices.getModList().isModLoaded(ModCompat.ACCESSORIES)) {
             AccessoriesCompatClient.setup();
         }
+    }
+
+    public static HeliumFlamingoOverlay getHeliumFlamingoOverlay() {
+        return HELIUM_FLAMINGO_OVERLAY;
     }
 
     public static void onClientTick(Minecraft instance) {

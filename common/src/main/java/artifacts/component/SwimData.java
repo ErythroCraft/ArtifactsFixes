@@ -3,7 +3,7 @@ package artifacts.component;
 import artifacts.component.ability.SwimInAir;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.network.NetworkHandler;
-import artifacts.network.SwimPacket;
+import artifacts.network.UpdateSwimFlyingPacket;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModSoundEvents;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,61 +11,74 @@ import net.minecraft.world.entity.player.Player;
 
 public class SwimData {
 
-    protected boolean isSwimming;
-    protected boolean hasTouchedWater;
-    protected double swimProgress;
+    protected boolean isSwimFlying;
+    protected boolean shouldBreakSurfaceTension;
 
-    public boolean isSwimming() {
-        return isSwimming;
+    protected double swimFlyingCharge = 1;
+
+    public boolean isSwimFlying() {
+        return isSwimFlying;
     }
 
-    public boolean isWet() {
-        return hasTouchedWater;
+    public boolean shouldBreakSurfaceTension() {
+        return shouldBreakSurfaceTension;
     }
 
-    public double getSwimProgress() {
-        return swimProgress;
+    public double getSwimFlyingCharge() {
+        return swimFlyingCharge;
     }
 
     public void update(Player player) {
         if (player.isInWater() || player.isInLava() || player.fallDistance > 6) {
-            hasTouchedWater = true;
+            // prevent players from stepping onto the surface while swimming,
+            // or when falling into water from too high
+            shouldBreakSurfaceTension = true;
         } else if (player.onGround() || player.getAbilities().flying) {
-            hasTouchedWater = false;
+            // reset surface tension when back on the ground or during creative flight
+            shouldBreakSurfaceTension = false;
         }
-        boolean shouldToggle = isSwimming ? player.onGround() : player.isUnderWater() && player.isSwimming();
-        if (shouldToggle) {
-            toggleSwimming(player);
+
+        // stop swimming automatically when touching the ground,
+        // start swimming automatically when swimming underwater
+        boolean shouldToggleSwimState = isSwimFlying
+                ? player.onGround()
+                : player.isUnderWater() && player.isSwimming();
+
+        if (shouldToggleSwimState) {
+            toggleSwimFlying(player);
+            // send swim state back to client after automatically updating on server
             syncSwimming(player);
         }
+
         updateSwimProgress(player);
     }
 
     private void updateSwimProgress(Player player) {
-        if (shouldDeplete(player)) {
-            int flightDuration = SwimInAir.getFlightDuration(player);
-            swimProgress += 1D / flightDuration;
-            if (swimProgress >= 1) {
-                swimProgress = 1;
-                toggleSwimming(player);
+        if (shouldDepleteSwimFlyingCharge(player)) {
+            int maxFlightDuration = SwimInAir.getMaxFlightDuration(player);
+            swimFlyingCharge -= 1D / maxFlightDuration;
+            swimFlyingCharge = Math.max(0, swimFlyingCharge);
+            // Stop swimming automatically after depleting charge and send change to client
+            if (swimFlyingCharge == 0) {
+                toggleSwimFlying(player);
                 syncSwimming(player);
             }
-        } else if (swimProgress > 0) {
+        } else if (swimFlyingCharge < 1) {
             int rechargeDuration = SwimInAir.getRechargeDuration(player);
-            swimProgress -= 1D / rechargeDuration;
-            swimProgress = Math.max(0, swimProgress);
+            swimFlyingCharge += 1D / rechargeDuration;
+            swimFlyingCharge = Math.min(1, swimFlyingCharge);
         }
     }
 
-    private boolean shouldDeplete(Player player) {
-        return isSwimming && !player.isCreative()
-                && (!player.isUnderWater() || EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true));
+    private boolean shouldDepleteSwimFlyingCharge(Player player) {
+        boolean hasSinkingAbility = EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true);
+        return isSwimFlying && !player.isCreative() && (!player.isUnderWater() || hasSinkingAbility);
     }
 
-    public void toggleSwimming(Player player) {
-        if (isSwimming || SwimInAir.canSwim(player)) {
-            isSwimming = !isSwimming;
-            if (!isSwimming && !player.level().isClientSide() && !player.onGround()) {
+    public void toggleSwimFlying(Player player) {
+        if (isSwimFlying || SwimInAir.canSwim(player)) {
+            isSwimFlying = !isSwimFlying;
+            if (!isSwimFlying && !player.level().isClientSide() && !player.onGround()) {
                 if (!player.isSilent()) {
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                             ModSoundEvents.POP.value(), player.getSoundSource(), 1F, 1F
@@ -81,9 +94,9 @@ public class SwimData {
 
     public void syncSwimming(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            NetworkHandler.sendToPlayer(serverPlayer, new SwimPacket(isSwimming));
+            NetworkHandler.sendToPlayer(serverPlayer, new UpdateSwimFlyingPacket(isSwimFlying));
         } else {
-            NetworkHandler.sendToServer(new SwimPacket(isSwimming));
+            NetworkHandler.sendToServer(new UpdateSwimFlyingPacket(isSwimFlying));
         }
     }
 }

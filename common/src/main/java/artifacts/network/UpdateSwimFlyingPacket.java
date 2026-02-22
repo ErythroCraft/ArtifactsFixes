@@ -9,14 +9,14 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
-public record SwimPacket(boolean shouldSwim) implements CustomPacketPayload {
+public record UpdateSwimFlyingPacket(boolean shouldSwim) implements CustomPacketPayload {
 
-    public static final Type<SwimPacket> TYPE = new Type<>(Artifacts.id("update_swimming"));
+    public static final Type<UpdateSwimFlyingPacket> TYPE = new Type<>(Artifacts.id("update_swim_flying"));
 
-    public static final StreamCodec<FriendlyByteBuf, SwimPacket> CODEC = StreamCodec.composite(
+    public static final StreamCodec<FriendlyByteBuf, UpdateSwimFlyingPacket> CODEC = StreamCodec.composite(
             ByteBufCodecs.BOOL,
-            SwimPacket::shouldSwim,
-            SwimPacket::new
+            UpdateSwimFlyingPacket::shouldSwim,
+            UpdateSwimFlyingPacket::new
     );
 
     void apply(NetworkHandler.PayloadContext context) {
@@ -24,8 +24,8 @@ public record SwimPacket(boolean shouldSwim) implements CustomPacketPayload {
         if (player != null) {
             context.queue(() -> {
                 SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
-                if (swimData != null && swimData.isSwimming() ^ shouldSwim()) {
-                    swimData.toggleSwimming(player);
+                if (swimData != null && swimData.isSwimFlying() ^ shouldSwim()) {
+                    swimData.toggleSwimFlying(player);
                 }
             });
         }

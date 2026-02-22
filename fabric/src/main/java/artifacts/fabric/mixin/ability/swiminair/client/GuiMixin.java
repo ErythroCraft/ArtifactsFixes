@@ -1,6 +1,6 @@
 package artifacts.fabric.mixin.ability.swiminair.client;
 
-import artifacts.client.HeliumFlamingoOverlay;
+import artifacts.ArtifactsClient;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.tags.FluidTags;
@@ -35,14 +35,14 @@ public abstract class GuiMixin {
             return;
         }
 
-        HeliumFlamingoOverlay.renderOverlay(- getStatusBarHeightOffset(player), guiGraphics, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+        ArtifactsClient.getHeliumFlamingoOverlay().renderOverlay(guiGraphics, player, -artifacts$getStatusBarHeightOffset(player));
     }
 
     /**
      * Calculate offset for our status bar height, taking rendering of other status bars into account
      */
     @Unique
-    private int getStatusBarHeightOffset(Player player) {
+    private int artifacts$getStatusBarHeightOffset(Player player) {
         int offset = -49; // Base offset
 
         LivingEntity livingEntity = this.getPlayerVehicleWithHealth();

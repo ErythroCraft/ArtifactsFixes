@@ -93,6 +93,6 @@ public abstract class EntityMixin {
         return swimData != null
                 && EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION.get(), entity, true)
                 && entity.isSprinting()
-                && !swimData.isWet();
+                && !swimData.shouldBreakSurfaceTension();
     }
 }

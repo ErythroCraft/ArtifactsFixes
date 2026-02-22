@@ -247,7 +247,7 @@ public class ArtifactHooks {
     public static EventResult onPlayerSwim(Player player) {
         SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
         if (swimData != null) {
-            if (swimData.isSwimming()) {
+            if (swimData.isSwimFlying()) {
                 return EventResult.SUCCESS;
             } else if (EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true)) {
                 return EventResult.FAIL;
@@ -258,7 +258,7 @@ public class ArtifactHooks {
 
     public static boolean onFluidCollision(LivingEntity entity, FluidState fluidState) {
         SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(entity);
-        if (swimData == null || swimData.isWet() || swimData.isSwimming()) {
+        if (swimData == null || swimData.shouldBreakSurfaceTension() || swimData.isSwimFlying()) {
             return false;
         }
         return EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION.get(), entity, true, ability ->
