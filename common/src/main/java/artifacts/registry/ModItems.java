@@ -16,6 +16,7 @@ import artifacts.config.value.Value;
 import artifacts.item.EverlastingFoodItem;
 import artifacts.item.UmbrellaItem;
 import artifacts.item.WearableArtifactItem;
+import artifacts.item.consumeeffects.HealConsumeEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -33,6 +34,8 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.*;
+import net.minecraft.world.item.consume_effects.ClearAllStatusEffectsConsumeEffect;
+import net.minecraft.world.item.consume_effects.TeleportRandomlyConsumeEffect;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
@@ -245,12 +248,14 @@ public class ModItems {
             ))
     );
     public static final Holder<Item> CHORUS_TOTEM = wearableItem("chorus_totem", builder -> builder
-            .component(ModDataComponents.DEATH_PROTECTION_TELEPORT.get(), new DeathProtectionTeleport(
-                    Artifacts.CONFIG.items.chorusTotemTeleportationChance,
-                    Artifacts.CONFIG.items.chorusTotemHealthRestored,
-                    Artifacts.CONFIG.items.chorusTotemCooldown,
-                    Artifacts.CONFIG.items.chorusTotemConsumeOnUse
+            .component(ModDataComponents.EQUIPABLE_TOTEM.get(), new EquipableTotem(
+                    Artifacts.CONFIG.items.chorusTotemEnabled
             ))
+            .component(DataComponents.DEATH_PROTECTION, new DeathProtection(List.of(
+                    new ClearAllStatusEffectsConsumeEffect(),
+                    new TeleportRandomlyConsumeEffect(32),
+                    new HealConsumeEffect(Artifacts.CONFIG.items.chorusTotemHealthRestored)
+            )))
     );
     public static final Holder<Item> WARP_DRIVE = wearableItem("warp_drive", builder -> builder
             .component(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), new EnderPearlHungerCost(

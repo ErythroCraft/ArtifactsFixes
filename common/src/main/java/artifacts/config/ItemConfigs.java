@@ -30,6 +30,8 @@ public class ItemConfigs extends ConfigManager {
                     "Whether the Aqua-Dashers allow the wearer to sprint on water"),
             charmOfSinkingEnabled = defineBool(createKey(ModItems.CHARM_OF_SINKING, "enabled"), true, true,
                     "Whether the Charm of Sinking removes the wearer's collision with water"),
+            chorusTotemEnabled = defineBool(createKey(ModItems.CHORUS_TOTEM, "enabled"), true, true,
+                    "Whether the Chorus Totem prevents the wearer's death"),
             cloudInABottleEnabled = defineBool(createKey(ModItems.CLOUD_IN_A_BOTTLE, "enabled"),
                     "Whether the Cloud in a Bottle allows the wearer to double jump"),
             eternalSteakEnabled = defineBool(createKey(ModItems.ETERNAL_STEAK, "enabled"),
@@ -47,8 +49,6 @@ public class ItemConfigs extends ConfigManager {
             warpDriveEnabled = defineBool(createKey(ModItems.WARP_DRIVE, "enabled"),
                     "Whether the Warp Drive causes ender pearls to not be consumed"),
 
-            chorusTotemConsumeOnUse = defineBool(createKey(ModItems.CHORUS_TOTEM, "consumeOnUse"),
-                    "Whether the Chorus Totem is consumed after activating"),
             flamePendantGrantFireResistance = defineBool(createKey(ModItems.FLAME_PENDANT, "grantFireResistance"),
                     "Whether the Flame Pendant grants Fire Resistance after igniting an entity"),
             rootedBootsGrowPlantsAfterEating = defineBool(createKey(ModItems.ROOTED_BOOTS, "growPlantsAfterEating"),
@@ -154,8 +154,6 @@ public class ItemConfigs extends ConfigManager {
             whoopeeCushionFartChance = defineFraction(createKey(ModItems.WHOOPEE_CUSHION, "fartChance"), 0.12,
                     "The probability that a fart sound plays when sneaking " +
                     "or double jumping while wearing the Whoopee Cushion"),
-            chorusTotemTeleportationChance = defineFraction(createKey(ModItems.CHORUS_TOTEM, "teleportationChance"), 1.00,
-                    "The probability that the Chorus Totem activates when a player dies"),
             flamePendantStrikeChance = defineFraction(createKey(ModItems.FLAME_PENDANT, "strikeChance"), 0.40,
                     "The probability that the Flame Pendant lights an attacker on fire"),
             nightVisionGogglesStrength = defineFraction(createKey(ModItems.NIGHT_VISION_GOGGLES, "strength"), 0.15,
@@ -174,7 +172,7 @@ public class ItemConfigs extends ConfigManager {
                     "How much fall damage is dealt when double jumping with the Cloud in a Bottle");
 
     public final Value.ConfigValue<Integer>
-            chorusTotemHealthRestored = defineNonNegativeInt(createKey(ModItems.CHORUS_TOTEM, "healthRestored"), 10,
+            chorusTotemHealthRestored = defineNonNegativeInt(createKey(ModItems.CHORUS_TOTEM, "healthRestored"), 9,
                     "The amount of health points that are restored after the Chorus Totem activates"),
             thornPendantMaxDamage = defineNonNegativeInt(createKey(ModItems.THORN_PENDANT, "maxDamage"), 6,
                     "The minimum amount of damage that is dealt when the Thorn Pendant activates"),
@@ -189,8 +187,6 @@ public class ItemConfigs extends ConfigManager {
     public final Value.ConfigValue<Integer>
             antidoteVesselMaxEffectDuration = defineDuration(createKey(ModItems.ANTIDOTE_VESSEL, "maxEffectDuration"), 5,
                     "The maximum duration in seconds negative mob effects can last when wearing the Antidote Vessel"),
-            chorusTotemCooldown = defineDuration(createKey(ModItems.CHORUS_TOTEM, "cooldown"), 0,
-                    "The duration in seconds the Chorus Totem goes on cooldown for after activating"),
             crossNecklaceCooldown = defineDuration(createKey(ModItems.CROSS_NECKLACE, "cooldown"), 0,
                     "The duration in seconds the Cross Necklace goes on cooldown for after activating"),
             eternalSteakCooldown = defineDuration(createKey(ModItems.ETERNAL_STEAK, "cooldown"), 15,

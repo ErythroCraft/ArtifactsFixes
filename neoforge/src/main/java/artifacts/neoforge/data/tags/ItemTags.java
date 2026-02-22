@@ -28,9 +28,6 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
     public static final TagKey<Item> ORIGINS_MEAT = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("origins", "meat"));
     public static final TagKey<Item> ORIGINS_SHIELDS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("origins", "shields"));
 
-    // TODO remove
-    public static final TagKey<Item> PASSTHROUGH_DEATH_WHEN_HELD = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("hardcorerevival", "passthrough_death_when_held"));
-
     private static TagKey<Item> createTag(String name) {
         return TagKey.create(Registries.ITEM, Artifacts.id(name));
     }
@@ -118,10 +115,6 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
                 ModItems.CROSS_NECKLACE.value(),
                 ModItems.ANTIDOTE_VESSEL.value(),
                 ModItems.UNIVERSAL_ATTRACTOR.value()
-        );
-
-        tag(PASSTHROUGH_DEATH_WHEN_HELD).add(
-                ModItems.CHORUS_TOTEM.value()
         );
     }
 }

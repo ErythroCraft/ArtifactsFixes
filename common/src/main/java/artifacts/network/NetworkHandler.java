@@ -20,7 +20,6 @@ public class NetworkHandler {
     public static final List<PayloadHandler<?>> CLIENTBOUND_HANDLERS = new ArrayList<>();
 
     public static void initPayloads() {
-        registerClientbound(ChorusTotemUsedPacket.TYPE, ChorusTotemUsedPacket.CODEC, ChorusTotemUsedPacket::apply);
         registerClientbound(PlaySoundAtPlayerPacket.TYPE, PlaySoundAtPlayerPacket.CODEC, PlaySoundAtPlayerPacket::apply);
         registerClientbound(UpdateItemConfigPacket.TYPE, UpdateItemConfigPacket.CODEC, UpdateItemConfigPacket::apply);
         registerClientbound(SwimPacket.TYPE, SwimPacket.CODEC, SwimPacket::apply);

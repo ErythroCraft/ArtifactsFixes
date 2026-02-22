@@ -31,8 +31,9 @@ public class ModDataComponents {
 
     public static final Register<DataComponentType<?>> DATA_COMPONENT_TYPES = Register.create(Registries.DATA_COMPONENT_TYPE);
 
-    public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
     public static final List<Supplier<? extends DataComponentType<? extends EquipmentAbility>>> TOOLTIP_ORDER = new ArrayList<>();
+
+    public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
     public static final Set<Supplier<? extends DataComponentType<?>>> APPLIES_COOLDOWN = new LinkedHashSet<>();
 
     public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
@@ -59,7 +60,7 @@ public class ModDataComponents {
     public static final Supplier<DataComponentType<AttackEffects>> ATTACK_EFFECTS =
             registerSynced("attack_effects", AttackEffects.CODEC, AttackEffects.STREAM_CODEC);
     public static final Supplier<DataComponentType<AttributeModifiers>> ATTRIBUTE_MODIFIERS =
-             registerCached("attribute_modifiers", AttributeModifiers.CODEC, AttributeModifiers.STREAM_CODEC);
+            registerCached("attribute_modifiers", AttributeModifiers.CODEC, AttributeModifiers.STREAM_CODEC);
     public static final Supplier<DataComponentType<DamageImmunity>> DAMAGE_IMMUNITY =
             registerSynced("damage_immunity", DamageImmunity.CODEC, DamageImmunity.STREAM_CODEC);
     public static final Supplier<DataComponentType<DoubleJump>> DOUBLE_JUMP =
@@ -90,9 +91,8 @@ public class ModDataComponents {
             registerSynced("fluid_collision", FluidCollision.CODEC, FluidCollision.STREAM_CODEC);
     public static final Supplier<DataComponentType<SwimInAir>> SWIM_IN_AIR =
             registerSynced("swim_in_air", SwimInAir.CODEC, SwimInAir.STREAM_CODEC);
-    // TODO (>1.21.1) use vanilla death_protection component
-    public static final Supplier<DataComponentType<DeathProtectionTeleport>> DEATH_PROTECTION_TELEPORT =
-            registerSynced("death_protection_teleport", DeathProtectionTeleport.CODEC, DeathProtectionTeleport.STREAM_CODEC);
+    public static final Supplier<DataComponentType<EquipableTotem>> EQUIPABLE_TOTEM =
+            registerSynced("equipable_totem", EquipableTotem.CODEC, EquipableTotem.STREAM_CODEC);
     public static final Supplier<DataComponentType<RetaliationEffects>> RETALIATION_EFFECTS =
             registerSynced("retaliation_effects", RetaliationEffects.CODEC, RetaliationEffects.STREAM_CODEC);
     public static final Supplier<DataComponentType<ToolTierUpgrade>> TOOL_TIER_UPGRADE =
@@ -120,7 +120,7 @@ public class ModDataComponents {
                 RETALIATION_EFFECTS,
                 CURE_EFFECTS,
                 DAMAGE_ABSORPTION,
-                DEATH_PROTECTION_TELEPORT,
+                EQUIPABLE_TOTEM,
                 ENDER_PEARL_HUNGER_COST,
                 ENDER_PEARL_DAMAGE_IMMUNITY,
                 REPLENISH_HUNGER_ON_GRASS,
@@ -136,8 +136,7 @@ public class ModDataComponents {
         ));
         APPLIES_COOLDOWN.addAll(Set.of(
                 POST_DAMAGE_COOLDOWN,
-                RETALIATION_EFFECTS,
-                DEATH_PROTECTION_TELEPORT
+                RETALIATION_EFFECTS
         ));
     }
 

@@ -7,13 +7,13 @@
   "mixins": [
     "ability.LivingEntityMixin",
     "ability.damageimmunity.LivingEntityMixin",
-    "ability.deathprotectionteleport.LivingEntityMixin",
     "ability.enchantment.ApplyBonusCountMixin",
     "ability.enchantment.EnchantedCountIncreaseFunctionMixin",
     "ability.enchantment.EnchantmentHelperMixin",
     "ability.enchantment.LootItemRandomChanceWithEnchantedBonusConditionMixin",
     "ability.enderpearldamageimmunity.ThrownEnderPearlMixin",
     "ability.enderpearlhungercost.EnderPearlItemMixin",
+    "ability.equipabletotem.LivingEntityMixin",
     "ability.fluidcollision.EntityMixin",
     "ability.hurtsound.LivingEntityMixin",
     "ability.phantomrepellent.PhantomSweepAttackGoalMixin",
@@ -38,6 +38,7 @@
     "mobeffect.magnetism.LivingEntityMixin"
   ],
   "client": [
+    "ability.equipabletotem.client.ClientPacketListenerMixin",
     "ability.hurtsound.client.LivingEntityMixin",
     "ability.nightvision.client.GameRendererMixin",
     "accessors.client.LivingEntityRendererAccessor",

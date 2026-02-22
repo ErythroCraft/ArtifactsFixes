@@ -1,4 +1,4 @@
-// 1.21.11	2026-02-16T19:37:39.4968047	Tags for minecraft:item mod id artifacts
+// 1.21.11	2026-02-21T21:30:03.0724122	Tags for minecraft:item mod id artifacts
 8dd1563f299da374a09d42f0e3b2b918d201d735 data/artifacts/tags/item/artifacts.json
 2465e2164941a4a1d92ea3320f702f0c092e64c6 data/artifacts/tags/item/slot/all.json
 45ebe6fc31c7b20af72d8dc2fe73cb72dca208ed data/artifacts/tags/item/slot/belt.json
@@ -7,7 +7,6 @@ f423ab6d12dec9a61a60ad89a9fbc93759d6e420 data/artifacts/tags/item/slot/face.json
 71feaab41b2dc1a78f24cb9aa9f3b7bd345d9a9d data/artifacts/tags/item/slot/hands.json
 f1aef65b784cd28af5f6ef7497de40a3c70c4a49 data/artifacts/tags/item/slot/head.json
 7738bbecafe9c111036ed682937ea34045f20568 data/artifacts/tags/item/slot/necklace.json
-d3a1995e973b0a59dfcae402c334088c5db92926 data/hardcorerevival/tags/item/passthrough_death_when_held.json
 075455bc6de3ca435f51f07b2f405073c0783921 data/minecraft/tags/item/piglin_loved.json
 67ac1f7771168c71238c74d91631b361e0a3934c data/origins/tags/item/meat.json
 159e2d82f9583dca9566cf0a02f01f3485a2f3eb data/origins/tags/item/shields.json

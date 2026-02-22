@@ -136,9 +136,7 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "lightning", "constant", "Attacking entities are struck by lightning");
         addAbilityTooltip(ModDataComponents.SWIM_IN_AIR.get(), "keymapping", "Press %s while in the air to start swimming");
         addAbilityTooltip(ModDataComponents.SWIM_IN_AIR.get(), "swimming", "Allows the wearer to swim in the air for a limited period of time");
-        addAbilityTooltip(ModDataComponents.DEATH_PROTECTION_TELEPORT.get(), "chance", "A fatal hit has a %s%% chance to teleport you somewhere else instead");
-        addAbilityTooltip(ModDataComponents.DEATH_PROTECTION_TELEPORT.get(), "constant", "A fatal hit teleports you somewhere else instead");
-        addAbilityTooltip(ModDataComponents.DEATH_PROTECTION_TELEPORT.get(), "not_consumed", "Not consumed on use");
+        addAbilityTooltip(ModDataComponents.EQUIPABLE_TOTEM.get(), "teleport", "A fatal hit teleports you somewhere else instead");
         addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "thorns", "chance", "Has a %s%% chance to damage attackers");
         addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "thorns", "constant", "Attacking entities are damaged as well");
         addAbilityTooltip(ModDataComponents.TOOL_TIER_UPGRADE.get(), "Increases the wearer's base mining level to %s");
