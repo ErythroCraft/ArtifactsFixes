@@ -67,7 +67,7 @@ public record PostDamageEffects(List<Entry> entries) implements CompositeAbility
                     && entity.getRandom().nextDouble() < chance.get()
                     && (tag.isEmpty() || entity.level().registryAccess().get(Registries.DAMAGE_TYPE)
                     .map(registry -> registry.value().wrapAsHolder(type).is(tag.get()))
-                    .orElseThrow());
+                    .orElse(false));
         }
 
         @Override
