@@ -43,7 +43,7 @@ dependencies {
 
     include modCompileOnly("be.florens:expandability-neoforge:${project.expandability_version}")
     modImplementation("me.shedaniel.cloth:cloth-config-neoforge:${project.cloth_config_version}")
-    modCompileOnly("top.theillusivec4.curios:curios-neoforge:${project.curios_version}")
+    modImplementation("top.theillusivec4.curios:curios-neoforge:${project.curios_version}")
 
     // modRuntimeOnly("maven.modrinth:curious-armor-stands:${project.curious_armor_stands_version}")
 
