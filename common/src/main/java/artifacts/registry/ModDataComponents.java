@@ -18,6 +18,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Unit;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
 
 import java.util.ArrayList;
@@ -34,10 +35,12 @@ public class ModDataComponents {
     public static final List<Supplier<? extends DataComponentType<? extends EquipmentAbility>>> TOOLTIP_ORDER = new ArrayList<>();
 
     public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
-    public static final Set<Supplier<? extends DataComponentType<?>>> APPLIES_COOLDOWN = new LinkedHashSet<>();
+    private static final Set<Supplier<? extends DataComponentType<?>>> APPLIES_COOLDOWN = new LinkedHashSet<>();
 
     public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
     public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE = registerSynced("disabled_by_toggle", Unit.CODEC, Unit.STREAM_CODEC);
+    public static final Supplier<DataComponentType<Unit>> DEPENDENCY_CHECK_TOOLTIP = registerSynced("dependency_check_tooltip", Unit.CODEC, Unit.STREAM_CODEC);
+    public static final Supplier<DataComponentType<Unit>> COSMETIC_TOOLTIP = registerSynced("cosmetic_tooltip", Unit.CODEC, Unit.STREAM_CODEC);
     public static final Supplier<DataComponentType<SoundEvent>> EQUIP_SOUND = registerSynced("equip_sound",
             Identifier.CODEC.xmap(SoundEvent::createVariableRangeEvent, SoundEvent::location),
             Identifier.STREAM_CODEC.map(SoundEvent::createVariableRangeEvent, SoundEvent::location)
@@ -138,6 +141,15 @@ public class ModDataComponents {
                 POST_DAMAGE_COOLDOWN,
                 RETALIATION_EFFECTS
         ));
+    }
+
+    public static boolean hasAbilityWithCooldown(ItemStack stack) {
+        for (Supplier<? extends DataComponentType<?>> componentType : APPLIES_COOLDOWN) {
+            if (stack.has(componentType.get())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static Supplier<DataComponentType<SimpleAbility>> registerSimpleAbility(String name) {

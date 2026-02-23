@@ -2,7 +2,7 @@ package artifacts.client;
 
 import artifacts.Artifacts;
 import artifacts.equipment.EquipmentHelper;
-import artifacts.item.WearableArtifactItem;
+import artifacts.registry.ModDataComponents;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,7 +32,10 @@ public class CooldownOverlayRenderer {
         MutableInt k = new MutableInt(0);
 
         EquipmentHelper.iterateEquipment(player, stack -> {
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableArtifactItem && player.getCooldowns().isOnCooldown(stack)) {
+            if (!stack.isEmpty()
+                    && ModDataComponents.hasAbilityWithCooldown(stack)
+                    && player.getCooldowns().isOnCooldown(stack)
+            ) {
                 int x = start + step * k.intValue();
                 k.add(1);
                 guiGraphics.renderItem(player, stack, x, y, k.intValue() + 1);

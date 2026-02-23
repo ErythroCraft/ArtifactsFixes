@@ -8,14 +8,10 @@ import artifacts.component.ability.SimpleAbility;
 import artifacts.component.ability.mobeffect.EquipmentMobEffects;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.config.value.Value;
-import artifacts.integration.ModCompat;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -24,10 +20,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.ArrayList;
@@ -39,20 +32,6 @@ public class WearableArtifactItem extends Item {
 
     public WearableArtifactItem(Item.Properties properties) {
         super(properties);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay display, Consumer<Component> list, TooltipFlag tooltipFlag) {
-        if (Artifacts.CONFIG.client.showTooltips.get()
-                && !PlatformServices.getModList().isModLoaded(ModCompat.CURIOS)
-                && !PlatformServices.getModList().isModLoaded(ModCompat.TRINKETS)
-                && !PlatformServices.getModList().isModLoaded(ModCompat.ACCESSORIES)
-        ) {
-            list.accept(Component.translatable("%s.tooltip.missing_dependency".formatted(Artifacts.MOD_ID)).withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
-        } else {
-            super.appendHoverText(itemStack, tooltipContext, display, list, tooltipFlag);
-        }
     }
 
     public static class Builder {
@@ -119,8 +98,12 @@ public class WearableArtifactItem extends Item {
             return this;
         }
 
-        public WearableArtifactItem build() {
-            properties.stacksTo(1).rarity(Rarity.RARE).fireResistant();
+        public Item build() {
+            properties.stacksTo(1)
+                    .rarity(Rarity.RARE)
+                    .fireResistant()
+                    .component(ModDataComponents.DEPENDENCY_CHECK_TOOLTIP.get(), Unit.INSTANCE)
+                    .component(ModDataComponents.COSMETIC_TOOLTIP.get(), Unit.INSTANCE);
             if (!attributes.isEmpty()) {
                 properties.component(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), new AttributeModifiers(attributes));
             }

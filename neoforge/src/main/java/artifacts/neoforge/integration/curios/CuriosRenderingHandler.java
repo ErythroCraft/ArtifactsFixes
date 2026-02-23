@@ -3,7 +3,6 @@ package artifacts.neoforge.integration.curios;
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.equipment.client.EquipmentRenderingHandler;
-import artifacts.item.WearableArtifactItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -33,8 +32,8 @@ public class CuriosRenderingHandler implements EquipmentRenderingHandler {
 
     @Override
     public @Nullable ArtifactRenderer getArtifactRenderer(Item item) {
-        if (ICurioRenderer.getOrNull(item) instanceof ArtifactCurioRenderer artifactTrinketRenderer) {
-            return artifactTrinketRenderer.renderer();
+        if (ICurioRenderer.getOrNull(item) instanceof ArtifactCurioRenderer artifactCurioRenderer) {
+            return artifactCurioRenderer.renderer();
         }
         return null;
     }
@@ -54,11 +53,9 @@ public class CuriosRenderingHandler implements EquipmentRenderingHandler {
                         stack = stacks.getStackInSlot(slot);
                     }
 
-                    if (stack.getItem() instanceof WearableArtifactItem) {
-                        GloveArtifactRenderer renderer = GloveArtifactRenderer.getGloveRenderer(stack);
-                        if (renderer != null) {
-                            renderer.renderFirstPersonArm(matrixStack, buffer, light, player, side, stack.hasFoil());
-                        }
+                    GloveArtifactRenderer renderer = GloveArtifactRenderer.getGloveRenderer(stack);
+                    if (renderer != null) {
+                        renderer.renderFirstPersonArm(matrixStack, buffer, light, player, side, stack.hasFoil());
                     }
                 }
             }

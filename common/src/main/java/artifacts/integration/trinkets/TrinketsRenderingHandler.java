@@ -3,7 +3,6 @@ package artifacts.integration.trinkets;
 import artifacts.client.item.renderer.ArtifactRenderer;
 import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.equipment.client.EquipmentRenderingHandler;
-import artifacts.item.WearableArtifactItem;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.trinkets.api.SlotReference;
@@ -46,7 +45,7 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
         TrinketsApi.getTrinketComponent(player).ifPresent(component -> {
             for (Tuple<SlotReference, ItemStack> pair : component.getAllEquipped()) {
                 ItemStack stack = pair.getB();
-                if (pair.getA().inventory().getSlotType().getGroup().equals(groupId) && stack.getItem() instanceof WearableArtifactItem) {
+                if (pair.getA().inventory().getSlotType().getGroup().equals(groupId)) {
                     GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
                     if (gloveRenderer != null) {
                         gloveRenderer.renderFirstPersonArm(matrixStack, buffer, light, player, side, stack.hasFoil());
