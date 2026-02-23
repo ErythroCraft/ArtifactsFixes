@@ -11,7 +11,6 @@ import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Tuple;
@@ -40,7 +39,7 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
     }
 
     @Override
-    public void renderArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side) {
+    public void renderArm(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, AbstractClientPlayer player, HumanoidArm side) {
         String groupId = side == player.getMainArm() ? "hand" : "offhand";
         TrinketsApi.getTrinketComponent(player).ifPresent(component -> {
             for (Tuple<SlotReference, ItemStack> pair : component.getAllEquipped()) {
@@ -48,7 +47,7 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
                 if (pair.getA().inventory().getSlotType().getGroup().equals(groupId)) {
                     GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
                     if (gloveRenderer != null) {
-                        gloveRenderer.renderFirstPersonArm(matrixStack, buffer, light, player, side, stack.hasFoil());
+                        gloveRenderer.renderFirstPersonArm(poseStack, submitNodeCollector, packedLight, player, side, stack.hasFoil());
                     }
                 }
             }

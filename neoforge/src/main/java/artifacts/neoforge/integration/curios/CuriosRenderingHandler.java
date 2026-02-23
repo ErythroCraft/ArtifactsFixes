@@ -6,7 +6,6 @@ import artifacts.equipment.client.EquipmentRenderingHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -39,7 +38,7 @@ public class CuriosRenderingHandler implements EquipmentRenderingHandler {
     }
 
     @Override
-    public void renderArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side) {
+    public void renderArm(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, AbstractClientPlayer player, HumanoidArm side) {
         InteractionHand hand = side == player.getMainArm() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 
         CuriosApi.getCuriosInventory(player).ifPresent(handler -> handler.getCurios().values().forEach(stacksHandler -> {
@@ -55,7 +54,7 @@ public class CuriosRenderingHandler implements EquipmentRenderingHandler {
 
                     GloveArtifactRenderer renderer = GloveArtifactRenderer.getGloveRenderer(stack);
                     if (renderer != null) {
-                        renderer.renderFirstPersonArm(matrixStack, buffer, light, player, side, stack.hasFoil());
+                        renderer.renderFirstPersonArm(poseStack, submitNodeCollector, packedLight, player, side, stack.hasFoil());
                     }
                 }
             }

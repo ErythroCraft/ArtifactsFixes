@@ -3,12 +3,20 @@ package artifacts.client.item.renderer;
 import artifacts.client.item.ArmsModelSet;
 import artifacts.equipment.client.EquipmentRenderingManager;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
@@ -74,7 +82,7 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
     }
 
     @Override
-    protected Identifier getTexture(HumanoidRenderState renderState, int slotIndex) {
+    protected Identifier getTexture(HumanoidRenderState renderState) {
         if (getModelType(renderState) == PlayerModelType.SLIM) {
             return slimTexture;
         }
@@ -82,7 +90,7 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
     }
 
     @Override
-    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState, int slotIndex) {
+    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState) {
         if (getModelType(renderState) == PlayerModelType.SLIM) {
             return slimGlowTexture;
         }
@@ -94,23 +102,47 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
         return models.get(getArm(renderState, slotIndex), getModelType(renderState));
     }
 
-    public final void renderFirstPersonArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side, boolean hasFoil) {
-        /* TODO fix first person rendering
-        if (!player.isSpectator()) {
-            boolean hasSlimArms = hasSlimArms(player);
-            ArmsModel model = getModel(hasSlimArms);
+    private HumanoidModel<HumanoidRenderState> getModel(HumanoidRenderState renderState, HumanoidArm arm) {
+        return models.get(arm, getModelType(renderState));
+    }
 
-            ModelPart arm = side == HumanoidArm.LEFT ? model.leftArm : model.rightArm;
-            model.setAllVisible(false);
-            arm.visible = true;
-
-            model.crouching = false;
-            model.attackTime = model.swimAmount = 0;
-            model.setupAnim(player, 0, 0, 0, 0, 0);
-            arm.xRot = 0;
-
-            renderFirstPersonArm(model, arm, matrixStack, buffer, light, hasSlimArms, hasFoil);
+    public final void renderFirstPersonArm(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, AbstractClientPlayer player, HumanoidArm arm, boolean hasFoil) {
+        if (player.isSpectator()) {
+            return;
         }
-        */
+
+        // there's no render state available, so we have to extract one
+        // there might be a better way to do this
+        AvatarRenderer<AbstractClientPlayer> playerRenderer = Minecraft.getInstance().getEntityRenderDispatcher().getPlayerRenderer(player);
+        AvatarRenderState renderState = playerRenderer.createRenderState(player, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true));
+
+        HumanoidModel<HumanoidRenderState> model = getModel(renderState, arm);
+
+        // animate artifacts and then reset arms to default position
+        model.setupAnim(renderState);
+        model.leftArm.resetPose();
+        model.rightArm.resetPose();
+
+        // see AvatarRenderer::renderHand
+        model.leftArm.zRot = -0.1F;
+        model.rightArm.zRot = 0.1F;
+
+        ModelPart modelPart = arm == HumanoidArm.LEFT ? model.leftArm : model.rightArm;
+
+        Identifier texture = getTexture(renderState);
+        Identifier glowTexture = getFullBrightOverlayTexture(renderState);
+
+        renderModelPartWithFoil(model, modelPart, poseStack, submitNodeCollector, texture, packedLight, hasFoil);
+        if (glowTexture != null) {
+            renderModelPartWithFoil(model, modelPart, poseStack, submitNodeCollector, glowTexture, LightTexture.FULL_BRIGHT, hasFoil);
+        }
+    }
+
+    private void renderModelPartWithFoil(Model<?> model, ModelPart modelPart, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Identifier texture, int packedLight, boolean hasFoil) {
+        RenderType renderType = model.renderType(texture);
+        submitNodeCollector.order(0).submitModelPart(modelPart, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, null);
+        if (hasFoil) {
+            submitNodeCollector.order(1).submitModelPart(modelPart, poseStack, RenderTypes.armorEntityGlint(), packedLight, OverlayTexture.NO_OVERLAY, null);
+        }
     }
 }

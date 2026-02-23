@@ -1,9 +1,10 @@
 package artifacts.equipment.client;
 
+import artifacts.Artifacts;
 import artifacts.client.item.renderer.ArtifactRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
@@ -39,9 +40,11 @@ public class EquipmentRenderingManager {
         return null;
     }
 
-    public static void renderArm(PoseStack matrixStack, MultiBufferSource buffer, int light, AbstractClientPlayer player, HumanoidArm side) {
-        for (EquipmentRenderingHandler handler : RENDERING_HANDLERS) {
-            handler.renderArm(matrixStack, buffer, light, player, side);
+    public static void renderFirstPersonArm(PoseStack matrixStack, SubmitNodeCollector submitNodeCollector, int light, AbstractClientPlayer player, HumanoidArm side) {
+        if (Artifacts.CONFIG.client.showFirstPersonGloves.get()) {
+            for (EquipmentRenderingHandler handler : RENDERING_HANDLERS) {
+                handler.renderArm(matrixStack, submitNodeCollector, light, player, side);
+            }
         }
     }
 }

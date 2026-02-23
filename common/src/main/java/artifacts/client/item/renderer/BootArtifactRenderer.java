@@ -27,7 +27,7 @@ public class BootArtifactRenderer extends ArtifactRenderer {
     }
 
     @Override
-    protected Identifier getTexture(HumanoidRenderState renderState, int slotIndex) {
+    protected Identifier getTexture(HumanoidRenderState renderState) {
         return texture;
     }
 }

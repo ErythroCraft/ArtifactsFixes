@@ -26,12 +26,12 @@ public class SimpleArtifactRenderer extends ArtifactRenderer {
     }
 
     @Override
-    protected Identifier getTexture(HumanoidRenderState renderState, int slotIndex) {
+    protected Identifier getTexture(HumanoidRenderState renderState) {
         return texture;
     }
 
     @Override
-    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState, int slotIndex) {
+    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState) {
         return glowTexture;
     }
 

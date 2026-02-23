@@ -25,7 +25,7 @@ public class WarpDriveRenderer extends SimpleArtifactRenderer {
     }
 
     @Override
-    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState, int slotIndex) {
+    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState) {
         int probability = 10;
         random.setSeed(((int) renderState.ageInTicks));
         if (random.nextInt(probability) == 0) {

@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.monster.ghast.GhastModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -25,9 +26,9 @@ public abstract class ArtifactRenderer {
 
     protected abstract HumanoidModel<HumanoidRenderState> getModel(HumanoidRenderState renderState, int slotIndex);
 
-    protected abstract Identifier getTexture(HumanoidRenderState renderState, int slotIndex);
+    protected abstract Identifier getTexture(HumanoidRenderState renderState);
 
-    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState, int slotIndex) {
+    protected @Nullable Identifier getFullBrightOverlayTexture(HumanoidRenderState renderState) {
         return null;
     }
 
@@ -40,6 +41,7 @@ public abstract class ArtifactRenderer {
             SubmitNodeCollector submitNodeCollector,
             int light
     ) {
+        poseStack.pushPose();
         Value<Boolean> hideWhenInvisible = stack.get(ModDataComponents.HIDE_WHEN_INVISIBLE.get());
         if (hideWhenInvisible != null && hideWhenInvisible.get() && renderState.isInvisible) {
             return;
@@ -48,22 +50,21 @@ public abstract class ArtifactRenderer {
         HumanoidRenderState humanoidRenderState = renderState instanceof HumanoidRenderState s ? s : DEFAULT_RENDER_STATE;
 
         HumanoidModel<HumanoidRenderState> model = getModel(humanoidRenderState, slotIndex);
-        model.setupAnim(humanoidRenderState);
-        ArtifactRenderer.loadPoseFrom(model, entityModel, humanoidRenderState);
+        loadPoseFrom(model, entityModel, humanoidRenderState);
 
         if (entityModel instanceof GhastModel) {
-            // TODO test rotation
-            poseStack.scale(2.5F, 2.5F, 2.5F);
-            poseStack.translate(0, -2.5/16F, 0);
+            poseStack.translate(0, 1.25F, 0);
+            poseStack.scale(9F, 9F, 9F);
         }
 
-        Identifier texture = getTexture(humanoidRenderState, slotIndex);
-        Identifier glowTexture = getFullBrightOverlayTexture(humanoidRenderState, slotIndex);
+        Identifier texture = getTexture(humanoidRenderState);
+        Identifier glowTexture = getFullBrightOverlayTexture(humanoidRenderState);
 
         renderModelWithFoil(model, humanoidRenderState, poseStack, submitNodeCollector, texture, light, stack.hasFoil());
         if (glowTexture != null) {
             renderModelWithFoil(model, humanoidRenderState, poseStack, submitNodeCollector, glowTexture, LightTexture.FULL_BRIGHT, stack.hasFoil());
         }
+        poseStack.popPose();
     }
 
     protected static Identifier getTextureId(String... names) {
@@ -76,25 +77,39 @@ public abstract class ArtifactRenderer {
         return Artifacts.id(path.toString());
     }
 
-    private static <S> void renderModelWithFoil(Model<S> model, S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Identifier texture, int light, boolean hasFoil) {
+    @SuppressWarnings("DataFlowIssue")
+    protected static <S> void renderModelWithFoil(Model<S> model, S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Identifier texture, int packedLight, boolean hasFoil) {
         RenderType renderType = model.renderType(texture);
-        submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, light, OverlayTexture.NO_OVERLAY, 0, null);
+        submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, 0, null);
         if (hasFoil) {
-            submitNodeCollector.order(1).submitModel(model, renderState, poseStack, RenderTypes.armorEntityGlint(), light, OverlayTexture.NO_OVERLAY, 0, null);
+            submitNodeCollector.order(1).submitModel(model, renderState, poseStack, RenderTypes.armorEntityGlint(), packedLight, OverlayTexture.NO_OVERLAY, 0, null);
         }
     }
 
     private static void loadPoseFrom(HumanoidModel<HumanoidRenderState> model, EntityModel<?> source, HumanoidRenderState renderState) {
         model.resetPose();
+        // setup artifact animations
         model.setupAnim(renderState);
+        // calling setupAnim is not enough, humanoidModel subclasses may apply additional transforms (e.g. zombie arms)
         if (source instanceof HumanoidModel<?> humanoidModel) {
-            // TODO storePose creates new PartPose instances
-            model.head.loadPose(humanoidModel.head.storePose());
-            model.body.loadPose(humanoidModel.body.storePose());
-            model.leftArm.loadPose(humanoidModel.leftArm.storePose());
-            model.rightArm.loadPose(humanoidModel.rightArm.storePose());
-            model.leftLeg.loadPose(humanoidModel.leftLeg.storePose());
-            model.rightLeg.loadPose(humanoidModel.rightLeg.storePose());
+            loadPoseFrom(model.head, humanoidModel.head);
+            loadPoseFrom(model.body, humanoidModel.body);
+            loadPoseFrom(model.leftArm, humanoidModel.leftArm);
+            loadPoseFrom(model.rightArm, humanoidModel.rightArm);
+            loadPoseFrom(model.leftLeg, humanoidModel.leftLeg);
+            loadPoseFrom(model.rightLeg, humanoidModel.rightLeg);
         }
+    }
+
+    private static void loadPoseFrom(ModelPart modelPart, ModelPart source) {
+        modelPart.x = source.x;
+        modelPart.y = source.y;
+        modelPart.z = source.z;
+        modelPart.xRot = source.xRot;
+        modelPart.yRot = source.yRot;
+        modelPart.zRot = source.zRot;
+        modelPart.xScale = source.xScale;
+        modelPart.yScale = source.yScale;
+        modelPart.zScale = source.zScale;
     }
 }

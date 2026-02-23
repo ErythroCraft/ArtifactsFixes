@@ -38,7 +38,6 @@ public class CuriosSlotProvider implements EquipmentSlotProvider {
             for (Map.Entry<String, ICurioStacksHandler> entry : handler.getCurios().entrySet()) {
                 for (int i = 0; i < entry.getValue().getSlots(); i++) {
                     SlotContext slotContext = new SlotContext(entry.getKey(), entity, i, false, true);
-                    //noinspection ConstantConditions
                     if (CuriosApi.isStackValid(slotContext, stack) && entry.getValue().getStacks().getStackInSlot(i).isEmpty()) {
                         entry.getValue().getStacks().setStackInSlot(i, stack);
                         return true;
