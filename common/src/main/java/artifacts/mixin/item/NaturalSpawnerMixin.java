@@ -27,11 +27,11 @@ public class NaturalSpawnerMixin {
     private static void spawnCategoryForPosition(MobCategory mobCategory, ServerLevel serverLevel, ChunkAccess chunkAccess, BlockPos blockPos, NaturalSpawner.SpawnPredicate spawnPredicate, NaturalSpawner.AfterSpawnCallback afterSpawnCallback, CallbackInfo ci, @Local(ordinal = 0) Mob mob) {
         if (ModLootTables.ENTITY_EQUIPMENT.containsKey(mob.getType()) && mob.level() instanceof ServerLevel level) {
             ResourceKey<LootTable> id = ModLootTables.ENTITY_EQUIPMENT.get(mob.getType());
-            LootTable loottable = level.getServer().reloadableRegistries().getLootTable(id);
+            LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(id);
             LootParams.Builder params = new LootParams.Builder(level);
 
-            LootParams lootparams = params.create(LootContextParamSets.EMPTY);
-            loottable.getRandomItems(lootparams, mob.getLootTableSeed(), stack -> {
+            LootParams lootParams = params.create(LootContextParamSets.EMPTY);
+            lootTable.getRandomItems(lootParams, mob.getLootTableSeed(), stack -> {
                 if (!EquipmentSlotManager.tryEquipAccessory(mob, stack)) {
                     Artifacts.LOGGER.warn("Could not equip item '{}' on spawned entity '{}'", stack, mob);
                 }
