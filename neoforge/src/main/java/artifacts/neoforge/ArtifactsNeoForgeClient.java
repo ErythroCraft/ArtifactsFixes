@@ -10,7 +10,6 @@ import artifacts.neoforge.client.ArmRenderHandler;
 import artifacts.neoforge.client.HeliumFlamingoOverlayRenderer;
 import artifacts.neoforge.client.UmbrellaArmPoseHandler;
 import artifacts.neoforge.integration.curios.CuriosCompatClient;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModEntityTypes;
 import artifacts.registry.ModKeyMappings;
 import net.minecraft.client.Minecraft;
@@ -34,13 +33,10 @@ public class ArtifactsNeoForgeClient {
         modBus.addListener(this::registerEntityRenderers);
         modBus.addListener((RegisterKeyMappingsEvent event) -> ModKeyMappings.register(event::register));
 
-        boolean isCuriosLoaded = PlatformServices.getModList().isModLoaded(ModCompat.CURIOS);
-        boolean isTrinketsLoaded = PlatformServices.getModList().isModLoaded(ModCompat.TRINKETS);
-
-        if (isCuriosLoaded || isTrinketsLoaded) {
+        if (ModCompat.CURIOS.isLoaded() || ModCompat.TRINKETS.isLoaded()) {
             ArmRenderHandler.setup();
         }
-        if (isCuriosLoaded) {
+        if (ModCompat.CURIOS.isLoaded()) {
             CuriosCompatClient.setup(modBus);
         }
 

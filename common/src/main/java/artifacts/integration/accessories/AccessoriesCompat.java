@@ -2,7 +2,6 @@ package artifacts.integration.accessories;
 
 import artifacts.equipment.EquipmentSlotManager;
 import artifacts.event.ArtifactHooks;
-import artifacts.integration.ModCompat;
 import artifacts.item.WearableArtifactItem;
 import artifacts.platform.PlatformServices;
 import io.wispforest.accessories.api.core.AccessoryRegistry;
@@ -11,9 +10,7 @@ import io.wispforest.accessories.api.events.AccessoryChangeCallback;
 public class AccessoriesCompat {
 
     public static void setup() {
-        if (PlatformServices.getModList().isModLoaded(ModCompat.ACCESSORIES)) {
-            EquipmentSlotManager.register(new AccessoriesSlotProvider());
-        }
+        EquipmentSlotManager.register(new AccessoriesSlotProvider());
         PlatformServices.getPlatformHelper().addItemRegistryCallback(item -> {
             if (item instanceof WearableArtifactItem wearableArtifactItem) {
                 AccessoryRegistry.register(item, new WearableArtifactAccessory(wearableArtifactItem));

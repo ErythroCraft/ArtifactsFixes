@@ -7,7 +7,6 @@ import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.component.ability.mobeffect.*;
 import artifacts.integration.ModCompat;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
@@ -286,9 +285,9 @@ public class TooltipHelper {
     private static boolean showsMissingDependencyTooltip(ItemStack stack, TooltipDisplay display) {
         return stack.has(ModDataComponents.DEPENDENCY_CHECK_TOOLTIP.get())
                 && display.shows(ModDataComponents.DEPENDENCY_CHECK_TOOLTIP.get())
-                && !PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS)
-                && !PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS)
-                && !PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES);
+                && !ModCompat.CURIOS.isLoaded()
+                && !ModCompat.TRINKETS.isLoaded()
+                && !ModCompat.ACCESSORIES.isLoaded();
     }
 
     private static boolean showsCosmeticTooltip(ItemStack stack, TooltipDisplay display) {

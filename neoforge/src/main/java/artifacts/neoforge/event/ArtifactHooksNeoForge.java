@@ -4,7 +4,6 @@ import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
-import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.TooltipHelper;
@@ -31,7 +30,7 @@ import java.util.List;
 public class ArtifactHooksNeoForge {
 
     public static void register() {
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.EXPANDABILITY)) {
+        if (ModCompat.EXPANDABILITY.isLoaded()) {
             NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onPlayerSwim);
             NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onAquaDashersFluidCollision);
         }

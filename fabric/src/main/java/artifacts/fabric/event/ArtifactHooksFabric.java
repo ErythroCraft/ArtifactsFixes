@@ -2,7 +2,6 @@ package artifacts.fabric.event;
 
 import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
-import artifacts.platform.PlatformServices;
 import be.florens.expandability.api.EventResult;
 import be.florens.expandability.api.fabric.LivingFluidCollisionCallback;
 import be.florens.expandability.api.fabric.PlayerSwimCallback;
@@ -13,7 +12,7 @@ import net.minecraft.world.level.material.FluidState;
 public class ArtifactHooksFabric {
 
     public static void register() {
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.EXPANDABILITY)) {
+        if (ModCompat.EXPANDABILITY.isLoaded()) {
             PlayerSwimCallback.EVENT.register(ArtifactHooksFabric::onPlayerSwim);
         LivingFluidCollisionCallback.EVENT.register(ArtifactHooksFabric::onAquaDashersFluidCollision);
         }

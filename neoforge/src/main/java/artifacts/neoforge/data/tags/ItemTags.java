@@ -1,13 +1,13 @@
 package artifacts.neoforge.data.tags;
 
 import artifacts.Artifacts;
+import artifacts.integration.ModCompat;
 import artifacts.registry.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
@@ -25,8 +25,8 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
             FEET = createTag("slot/feet"),
             ALL = createTag("slot/all");
 
-    public static final TagKey<Item> ORIGINS_MEAT = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("origins", "meat"));
-    public static final TagKey<Item> ORIGINS_SHIELDS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("origins", "shields"));
+    public static final TagKey<Item> ORIGINS_MEAT = TagKey.create(Registries.ITEM, ModCompat.ORIGINS.id("meat"));
+    public static final TagKey<Item> ORIGINS_SHIELDS = TagKey.create(Registries.ITEM, ModCompat.ORIGINS.id("shields"));
 
     private static TagKey<Item> createTag(String name) {
         return TagKey.create(Registries.ITEM, Artifacts.id(name));

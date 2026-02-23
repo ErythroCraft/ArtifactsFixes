@@ -1,12 +1,12 @@
 package artifacts.neoforge.data.tags;
 
 import artifacts.Artifacts;
+import artifacts.integration.ModCompat;
 import artifacts.registry.ModEntityTypes;
 import artifacts.registry.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.Tags;
 
@@ -43,7 +43,7 @@ public class EntityTypeTags extends EntityTypeTagsProvider {
         );
         for (String creeper : creepers) {
             getOrCreateRawBuilder(ModTags.CREEPERS).addOptionalElement(
-                    Identifier.fromNamespaceAndPath("creeperoverhaul", creeper)
+                    ModCompat.CREEPER_OVERHAUL.id(creeper)
             );
         }
     }

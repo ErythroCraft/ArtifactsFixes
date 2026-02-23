@@ -4,7 +4,6 @@ import artifacts.Artifacts;
 import artifacts.entity.MimicEntity;
 import artifacts.integration.ModCompat;
 import artifacts.integration.lootr.LootrCompat;
-import artifacts.platform.PlatformServices;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.Identifier;
@@ -52,8 +51,8 @@ public class MimicChestMaterials {
         chestMaterials.add(vanillaChestMaterial);
         addQuarkMaterials(chestMaterials, "normal");
 
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.LOOTR)) {
-            lootrMaterials.add(createMaterial(ModCompat.LOOTR, "chest"));
+        if (ModCompat.LOOTR.isLoaded()) {
+            lootrMaterials.add(createMaterial(ModCompat.LOOTR.id("chest")));
             addQuarkMaterials(lootrMaterials, "lootr_normal");
         }
     }
@@ -64,15 +63,16 @@ public class MimicChestMaterials {
                 || calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) == 1;
     }
 
-    private static Material createMaterial(String modId, String location) {
+    private static Material createMaterial(Identifier id) {
         Identifier chestAtlas = Identifier.withDefaultNamespace("textures/atlas/chest.png");
-        return new Material(chestAtlas, Identifier.fromNamespaceAndPath(modId, location));
+        return new Material(chestAtlas, id);
     }
 
     private static void addQuarkMaterials(List<Material> chestMaterials, String chestVariant) {
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.QUARK)) {
+        if (ModCompat.QUARK.isLoaded()) {
             for (String chestMaterial : QUARK_CHEST_MATERIALS) {
-                chestMaterials.add(createMaterial(ModCompat.QUARK, String.format("quark_variant_chests/%s/%s", chestMaterial, chestVariant)));
+                String path = String.format("quark_variant_chests/%s/%s", chestMaterial, chestVariant);
+                chestMaterials.add(createMaterial(ModCompat.QUARK.id(path)));
             }
         }
     }
