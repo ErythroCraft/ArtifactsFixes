@@ -6,6 +6,7 @@
   ],
   "textures": {
     "chest": "minecraft:entity/chest/normal",
+    "particle": "minecraft:entity/chest/normal",
     "mimic": "artifacts:entity/mimic"
   },
   "elements": [
