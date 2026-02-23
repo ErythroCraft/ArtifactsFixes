@@ -34,7 +34,7 @@ public abstract class ArtifactRenderer {
     public void render(
             ItemStack stack,
             LivingEntityRenderState renderState,
-            EntityModel<? extends LivingEntityRenderState> entityModel,
+            EntityModel<?> entityModel,
             int slotIndex,
             PoseStack poseStack,
             SubmitNodeCollector submitNodeCollector,
