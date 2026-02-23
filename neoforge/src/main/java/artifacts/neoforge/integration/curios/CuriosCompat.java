@@ -22,7 +22,10 @@ public class CuriosCompat {
         });
 
         NeoForge.EVENT_BUS.addListener(
-                (CurioChangeEvent event) -> ArtifactHooks.onItemChanged(event.getEntity(), event.getFrom(), event.getTo())
+                (CurioChangeEvent.State event) -> ArtifactHooks.onItemChanged(event.getEntity(), event.getFrom(), event.getTo())
+        );
+        NeoForge.EVENT_BUS.addListener(
+                (CurioChangeEvent.Item event) -> ArtifactHooks.onItemChanged(event.getEntity(), event.getFrom(), event.getTo())
         );
     }
 }
