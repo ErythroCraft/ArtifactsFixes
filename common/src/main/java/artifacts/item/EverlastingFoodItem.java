@@ -14,12 +14,10 @@ import java.util.function.Supplier;
 // TODO rewrite/redesign everlasting foods to avoid mod conflicts https://github.com/ochotonida/artifacts/issues/56, https://github.com/ochotonida/artifacts/issues/201
 public class EverlastingFoodItem extends ArtifactItem {
 
-    private final Supplier<Integer> eatingCooldown;
     private final Supplier<Boolean> isEnabled;
 
-    public EverlastingFoodItem(Properties properties, Supplier<Integer> eatingCooldown, Supplier<Boolean> isEnabled) {
+    public EverlastingFoodItem(Properties properties, Supplier<Boolean> isEnabled) {
         super(properties);
-        this.eatingCooldown = eatingCooldown;
         this.isEnabled = isEnabled;
     }
 
@@ -41,10 +39,6 @@ public class EverlastingFoodItem extends ArtifactItem {
             return stack;
         }
         consumable.onConsume(level, entity, stack.copy());
-        // TODO move this to a consumablelistener data component
-        if (eatingCooldown.get() > 0 && !entity.level().isClientSide() && entity instanceof Player player) {
-            player.getCooldowns().addCooldown(stack, eatingCooldown.get() * 20);
-        }
         return stack;
     }
 

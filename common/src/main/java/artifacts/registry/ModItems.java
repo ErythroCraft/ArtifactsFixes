@@ -78,8 +78,12 @@ public class ModItems {
             .component(DataComponents.WEAPON, new Weapon(1))
             .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
     );
-    public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", properties -> new EverlastingFoodItem(properties.food(Foods.BEEF), Artifacts.CONFIG.items.everlastingBeefCooldown, Artifacts.CONFIG.items.everlastingBeefEnabled));
-    public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", properties -> new EverlastingFoodItem(properties.food(Foods.COOKED_BEEF), Artifacts.CONFIG.items.eternalSteakCooldown, Artifacts.CONFIG.items.eternalSteakEnabled));
+    public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", properties -> new EverlastingFoodItem(properties
+            .food(Foods.BEEF)
+            .useCooldown(Artifacts.CONFIG.items.everlastingBeefCooldown.get()), Artifacts.CONFIG.items.everlastingBeefEnabled));
+    public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", properties -> new EverlastingFoodItem(properties
+            .food(Foods.COOKED_BEEF)
+            .useCooldown(Artifacts.CONFIG.items.eternalSteakCooldown.get()), Artifacts.CONFIG.items.eternalSteakEnabled));
 
     // head
     public static final Holder<Item> PLASTIC_DRINKING_HAT = wearableItem("plastic_drinking_hat", builder -> builder

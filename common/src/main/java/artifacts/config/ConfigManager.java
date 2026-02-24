@@ -202,7 +202,6 @@ public abstract class ConfigManager {
         return defineNumber(key, ValueTypes.DURATION, defaultValue, false, tooltips);
     }
 
-    @SuppressWarnings("SameParameterValue")
     protected Value.ConfigValue<Integer> defineEnchantmentLevel(String key, int defaultValue, String... tooltips) {
         return defineNumber(key, ValueTypes.ENCHANTMENT_LEVEL, defaultValue, false, tooltips);
     }
@@ -211,13 +210,12 @@ public abstract class ConfigManager {
         return defineNumber(key, ValueTypes.MOB_EFFECT_LEVEL, defaultValue, false, tooltips);
     }
 
-    private <T extends Number & Comparable<T>> Value.ConfigValue<T> defineNumber(String key, NumberValueType<T> type, T defaultValue, boolean requiresRestart, String... tooltips) {
+    protected <T extends Number & Comparable<T>> Value.ConfigValue<T> defineNumber(String key, NumberValueType<T> type, T defaultValue, boolean requiresRestart, String... tooltips) {
         Value.ConfigValue<T> value = createValue(key, type, defaultValue, requiresRestart, tooltips);
         spec.defineInRange(key, defaultValue, type.getMin(), type.getMax());
         return value;
     }
 
-    @SuppressWarnings("SameParameterValue")
     protected <T extends Enum<T> & StringRepresentable> Value.ConfigValue<T> defineEnum(String key, EnumValueType<T> type, T defaultValue, boolean requiresRestart, String... tooltips) {
         Value.ConfigValue<T> value = createValue(key, type, defaultValue, requiresRestart, tooltips);
         List<String> allowedValues = new ArrayList<>();
