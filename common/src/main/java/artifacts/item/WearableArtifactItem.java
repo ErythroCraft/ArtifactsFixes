@@ -22,6 +22,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,15 @@ public class WearableArtifactItem extends Item {
             return component(type, new SimpleAbility(enabled));
         }
 
-        public <T> Builder component(DataComponentType<T> type, T component) {
+        public <T> Builder component(DataComponentType<T> type, Value.ConfigValue<Boolean> value, T component) {
+            if (!value.requiresRestart()) {
+                throw new IllegalArgumentException();
+            }
+            return component(type, value.get() ? component : null);
+        }
+
+        @SuppressWarnings("DataFlowIssue")
+        public <T> Builder component(DataComponentType<T> type, @Nullable T component) {
             properties.component(type, component);
             return this;
         }

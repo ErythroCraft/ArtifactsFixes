@@ -255,11 +255,15 @@ public class ModItems {
             .component(ModDataComponents.EQUIPABLE_TOTEM.get(), new EquipableTotem(
                     Artifacts.CONFIG.items.chorusTotemEnabled
             ))
-            .component(DataComponents.DEATH_PROTECTION, new DeathProtection(List.of(
-                    new ClearAllStatusEffectsConsumeEffect(),
-                    new TeleportRandomlyConsumeEffect(32),
-                    new HealConsumeEffect(Artifacts.CONFIG.items.chorusTotemHealthRestored)
-            )))
+            .component(
+                    DataComponents.DEATH_PROTECTION,
+                    Artifacts.CONFIG.items.chorusTotemEnabled,
+                    new DeathProtection(List.of(
+                            new ClearAllStatusEffectsConsumeEffect(),
+                            new TeleportRandomlyConsumeEffect(32),
+                            new HealConsumeEffect(Artifacts.CONFIG.items.chorusTotemHealthRestored))
+                    )
+            )
     );
     public static final Holder<Item> WARP_DRIVE = wearableItem("warp_drive", builder -> builder
             .component(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), new EnderPearlHungerCost(
