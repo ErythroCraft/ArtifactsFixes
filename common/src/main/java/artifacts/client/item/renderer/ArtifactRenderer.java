@@ -1,14 +1,13 @@
 package artifacts.client.item.renderer;
 
 import artifacts.Artifacts;
+import artifacts.client.item.model.TransformCopyingHumanoidModel;
 import artifacts.config.value.Value;
 import artifacts.registry.ModDataComponents;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.monster.ghast.GhastModel;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
@@ -21,8 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class ArtifactRenderer {
-
-    private static final HumanoidRenderState DEFAULT_RENDER_STATE = new HumanoidRenderState();
 
     protected abstract HumanoidModel<HumanoidRenderState> getModel(HumanoidRenderState renderState, int slotIndex);
 
@@ -41,28 +38,35 @@ public abstract class ArtifactRenderer {
             SubmitNodeCollector submitNodeCollector,
             int light
     ) {
+        if (entityModel instanceof HumanoidModel<?> humanoidModel) {
+            render(stack, cast(renderState), humanoidModel, slotIndex, poseStack, submitNodeCollector, light);
+        }
+    }
+
+    public <S extends HumanoidRenderState> void render(
+            ItemStack stack,
+            S renderState,
+            HumanoidModel<S> entityModel,
+            int slotIndex,
+            PoseStack poseStack,
+            SubmitNodeCollector submitNodeCollector,
+            int light
+    ) {
         poseStack.pushPose();
         Value<Boolean> hideWhenInvisible = stack.get(ModDataComponents.HIDE_WHEN_INVISIBLE.get());
         if (hideWhenInvisible != null && hideWhenInvisible.get() && renderState.isInvisible) {
             return;
         }
 
-        HumanoidRenderState humanoidRenderState = renderState instanceof HumanoidRenderState s ? s : DEFAULT_RENDER_STATE;
+        HumanoidModel<HumanoidRenderState> artifactModel = getModel(renderState, slotIndex);
+        Model<S> model = TransformCopyingHumanoidModel.create(entityModel, artifactModel);
 
-        HumanoidModel<HumanoidRenderState> model = getModel(humanoidRenderState, slotIndex);
-        loadPoseFrom(model, entityModel, humanoidRenderState);
+        Identifier texture = getTexture(renderState);
+        Identifier glowTexture = getFullBrightOverlayTexture(renderState);
 
-        if (entityModel instanceof GhastModel) {
-            poseStack.translate(0, 1.25F, 0);
-            poseStack.scale(9F, 9F, 9F);
-        }
-
-        Identifier texture = getTexture(humanoidRenderState);
-        Identifier glowTexture = getFullBrightOverlayTexture(humanoidRenderState);
-
-        renderModelWithFoil(model, humanoidRenderState, poseStack, submitNodeCollector, texture, light, stack.hasFoil());
+        renderModelWithFoil(model, renderState, poseStack, submitNodeCollector, texture, light, stack.hasFoil());
         if (glowTexture != null) {
-            renderModelWithFoil(model, humanoidRenderState, poseStack, submitNodeCollector, glowTexture, LightTexture.FULL_BRIGHT, stack.hasFoil());
+            renderModelWithFoil(model, renderState, poseStack, submitNodeCollector, glowTexture, LightTexture.FULL_BRIGHT, stack.hasFoil());
         }
         poseStack.popPose();
     }
@@ -86,30 +90,8 @@ public abstract class ArtifactRenderer {
         }
     }
 
-    private static void loadPoseFrom(HumanoidModel<HumanoidRenderState> model, EntityModel<?> source, HumanoidRenderState renderState) {
-        model.resetPose();
-        // setup artifact animations
-        model.setupAnim(renderState);
-        // calling setupAnim is not enough, humanoidModel subclasses may apply additional transforms (e.g. zombie arms)
-        if (source instanceof HumanoidModel<?> humanoidModel) {
-            loadPoseFrom(model.head, humanoidModel.head);
-            loadPoseFrom(model.body, humanoidModel.body);
-            loadPoseFrom(model.leftArm, humanoidModel.leftArm);
-            loadPoseFrom(model.rightArm, humanoidModel.rightArm);
-            loadPoseFrom(model.leftLeg, humanoidModel.leftLeg);
-            loadPoseFrom(model.rightLeg, humanoidModel.rightLeg);
-        }
-    }
-
-    private static void loadPoseFrom(ModelPart modelPart, ModelPart source) {
-        modelPart.x = source.x;
-        modelPart.y = source.y;
-        modelPart.z = source.z;
-        modelPart.xRot = source.xRot;
-        modelPart.yRot = source.yRot;
-        modelPart.zRot = source.zRot;
-        modelPart.xScale = source.xScale;
-        modelPart.yScale = source.yScale;
-        modelPart.zScale = source.zScale;
+    @SuppressWarnings("unchecked")
+    private static <T> T cast(Object object) {
+        return (T) object;
     }
 }
