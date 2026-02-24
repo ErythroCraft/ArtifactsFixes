@@ -2,26 +2,19 @@ package artifacts.neoforge.data;
 
 import artifacts.config.value.Value;
 import artifacts.loot.ConfigValueChance;
-import artifacts.loot.IsAprilFools;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModItems;
 import artifacts.registry.ModLootTables;
 import com.google.common.collect.Sets;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
-import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class EntityEquipment {
@@ -77,32 +70,9 @@ public class EntityEquipment {
                 ModItems.STRIDER_SHOES.value()
         );
 
-        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(EntityType.GHAST).identifier().getPath(), this::ghastLoot, LootContextParamSets.ALL_PARAMS);
-        entityTypes.add(EntityType.GHAST);
-
         if (!entityTypes.equals(ModLootTables.ENTITY_EQUIPMENT.keySet())) {
             throw new IllegalStateException(Sets.symmetricDifference(entityTypes, ModLootTables.ENTITY_EQUIPMENT.keySet()).toString());
         }
-    }
-
-    private LootTable.Builder ghastLoot(HolderLookup.Provider registries) {
-        LootPool.Builder pool = LootPool.lootPool();
-
-        for (Item item : List.of(
-                ModItems.ANGLERS_HAT.value(),
-                ModItems.COWBOY_HAT.value(),
-                ModItems.VILLAGER_HAT.value(),
-                ModItems.NIGHT_VISION_GOGGLES.value(),
-                ModItems.SNORKEL.value()
-        )) {
-            pool.add(LootTables.item(item, 1));
-        }
-        pool.apply(
-                new SetEnchantmentsFunction.Builder().withEnchantment(registries.holderOrThrow(Enchantments.VANISHING_CURSE), ConstantValue.exactly(1))
-        ).apply(
-                SetComponentsFunction.setComponent(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false)
-        );
-        return LootTable.lootTable().withPool(pool.when(IsAprilFools.builder()));
     }
 
     public void addItems(EntityType<?> entityType, Item... items) {

@@ -70,8 +70,7 @@ public class ModLootTables {
                 EntityType.WITHER_SKELETON,
                 EntityType.PIGLIN,
                 EntityType.PIGLIN_BRUTE,
-                EntityType.ZOMBIFIED_PIGLIN,
-                EntityType.GHAST
+                EntityType.ZOMBIFIED_PIGLIN
         ).forEach(type -> ENTITY_EQUIPMENT.put(type, entityEquipmentLootTable(type)));
     }
 
