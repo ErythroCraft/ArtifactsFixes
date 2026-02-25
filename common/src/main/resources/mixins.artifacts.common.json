@@ -46,7 +46,8 @@
     "client.LivingEntityRenderStateMixin",
     "compat.trinkets.client.PlayerRendererMixin",
     "item.pocketpiston.client.LivingEntityMixin",
-    "item.umbrella.client.HumanoidModelMixin"
+    "item.umbrella.client.ItemInHandRendererMixin",
+    "item.umbrella.client.SpearAnimationsMixin"
   ],
   "server": [
     "item.umbrella.server.ServerGamePacketListenerImplMixin"

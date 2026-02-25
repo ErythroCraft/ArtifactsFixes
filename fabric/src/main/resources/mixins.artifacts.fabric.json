@@ -21,8 +21,7 @@
   "client": [
     "ability.swiminair.client.GuiMixin",
     "client.GuiMixin",
-    "compat.trinkets.client.AvatarRendererMixin",
-    "item.umbrella.client.LivingEntityRendererMixin"
+    "compat.trinkets.client.AvatarRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

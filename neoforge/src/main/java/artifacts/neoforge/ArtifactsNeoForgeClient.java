@@ -8,7 +8,6 @@ import artifacts.client.mimic.MimicRenderer;
 import artifacts.integration.ModCompat;
 import artifacts.neoforge.client.ArmRenderHandler;
 import artifacts.neoforge.client.HeliumFlamingoOverlayRenderer;
-import artifacts.neoforge.client.UmbrellaArmPoseHandler;
 import artifacts.neoforge.integration.curios.CuriosCompatClient;
 import artifacts.registry.ModEntityTypes;
 import artifacts.registry.ModKeyMappings;
@@ -44,8 +43,6 @@ public class ArtifactsNeoForgeClient {
     }
 
     public void onClientSetup(FMLClientSetupEvent event) {
-        UmbrellaArmPoseHandler.setup();
-
         event.enqueueWork(
                 () -> {
                     ArtifactRenderers.register();

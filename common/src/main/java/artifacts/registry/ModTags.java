@@ -14,15 +14,33 @@ import net.minecraft.world.level.block.Block;
 
 public class ModTags {
 
+    /** TODO: move glider logic and/or others to a component <br>
+     * Items with this tag: <br>
+     * - Block rain falling on entities holding it <br>
+     * - Act as a glider when held <br>
+     * - Are held upright when not blocking/attacking <br>
+     * - Use a custom blocking animation
+     * (the minecraft:spear tag includes this tag)
+     */
+    public static final TagKey<Item> UMBRELLAS = create(Registries.ITEM, "umbrellas");
+    /** Used to check if a block can be mined using the digging claws */
     public static final TagKey<Block> MINEABLE_WITH_DIGGING_CLAWS = create(Registries.BLOCK, "mineable/digging_claws");
+    /** Chests used in campsite world generation */
     public static final TagKey<Block> CAMPSITE_CHESTS = create(Registries.BLOCK, "campsite_chests");
+    /** Blocks that count as grass when standing on them with the Rooted Boots */
     public static final TagKey<Block> ROOTED_BOOTS_GRASS = create(Registries.BLOCK, "rooted_boots_grass");
+    /** Blocks that affect the movement_speed_on_snow attribute when standing in them instead of on them */
     public static final TagKey<Block> SNOW_LAYERS = create(Registries.BLOCK, "snow_layers");
+    /** Mob Effects that can be cancelled by the antidote vessel */
     public static final TagKey<MobEffect> ANTIDOTE_VESSEL_CANCELLABLE = create(Registries.MOB_EFFECT, "antidote_vessel_cancellable");
+    /** Mobs that flee from the kitty slippers */
     public static final TagKey<EntityType<?>> CREEPERS = create(Registries.ENTITY_TYPE, "creepers");
+    /** Damage Types that the strider shoes grant immunity for */
     public static final TagKey<DamageType> IS_HOT_FLOOR = create(Registries.DAMAGE_TYPE, "is_hot_floor");
 
+    /** Blocks that are affected by the pickaxe heater */
     public static final TagKey<Block> ORES = conventionTag(Registries.BLOCK, "ores");
+    /** Items that are affected by the pickaxe heater */
     public static final TagKey<Item> RAW_MATERIALS = conventionTag(Registries.ITEM, "raw_materials");
 
     private static <T> TagKey<T> create(ResourceKey<Registry<T>> registry, String name) {

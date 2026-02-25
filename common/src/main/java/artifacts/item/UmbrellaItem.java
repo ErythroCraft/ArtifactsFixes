@@ -3,17 +3,16 @@ package artifacts.item;
 import artifacts.Artifacts;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
+import artifacts.registry.ModTags;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUseAnimation;
 
 import java.util.List;
 
-// TODO improve rendering compatibility https://github.com/ochotonida/artifacts/issues/405
+// TODO move tooltips/logic to component
 public class UmbrellaItem extends ArtifactItem {
 
     public UmbrellaItem(Properties properties) {
@@ -35,11 +34,6 @@ public class UmbrellaItem extends ArtifactItem {
         }
     }
 
-    @Override
-    public ItemUseAnimation getUseAnimation(ItemStack stack) {
-        return ItemUseAnimation.NONE;
-    }
-
     public static void onLivingUpdate(LivingEntity entity) {
         if (UmbrellaItem.shouldGlide(entity)) {
             entity.fallDistance = 0;
@@ -56,7 +50,9 @@ public class UmbrellaItem extends ArtifactItem {
     }
 
     public static boolean isHoldingUmbrellaUpright(LivingEntity entity, InteractionHand hand) {
-        return entity.getItemInHand(hand).getItem() instanceof UmbrellaItem && (!entity.isUsingItem() || entity.getUsedItemHand() != hand);
+        return entity.getItemInHand(hand).is(ModTags.UMBRELLAS)
+                && (!entity.isUsingItem() || entity.getUsedItemHand() != hand)
+                && (!entity.swinging || entity.swingingArm != hand);
     }
 
     public static boolean isHoldingUmbrellaUpright(LivingEntity entity) {
