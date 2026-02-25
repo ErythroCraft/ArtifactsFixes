@@ -38,14 +38,14 @@ public class ArtifactRenderers {
         register(ModItems.CHARM_OF_SHRINKING.value(), () -> SimpleArtifactRenderer.create("charm_of_shrinking", new HumanoidModel<>(bakeLayer(ArtifactLayers.CHARM_OF_SHRINKING), RenderTypes::entityTranslucent)));
 
         // belt
-        register(ModItems.CLOUD_IN_A_BOTTLE.value(), () -> SimpleArtifactRenderer.create("cloud_in_a_bottle", new CloudInABottleModel(ArtifactRenderers.bakeLayer(ArtifactLayers.CLOUD_IN_A_BOTTLE), RenderTypes::entityTranslucent, CharmPose.CLOUD_IN_A_BOTTLE)));
-        register(ModItems.OBSIDIAN_SKULL.value(), () -> SimpleArtifactRenderer.create("obsidian_skull", new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.OBSIDIAN_SKULL), CharmPose.OBSIDIAN_SKULL)));
-        register(ModItems.ANTIDOTE_VESSEL.value(), () -> SimpleArtifactRenderer.create("antidote_vessel", new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.ANTIDOTE_VESSEL), CharmPose.ANTIDOTE_VESSEL)));
-        register(ModItems.UNIVERSAL_ATTRACTOR.value(), () -> SimpleArtifactRenderer.create("universal_attractor", new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.UNIVERSAL_ATTRACTOR), CharmPose.UNIVERSAL_ATTRACTOR)));
-        register(ModItems.CRYSTAL_HEART.value(), () -> SimpleArtifactRenderer.create("crystal_heart", new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.CRYSTAL_HEART), RenderTypes::entityTranslucent, CharmPose.CRYSTAL_HEART)));
+        register(ModItems.CLOUD_IN_A_BOTTLE.value(), () -> BeltArtifactRenderer.create("cloud_in_a_bottle", CloudInABottleModel.create(ArtifactRenderers.bakeLayer(ArtifactLayers.CLOUD_IN_A_BOTTLE), RenderTypes::entityTranslucent, CharmPose.CLOUD_IN_A_BOTTLE)));
+        register(ModItems.OBSIDIAN_SKULL.value(), () -> BeltArtifactRenderer.create("obsidian_skull", BeltModel.create(ArtifactRenderers.bakeLayer(ArtifactLayers.OBSIDIAN_SKULL), CharmPose.OBSIDIAN_SKULL)));
+        register(ModItems.ANTIDOTE_VESSEL.value(), () -> BeltArtifactRenderer.create("antidote_vessel", BeltModel.create(ArtifactRenderers.bakeLayer(ArtifactLayers.ANTIDOTE_VESSEL), CharmPose.ANTIDOTE_VESSEL)));
+        register(ModItems.UNIVERSAL_ATTRACTOR.value(), () -> BeltArtifactRenderer.create("universal_attractor", BeltModel.create(ArtifactRenderers.bakeLayer(ArtifactLayers.UNIVERSAL_ATTRACTOR), CharmPose.UNIVERSAL_ATTRACTOR)));
+        register(ModItems.CRYSTAL_HEART.value(), () -> BeltArtifactRenderer.create("crystal_heart", BeltModel.create(ArtifactRenderers.bakeLayer(ArtifactLayers.CRYSTAL_HEART), RenderTypes::entityTranslucent, CharmPose.CRYSTAL_HEART)));
         register(ModItems.HELIUM_FLAMINGO.value(), () -> SimpleArtifactRenderer.create("helium_flamingo", new HumanoidModel<>(ArtifactRenderers.bakeLayer(ArtifactLayers.HELIUM_FLAMINGO))));
-        register(ModItems.CHORUS_TOTEM.value(), () -> SimpleArtifactRenderer.create("chorus_totem", new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.CHORUS_TOTEM), CharmPose.CHORUS_TOTEM)));
-        register(ModItems.WARP_DRIVE.value(), () -> new WarpDriveRenderer("warp_drive", new BeltModel(ArtifactRenderers.bakeLayer(ArtifactLayers.WARP_DRIVE), CharmPose.WARP_DRIVE)));
+        register(ModItems.CHORUS_TOTEM.value(), () -> BeltArtifactRenderer.create("chorus_totem", BeltModel.create(ArtifactRenderers.bakeLayer(ArtifactLayers.CHORUS_TOTEM), CharmPose.CHORUS_TOTEM)));
+        register(ModItems.WARP_DRIVE.value(), () -> new WarpDriveRenderer("warp_drive", BeltModel.create(ArtifactRenderers.bakeLayer(ArtifactLayers.WARP_DRIVE), CharmPose.WARP_DRIVE)));
 
         // hands
         register(ModItems.DIGGING_CLAWS.value(), () -> GloveArtifactRenderer.create("digging_claws", "digging_claws", ArmsModelSet.bake(ArtifactLayers.CLAWS)));
