@@ -2,23 +2,30 @@ package artifacts.integration.accessories;
 
 import artifacts.equipment.EquipmentSlotManager;
 import artifacts.event.ArtifactHooks;
-import artifacts.item.WearableArtifactItem;
-import artifacts.platform.PlatformServices;
-import io.wispforest.accessories.api.core.AccessoryRegistry;
+import artifacts.util.DamageSourceHelper;
 import io.wispforest.accessories.api.events.AccessoryChangeCallback;
+import io.wispforest.accessories.api.events.DropRule;
+import io.wispforest.accessories.api.events.OnDropCallback;
+import io.wispforest.accessories.api.slot.SlotReference;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.item.ItemStack;
 
 public class AccessoriesCompat {
 
     public static void setup() {
         EquipmentSlotManager.register(new AccessoriesSlotProvider());
-        PlatformServices.getPlatformHelper().addItemRegistryCallback(item -> {
-            if (item instanceof WearableArtifactItem wearableArtifactItem) {
-                AccessoryRegistry.register(item, new WearableArtifactAccessory(wearableArtifactItem));
-            }
-        });
 
         AccessoryChangeCallback.EVENT.register(
                 (prevStack, currentStack, slotReference, slotStateChange) -> ArtifactHooks.onItemChanged(slotReference.entity(), prevStack, currentStack)
         );
+
+        OnDropCallback.EVENT.register(AccessoriesCompat::onDropItem);
+    }
+
+    private static DropRule onDropItem(DropRule dropRule, ItemStack stack, SlotReference reference, DamageSource damageSource) {
+        if (dropRule == DropRule.DEFAULT && DamageSourceHelper.shouldDestroyWornItemOnDeath(reference.entity(), stack)) {
+            return DropRule.DESTROY;
+        }
+        return dropRule;
     }
 }

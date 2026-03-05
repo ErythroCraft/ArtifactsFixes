@@ -7,12 +7,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
-import java.util.function.Consumer;
 
 public interface PlatformHelper {
 
@@ -24,8 +22,6 @@ public interface PlatformHelper {
     boolean isFishingRod(ItemStack stack);
 
     Path getConfigDir();
-
-    void addItemRegistryCallback(Consumer<Item> consumer);
 
     <R> Register<R> createRegister(ResourceKey<Registry<R>> registry);
 }

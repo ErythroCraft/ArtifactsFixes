@@ -6,21 +6,17 @@ import artifacts.fabric.registry.ModAttributesFabric;
 import artifacts.fabric.registry.ModComponents;
 import artifacts.platform.PlatformHelper;
 import artifacts.registry.Register;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.FishingRodItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
-import java.util.function.Consumer;
 
 public class FabricPlatformHelper implements PlatformHelper {
 
@@ -43,12 +39,6 @@ public class FabricPlatformHelper implements PlatformHelper {
     @Override
     public Path getConfigDir() {
         return FabricLoader.getInstance().getConfigDir();
-    }
-
-    @Override
-    public void addItemRegistryCallback(Consumer<Item> consumer) {
-        RegistryEntryAddedCallback.event(BuiltInRegistries.ITEM)
-                .register((i, resourceLocation, item) -> consumer.accept(item));
     }
 
     @Override

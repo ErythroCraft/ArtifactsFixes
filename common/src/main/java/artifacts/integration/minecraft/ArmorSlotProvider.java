@@ -25,7 +25,7 @@ public class ArmorSlotProvider implements EquipmentSlotProvider {
     }
 
     @Override
-    public boolean tryEquipItem(LivingEntity entity, ItemStack stack) {
-        return false;
+    public ItemStack tryEquip(LivingEntity entity, ItemStack stack, boolean allowSwapping) {
+        return stack;
     }
 }

@@ -1,9 +1,10 @@
 package artifacts.integration.trinkets;
 
 import artifacts.equipment.EquipmentSlotProvider;
+import dev.emi.trinkets.TrinketSlot;
+import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketInventory;
-import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +34,29 @@ public class TrinketsSlotProvider implements EquipmentSlotProvider {
     }
 
     @Override
-    public boolean tryEquipItem(LivingEntity entity, ItemStack stack) {
-        return TrinketItem.equipItem(entity, stack);
+    public ItemStack tryEquip(LivingEntity entity, ItemStack stack, boolean allowSwapping) {
+        // see TrinketItem::equipItem
+        Optional<TrinketComponent> optional = TrinketsApi.getTrinketComponent(entity);
+        if (optional.isEmpty()) {
+            return stack;
+        }
+        TrinketComponent trinkets = optional.get();
+        for (Map<String, TrinketInventory> group : trinkets.getInventory().values()) {
+            for (TrinketInventory inventory : group.values()) {
+                for (int slotId = 0; slotId < inventory.getContainerSize(); slotId++) {
+                    SlotReference slotReference = new SlotReference(inventory, slotId);
+                    ItemStack existingItem = inventory.getItem(slotId);
+                    boolean canUnequip = TrinketsApi.getTrinket(existingItem.getItem()).canUnequip(existingItem, slotReference, entity);
+                    if (TrinketSlot.canInsert(stack, slotReference, entity)
+                            && canUnequip
+                            && (allowSwapping || inventory.getItem(slotId).isEmpty())
+                    ) {
+                        inventory.setItem(slotId, stack);
+                        return existingItem;
+                    }
+                }
+            }
+        }
+        return stack;
     }
 }

@@ -1,10 +1,12 @@
 package artifacts.util;
 
 import artifacts.mixin.accessors.LivingEntityAccessor;
+import artifacts.registry.ModDataComponents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class DamageSourceHelper {
@@ -24,8 +26,10 @@ public class DamageSourceHelper {
                 || source.is(DamageTypes.MOB_ATTACK_NO_AGGRO));
     }
 
-    public static boolean shouldDestroyWornItemsOnDeath(LivingEntity entity) {
-        return entity instanceof Mob && !wasLastHurtByPlayer(entity);
+    public static boolean shouldDestroyWornItemOnDeath(LivingEntity entity, ItemStack stack) {
+        return stack.has(ModDataComponents.EQUIPABLE.get())
+                && entity instanceof Mob
+                && !wasLastHurtByPlayer(entity);
     }
 
     public static boolean wasLastHurtByPlayer(LivingEntity entity) {

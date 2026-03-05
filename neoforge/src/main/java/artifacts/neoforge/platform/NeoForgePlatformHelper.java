@@ -7,20 +7,16 @@ import artifacts.platform.PlatformHelper;
 import artifacts.registry.Register;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.registries.callback.AddCallback;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
-import java.util.function.Consumer;
 
 public class NeoForgePlatformHelper implements PlatformHelper {
 
@@ -43,11 +39,6 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public Path getConfigDir() {
         return FMLPaths.CONFIGDIR.get();
-    }
-
-    @Override
-    public void addItemRegistryCallback(Consumer<Item> consumer) {
-        BuiltInRegistries.ITEM.addCallback((AddCallback<Item>) (registry, i, key, item) -> consumer.accept(item));
     }
 
     @Override

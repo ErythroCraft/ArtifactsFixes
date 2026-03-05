@@ -13,9 +13,9 @@ import artifacts.component.ability.retaliation.LightningEffect;
 import artifacts.component.ability.retaliation.RetaliationEffects;
 import artifacts.component.ability.retaliation.ThornsEffect;
 import artifacts.config.value.Value;
+import artifacts.item.EquipableArtifactBuilder;
 import artifacts.item.EverlastingFoodItem;
 import artifacts.item.UmbrellaItem;
-import artifacts.item.WearableArtifactItem;
 import artifacts.item.consumeeffects.HealConsumeEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -392,9 +392,9 @@ public class ModItems {
             .addAttributeModifier(ModAttributes.FLATULENCE, Artifacts.CONFIG.items.whoopeeCushionFartChance, AttributeModifier.Operation.ADD_VALUE)
     );
 
-    private static Holder<Item> wearableItem(String name, Consumer<WearableArtifactItem.Builder> consumer) {
+    private static Holder<Item> wearableItem(String name, Consumer<EquipableArtifactBuilder> consumer) {
         return register(name, properties -> {
-            WearableArtifactItem.Builder builder = new WearableArtifactItem.Builder(name, properties);
+            EquipableArtifactBuilder builder = new EquipableArtifactBuilder(name, properties);
             consumer.accept(builder);
             return builder.build();
         });

@@ -1,5 +1,6 @@
 package artifacts.registry;
 
+import artifacts.component.Equipable;
 import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
@@ -15,8 +16,6 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
@@ -37,19 +36,36 @@ public class ModDataComponents {
     public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
     private static final Set<Supplier<? extends DataComponentType<?>>> APPLIES_COOLDOWN = new LinkedHashSet<>();
 
-    public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY = registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
-    public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE = registerSynced("disabled_by_toggle", Unit.CODEC, Unit.STREAM_CODEC);
-    public static final Supplier<DataComponentType<Unit>> DEPENDENCY_CHECK_TOOLTIP = registerSynced("dependency_check_tooltip", Unit.CODEC, Unit.STREAM_CODEC);
-    public static final Supplier<DataComponentType<Unit>> COSMETIC_TOOLTIP = registerSynced("cosmetic_tooltip", Unit.CODEC, Unit.STREAM_CODEC);
-    public static final Supplier<DataComponentType<SoundEvent>> EQUIP_SOUND = registerSynced("equip_sound",
-            Identifier.CODEC.xmap(SoundEvent::createVariableRangeEvent, SoundEvent::location),
-            Identifier.STREAM_CODEC.map(SoundEvent::createVariableRangeEvent, SoundEvent::location)
-    );
-    public static final Supplier<DataComponentType<ItemLore>> ABILITY_LORE = registerCached("ability_lore", ItemLore.CODEC, ItemLore.STREAM_CODEC);
-    public static final Supplier<DataComponentType<Unit>> PIGLIN_LOVED = registerSynced("piglin_loved", Unit.CODEC, StreamCodec.unit(Unit.INSTANCE));
-    public static final Supplier<DataComponentType<HurtSound>> HURT_SOUND = registerSynced("hurt_sound", HurtSound.CODEC, HurtSound.STREAM_CODEC);
-    public static final Supplier<DataComponentType<Value<Double>>> REDUCED_NIGHT_VISION = registerSynced("reduced_night_vision", ValueTypes.FRACTION.codec(), ValueTypes.FRACTION.streamCodec());
-    public static final Supplier<DataComponentType<Value<Boolean>>> HIDE_WHEN_INVISIBLE = registerSynced("hide_when_invisible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
+    /** Allows the items abilities to be toggled on and off */
+    public static final Supplier<DataComponentType<ToggleIdentifier>> TOGGLE_KEY =
+            registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
+    /** Marker used by the toggle_key component */
+    public static final Supplier<DataComponentType<Unit>> DISABLED_BY_TOGGLE =
+            registerSynced("disabled_by_toggle", Unit.CODEC, Unit.STREAM_CODEC);
+    /** Adds the missing dependency tooltip when none of Curios, Trinkets, or Accessories is installed */
+    public static final Supplier<DataComponentType<Unit>> DEPENDENCY_CHECK_TOOLTIP =
+            registerSynced("dependency_check_tooltip", Unit.CODEC, Unit.STREAM_CODEC);
+    /** Adds the *Cosmetic* tooltip when the item has no (enabled) abilities */
+    public static final Supplier<DataComponentType<Unit>> COSMETIC_TOOLTIP =
+            registerSynced("cosmetic_tooltip", Unit.CODEC, Unit.STREAM_CODEC);
+    /** Allows the item to be equipped from use */
+    public static final Supplier<DataComponentType<Equipable>> EQUIPABLE =
+            registerSynced("equipable", Equipable.CODEC, Equipable.STREAM_CODEC);
+    /** Item lore tooltip that displays above other ability tooltips */
+    public static final Supplier<DataComponentType<ItemLore>> ABILITY_LORE =
+            registerCached("ability_lore", ItemLore.CODEC, ItemLore.STREAM_CODEC);
+    /** Pacifies piglins when the item is worn (a tag might be better for this) */
+    public static final Supplier<DataComponentType<Unit>> PIGLIN_LOVED =
+            registerSynced("piglin_loved", Unit.CODEC, StreamCodec.unit(Unit.INSTANCE));
+    /** Sound that plays when hurt while wearing the item */
+    public static final Supplier<DataComponentType<HurtSound>> HURT_SOUND =
+            registerSynced("hurt_sound", HurtSound.CODEC, HurtSound.STREAM_CODEC);
+    /** Decreases the brightness of the night vision effect while worn */
+    public static final Supplier<DataComponentType<Value<Double>>> REDUCED_NIGHT_VISION =
+            registerSynced("reduced_night_vision", ValueTypes.FRACTION.codec(), ValueTypes.FRACTION.streamCodec());
+    /** Hides the item's model when the entity wearing it is invisible */
+    public static final Supplier<DataComponentType<Value<Boolean>>> HIDE_WHEN_INVISIBLE =
+            registerSynced("hide_when_invisible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
 
     // abilities
     public static final Supplier<DataComponentType<PostDamageCooldown>> POST_DAMAGE_COOLDOWN =

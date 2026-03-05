@@ -14,7 +14,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
+// TODO move item logic to components
 public abstract class ArtifactItem extends Item {
 
     public ArtifactItem(Properties properties) {

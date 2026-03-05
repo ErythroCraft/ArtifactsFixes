@@ -27,18 +27,17 @@ public class AccessoriesSlotProvider implements EquipmentSlotProvider {
     }
 
     @Override
-    public boolean tryEquipItem(LivingEntity entity, ItemStack stack) {
+    public ItemStack tryEquip(LivingEntity entity, ItemStack stack, boolean allowSwapping) {
         AccessoriesCapability capability = AccessoriesCapability.get(entity);
 
         if (capability != null) {
             Pair<SlotReference, EquipAction> possibleLocation = capability.canEquipAccessory(stack, false);
 
             if (possibleLocation != null) {
-                possibleLocation.second().equipStack(stack);
-                return true;
+                return possibleLocation.second().equipStack(stack).orElse(ItemStack.EMPTY);
             }
         }
 
-        return false;
+        return stack;
     }
 }

@@ -2,6 +2,7 @@ package artifacts.neoforge.event;
 
 import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.equipment.EquipmentHelper;
+import artifacts.equipment.EquipmentSlotManager;
 import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
 import artifacts.registry.ModDataComponents;
@@ -10,6 +11,7 @@ import artifacts.util.TooltipHelper;
 import be.florens.expandability.api.EventResult;
 import be.florens.expandability.api.forge.LivingFluidCollisionEvent;
 import be.florens.expandability.api.forge.PlayerSwimEvent;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.bus.api.EventPriority;
@@ -21,6 +23,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -43,6 +46,7 @@ public class ArtifactHooksNeoForge {
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onDiggingClawsHarvestCheck);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onBlockDrops);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::addAttributeTooltips);
+        NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onRightClickItem);
     }
 
     private static void onEntityAdded(EntityJoinLevelEvent event) {
@@ -106,6 +110,14 @@ public class ArtifactHooksNeoForge {
 
     private static void addAttributeTooltips(AddAttributeTooltipsEvent event) {
         TooltipHelper.addAttributeTooltips(event::addTooltipLines, event.getStack(), event.getContext(), event.getContext().tooltipDisplay());
+    }
+
+    private static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        InteractionResult result = EquipmentSlotManager.tryEquipFromUse(event.getEntity(), event.getHand());
+        if (result != InteractionResult.PASS) {
+            event.setCancellationResult(result);
+            event.setCanceled(true);
+        }
     }
 
     public static void onPlayerSwim(PlayerSwimEvent event) {

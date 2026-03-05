@@ -46,13 +46,13 @@ public class AccessoriesRenderingHandler implements EquipmentRenderingHandler {
 
         @Override
         public <S extends LivingEntityRenderState> void render(ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int packedLight, float partialTicks) {
-            // TODO fix accessory rendering
+            // FIXME fix accessory rendering
             // renderer.renderVisible(stack, reference.entity(), reference.slot(), matrices, multiBufferSource, packedLight, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
         }
 
         @Override
         public <S extends LivingEntityRenderState> void renderOnFirstPerson(HumanoidArm side, ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int packedLight, float partialTicks) {
-            /* TODO fix first-person accessory rendering
+            /* FIXME fix first-person accessory rendering
             if (!(reference.entity() instanceof LocalPlayer player)) {
                 return;
             }
