@@ -2,11 +2,8 @@ package artifacts.item;
 
 import artifacts.Artifacts;
 import artifacts.component.Equipable;
-import artifacts.component.ability.AttributeModifiers;
-import artifacts.component.ability.EnchantmentLevelModifiers;
-import artifacts.component.ability.EntityCondition;
-import artifacts.component.ability.SimpleAbility;
-import artifacts.component.ability.mobeffect.EquipmentMobEffects;
+import artifacts.component.ability.*;
+import artifacts.component.ability.mobeffect.EquipmentMobEffect;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.config.value.Value;
 import artifacts.registry.ModDataComponents;
@@ -19,7 +16,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -33,8 +29,8 @@ public final class EquipableArtifactBuilder {
 
     private final String itemName;
     private final Item.Properties properties;
-    private final List<AttributeModifiers.Entry> attributes;
-    private final List<EnchantmentLevelModifiers.Entry> enchantments;
+    private final List<EquipmentAttributeModifier> attributes;
+    private final List<EnchantmentLevelModifier> enchantments;
 
     public EquipableArtifactBuilder(String itemName, Item.Properties properties) {
         this.itemName = itemName;
@@ -53,25 +49,25 @@ public final class EquipableArtifactBuilder {
         return this;
     }
 
-    public EquipableArtifactBuilder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation) {
+    public EquipableArtifactBuilder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation operation) {
         return addAttributeModifier(attribute, amount, operation, true);
     }
 
-    public EquipableArtifactBuilder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, boolean ignoreCooldown) {
-        attributes.add(new AttributeModifiers.Entry(attribute, amount, operation,
+    public EquipableArtifactBuilder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation operation, boolean ignoreCooldown) {
+        attributes.add(new EquipmentAttributeModifier(attribute, amount, operation,
                 Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().identifier().getPath()), ignoreCooldown)
         );
         return this;
     }
 
     public EquipableArtifactBuilder mobEffect(Holder<MobEffect> effect, Value<Integer> level, Value<Integer> duration, EntityCondition condition) {
-        return component(ModDataComponents.MOB_EFFECTS.get(), new EquipmentMobEffects(List.of(
-                new EquipmentMobEffects.Entry(new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition))
+        return component(ModDataComponents.MOB_EFFECTS.get(), new CompositeAbility<>(List.of(
+                new EquipmentMobEffect(new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition))
         )));
     }
 
     public EquipableArtifactBuilder increasesEnchantment(ResourceKey<Enchantment> enchantment, Value<Integer> amount) {
-        enchantments.add(new EnchantmentLevelModifiers.Entry(enchantment, amount));
+        enchantments.add(new EnchantmentLevelModifier(enchantment, amount));
         return this;
     }
 
@@ -108,10 +104,10 @@ public final class EquipableArtifactBuilder {
                 .component(ModDataComponents.DEPENDENCY_CHECK_TOOLTIP.get(), Unit.INSTANCE)
                 .component(ModDataComponents.COSMETIC_TOOLTIP.get(), Unit.INSTANCE);
         if (!attributes.isEmpty()) {
-            properties.component(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), new AttributeModifiers(attributes));
+            properties.component(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), new CompositeAbility<>(attributes));
         }
         if (!enchantments.isEmpty()) {
-            properties.component(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get(), new EnchantmentLevelModifiers(enchantments));
+            properties.component(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get(), new CompositeAbility<>(enchantments));
         }
         return new Item(properties);
     }

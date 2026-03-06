@@ -1,6 +1,6 @@
 package artifacts.mixin.ability.posteatingeffects;
 
-import artifacts.component.ability.mobeffect.PostEatingEffects;
+import artifacts.component.ability.mobeffect.PostEatingEffect;
 import artifacts.event.ArtifactHooks;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
@@ -18,7 +18,7 @@ public abstract class FoodPropertiesMixin {
     @Inject(method = "onConsume", at = @At("HEAD"))
     public void eat(Level level, LivingEntity entity, ItemStack stack, Consumable consumable, CallbackInfo ci) {
         FoodProperties foodProperties = (FoodProperties) (Object) this;
-        PostEatingEffects.applyEffects(entity, foodProperties);
+        PostEatingEffect.applyEffects(entity, foodProperties);
         ArtifactHooks.applyBoneMealAfterEating(entity, foodProperties);
     }
 }

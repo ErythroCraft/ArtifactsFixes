@@ -4,10 +4,10 @@ import artifacts.component.Equipable;
 import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
-import artifacts.component.ability.mobeffect.AttackEffects;
-import artifacts.component.ability.mobeffect.EquipmentMobEffects;
-import artifacts.component.ability.mobeffect.PostDamageEffects;
-import artifacts.component.ability.mobeffect.PostEatingEffects;
+import artifacts.component.ability.mobeffect.AttackEffect;
+import artifacts.component.ability.mobeffect.EquipmentMobEffect;
+import artifacts.component.ability.mobeffect.PostDamageEffect;
+import artifacts.component.ability.mobeffect.PostEatingEffect;
 import artifacts.component.ability.retaliation.RetaliationEffects;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
@@ -33,7 +33,7 @@ public class ModDataComponents {
 
     public static final List<Supplier<? extends DataComponentType<? extends EquipmentAbility>>> TOOLTIP_ORDER = new ArrayList<>();
 
-    public static final Set<Supplier<? extends DataComponentType<? extends TickingAbility>>> TICKING_COMPONENTS = new LinkedHashSet<>();
+    public static final Set<TickingAbility<?>> TICKING_ABILITIES = new LinkedHashSet<>();
     private static final Set<Supplier<? extends DataComponentType<?>>> APPLIES_COOLDOWN = new LinkedHashSet<>();
 
     /** Allows the items abilities to be toggled on and off */
@@ -70,16 +70,16 @@ public class ModDataComponents {
     // abilities
     public static final Supplier<DataComponentType<PostDamageCooldown>> POST_DAMAGE_COOLDOWN =
             registerSynced("post_damage_cooldown", PostDamageCooldown.CODEC, PostDamageCooldown.STREAM_CODEC);
-    public static final Supplier<DataComponentType<PostDamageEffects>> POST_DAMAGE_EFFECTS =
-            registerSynced("post_damage_effects", PostDamageEffects.CODEC, PostDamageEffects.STREAM_CODEC);
-    public static final Supplier<DataComponentType<PostEatingEffects>> POST_EATING_EFFECTS =
-            registerSynced("post_eating_effects", PostEatingEffects.CODEC, PostEatingEffects.STREAM_CODEC);
+    public static final Supplier<DataComponentType<CompositeAbility<PostDamageEffect>>> POST_DAMAGE_EFFECTS =
+            registerComposite("post_damage_effects", PostDamageEffect.CODEC, PostDamageEffect.STREAM_CODEC);
+    public static final Supplier<DataComponentType<CompositeAbility<PostEatingEffect>>> POST_EATING_EFFECTS =
+            registerComposite("post_eating_effects", PostEatingEffect.CODEC, PostEatingEffect.STREAM_CODEC);
     public static final Supplier<DataComponentType<DamageAbsorption>> DAMAGE_ABSORPTION =
             registerSynced("damage_absorption", DamageAbsorption.CODEC, DamageAbsorption.STREAM_CODEC);
-    public static final Supplier<DataComponentType<AttackEffects>> ATTACK_EFFECTS =
-            registerSynced("attack_effects", AttackEffects.CODEC, AttackEffects.STREAM_CODEC);
-    public static final Supplier<DataComponentType<AttributeModifiers>> ATTRIBUTE_MODIFIERS =
-            registerCached("attribute_modifiers", AttributeModifiers.CODEC, AttributeModifiers.STREAM_CODEC);
+    public static final Supplier<DataComponentType<CompositeAbility<AttackEffect>>> ATTACK_EFFECTS =
+            registerComposite("attack_effects", AttackEffect.CODEC, AttackEffect.STREAM_CODEC);
+    public static final Supplier<DataComponentType<CompositeAbility<EquipmentAttributeModifier>>> ATTRIBUTE_MODIFIERS =
+            registerComposite("attribute_modifiers", EquipmentAttributeModifier.CODEC, EquipmentAttributeModifier.STREAM_CODEC);
     public static final Supplier<DataComponentType<DamageImmunity>> DAMAGE_IMMUNITY =
             registerSynced("damage_immunity", DamageImmunity.CODEC, DamageImmunity.STREAM_CODEC);
     public static final Supplier<DataComponentType<DoubleJump>> DOUBLE_JUMP =
@@ -88,10 +88,10 @@ public class ModDataComponents {
             registerSynced("ender_pearl_hunger_cost", EnderPearlHungerCost.CODEC, EnderPearlHungerCost.STREAM_CODEC);
     public static final Supplier<DataComponentType<SimpleAbility>> POST_EATING_PLANT_GROWTH =
             registerSimpleAbility("post_eating_plant_growth");
-    public static final Supplier<DataComponentType<EnchantmentLevelModifiers>> ENCHANTMENT_LEVEL_MODIFIERS =
-            registerSynced("enchantment_level_modifiers", EnchantmentLevelModifiers.CODEC, EnchantmentLevelModifiers.STREAM_CODEC);
-    public static final Supplier<DataComponentType<EquipmentMobEffects>> MOB_EFFECTS =
-            registerSynced("mob_effects", EquipmentMobEffects.CODEC, EquipmentMobEffects.STREAM_CODEC);
+    public static final Supplier<DataComponentType<CompositeAbility<EnchantmentLevelModifier>>> ENCHANTMENT_LEVEL_MODIFIERS =
+            registerComposite("enchantment_level_modifiers", EnchantmentLevelModifier.CODEC, EnchantmentLevelModifier.STREAM_CODEC);
+    public static final Supplier<DataComponentType<CompositeAbility<EquipmentMobEffect>>> MOB_EFFECTS =
+            registerComposite("mob_effects", EquipmentMobEffect.CODEC, EquipmentMobEffect.STREAM_CODEC);
     public static final Supplier<DataComponentType<SimpleAbility>> ENDER_PEARL_DAMAGE_IMMUNITY =
             registerSimpleAbility("ender_pearl_damage_immunity");
     public static final Supplier<DataComponentType<CureEffects>> CURE_EFFECTS =
@@ -120,12 +120,12 @@ public class ModDataComponents {
             registerSimpleAbility("walk_on_powder_snow");
 
     static {
-        TICKING_COMPONENTS.addAll(List.of(
-                ATTRIBUTE_MODIFIERS,
-                REPLENISH_HUNGER_ON_GRASS,
-                CURE_EFFECTS,
-                MOB_EFFECTS,
-                FLUID_COLLISION
+        TICKING_ABILITIES.addAll(List.of(
+                new TickingAbility<>(ATTRIBUTE_MODIFIERS, new CompositeAbility.Ticker<>(new EquipmentAttributeModifier.Ticker())),
+                new TickingAbility<>(REPLENISH_HUNGER_ON_GRASS, new ReplenishHungerOnGrass.Ticker()),
+                new TickingAbility<>(CURE_EFFECTS, new CureEffects.Ticker()),
+                new TickingAbility<>(MOB_EFFECTS, new CompositeAbility.Ticker<>(new EquipmentMobEffect.Ticker())),
+                new TickingAbility<>(FLUID_COLLISION, new FluidCollision.Ticker())
         ));
         TOOLTIP_ORDER.addAll(List.of(
                 TOOL_TIER_UPGRADE,
@@ -172,6 +172,10 @@ public class ModDataComponents {
         return registerSynced(name, SimpleAbility.CODEC, SimpleAbility.STREAM_CODEC);
     }
 
+    private static <ENTRY extends EquipmentAbility> Supplier<DataComponentType<CompositeAbility<ENTRY>>> registerComposite(String name, Codec<ENTRY> codec, StreamCodec<RegistryFriendlyByteBuf, ENTRY> streamCodec) {
+        return registerSynced(name, CompositeAbility.codec(codec), CompositeAbility.streamCodec(streamCodec));
+    }
+
     private static <T> Supplier<DataComponentType<T>> registerSynced(String name, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
         return register(name, builder -> builder.persistent(codec).networkSynchronized(streamCodec));
     }
@@ -183,4 +187,9 @@ public class ModDataComponents {
     private static <T> Supplier<DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
         return DATA_COMPONENT_TYPES.register(name, () -> builder.apply(DataComponentType.builder()).build());
     }
+
+    public record TickingAbility<T extends EquipmentAbility>(
+            Supplier<DataComponentType<T>> type,
+            AbilityTicker<T> ticker
+    ) { }
 }

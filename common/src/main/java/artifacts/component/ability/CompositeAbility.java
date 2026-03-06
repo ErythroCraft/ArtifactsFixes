@@ -4,25 +4,22 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
-import java.util.function.Function;
 
-// TODO change this into a class
-public interface CompositeAbility<ENTRY extends EquipmentAbility> extends EquipmentAbility {
+public record CompositeAbility<ENTRY extends EquipmentAbility>(List<ENTRY> entries) implements EquipmentAbility {
 
-    static <E extends EquipmentAbility, A extends CompositeAbility<E>> Codec<A> codec(Codec<E> entryCodec, Function<List<E>, A> f, Function<A, List<E>> g) {
-        return entryCodec.listOf().xmap(f, g);
+    public static <ENTRY extends EquipmentAbility> Codec<CompositeAbility<ENTRY>> codec(Codec<ENTRY> entryCodec) {
+        return entryCodec.listOf().xmap(CompositeAbility::new, CompositeAbility::entries);
     }
 
-    static <E extends EquipmentAbility, B extends ByteBuf, A extends CompositeAbility<E>> StreamCodec<B, A> streamCodec(StreamCodec<B, E> entryCodec, Function<List<E>, A> f, Function<A, List<E>> g) {
-        return ByteBufCodecs.<B, E>list().apply(entryCodec).map(f, g);
+    public static <ENTRY extends EquipmentAbility, B extends ByteBuf> StreamCodec<B, CompositeAbility<ENTRY>> streamCodec(StreamCodec<B, ENTRY> entryCodec) {
+        return ByteBufCodecs.<B, ENTRY>list().apply(entryCodec).map(CompositeAbility::new, CompositeAbility::entries);
     }
-
-    List<ENTRY> entries();
 
     @Override
-    default boolean isNonCosmetic() {
+    public boolean isNonCosmetic() {
         for (ENTRY entry : entries()) {
             if (entry.isNonCosmetic()) {
                 return true;
@@ -32,10 +29,28 @@ public interface CompositeAbility<ENTRY extends EquipmentAbility> extends Equipm
     }
 
     @Override
-    default void addToTooltip(EquipmentAbility.TooltipWriter writer) {
+    public void addToTooltip(TooltipWriter writer) {
         for (ENTRY entry : entries()) {
             if (entry.isNonCosmetic()) {
                 entry.addToTooltip(writer);
+            }
+        }
+    }
+
+    public record Ticker<ENTRY extends EquipmentAbility>(AbilityTicker<ENTRY> entryTicker)
+            implements AbilityTicker<CompositeAbility<ENTRY>> {
+
+        @Override
+        public void wornTick(CompositeAbility<ENTRY> ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+            for (ENTRY entry : ability.entries) {
+                entryTicker.wornTick(entry, entity, isOnCooldown, isDisabled);
+            }
+        }
+
+        @Override
+        public void onUnequip(CompositeAbility<ENTRY> ability, LivingEntity entity) {
+            for (ENTRY entry : ability.entries) {
+                entryTicker.onUnequip(entry, entity);
             }
         }
     }

@@ -17,8 +17,7 @@ import net.minecraft.world.level.material.FluidState;
 
 import java.util.Optional;
 
-public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, EntityCondition condition)
-        implements TickingAbility {
+public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag, EntityCondition condition) implements EquipmentAbility {
 
     public final static Codec<FluidCollision> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(FluidCollision::enabled),
@@ -37,14 +36,6 @@ public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag
     );
 
     @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
-        FluidState fluidState = entity.getBlockStateOn().getFluidState();
-        if (fluidState.is(FluidTags.LAVA) && !entity.fireImmune() && condition.test(entity)) {
-            entity.hurt(entity.damageSources().hotFloor(), 1);
-        }
-    }
-
-    @Override
     public boolean isNonCosmetic() {
         return enabled().get();
     }
@@ -59,6 +50,17 @@ public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag
             writer.add("sneaking.lava");
         } else if (condition == EntityCondition.SPRINTING && tag().isEmpty()){
             writer.add("sprinting");
+        }
+    }
+
+    public record Ticker() implements AbilityTicker<FluidCollision> {
+
+        @Override
+        public void wornTick(FluidCollision ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+            FluidState fluidState = entity.getBlockStateOn().getFluidState();
+            if (fluidState.is(FluidTags.LAVA) && !entity.fireImmune() && ability.condition.test(entity)) {
+                entity.hurt(entity.damageSources().hotFloor(), 1);
+            }
         }
     }
 }

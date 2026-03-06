@@ -1,6 +1,6 @@
 package artifacts.equipment;
 
-import artifacts.component.ability.EnchantmentLevelModifiers;
+import artifacts.component.ability.EnchantmentLevelModifier;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.component.DataComponentType;
@@ -39,7 +39,7 @@ public class EquipmentHelper {
     public static int getEnchantmentLevelIncrease(ResourceKey<Enchantment> enchantment, LivingEntity entity) {
         return sumInt(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get(), entity, ability -> {
             int amount = 0;
-            for (EnchantmentLevelModifiers.Entry entry : ability.entries()) {
+            for (EnchantmentLevelModifier entry : ability.entries()) {
                 if (entry.enchantment().equals(enchantment)) {
                     amount += entry.amount().get();
                 }

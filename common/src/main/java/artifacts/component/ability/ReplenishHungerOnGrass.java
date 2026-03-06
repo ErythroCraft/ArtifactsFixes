@@ -1,6 +1,6 @@
 package artifacts.component.ability;
 
-import artifacts.component.ability.mobeffect.PostEatingEffects;
+import artifacts.component.ability.mobeffect.PostEatingEffect;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.network.PlaySoundAtPlayerPacket;
@@ -13,8 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 
-public record ReplenishHungerOnGrass(Value<Boolean> enabled, Value<Integer> replenishingDuration)
-        implements EquipmentAbility, TickingAbility {
+public record ReplenishHungerOnGrass(Value<Boolean> enabled, Value<Integer> replenishingDuration) implements EquipmentAbility {
 
     public static final Codec<ReplenishHungerOnGrass> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(ReplenishHungerOnGrass::enabled),
@@ -34,17 +33,21 @@ public record ReplenishHungerOnGrass(Value<Boolean> enabled, Value<Integer> repl
         return enabled().get();
     }
 
-    @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
-        if (!isDisabled && !isOnCooldown && isNonCosmetic() && entity instanceof ServerPlayer player
-                && player.onGround()
-                && player.getFoodData().needsFood()
-                && entity.tickCount % (Math.max(1, replenishingDuration().get()) * 20) == 0
-                && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)
-        ) {
-            player.getFoodData().eat(1, 0.5F);
-            PostEatingEffects.applyEffects(entity, 1);
-            PlaySoundAtPlayerPacket.sendSound(player, SoundEvents.GENERIC_EAT, 0.5F, 0.8F + entity.getRandom().nextFloat() * 0.4F);
+    public record Ticker() implements AbilityTicker<ReplenishHungerOnGrass> {
+
+        @Override
+        public void wornTick(ReplenishHungerOnGrass ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+            if (!isDisabled && !isOnCooldown && ability.isNonCosmetic() && entity instanceof ServerPlayer player
+                    && player.onGround()
+                    && player.getFoodData().needsFood()
+                    && entity.tickCount % (Math.max(1, ability.replenishingDuration().get()) * 20) == 0
+                    && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)
+            ) {
+                player.getFoodData().eat(1, 0.5F);
+                PostEatingEffect.applyEffects(entity, 1);
+                PlaySoundAtPlayerPacket.sendSound(player, SoundEvents.GENERIC_EAT, 0.5F, 0.8F + entity.getRandom().nextFloat() * 0.4F);
+            }
+
         }
     }
 }

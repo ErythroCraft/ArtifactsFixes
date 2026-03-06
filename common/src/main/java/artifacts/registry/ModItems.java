@@ -4,10 +4,10 @@ import artifacts.Artifacts;
 import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
-import artifacts.component.ability.mobeffect.AttackEffects;
+import artifacts.component.ability.mobeffect.AttackEffect;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
-import artifacts.component.ability.mobeffect.PostDamageEffects;
-import artifacts.component.ability.mobeffect.PostEatingEffects;
+import artifacts.component.ability.mobeffect.PostDamageEffect;
+import artifacts.component.ability.mobeffect.PostEatingEffect;
 import artifacts.component.ability.retaliation.FireEffect;
 import artifacts.component.ability.retaliation.LightningEffect;
 import artifacts.component.ability.retaliation.RetaliationEffects;
@@ -144,7 +144,7 @@ public class ModItems {
     );
     public static final Holder<Item> PANIC_NECKLACE = wearableItem("panic_necklace", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
-            .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new PostDamageEffects(List.of(new PostDamageEffects.Entry(
+            .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new CompositeAbility<>(List.of(new PostDamageEffect(
                     new MobEffectProvider(MobEffects.SPEED, Artifacts.CONFIG.items.panicNecklaceSpeedLevel, Artifacts.CONFIG.items.panicNecklaceSpeedDuration, Value.of(true), Value.of(true), EntityCondition.ALWAYS),
                     Optional.empty(),
                     Value.of(1D)
@@ -216,7 +216,7 @@ public class ModItems {
     );
     public static final Holder<Item> OBSIDIAN_SKULL = wearableItem("obsidian_skull", builder -> builder
             .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
-            .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new PostDamageEffects(List.of(new PostDamageEffects.Entry(
+            .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new CompositeAbility<>(List.of(new PostDamageEffect(
                     new MobEffectProvider(MobEffects.FIRE_RESISTANCE, Value.of(1), Artifacts.CONFIG.items.obsidianSkullFireResistanceDuration, Value.of(true), Value.of(true), EntityCondition.ALWAYS),
                     Optional.of(DamageTypeTags.IS_FIRE),
                     Value.of(1D)
@@ -308,8 +308,8 @@ public class ModItems {
     );
     public static final Holder<Item> ONION_RING = wearableItem("onion_ring", builder -> builder
             .properties(properties -> properties.food(new FoodProperties.Builder().nutrition(2).build()))
-            .component(ModDataComponents.POST_EATING_EFFECTS.get(), new PostEatingEffects(
-                    List.of(new PostEatingEffects.Entry(new MobEffectProvider(
+            .component(ModDataComponents.POST_EATING_EFFECTS.get(), new CompositeAbility<>(
+                    List.of(new PostEatingEffect(new MobEffectProvider(
                             MobEffects.HASTE,
                             Artifacts.CONFIG.items.onionRingHasteLevel,
                             Artifacts.CONFIG.items.onionRingHasteDurationPerFoodPoint,
@@ -322,8 +322,8 @@ public class ModItems {
             .component(ModDataComponents.AUTO_SMELT.get(), Artifacts.CONFIG.items.pickaxeHeaterEnabled)
     );
     public static final Holder<Item> WITHERED_BRACELET = wearableItem("withered_bracelet", builder -> builder
-            .component(ModDataComponents.ATTACK_EFFECTS.get(), new AttackEffects(List.of(
-                    new AttackEffects.Entry(
+            .component(ModDataComponents.ATTACK_EFFECTS.get(), new CompositeAbility<>(List.of(
+                    new AttackEffect(
                             new MobEffectProvider(
                                     MobEffects.WITHER,
                                     Artifacts.CONFIG.items.witheredBraceletWitherLevel,

@@ -15,8 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDuration)
-        implements EquipmentAbility, TickingAbility {
+public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDuration) implements EquipmentAbility {
 
     public static final Codec<CureEffects> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(CureEffects::enabled),
@@ -36,25 +35,28 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
         return enabled().get();
     }
 
-    @Override
-    public void wornTick(LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
-        if (isDisabled || !isNonCosmetic()) {
-            return;
+    public record Ticker() implements AbilityTicker<CureEffects> {
+
+        @Override
+        public void wornTick(CureEffects ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+            if (isDisabled || !ability.isNonCosmetic()) {
+                return;
+            }
+            Map<Holder<MobEffect>, MobEffectInstance> effects = new HashMap<>();
+
+            int maxEffectDuration = ability.maxEffectDuration().get() * 20;
+            entity.getActiveEffectsMap().forEach((effect, instance) -> {
+                if (effect.is(ModTags.ANTIDOTE_VESSEL_CANCELLABLE) && !instance.endsWithin(maxEffectDuration) && !instance.isInfiniteDuration()) {
+                    effects.put(effect, instance);
+                }
+            });
+
+            effects.forEach((effect, instance) -> {
+                entity.removeEffectNoUpdate(effect);
+                if (maxEffectDuration > 0) {
+                    entity.addEffect(new MobEffectInstance(effect, maxEffectDuration, instance.getAmplifier(), instance.isAmbient(), instance.isVisible(), instance.showIcon()));
+                }
+            });
         }
-        Map<Holder<MobEffect>, MobEffectInstance> effects = new HashMap<>();
-
-        int maxEffectDuration = maxEffectDuration().get() * 20;
-        entity.getActiveEffectsMap().forEach((effect, instance) -> {
-            if (effect.is(ModTags.ANTIDOTE_VESSEL_CANCELLABLE) && !instance.endsWithin(maxEffectDuration) && !instance.isInfiniteDuration()) {
-                effects.put(effect, instance);
-            }
-        });
-
-        effects.forEach((effect, instance) -> {
-            entity.removeEffectNoUpdate(effect);
-            if (maxEffectDuration > 0) {
-                entity.addEffect(new MobEffectInstance(effect, maxEffectDuration, instance.getAmplifier(), instance.isAmbient(), instance.isVisible(), instance.showIcon()));
-            }
-        });
     }
 }
