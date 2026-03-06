@@ -77,7 +77,7 @@ public class ArtifactHooksNeoForge {
     private static void onKittySlippersChangeTarget(LivingChangeTargetEvent event) {
         LivingEntity target = event.getNewAboutToBeSetTarget();
         if (event.getEntity().getType().is(ModTags.CREEPERS)
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target, true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target)
         ) {
             event.setCanceled(true);
         }
@@ -85,7 +85,7 @@ public class ArtifactHooksNeoForge {
 
     private static void onKittySlippersLivingUpdate(LivingEntity entity) {
         if (entity.getLastHurtByMob() != null
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), entity.getLastHurtByMob(), true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), entity.getLastHurtByMob())
                 && entity.getType().is(ModTags.CREEPERS)
         ) {
             entity.setLastHurtByMob(null);

@@ -15,7 +15,6 @@ import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import org.jetbrains.annotations.Nullable;
 
-// TODO: consider moving tooltip logic outside of abilities, this class is otherwise identical to a SimpleAbility
 public record EquipableTotem(Value<Boolean> enabled) implements EquipmentAbility {
 
     public static final Codec<EquipableTotem> CODEC = RecordCodecBuilder.create(instance -> instance.group(

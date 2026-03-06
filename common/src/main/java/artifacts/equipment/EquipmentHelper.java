@@ -21,7 +21,10 @@ public class EquipmentHelper {
         return reduceComponents(type, entity, false, (prefix, stack, component) -> true);
     }
 
-    // TODO Add default overload with skipItemsOnCooldown == true, add base overload with new AbilityPredicate class
+    public static boolean hasAbilityActive(DataComponentType<? extends EquipmentAbility> type, @Nullable LivingEntity entity) {
+        return hasAbilityActive(type, entity, true);
+    }
+
     public static boolean hasAbilityActive(DataComponentType<? extends EquipmentAbility> type, @Nullable LivingEntity entity, boolean skipItemsOnCooldown) {
         return hasAbilityActive(type, entity, skipItemsOnCooldown, ability -> true);
     }
@@ -30,7 +33,7 @@ public class EquipmentHelper {
         if (entity == null) {
             return false;
         }
-        return reduceAbilities(type, entity, skipItemsOnCooldown, true, false, (ability, stack, b) -> b || ability.isNonCosmetic() && predicate.test(ability));
+        return reduceAbilities(type, entity, skipItemsOnCooldown, true, false, (ability, stack, b) -> b || predicate.test(ability));
     }
 
     public static int getEnchantmentLevelIncrease(ResourceKey<Enchantment> enchantment, LivingEntity entity) {

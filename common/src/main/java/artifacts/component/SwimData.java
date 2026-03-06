@@ -71,7 +71,7 @@ public class SwimData {
     }
 
     private boolean shouldDepleteSwimFlyingCharge(Player player) {
-        boolean hasSinkingAbility = EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true);
+        boolean hasSinkingAbility = EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player);
         return isSwimFlying && !player.isCreative() && (!player.isUnderWater() || hasSinkingAbility);
     }
 

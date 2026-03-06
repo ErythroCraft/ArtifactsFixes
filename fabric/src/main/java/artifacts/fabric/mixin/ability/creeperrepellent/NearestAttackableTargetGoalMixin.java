@@ -22,7 +22,7 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> e
 
     @Unique
     private static final TargetingConditions.Selector NOT_WEARING_KITTY_SLIPPERS = (entity, level) ->
-            !EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), entity, true);
+            !EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), entity);
 
     @Shadow
     @Final

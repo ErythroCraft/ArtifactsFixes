@@ -28,7 +28,7 @@ public class PhantomSweepAttackGoalMixin {
         if (artifacts$phantom != null && original) {
             LivingEntity target = artifacts$phantom.getTarget();
             if (target != null && artifacts$phantom.distanceToSqr(target) < 16 * 16
-                    && EquipmentHelper.hasAbilityActive(ModDataComponents.PHANTOM_REPELLENT.get(), target, true)
+                    && EquipmentHelper.hasAbilityActive(ModDataComponents.PHANTOM_REPELLENT.get(), target)
             ) {
                 artifacts$phantom.level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.CAT_HISS, target.getSoundSource(), 1F, 1F);
                 return false;

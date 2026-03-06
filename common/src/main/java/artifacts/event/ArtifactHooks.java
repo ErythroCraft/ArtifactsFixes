@@ -138,7 +138,7 @@ public class ArtifactHooks {
             refreshTickingAbilities(livingEntity);
         }
         if (entity instanceof PathfinderMob creeper && creeper.getType().is(ModTags.CREEPERS)) {
-            Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target, true);
+            Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target);
             ((MobAccessor) creeper).getGoalSelector().addGoal(3,
                     new AvoidEntityGoal<>(creeper, Player.class, predicate, 6, 1, 1.3, EntitySelector.NO_CREATIVE_OR_SPECTATOR)
             );
@@ -156,7 +156,7 @@ public class ArtifactHooks {
     public static ItemStack applySmeltOresAbility(ItemStack original, @Nullable Entity entity, @Nullable BlockState state, Consumer<Integer> experienceConsumer) {
         if (entity instanceof LivingEntity livingEntity
                 && livingEntity.level() instanceof ServerLevel serverLevel
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.AUTO_SMELT.get(), livingEntity, true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.AUTO_SMELT.get(), livingEntity)
                 && state != null
                 && state.is(ModTags.ORES)
         ) {
@@ -234,7 +234,7 @@ public class ArtifactHooks {
 
     public static void applyBoneMealAfterEating(LivingEntity entity, FoodProperties properties) {
         if (!entity.level().isClientSide()
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.POST_EATING_PLANT_GROWTH.get(), entity, true)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.POST_EATING_PLANT_GROWTH.get(), entity)
                 && properties.nutrition() > 0
                 && !properties.canAlwaysEat()
                 && entity.onGround()
@@ -249,7 +249,7 @@ public class ArtifactHooks {
         if (swimData != null) {
             if (swimData.isSwimFlying()) {
                 return EventResult.SUCCESS;
-            } else if (EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player, true)) {
+            } else if (EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player)) {
                 return EventResult.FAIL;
             }
         }

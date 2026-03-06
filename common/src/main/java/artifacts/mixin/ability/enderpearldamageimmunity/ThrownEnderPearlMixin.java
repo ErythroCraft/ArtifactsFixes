@@ -16,6 +16,6 @@ public class ThrownEnderPearlMixin {
 
     @WrapWithCondition(method = "onHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
     private boolean shouldNullifyDamage(ServerPlayer player, ServerLevel level, DamageSource damageSource, float amount) {
-        return !(player instanceof LivingEntity livingEntity && EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_DAMAGE_IMMUNITY.get(), livingEntity, true));
+        return !(player instanceof LivingEntity livingEntity && EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_DAMAGE_IMMUNITY.get(), livingEntity));
     }
 }

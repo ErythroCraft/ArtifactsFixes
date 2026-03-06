@@ -47,12 +47,8 @@ public record SwimInAir(Value<Integer> flightDuration, Value<Integer> rechargeDu
     }
 
     public static boolean canSwim(LivingEntity entity) {
-        return entity instanceof Player player && EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(),
-                player, true, ability -> ability.canSwim(player));
-    }
-
-    private boolean canSwim(Player player) {
-        return EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player, true)
+        return entity instanceof Player player
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player)
                 && !player.getAbilities().flying
                 && !player.onGround()
                 && !player.isFallFlying()
