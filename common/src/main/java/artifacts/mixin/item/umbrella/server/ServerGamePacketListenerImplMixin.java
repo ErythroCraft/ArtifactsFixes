@@ -21,7 +21,7 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @Inject(method = "handleMovePlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;clientIsFloating:Z", shift = At.Shift.AFTER, opcode = Opcodes.PUTFIELD))
     private void allowUmbrellaFlying(CallbackInfo info) {
-        if (UmbrellaItem.isHoldingUmbrellaUpright(player)) {
+        if (UmbrellaItem.isHoldingUmbrellaUpright(player, false)) {
             clientIsFloating = false;
         }
     }

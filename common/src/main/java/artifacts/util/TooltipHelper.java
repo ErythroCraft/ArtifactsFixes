@@ -22,6 +22,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -35,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
@@ -63,21 +63,65 @@ public class TooltipHelper {
             );
         }
 
+        // Description that shows even when the item is cosmetic (used by Novelty Drinking Hat)
         TooltipHelper.getComponentIfVisible(ModDataComponents.ABILITY_LORE.get(), stack, display).ifPresent(lore ->
                 lore.addToTooltip(context, tooltip, tooltipFlag, stack)
         );
 
-        for (Supplier<? extends DataComponentType<? extends EquipmentAbility>> type : ModDataComponents.TOOLTIP_ORDER) {
-            TooltipHelper.getAbilityIfVisible(type.get(), stack, display).ifPresent(ability ->
-                    ability.addToTooltip(new EquipmentAbility.TooltipWriter(type.get(), tooltip, context, stack))
-            );
-        }
+        // Tooltip order (a bit janky but vanilla does it in a similar way)
+        Consumer<DataComponentType<? extends EquipmentAbility>> descriptions
+                = type -> TooltipHelper.addAbilityDescription(tooltip, stack, context, display, type);
 
+        // Non-equipable abilities
+        descriptions.accept(ModDataComponents.HANDHELD_GLIDER.get());
+        descriptions.accept(ModDataComponents.BLOCKS_ATTACKS.get());
+        descriptions.accept(ModDataComponents.EQUIPABLE_TOTEM.get());
+
+        // Composite abilities
+        descriptions.accept(ModDataComponents.MOB_EFFECTS.get());
+        descriptions.accept(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get());
+        descriptions.accept(ModDataComponents.ATTRIBUTE_MODIFIERS.get());
+        descriptions.accept(ModDataComponents.POST_DAMAGE_EFFECTS.get());
+        descriptions.accept(ModDataComponents.POST_EATING_EFFECTS.get());
+        descriptions.accept(ModDataComponents.ATTACK_EFFECTS.get());
+        descriptions.accept(ModDataComponents.RETALIATION_EFFECTS.get());
+
+        // Other
+        descriptions.accept(ModDataComponents.TOOL_TIER_UPGRADE.get());
+        descriptions.accept(ModDataComponents.DOUBLE_JUMP.get());
+        descriptions.accept(ModDataComponents.CURE_EFFECTS.get());
+        descriptions.accept(ModDataComponents.DAMAGE_ABSORPTION.get());
+        descriptions.accept(ModDataComponents.ENDER_PEARL_HUNGER_COST.get());
+        descriptions.accept(ModDataComponents.ENDER_PEARL_DAMAGE_IMMUNITY.get());
+        descriptions.accept(ModDataComponents.REPLENISH_HUNGER_ON_GRASS.get());
+        descriptions.accept(ModDataComponents.CREEPER_REPELLENT.get());
+        descriptions.accept(ModDataComponents.PHANTOM_REPELLENT.get());
+        descriptions.accept(ModDataComponents.SINKING.get());
+        descriptions.accept(ModDataComponents.AUTO_SMELT.get());
+        descriptions.accept(ModDataComponents.FLUID_COLLISION.get());
+        descriptions.accept(ModDataComponents.SWIM_IN_AIR.get());
+        descriptions.accept(ModDataComponents.WALK_ON_POWDER_SNOW.get());
+        descriptions.accept(ModDataComponents.DAMAGE_IMMUNITY.get());
+        descriptions.accept(ModDataComponents.POST_EATING_PLANT_GROWTH.get());
+
+        // Toggle key(s)
         TooltipHelper.getComponentIfVisible(ModDataComponents.TOGGLE_KEY.get(), stack, display).ifPresent(toggleKey -> {
             if (!TooltipHelper.isCosmetic(stack) && player != null && player.level().isClientSide()) {
                 ToggleKeyHandlers.addTooltip(toggleKey, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()), tooltip);
             }
         });
+    }
+
+    private static void addAbilityDescription(
+            Consumer<Component> tooltip,
+            ItemStack stack,
+            Item.TooltipContext context,
+            TooltipDisplay display,
+            DataComponentType<? extends EquipmentAbility> type
+    ) {
+        TooltipHelper.getAbilityIfVisible(type, stack, display).ifPresent(ability ->
+                ability.addToTooltip(new EquipmentAbility.TooltipWriter(type, tooltip, context, stack))
+        );
     }
 
     public static void addAttributeTooltips(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
@@ -218,7 +262,7 @@ public class TooltipHelper {
     private static void addAttributeTooltip(Consumer<Component> tooltip, EquipmentAttributeModifier entry) {
         double amount = entry.amount().get();
 
-        if (entry.operation() != net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE) {
+        if (entry.operation() != AttributeModifier.Operation.ADD_VALUE) {
             amount *= 100;
         } else if (entry.attribute().equals(Attributes.KNOCKBACK_RESISTANCE)) {
             amount *= 10;

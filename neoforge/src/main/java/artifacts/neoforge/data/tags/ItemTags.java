@@ -3,7 +3,6 @@ package artifacts.neoforge.data.tags;
 import artifacts.Artifacts;
 import artifacts.integration.ModCompat;
 import artifacts.registry.ModItems;
-import artifacts.registry.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -118,11 +117,8 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
                 ModItems.UNIVERSAL_ATTRACTOR.value()
         );
 
-        tag(ModTags.UMBRELLAS).add(
+        tag(net.minecraft.tags.ItemTags.SPEARS).add(
                 ModItems.UMBRELLA.value()
-        );
-        tag(net.minecraft.tags.ItemTags.SPEARS).addTag(
-                ModTags.UMBRELLAS
         );
     }
 }

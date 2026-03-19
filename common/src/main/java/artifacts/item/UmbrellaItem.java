@@ -1,38 +1,14 @@
 package artifacts.item;
 
-import artifacts.Artifacts;
+import artifacts.component.ability.SimpleAbility;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.registry.ModTags;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.util.List;
-
-// TODO move tooltips/logic to component
-public class UmbrellaItem extends ArtifactItem {
-
-    public UmbrellaItem(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public boolean isCosmetic() {
-        return !Artifacts.CONFIG.items.umbrellaIsGlider.get() && !Artifacts.CONFIG.items.umbrellaIsShield.get();
-    }
-
-    @Override
-    protected void addEffectsTooltip(List<MutableComponent> tooltip) {
-        if (Artifacts.CONFIG.items.umbrellaIsGlider.get()) {
-            tooltip.add(tooltipLine("glider"));
-        }
-        if (Artifacts.CONFIG.items.umbrellaIsShield.get()) {
-            tooltip.add(tooltipLine("shield"));
-        }
-    }
+public final class UmbrellaItem {
 
     public static void onLivingUpdate(LivingEntity entity) {
         if (UmbrellaItem.shouldGlide(entity)) {
@@ -44,24 +20,21 @@ public class UmbrellaItem extends ArtifactItem {
         return !entity.onGround()
                 && entity.getDeltaMovement().y < 0
                 && !entity.hasEffect(MobEffects.SLOW_FALLING)
-                && Artifacts.CONFIG.items.umbrellaIsGlider.get()
                 && !(entity.isInWater() && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), entity))
-                && UmbrellaItem.isHoldingUmbrellaUpright(entity);
+                && UmbrellaItem.isHoldingUmbrellaUpright(entity, true);
     }
 
-    public static boolean isHoldingUmbrellaUpright(LivingEntity entity, InteractionHand hand) {
-        return entity.getItemInHand(hand).is(ModTags.UMBRELLAS)
+    private static boolean isHoldingUmbrellaUpright(LivingEntity entity, InteractionHand hand, boolean ignoreCosmetic) {
+        SimpleAbility gliderAbility = entity.getItemInHand(hand).get(ModDataComponents.HANDHELD_GLIDER.get());
+        return gliderAbility != null
+                && (ignoreCosmetic || gliderAbility.isNonCosmetic())
                 && (!entity.isUsingItem() || entity.getUsedItemHand() != hand)
                 && (!entity.swinging || entity.swingingArm != hand);
     }
 
-    public static boolean isHoldingUmbrellaUpright(LivingEntity entity) {
-        return isHoldingUmbrellaUpright(entity, InteractionHand.MAIN_HAND) || isHoldingUmbrellaUpright(entity, InteractionHand.OFF_HAND);
-    }
-
-    public static boolean isHoldingUmbrellaUpright(Entity entity) {
+    public static boolean isHoldingUmbrellaUpright(Entity entity, boolean ignoreCosmetic) {
         return entity instanceof LivingEntity livingEntity
-            && isHoldingUmbrellaUpright(livingEntity);
+            && (isHoldingUmbrellaUpright(livingEntity, InteractionHand.MAIN_HAND, ignoreCosmetic)
+                || isHoldingUmbrellaUpright(livingEntity, InteractionHand.OFF_HAND, ignoreCosmetic));
     }
-
 }

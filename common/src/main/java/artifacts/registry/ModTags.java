@@ -14,15 +14,6 @@ import net.minecraft.world.level.block.Block;
 
 public class ModTags {
 
-    /** TODO: move glider logic and/or others to a component <br>
-     * Items with this tag: <br>
-     * - Block rain falling on entities holding it <br>
-     * - Act as a glider when held <br>
-     * - Are held upright when not blocking/attacking <br>
-     * - Use a custom blocking animation
-     * (the minecraft:spear tag includes this tag)
-     */
-    public static final TagKey<Item> UMBRELLAS = create(Registries.ITEM, "umbrellas");
     /** Used to check if a block can be mined using the digging claws */
     public static final TagKey<Block> MINEABLE_WITH_DIGGING_CLAWS = create(Registries.BLOCK, "mineable/digging_claws");
     /** Chests used in campsite world generation */

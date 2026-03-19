@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -32,28 +33,34 @@ public final class EquipableArtifactBuilder {
     private final List<EquipmentAttributeModifier> attributes;
     private final List<EnchantmentLevelModifier> enchantments;
 
-    public EquipableArtifactBuilder(String itemName, Item.Properties properties) {
+    private boolean isEquipable = false;
+
+    public EquipableArtifactBuilder(String itemName) {
         this.itemName = itemName;
-        this.properties = properties;
+        this.properties = new Item.Properties();
         this.attributes = new ArrayList<>();
         this.enchantments = new ArrayList<>();
-        equipSound(SoundEvents.ARMOR_EQUIP_GENERIC);
     }
 
-    public EquipableArtifactBuilder equipSound(SoundEvent equipSound) {
-        return equipSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(equipSound));
+    public EquipableArtifactBuilder equipable() {
+        return equipable(SoundEvents.ARMOR_EQUIP_GENERIC);
     }
 
-    public EquipableArtifactBuilder equipSound(Holder<SoundEvent> equipSound) {
-        properties.component(ModDataComponents.EQUIPABLE.get(), new Equipable(equipSound, true));
+    public EquipableArtifactBuilder equipable(SoundEvent equipSound) {
+        return equipable(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(equipSound));
+    }
+
+    public EquipableArtifactBuilder equipable(Holder<SoundEvent> equipSound) {
+        this.isEquipable = true;
+        component(ModDataComponents.EQUIPABLE.get(), new Equipable(equipSound, true));
         return this;
     }
 
-    public EquipableArtifactBuilder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation operation) {
+    public EquipableArtifactBuilder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation) {
         return addAttributeModifier(attribute, amount, operation, true);
     }
 
-    public EquipableArtifactBuilder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation operation, boolean ignoreCooldown) {
+    public EquipableArtifactBuilder addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, boolean ignoreCooldown) {
         attributes.add(new EquipmentAttributeModifier(attribute, amount, operation,
                 Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().identifier().getPath()), ignoreCooldown)
         );
@@ -79,11 +86,11 @@ public final class EquipableArtifactBuilder {
         return component(type, new SimpleAbility(enabled));
     }
 
-    public <T> EquipableArtifactBuilder component(DataComponentType<T> type, Value.ConfigValue<Boolean> value, T component) {
-        if (!value.requiresRestart()) {
+    public <T> EquipableArtifactBuilder component(DataComponentType<T> type, Value.ConfigValue<Boolean> condition, T component) {
+        if (!condition.requiresRestart()) {
             throw new IllegalArgumentException();
         }
-        return component(type, value.get() ? component : null);
+        return component(type, condition.get() ? component : null);
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -97,18 +104,20 @@ public final class EquipableArtifactBuilder {
         return this;
     }
 
-    public Item build() {
+    public Item.Properties build() {
+        if (isEquipable) {
+            component(ModDataComponents.DEPENDENCY_CHECK_TOOLTIP.get());
+        }
+        component(ModDataComponents.COSMETIC_TOOLTIP.get());
         properties.stacksTo(1)
                 .rarity(Rarity.RARE)
-                .fireResistant()
-                .component(ModDataComponents.DEPENDENCY_CHECK_TOOLTIP.get(), Unit.INSTANCE)
-                .component(ModDataComponents.COSMETIC_TOOLTIP.get(), Unit.INSTANCE);
+                .fireResistant();
         if (!attributes.isEmpty()) {
             properties.component(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), new CompositeAbility<>(attributes));
         }
         if (!enchantments.isEmpty()) {
             properties.component(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get(), new CompositeAbility<>(enchantments));
         }
-        return new Item(properties);
+        return properties;
     }
 }

@@ -1,6 +1,6 @@
 package artifacts.mixin.item.umbrella.client;
 
-import artifacts.registry.ModTags;
+import artifacts.registry.ModDataComponents;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -15,7 +15,7 @@ public abstract class ItemInHandRendererMixin {
 
     @ModifyExpressionValue(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseAnimation()Lnet/minecraft/world/item/ItemUseAnimation;"))
     private ItemUseAnimation modifyUseAnimation(ItemUseAnimation original, AbstractClientPlayer player, float _f, float _g, InteractionHand hand, float _h, ItemStack stack) {
-        if (stack.is(ModTags.UMBRELLAS) && original == ItemUseAnimation.BLOCK) {
+        if (stack.has(ModDataComponents.HANDHELD_GLIDER.get()) && original == ItemUseAnimation.BLOCK) {
             // ItemInHandLayer applies additional transforms when blocking with an item that doesn't subclass ShieldItem
             // The umbrella model itself already defines its blocking transforms
             return ItemUseAnimation.NONE;

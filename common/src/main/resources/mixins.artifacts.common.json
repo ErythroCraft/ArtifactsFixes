@@ -16,6 +16,7 @@
     "ability.equipabletotem.LivingEntityMixin",
     "ability.fluidcollision.EntityMixin",
     "ability.hurtsound.LivingEntityMixin",
+    "ability.infiniteconsumable.ConsumableMixin",
     "ability.phantomrepellent.PhantomSweepAttackGoalMixin",
     "ability.piglinloved.PiglinAiMixin",
     "ability.posteatingeffects.FoodPropertiesMixin",

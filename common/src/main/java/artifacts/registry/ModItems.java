@@ -14,8 +14,6 @@ import artifacts.component.ability.retaliation.RetaliationEffects;
 import artifacts.component.ability.retaliation.ThornsEffect;
 import artifacts.config.value.Value;
 import artifacts.item.EquipableArtifactBuilder;
-import artifacts.item.EverlastingFoodItem;
-import artifacts.item.UmbrellaItem;
 import artifacts.item.consumeeffects.HealConsumeEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -37,6 +35,7 @@ import net.minecraft.world.item.component.*;
 import net.minecraft.world.item.consume_effects.ClearAllStatusEffectsConsumeEffect;
 import net.minecraft.world.item.consume_effects.TeleportRandomlyConsumeEffect;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.equipment.Equippable;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,13 +56,25 @@ public class ModItems {
             .build()
     );
 
-    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", SpawnEggItem::new, () -> new Item.Properties().spawnEgg(ModEntityTypes.MIMIC.get()));
-    @SuppressWarnings("DataFlowIssue")
-    public static final Holder<Item> UMBRELLA = register("umbrella", UmbrellaItem::new, () -> new Item.Properties()
-            .equippableUnswappable(EquipmentSlot.OFFHAND)
-            .component(DataComponents.BLOCKS_ATTACKS, Artifacts.CONFIG.items.umbrellaIsShield.get()
-                    ? new BlocksAttacks(0.25F, 1, List.of(new BlocksAttacks.DamageReduction(90, Optional.empty(), 0, 1)), new BlocksAttacks.ItemDamageFunction(3, 1, 1), Optional.of(DamageTypeTags.BYPASSES_SHIELD), Optional.of(SoundEvents.SHIELD_BLOCK), Optional.of(SoundEvents.SHIELD_BREAK))
-                    : null
+    public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", SpawnEggItem::new,
+            () -> new Item.Properties().spawnEgg(ModEntityTypes.MIMIC.get())
+    );
+
+    // handheld
+    public static final Holder<Item> UMBRELLA = register("umbrella", properties -> properties
+            .component(ModDataComponents.HANDHELD_GLIDER.get(), Artifacts.CONFIG.items.umbrellaIsGlider)
+            .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.OFFHAND).setSwappable(false).build())
+            .component(ModDataComponents.BLOCKS_ATTACKS.get(), Artifacts.CONFIG.items.umbrellaIsShield)
+            .component(DataComponents.BLOCKS_ATTACKS, Artifacts.CONFIG.items.umbrellaIsShield,
+                    new BlocksAttacks(
+                            0.25F,
+                            1,
+                            List.of(new BlocksAttacks.DamageReduction(90, Optional.empty(), 0, 1)),
+                            new BlocksAttacks.ItemDamageFunction(3, 1, 1),
+                            Optional.of(DamageTypeTags.BYPASSES_SHIELD),
+                            Optional.of(SoundEvents.SHIELD_BLOCK),
+                            Optional.of(SoundEvents.SHIELD_BREAK)
+                    )
             )
             .component(DataComponents.SWING_ANIMATION, new SwingAnimation(SwingAnimationType.STAB, 20))
             .component(
@@ -71,79 +82,99 @@ public class ModItems {
                     new PiercingWeapon(
                             true,
                             false,
-                            Optional.of(SoundEvents.SPEAR_WOOD_ATTACK
-                            ), Optional.of(SoundEvents.SPEAR_WOOD_HIT)
+                            Optional.of(SoundEvents.SPEAR_WOOD_ATTACK),
+                            Optional.of(SoundEvents.SPEAR_WOOD_HIT)
                     )
             )
             .component(DataComponents.WEAPON, new Weapon(1))
             .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
     );
-    public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", properties -> new EverlastingFoodItem(properties
-            .food(Foods.BEEF)
-            .useCooldown(Artifacts.CONFIG.items.everlastingBeefCooldown.get()), Artifacts.CONFIG.items.everlastingBeefEnabled));
-    public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", properties -> new EverlastingFoodItem(properties
-            .food(Foods.COOKED_BEEF)
-            .useCooldown(Artifacts.CONFIG.items.eternalSteakCooldown.get()), Artifacts.CONFIG.items.eternalSteakEnabled));
+    public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", builder -> builder
+            .component(DataComponents.FOOD, Artifacts.CONFIG.items.everlastingBeefEnabled, Foods.BEEF)
+            .component(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.everlastingBeefEnabled, Consumables.DEFAULT_FOOD)
+            .component(
+                    DataComponents.USE_COOLDOWN,
+                    Artifacts.CONFIG.items.everlastingBeefEnabled,
+                    new UseCooldown(Artifacts.CONFIG.items.everlastingBeefCooldown.get())
+            )
+            .component(ModDataComponents.INFINITE_CONSUMABLE.get(), Artifacts.CONFIG.items.everlastingBeefEnabled)
+    );
+    public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", builder -> builder
+            .component(DataComponents.FOOD, Artifacts.CONFIG.items.eternalSteakEnabled, Foods.COOKED_BEEF)
+            .component(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.eternalSteakEnabled, Consumables.DEFAULT_FOOD)
+            .component(
+                    DataComponents.USE_COOLDOWN,
+                    Artifacts.CONFIG.items.eternalSteakEnabled,
+                    new UseCooldown(Artifacts.CONFIG.items.eternalSteakCooldown.get())
+            )
+            .component(ModDataComponents.INFINITE_CONSUMABLE.get(), Artifacts.CONFIG.items.eternalSteakEnabled)
+    );
 
     // head
-    public static final Holder<Item> PLASTIC_DRINKING_HAT = wearableItem("plastic_drinking_hat", builder -> builder
-            .equipSound(SoundEvents.BOTTLE_FILL)
+    public static final Holder<Item> PLASTIC_DRINKING_HAT = register("plastic_drinking_hat", builder -> builder
+            .equipable(SoundEvents.BOTTLE_FILL)
             .addAttributeModifier(ModAttributes.DRINKING_SPEED, Artifacts.CONFIG.items.plasticDrinkingHatDrinkingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(ModAttributes.EATING_SPEED, Artifacts.CONFIG.items.plasticDrinkingHatEatingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
-    public static final Holder<Item> NOVELTY_DRINKING_HAT = wearableItem("novelty_drinking_hat", builder -> builder
-            .equipSound(SoundEvents.BOTTLE_FILL)
+    public static final Holder<Item> NOVELTY_DRINKING_HAT = register("novelty_drinking_hat", builder -> builder
+            .equipable(SoundEvents.BOTTLE_FILL)
             .component(ModDataComponents.ABILITY_LORE.get(),
                     new ItemLore(List.of(Component.translatable("artifacts.tooltip.item.novelty_drinking_hat").withStyle(ChatFormatting.GRAY)))
             )
             .addAttributeModifier(ModAttributes.DRINKING_SPEED, Artifacts.CONFIG.items.noveltyDrinkingHatDrinkingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(ModAttributes.EATING_SPEED, Artifacts.CONFIG.items.noveltyDrinkingHatEatingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
-    public static final Holder<Item> SNORKEL = wearableItem("snorkel", builder -> builder
+    public static final Holder<Item> SNORKEL = register("snorkel", builder -> builder
+            .equipable()
             .mobEffect(MobEffects.WATER_BREATHING, Value.of(1), Artifacts.CONFIG.items.snorkelWaterBreathingDuration,
                     Artifacts.CONFIG.items.snorkelIsInfinite.get() ? EntityCondition.ALWAYS : EntityCondition.ABOVE_WATER
             )
     );
-    public static final Holder<Item> NIGHT_VISION_GOGGLES = wearableItem("night_vision_goggles", builder -> builder
+    public static final Holder<Item> NIGHT_VISION_GOGGLES = register("night_vision_goggles", builder -> builder
+            .equipable()
             .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), EntityCondition.ALWAYS)
             .component(ModDataComponents.REDUCED_NIGHT_VISION.get(), Artifacts.CONFIG.items.nightVisionGogglesStrength)
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.NIGHT_VISION_GOGGLES)
     );
-    public static final Holder<Item> VILLAGER_HAT = wearableItem("villager_hat", builder -> builder
+    public static final Holder<Item> VILLAGER_HAT = register("villager_hat", builder -> builder
+            .equipable()
             .addAttributeModifier(ModAttributes.VILLAGER_REPUTATION, Artifacts.CONFIG.items.villagerHatReputationBonus, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final Holder<Item> SUPERSTITIOUS_HAT = wearableItem("superstitious_hat", builder -> builder
+    public static final Holder<Item> SUPERSTITIOUS_HAT = register("superstitious_hat", builder -> builder
+            .equipable()
             .increasesEnchantment(Enchantments.LOOTING, Artifacts.CONFIG.items.superstitiousHatLootingLevelBonus)
     );
-    public static final Holder<Item> COWBOY_HAT = wearableItem("cowboy_hat", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+    public static final Holder<Item> COWBOY_HAT = register("cowboy_hat", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_LEATHER)
             .addAttributeModifier(ModAttributes.MOUNT_SPEED, Artifacts.CONFIG.items.cowboyHatMountSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
-    public static final Holder<Item> ANGLERS_HAT = wearableItem("anglers_hat", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+    public static final Holder<Item> ANGLERS_HAT = register("anglers_hat", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_LEATHER)
             .increasesEnchantment(Enchantments.LUCK_OF_THE_SEA, Artifacts.CONFIG.items.anglersHatLuckOfTheSeaLevelBonus)
             .increasesEnchantment(Enchantments.LURE, Artifacts.CONFIG.items.anglersHatLureLevelBonus)
     );
 
     // necklace
-    public static final Holder<Item> LUCKY_SCARF = wearableItem("lucky_scarf", builder -> builder
+    public static final Holder<Item> LUCKY_SCARF = register("lucky_scarf", builder -> builder
+            .equipable()
             .increasesEnchantment(Enchantments.FORTUNE, Artifacts.CONFIG.items.luckScarfFortuneBonus)
     );
-    public static final Holder<Item> SCARF_OF_INVISIBILITY = wearableItem("scarf_of_invisibility", builder -> builder
+    public static final Holder<Item> SCARF_OF_INVISIBILITY = register("scarf_of_invisibility", builder -> builder
+            .equipable()
             .mobEffect(MobEffects.INVISIBILITY, Value.of(1), Value.of(10),
                     Artifacts.CONFIG.items.scarfOfInvisibilityEnabled.get() ? EntityCondition.ALWAYS : EntityCondition.NEVER
             )
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.SCARF_OF_INVISIBILITY)
             .component(ModDataComponents.HIDE_WHEN_INVISIBLE.get(), Artifacts.CONFIG.items.scarfOfInvisibilityHideWhenInvisible)
     );
-    public static final Holder<Item> CROSS_NECKLACE = wearableItem("cross_necklace", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
+    public static final Holder<Item> CROSS_NECKLACE = register("cross_necklace", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .component(ModDataComponents.PIGLIN_LOVED.get())
             .component(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), new PostDamageCooldown(Artifacts.CONFIG.items.crossNecklaceCooldown, Optional.empty()))
             .addAttributeModifier(ModAttributes.INVINCIBILITY_TICKS, Artifacts.CONFIG.items.crossNecklaceBonusInvincibilityTicks, AttributeModifier.Operation.ADD_VALUE, false)
     );
-    public static final Holder<Item> PANIC_NECKLACE = wearableItem("panic_necklace", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
+    public static final Holder<Item> PANIC_NECKLACE = register("panic_necklace", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new CompositeAbility<>(List.of(new PostDamageEffect(
                     new MobEffectProvider(MobEffects.SPEED, Artifacts.CONFIG.items.panicNecklaceSpeedLevel, Artifacts.CONFIG.items.panicNecklaceSpeedDuration, Value.of(true), Value.of(true), EntityCondition.ALWAYS),
                     Optional.empty(),
@@ -154,19 +185,26 @@ public class ModItems {
                     Optional.empty()
             ))
     );
-    public static final Holder<Item> SHOCK_PENDANT = wearableItem("shock_pendant", builder -> builder
+    public static final Holder<Item> SHOCK_PENDANT = register("shock_pendant", builder -> builder
+            .equipable()
             .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(
-                    Optional.empty(), Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
                     Optional.of(new LightningEffect(
                             Artifacts.CONFIG.items.shockPendantStrikeChance,
                             Artifacts.CONFIG.items.shockPendantCooldown
                     ))
-            )).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
-                    new DamageImmunity(Artifacts.CONFIG.items.shockPendantCancelLightningDamage,
-                            DamageTypeTags.IS_LIGHTNING, EntityCondition.ALWAYS)
+            ))
+            .component(ModDataComponents.DAMAGE_IMMUNITY.get(),
+                    new DamageImmunity(
+                            Artifacts.CONFIG.items.shockPendantCancelLightningDamage,
+                            DamageTypeTags.IS_LIGHTNING,
+                            EntityCondition.ALWAYS
+                    )
             )
     );
-    public static final Holder<Item> FLAME_PENDANT = wearableItem("flame_pendant", builder -> builder
+    public static final Holder<Item> FLAME_PENDANT = register("flame_pendant", builder -> builder
+            .equipable()
             .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(
                     Optional.empty(),
                     Optional.of(new FireEffect(
@@ -178,15 +216,21 @@ public class ModItems {
                     Optional.empty()
             ))
     );
-    public static final Holder<Item> THORN_PENDANT = wearableItem("thorn_pendant", builder -> builder
-            .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(Optional.of(new ThornsEffect(
-                    Artifacts.CONFIG.items.thornPendantStrikeChance,
-                    Artifacts.CONFIG.items.thornPendantCooldown,
-                    Artifacts.CONFIG.items.thornPendantMinDamage,
-                    Artifacts.CONFIG.items.thornPendantMaxDamage
-            )), Optional.empty(), Optional.empty()))
+    public static final Holder<Item> THORN_PENDANT = register("thorn_pendant", builder -> builder
+            .equipable()
+            .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(
+                    Optional.of(new ThornsEffect(
+                            Artifacts.CONFIG.items.thornPendantStrikeChance,
+                            Artifacts.CONFIG.items.thornPendantCooldown,
+                            Artifacts.CONFIG.items.thornPendantMinDamage,
+                            Artifacts.CONFIG.items.thornPendantMaxDamage
+                    )),
+                    Optional.empty(),
+                    Optional.empty()
+            ))
     );
-    public static final Holder<Item> CHARM_OF_SINKING = wearableItem("charm_of_sinking", builder -> builder
+    public static final Holder<Item> CHARM_OF_SINKING = register("charm_of_sinking", builder -> builder
+            .equipable()
             .component(ModDataComponents.SINKING.get(), Artifacts.CONFIG.items.charmOfSinkingEnabled)
             .component(ModDataComponents.DAMAGE_IMMUNITY.get(), new DamageImmunity(
                     Artifacts.CONFIG.items.charmOfSinkingEnabled,
@@ -198,14 +242,15 @@ public class ModItems {
             )
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SINKING)
     );
-    public static final Holder<Item> CHARM_OF_SHRINKING = wearableItem("charm_of_shrinking", builder -> builder
+    public static final Holder<Item> CHARM_OF_SHRINKING = register("charm_of_shrinking", builder -> builder
+            .equipable()
             .addAttributeModifier(Attributes.SCALE, Artifacts.CONFIG.items.charmOfShrinkingScaleModifier, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SHRINKING)
     );
 
     // belt
-    public static final Holder<Item> CLOUD_IN_A_BOTTLE = wearableItem("cloud_in_a_bottle", builder -> builder
-            .equipSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH)
+    public static final Holder<Item> CLOUD_IN_A_BOTTLE = register("cloud_in_a_bottle", builder -> builder
+            .equipable(SoundEvents.BOTTLE_FILL_DRAGONBREATH)
             .component(ModDataComponents.DOUBLE_JUMP.get(), new DoubleJump(
                     Artifacts.CONFIG.items.cloudInABottleEnabled,
                     Artifacts.CONFIG.items.cloudInABottleFallDamageMultiplier,
@@ -214,8 +259,8 @@ public class ModItems {
             ))
             .addAttributeModifier(Attributes.SAFE_FALL_DISTANCE, Artifacts.CONFIG.items.cloudInABottleSafeFallDistanceBonus, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final Holder<Item> OBSIDIAN_SKULL = wearableItem("obsidian_skull", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
+    public static final Holder<Item> OBSIDIAN_SKULL = register("obsidian_skull", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_IRON)
             .component(ModDataComponents.POST_DAMAGE_EFFECTS.get(), new CompositeAbility<>(List.of(new PostDamageEffect(
                     new MobEffectProvider(MobEffects.FIRE_RESISTANCE, Value.of(1), Artifacts.CONFIG.items.obsidianSkullFireResistanceDuration, Value.of(true), Value.of(true), EntityCondition.ALWAYS),
                     Optional.of(DamageTypeTags.IS_FIRE),
@@ -226,32 +271,34 @@ public class ModItems {
                     Optional.of(DamageTypeTags.IS_FIRE)
             ))
     );
-    public static final Holder<Item> ANTIDOTE_VESSEL = wearableItem("antidote_vessel", builder -> builder
-            .equipSound(SoundEvents.BOTTLE_FILL)
+    public static final Holder<Item> ANTIDOTE_VESSEL = register("antidote_vessel", builder -> builder
+            .equipable(SoundEvents.BOTTLE_FILL)
             .component(ModDataComponents.PIGLIN_LOVED.get())
             .component(ModDataComponents.CURE_EFFECTS.get(), new CureEffects(
                     Artifacts.CONFIG.items.antidoteVesselEnabled,
                     Artifacts.CONFIG.items.antidoteVesselMaxEffectDuration
             ))
     );
-    public static final Holder<Item> UNIVERSAL_ATTRACTOR = wearableItem("universal_attractor", builder -> builder
+    public static final Holder<Item> UNIVERSAL_ATTRACTOR = register("universal_attractor", builder -> builder
+            .equipable()
             .component(ModDataComponents.PIGLIN_LOVED.get())
             .mobEffect(ModMobEffects.MAGNETISM, Artifacts.CONFIG.items.universalAttractorMagnetismLevel, Value.of(10), EntityCondition.ALWAYS)
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.UNIVERSAL_ATTRACTOR)
     );
-    public static final Holder<Item> CRYSTAL_HEART = wearableItem("crystal_heart", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_DIAMOND)
+    public static final Holder<Item> CRYSTAL_HEART = register("crystal_heart", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .addAttributeModifier(Attributes.MAX_HEALTH, Artifacts.CONFIG.items.crystalHeartHealthBonus, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final Holder<Item> HELIUM_FLAMINGO = wearableItem("helium_flamingo", builder -> builder
-            .equipSound(ModSoundEvents.POP)
+    public static final Holder<Item> HELIUM_FLAMINGO = register("helium_flamingo", builder -> builder
+            .equipable(ModSoundEvents.POP)
             .component(ModDataComponents.SWIM_IN_AIR.get(), new SwimInAir(
                     Artifacts.CONFIG.items.heliumFlamingoFlightDuration,
                     Artifacts.CONFIG.items.heliumFlamingoRechargeDuration,
                     Artifacts.CONFIG.items.heliumFlamingoCooldown
             ))
     );
-    public static final Holder<Item> CHORUS_TOTEM = wearableItem("chorus_totem", builder -> builder
+    public static final Holder<Item> CHORUS_TOTEM = register("chorus_totem", builder -> builder
+            .equipable()
             .component(ModDataComponents.EQUIPABLE_TOTEM.get(), new EquipableTotem(
                     Artifacts.CONFIG.items.chorusTotemEnabled
             ))
@@ -265,7 +312,8 @@ public class ModItems {
                     )
             )
     );
-    public static final Holder<Item> WARP_DRIVE = wearableItem("warp_drive", builder -> builder
+    public static final Holder<Item> WARP_DRIVE = register("warp_drive", builder -> builder
+            .equipable()
             .component(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), new EnderPearlHungerCost(
                     Artifacts.CONFIG.items.warpDriveEnabled,
                     Artifacts.CONFIG.items.warpDriveHungerCost,
@@ -275,38 +323,42 @@ public class ModItems {
     );
 
     // hands
-    public static final Holder<Item> DIGGING_CLAWS = wearableItem("digging_claws", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
+    public static final Holder<Item> DIGGING_CLAWS = register("digging_claws", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_NETHERITE)
             .addAttributeModifier(Attributes.BLOCK_BREAK_SPEED, Artifacts.CONFIG.items.diggingClawsBlockBreakSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .component(ModDataComponents.TOOL_TIER_UPGRADE.get(), new ToolTierUpgrade(Artifacts.CONFIG.items.diggingClawsToolTier))
     );
-    public static final Holder<Item> FERAL_CLAWS = wearableItem("feral_claws", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
+    public static final Holder<Item> FERAL_CLAWS = register("feral_claws", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_NETHERITE)
             .addAttributeModifier(Attributes.ATTACK_SPEED, Artifacts.CONFIG.items.feralClawsAttackSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
-    public static final Holder<Item> POWER_GLOVE = wearableItem("power_glove", builder -> builder
+    public static final Holder<Item> POWER_GLOVE = register("power_glove", builder -> builder
+            .equipable()
             .addAttributeModifier(Attributes.ATTACK_DAMAGE, Artifacts.CONFIG.items.powerGloveAttackDamageBonus, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final Holder<Item> FIRE_GAUNTLET = wearableItem("fire_gauntlet", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
+    public static final Holder<Item> FIRE_GAUNTLET = register("fire_gauntlet", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_IRON)
             .addAttributeModifier(ModAttributes.ATTACK_BURNING_DURATION, Artifacts.CONFIG.items.fireGauntletFireDuration, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final Holder<Item> POCKET_PISTON = wearableItem("pocket_piston", builder -> builder
-            .equipSound(SoundEvents.PISTON_EXTEND)
+    public static final Holder<Item> POCKET_PISTON = register("pocket_piston", builder -> builder
+            .equipable(SoundEvents.PISTON_EXTEND)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, Artifacts.CONFIG.items.pocketPistonAttackKnockbackBonus, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final Holder<Item> VAMPIRIC_GLOVE = wearableItem("vampiric_glove", builder -> builder
+    public static final Holder<Item> VAMPIRIC_GLOVE = register("vampiric_glove", builder -> builder
+            .equipable()
             .component(ModDataComponents.DAMAGE_ABSORPTION.get(), new DamageAbsorption(
                     Artifacts.CONFIG.items.vampiricGloveAbsorptionRatio,
                     Artifacts.CONFIG.items.vampiricGloveAbsorptionChance,
                     Artifacts.CONFIG.items.vampiricGloveMaxHealingPerHit
             ))
     );
-    public static final Holder<Item> GOLDEN_HOOK = wearableItem("golden_hook", builder -> builder
+    public static final Holder<Item> GOLDEN_HOOK = register("golden_hook", builder -> builder
+            .equipable()
             .addAttributeModifier(ModAttributes.ENTITY_EXPERIENCE, Artifacts.CONFIG.items.goldenHookEntityExperienceBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .component(ModDataComponents.PIGLIN_LOVED.get())
     );
-    public static final Holder<Item> ONION_RING = wearableItem("onion_ring", builder -> builder
+    public static final Holder<Item> ONION_RING = register("onion_ring", builder -> builder
+            .equipable()
             .properties(properties -> properties.food(new FoodProperties.Builder().nutrition(2).build()))
             .component(ModDataComponents.POST_EATING_EFFECTS.get(), new CompositeAbility<>(
                     List.of(new PostEatingEffect(new MobEffectProvider(
@@ -317,11 +369,12 @@ public class ModItems {
                     )))
             ))
     );
-    public static final Holder<Item> PICKAXE_HEATER = wearableItem("pickaxe_heater", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_IRON)
+    public static final Holder<Item> PICKAXE_HEATER = register("pickaxe_heater", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_IRON)
             .component(ModDataComponents.AUTO_SMELT.get(), Artifacts.CONFIG.items.pickaxeHeaterEnabled)
     );
-    public static final Holder<Item> WITHERED_BRACELET = wearableItem("withered_bracelet", builder -> builder
+    public static final Holder<Item> WITHERED_BRACELET = register("withered_bracelet", builder -> builder
+            .equipable()
             .component(ModDataComponents.ATTACK_EFFECTS.get(), new CompositeAbility<>(List.of(
                     new AttackEffect(
                             new MobEffectProvider(
@@ -337,48 +390,54 @@ public class ModItems {
     );
 
     // feet
-    public static final Holder<Item> AQUA_DASHERS = wearableItem("aqua_dashers", builder -> builder
+    public static final Holder<Item> AQUA_DASHERS = register("aqua_dashers", builder -> builder
+            .equipable()
             .component(ModDataComponents.FLUID_COLLISION.get(), new FluidCollision(Artifacts.CONFIG.items.aquaDashersEnabled,
                     Optional.empty(), EntityCondition.SPRINTING)
             )
     );
-    public static final Holder<Item> BUNNY_HOPPERS = wearableItem("bunny_hoppers", builder -> builder
+    public static final Holder<Item> BUNNY_HOPPERS = register("bunny_hoppers", builder -> builder
+            .equipable()
             .addAttributeModifier(Attributes.JUMP_STRENGTH, Artifacts.CONFIG.items.bunnyHoppersJumpStrengthBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(Attributes.FALL_DAMAGE_MULTIPLIER, Artifacts.CONFIG.items.bunnyHoppersFallDamageMultiplier, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(Attributes.SAFE_FALL_DISTANCE, Artifacts.CONFIG.items.bunnyHoppersSafeFallDistanceBonus, AttributeModifier.Operation.ADD_VALUE)
             .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.RABBIT_HURT), Artifacts.CONFIG.items.bunnyHoppersModifyHurtSounds))
     );
-    public static final Holder<Item> KITTY_SLIPPERS = wearableItem("kitty_slippers", builder -> builder
-            .equipSound(SoundEvents.CAT_AMBIENT)
+    public static final Holder<Item> KITTY_SLIPPERS = register("kitty_slippers", builder -> builder
+            .equipable(SoundEvents.CAT_AMBIENT)
             .component(ModDataComponents.CREEPER_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersRepelCreepers)
             .component(ModDataComponents.PHANTOM_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersRepelPhantoms)
             .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT), Artifacts.CONFIG.items.kittySlippersModifyHurtSounds))
     );
-    public static final Holder<Item> RUNNING_SHOES = wearableItem("running_shoes", builder -> builder
+    public static final Holder<Item> RUNNING_SHOES = register("running_shoes", builder -> builder
+            .equipable()
             .addAttributeModifier(ModAttributes.SPRINTING_SPEED, Artifacts.CONFIG.items.runningShoesSprintingSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addAttributeModifier(ModAttributes.SPRINTING_STEP_HEIGHT, Artifacts.CONFIG.items.runningShoesSprintingStepHeightBonus, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final Holder<Item> SNOWSHOES = wearableItem("snowshoes", builder -> builder
+    public static final Holder<Item> SNOWSHOES = register("snowshoes", builder -> builder
+            .equipable()
             .component(ModDataComponents.WALK_ON_POWDER_SNOW.get(), Artifacts.CONFIG.items.snowshoesAllowWalkingOnPowderedSnow)
             .addAttributeModifier(ModAttributes.MOVEMENT_SPEED_ON_SNOW, Artifacts.CONFIG.items.snowshoesMovementSpeedOnSnowBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
-    public static final Holder<Item> STEADFAST_SPIKES = wearableItem("steadfast_spikes", builder -> builder
+    public static final Holder<Item> STEADFAST_SPIKES = register("steadfast_spikes", builder -> builder
+            .equipable()
             .addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, Artifacts.CONFIG.items.steadfastSpikesKnockbackResistance, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(ModAttributes.SLIP_RESISTANCE, Artifacts.CONFIG.items.steadfastSpikesSlipperinessReduction, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final Holder<Item> FLIPPERS = wearableItem("flippers", builder -> builder
+    public static final Holder<Item> FLIPPERS = register("flippers", builder -> builder
+            .equipable()
             .addAttributeModifier(ModAttributes.SWIM_SPEED, Artifacts.CONFIG.items.flippersSwimSpeedBonus, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
     );
-    public static final Holder<Item> ROOTED_BOOTS = wearableItem("rooted_boots", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+    public static final Holder<Item> ROOTED_BOOTS = register("rooted_boots", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_LEATHER)
             .component(ModDataComponents.REPLENISH_HUNGER_ON_GRASS.get(), new ReplenishHungerOnGrass(
                     Artifacts.CONFIG.items.rootedBootsEnabled,
                     Artifacts.CONFIG.items.rootedBootsHungerReplenishingDuration
             ))
             .component(ModDataComponents.POST_EATING_PLANT_GROWTH.get(), Artifacts.CONFIG.items.rootedBootsGrowPlantsAfterEating)
     );
-    public static final Holder<Item> STRIDER_SHOES = wearableItem("strider_shoes", builder -> builder
-            .equipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+    public static final Holder<Item> STRIDER_SHOES = register("strider_shoes", builder -> builder
+            .equipable(SoundEvents.ARMOR_EQUIP_LEATHER)
             .component(ModDataComponents.FLUID_COLLISION.get(), new FluidCollision(Artifacts.CONFIG.items.striderShoesEnabled,
                     Optional.of(FluidTags.LAVA), EntityCondition.SNEAKING)
             ).component(ModDataComponents.DAMAGE_IMMUNITY.get(),
@@ -387,21 +446,17 @@ public class ModItems {
     );
 
     // curio
-    public static final Holder<Item> WHOOPEE_CUSHION = wearableItem("whoopee_cushion", builder -> builder
-            .equipSound(ModSoundEvents.FART)
+    public static final Holder<Item> WHOOPEE_CUSHION = register("whoopee_cushion", builder -> builder
+            .equipable(ModSoundEvents.FART)
             .addAttributeModifier(ModAttributes.FLATULENCE, Artifacts.CONFIG.items.whoopeeCushionFartChance, AttributeModifier.Operation.ADD_VALUE)
     );
 
-    private static Holder<Item> wearableItem(String name, Consumer<EquipableArtifactBuilder> consumer) {
-        return register(name, properties -> {
-            EquipableArtifactBuilder builder = new EquipableArtifactBuilder(name, properties);
+    private static Holder<Item> register(String name, Consumer<EquipableArtifactBuilder> consumer) {
+        return register(name, Item::new, () -> {
+            EquipableArtifactBuilder builder = new EquipableArtifactBuilder(name);
             consumer.accept(builder);
             return builder.build();
         });
-    }
-
-    private static Holder<Item> register(String name, Function<Item.Properties, ? extends Item> factory) {
-        return register(name, factory, Item.Properties::new);
     }
 
     private static Holder<Item> register(String name, Function<Item.Properties, ? extends Item> factory, Supplier<Item.Properties> properties) {

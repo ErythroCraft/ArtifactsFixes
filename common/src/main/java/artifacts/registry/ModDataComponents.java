@@ -20,7 +20,6 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,8 +29,6 @@ import java.util.function.UnaryOperator;
 public class ModDataComponents {
 
     public static final Register<DataComponentType<?>> DATA_COMPONENT_TYPES = Register.create(Registries.DATA_COMPONENT_TYPE);
-
-    public static final List<Supplier<? extends DataComponentType<? extends EquipmentAbility>>> TOOLTIP_ORDER = new ArrayList<>();
 
     public static final Set<TickingAbility<?>> TICKING_ABILITIES = new LinkedHashSet<>();
     private static final Set<Supplier<? extends DataComponentType<?>>> APPLIES_COOLDOWN = new LinkedHashSet<>();
@@ -118,6 +115,15 @@ public class ModDataComponents {
             registerSynced("tool_tier_upgrade", ToolTierUpgrade.CODEC, ToolTierUpgrade.STREAM_CODEC);
     public static final Supplier<DataComponentType<SimpleAbility>> WALK_ON_POWDER_SNOW =
             registerSimpleAbility("walk_on_powder_snow");
+    // Only used for the 'Can be used as a shield' tooltip,
+    // the vanilla blocks_attacks component is used for the actual blocking logic
+    public static final Supplier<DataComponentType<SimpleAbility>> BLOCKS_ATTACKS =
+            registerSimpleAbility("blocks_attacks");
+    // When disabled, the item still behaves like an umbrella visually
+    public static final Supplier<DataComponentType<SimpleAbility>> HANDHELD_GLIDER =
+            registerSimpleAbility("handheld_glider");
+    public static final Supplier<DataComponentType<SimpleAbility>> INFINITE_CONSUMABLE =
+            registerSimpleAbility("infinite_consumable");
 
     static {
         TICKING_ABILITIES.addAll(List.of(
@@ -127,38 +133,13 @@ public class ModDataComponents {
                 new TickingAbility<>(MOB_EFFECTS, new CompositeAbility.Ticker<>(new EquipmentMobEffect.Ticker())),
                 new TickingAbility<>(FLUID_COLLISION, new FluidCollision.Ticker())
         ));
-        TOOLTIP_ORDER.addAll(List.of(
-                TOOL_TIER_UPGRADE,
-                DOUBLE_JUMP,
-                MOB_EFFECTS,
-                ENCHANTMENT_LEVEL_MODIFIERS,
-                ATTRIBUTE_MODIFIERS,
-                POST_DAMAGE_EFFECTS,
-                POST_EATING_EFFECTS,
-                ATTACK_EFFECTS,
-                RETALIATION_EFFECTS,
-                CURE_EFFECTS,
-                DAMAGE_ABSORPTION,
-                EQUIPABLE_TOTEM,
-                ENDER_PEARL_HUNGER_COST,
-                ENDER_PEARL_DAMAGE_IMMUNITY,
-                REPLENISH_HUNGER_ON_GRASS,
-                CREEPER_REPELLENT,
-                PHANTOM_REPELLENT,
-                SINKING,
-                AUTO_SMELT,
-                FLUID_COLLISION,
-                SWIM_IN_AIR,
-                WALK_ON_POWDER_SNOW,
-                DAMAGE_IMMUNITY,
-                POST_EATING_PLANT_GROWTH
-        ));
         APPLIES_COOLDOWN.addAll(Set.of(
                 POST_DAMAGE_COOLDOWN,
                 RETALIATION_EFFECTS
         ));
     }
 
+    // TODO use a component for this
     public static boolean hasAbilityWithCooldown(ItemStack stack) {
         for (Supplier<? extends DataComponentType<?>> componentType : APPLIES_COOLDOWN) {
             if (stack.has(componentType.get())) {
