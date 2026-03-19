@@ -13,7 +13,7 @@ import artifacts.component.ability.retaliation.LightningEffect;
 import artifacts.component.ability.retaliation.RetaliationEffects;
 import artifacts.component.ability.retaliation.ThornsEffect;
 import artifacts.config.value.Value;
-import artifacts.item.EquipableArtifactBuilder;
+import artifacts.item.ArtifactProperties;
 import artifacts.item.consumeeffects.HealConsumeEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -451,9 +451,9 @@ public class ModItems {
             .addAttributeModifier(ModAttributes.FLATULENCE, Artifacts.CONFIG.items.whoopeeCushionFartChance, AttributeModifier.Operation.ADD_VALUE)
     );
 
-    private static Holder<Item> register(String name, Consumer<EquipableArtifactBuilder> consumer) {
+    private static Holder<Item> register(String name, Consumer<ArtifactProperties> consumer) {
         return register(name, Item::new, () -> {
-            EquipableArtifactBuilder builder = new EquipableArtifactBuilder(name);
+            ArtifactProperties builder = new ArtifactProperties(name);
             consumer.accept(builder);
             return builder.build();
         });

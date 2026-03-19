@@ -8,10 +8,10 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
-public final class UmbrellaItem {
+public final class UmbrellaHelper {
 
     public static void onLivingUpdate(LivingEntity entity) {
-        if (UmbrellaItem.shouldGlide(entity)) {
+        if (UmbrellaHelper.shouldGlide(entity)) {
             entity.fallDistance = 0;
         }
     }
@@ -21,7 +21,7 @@ public final class UmbrellaItem {
                 && entity.getDeltaMovement().y < 0
                 && !entity.hasEffect(MobEffects.SLOW_FALLING)
                 && !(entity.isInWater() && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), entity))
-                && UmbrellaItem.isHoldingUmbrellaUpright(entity, true);
+                && UmbrellaHelper.isHoldingUmbrellaUpright(entity, true);
     }
 
     private static boolean isHoldingUmbrellaUpright(LivingEntity entity, InteractionHand hand, boolean ignoreCosmetic) {

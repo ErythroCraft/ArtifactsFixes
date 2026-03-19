@@ -1,6 +1,6 @@
 package artifacts.mixin.item.umbrella;
 
-import artifacts.item.UmbrellaItem;
+import artifacts.item.UmbrellaHelper;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +13,6 @@ public abstract class EntityMixin {
     @SuppressWarnings({"UnreachableCode", "ConstantValue"})
     @ModifyReturnValue(method = "isInRain", at = @At("RETURN"))
     private boolean blockRain(boolean original) {
-        return original && !((Object) this instanceof LivingEntity entity && UmbrellaItem.isHoldingUmbrellaUpright(entity, true));
+        return original && !((Object) this instanceof LivingEntity entity && UmbrellaHelper.isHoldingUmbrellaUpright(entity, true));
     }
 }

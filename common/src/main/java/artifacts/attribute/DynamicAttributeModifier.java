@@ -1,7 +1,7 @@
 package artifacts.attribute;
 
 import artifacts.Artifacts;
-import artifacts.item.UmbrellaItem;
+import artifacts.item.UmbrellaHelper;
 import artifacts.mixin.accessors.EntityAccessor;
 import artifacts.registry.ModAttributes;
 import artifacts.registry.ModTags;
@@ -78,7 +78,7 @@ public abstract class DynamicAttributeModifier {
     ) {
         @Override
         protected boolean shouldApply(LivingEntity entity) {
-            return UmbrellaItem.shouldGlide(entity);
+            return UmbrellaHelper.shouldGlide(entity);
         }
 
         @Override

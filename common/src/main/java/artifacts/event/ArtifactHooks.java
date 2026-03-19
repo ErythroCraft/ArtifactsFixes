@@ -8,7 +8,7 @@ import artifacts.component.ability.mobeffect.AttackEffect;
 import artifacts.component.ability.mobeffect.PostDamageEffect;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.extensions.ability.LivingEntityExtensions;
-import artifacts.item.UmbrellaItem;
+import artifacts.item.UmbrellaHelper;
 import artifacts.mixin.accessors.MobAccessor;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModAttributes;
@@ -56,7 +56,7 @@ public class ArtifactHooks {
         onItemTick(entity);
         DynamicAttributeModifier.tickModifiers(entity);
         if (!entity.onGround()) {
-            UmbrellaItem.onLivingUpdate(entity);
+            UmbrellaHelper.onLivingUpdate(entity);
         }
     }
 
