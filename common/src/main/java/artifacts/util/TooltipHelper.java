@@ -75,6 +75,7 @@ public class TooltipHelper {
         // Non-equipable abilities
         descriptions.accept(ModDataComponents.HANDHELD_GLIDER.get());
         descriptions.accept(ModDataComponents.BLOCKS_ATTACKS.get());
+        descriptions.accept(ModDataComponents.INFINITE_CONSUMABLE.get());
         descriptions.accept(ModDataComponents.EQUIPABLE_TOTEM.get());
 
         // Composite abilities

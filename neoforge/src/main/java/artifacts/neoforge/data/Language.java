@@ -141,6 +141,9 @@ public class Language extends LanguageProvider {
         addAbilityTooltip(ModDataComponents.RETALIATION_EFFECTS.get(), "thorns", "constant", "Attacking entities are damaged as well");
         addAbilityTooltip(ModDataComponents.TOOL_TIER_UPGRADE.get(), "Increases the wearer's base mining level to %s");
         addAbilityTooltip(ModDataComponents.WALK_ON_POWDER_SNOW.get(), "Allows the wearer to walk on Powder Snow");
+        addAbilityTooltip(ModDataComponents.HANDHELD_GLIDER.get(), "Slows your fall when held");
+        addAbilityTooltip(ModDataComponents.BLOCKS_ATTACKS.get(), "Can be used as a shield");
+        addAbilityTooltip(ModDataComponents.INFINITE_CONSUMABLE.get(), "Not consumed when eaten");
     }
 
     private void addAttributes() {
@@ -241,12 +244,7 @@ public class Language extends LanguageProvider {
         tooltip("attacks_inflict", "Attacks inflict:");
         tooltip("cooldown", "+Cooldown (%s)");
         tooltip("cosmetic", "Cosmetic");
-        tooltip("cosmetics_disabled", "Cosmetics disabled (right-click to toggle)");
-        tooltip("cosmetics_enabled", "Cosmetics enabled (right-click to toggle)");
-        tooltip("item.everlasting_food", "Not consumed when eaten");
         tooltip("item.novelty_drinking_hat", "'Hey! I'm #1, and I let gravity do my drinking!'");
-        tooltip("item.umbrella.glider", "Slows your fall when held");
-        tooltip("item.umbrella.shield", "Can be used as a shield");
         tooltip("missing_dependency", "Install Curios, Trinkets or Accessories to use this item");
         tooltip("per_food_point_restored", "For every food point restored:");
         tooltip("plus_mob_effect", "+%s");
