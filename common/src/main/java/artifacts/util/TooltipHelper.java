@@ -128,7 +128,7 @@ public class TooltipHelper {
     public static void addAttributeTooltips(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
         boolean hasSlotTooltip = false;
 
-        // FIXME Fix attribute tooltips:
+        // FIXME: Fix attribute tooltips
         //  - This needs a more precise injection target to show correctly,
         //    this breaks when there are multiple vanilla slots (@ModifyReceiver on forEachModifier might work)
         //  - Don't show artifact attributes/mob effects under hand slots
@@ -259,7 +259,7 @@ public class TooltipHelper {
         });
     }
 
-    // TODO consider using ItemAttributeModifiers.Display if possible
+    // TODO: consider using ItemAttributeModifiers.Display if possible
     private static void addAttributeTooltip(Consumer<Component> tooltip, EquipmentAttributeModifier entry) {
         double amount = entry.amount().get();
 

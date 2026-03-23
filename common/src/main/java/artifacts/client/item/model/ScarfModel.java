@@ -26,7 +26,7 @@ public class ScarfModel extends HumanoidModel<HumanoidRenderState> {
     public void setupAnim(HumanoidRenderState renderState) {
         super.setupAnim(renderState);
 
-        // TODO fix rendering on non-player entities
+        // TODO: fix rendering on non-player entities
         if (renderState instanceof AvatarRenderState avatarRenderState) {
             cloak.xRot = body.xRot + (6 + avatarRenderState.capeLean / 2 + avatarRenderState.capeFlap) / 180 * (float) Math.PI;
         }

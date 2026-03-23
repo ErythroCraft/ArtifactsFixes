@@ -41,7 +41,7 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultipl
             DoubleJump::new
     );
 
-    // TODO cleanup
+    // TODO: cleanup (see vanilla jump logic)
     public static void jump(Player player) {
         double fallDamageMultiplier = EquipmentHelper.minDouble(ModDataComponents.DOUBLE_JUMP.get(), player, 1D,
                 ability -> ability.fallDamageMultiplier().get(), true);

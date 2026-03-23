@@ -382,7 +382,7 @@ public class LootTables extends LootTableProvider {
     public void addLootTable(String location, Function<HolderLookup.Provider, LootTable.Builder> lootTable, ContextKeySet contextKeySet) {
         if (location.startsWith("inject/")) {
             String actualLocation = location.replace("inject/", "");
-            // FIXME verify that target loot table exists
+            // FIXME: verify that target loot table exists
             // Preconditions.checkArgument(existingFileHelper.exists(Identifier.withDefaultNamespace(Registries.LOOT_TABLE.identifier().getPath() + "/" + actualLocation + ".json"), PackType.SERVER_DATA), "Loot table %s does not exist in any known data pack", actualLocation);
         }
         tables.add(new SubProviderEntry(provider -> biConsumer -> biConsumer.accept(Artifacts.key(Registries.LOOT_TABLE, location), lootTable.apply(provider)), contextKeySet));

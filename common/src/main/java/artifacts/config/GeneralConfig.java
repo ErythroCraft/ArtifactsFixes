@@ -50,7 +50,7 @@ public class GeneralConfig extends ConfigManager {
 
     public final Slots slots = new Slots();
 
-    // FIXME: These don't work in dev
+    // FIXME: Data pack overlays don't work in dev
     public class Slots {
 
         public final Value.ConfigValue<Boolean> enableAccessoriesCompat = defineBool("slots.enableAccessoriesCompat", true, true,

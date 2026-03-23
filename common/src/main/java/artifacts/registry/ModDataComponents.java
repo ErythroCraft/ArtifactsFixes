@@ -139,7 +139,7 @@ public class ModDataComponents {
         ));
     }
 
-    // TODO use a component for this
+    // TODO: use a component or tag to mark items with cooldowns
     public static boolean hasAbilityWithCooldown(ItemStack stack) {
         for (Supplier<? extends DataComponentType<?>> componentType : APPLIES_COOLDOWN) {
             if (stack.has(componentType.get())) {
