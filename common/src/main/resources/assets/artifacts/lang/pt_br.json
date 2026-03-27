@@ -40,6 +40,8 @@
   "artifacts.config.general.campsite.mimicChance.title": "Chance de Mímico",
   "artifacts.config.general.campsite.minY.description": "A altura mínima em que os acampamentos podem surgir",
   "artifacts.config.general.campsite.minY.title": "Y Mínimo",
+  "artifacts.config.general.campsite.minimalistCampsites.description": "Substitui acampamentos por um único baú/mímico",
+  "artifacts.config.general.campsite.minimalistCampsites.title": "Acampamentos Minimalistas",
   "artifacts.config.general.campsite.title": "Acampamento",
   "artifacts.config.general.campsite.useModdedChests.description": "Se deve usar baús de madeira de outros mods ao gerar acampamentos",
   "artifacts.config.general.campsite.useModdedChests.title": "Usar Baús de Mods",
