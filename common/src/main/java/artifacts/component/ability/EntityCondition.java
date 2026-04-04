@@ -1,5 +1,8 @@
 package artifacts.component.ability;
 
+import artifacts.integration.ModCompat;
+import artifacts.integration.origins.OriginsCompat;
+import artifacts.platform.PlatformServices;
 import artifacts.registry.ModTags;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
@@ -15,7 +18,7 @@ import java.util.function.Predicate;
 public enum EntityCondition implements StringRepresentable {
     ALWAYS("always", entity -> true),
     NEVER("never", entity -> false),
-    ABOVE_WATER("above_water", entity -> !entity.isEyeInFluid(FluidTags.WATER)),
+    ABOVE_WATER("above_water", entity -> !isSubmerged(entity)),
     IN_WATER("in_water", Entity::isInWater),
     ON_GRASS("on_grass", entity -> entity.onGround() && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)),
     SNEAKING("while_sneaking", Entity::isCrouching),
@@ -44,5 +47,10 @@ public enum EntityCondition implements StringRepresentable {
     @Override
     public String toString() {
         return name;
+    }
+
+    private static boolean isSubmerged(LivingEntity entity) {
+        return entity.isEyeInFluid(FluidTags.WATER)
+                ^ (PlatformServices.platformHelper.isModLoaded(ModCompat.ORIGINS) && OriginsCompat.hasWaterBreathing(entity));
     }
 }

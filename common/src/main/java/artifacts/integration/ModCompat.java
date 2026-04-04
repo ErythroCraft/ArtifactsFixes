@@ -10,6 +10,7 @@ public class ModCompat {
     public static final String CCLAYER = "cclayer";
     public static final String TCLAYER = "tclayer";
     public static final String LOOTR = "lootr";
+    public static final String ORIGINS = "origins";
     public static final String QUARK = "quark";
     public static final String CLOTH_CONFIG = PlatformServices.platformHelper.isModLoaded("neoforge") ? "cloth_config" : "cloth-config";
 

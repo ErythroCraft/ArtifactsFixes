@@ -25,4 +25,6 @@ dependencies {
     }
 
     modCompileOnly "noobanidus.mods.lootr:lootr-common:${rootProject.lootr_version}"
+    modCompileOnly "maven.modrinth:origins:5o5sFcLS"
+    modCompileOnly("io.github.apace100:apoli:2.12.0-alpha.15+mc.1.21.1")
 }
