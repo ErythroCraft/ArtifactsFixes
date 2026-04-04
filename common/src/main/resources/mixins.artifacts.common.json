@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "artifacts.mixin",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "artifacts.ArtifactsMixinPlugin",
   "mixins": [
     "ability.LivingEntityMixin",
     "ability.damageimmunity.EntityMixin",
@@ -28,6 +29,7 @@
     "attribute.flatulence.EntityMixin",
     "attribute.invincibilityticks.LivingEntityMixin",
     "attribute.villagerreputation.VillagerMixin",
+    "compat.apoli.condition.type.entity.ExposedToSunEntityConditionTypeMixin",
     "debug.TagLoaderMixin",
     "item.ItemStackMixin",
     "item.NaturalSpawnerMixin",
@@ -39,6 +41,7 @@
     "ability.hurtsound.client.LivingEntityMixin",
     "ability.nightvision.client.GameRendererMixin",
     "accessors.client.LivingEntityRendererAccessor",
+    "compat.trinkets.client.PlayerRendererMixin",
     "item.pocketpiston.client.LivingEntityMixin",
     "item.umbrella.client.HumanoidModelMixin"
   ],

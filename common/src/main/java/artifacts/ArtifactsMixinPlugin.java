@@ -1,6 +1,6 @@
-package artifacts.fabric;
+package artifacts;
 
-import net.fabricmc.loader.api.FabricLoader;
+import artifacts.platform.PlatformServices;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -10,8 +10,12 @@ import java.util.Set;
 
 public class ArtifactsMixinPlugin implements IMixinConfigPlugin {
 
-    // Base package for mixins as defined in mixins.artifacts.fabric.json
-    private static final String BASE_PACKAGE = "artifacts.fabric.mixin";
+    // Base packages for mixins as defined in mixins.artifacts(.fabric/.neoforge).json
+    private static final List<String> BASE_PACKAGES = List.of(
+            "artifacts.mixin",
+            "artifacts.fabric.mixin",
+            "artifacts.neoforge.mixin"
+    );
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -25,10 +29,12 @@ public class ArtifactsMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.startsWith(BASE_PACKAGE + ".compat.")) {
-            String subPackageAndClassName = mixinClassName.split(BASE_PACKAGE + "\\.compat\\.")[1];
-            String modid = subPackageAndClassName.split("\\.")[0];
-            return FabricLoader.getInstance().isModLoaded(modid);
+        for (String basePackage : BASE_PACKAGES) {
+            String compatPrefix = basePackage + ".compat.";
+            if (mixinClassName.startsWith(compatPrefix)) {
+                String modid = mixinClassName.substring(compatPrefix.length()).split("\\.")[0];
+                return PlatformServices.platformHelper.isModLoaded(modid);
+            }
         }
 
         return true;

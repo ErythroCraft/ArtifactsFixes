@@ -1,4 +1,4 @@
-package artifacts.fabric.mixin.compat.apoli.condition.type.entity;
+package artifacts.mixin.compat.apoli.condition.type.entity;
 
 import artifacts.item.UmbrellaItem;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;

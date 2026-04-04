@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "artifacts.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
-  "plugin": "artifacts.fabric.ArtifactsMixinPlugin",
+  "plugin": "artifacts.ArtifactsMixinPlugin",
   "mixins": [
     "PlayerListMixin",
     "ability.LivingEntitiesMixin",
@@ -16,13 +16,11 @@
     "attribute.eatingspeed.LivingEntityMixin",
     "attribute.entityexperience.LivingEntityMixin",
     "attribute.slipresistance.LivingEntityMixin",
-    "attribute.swimspeed.LivingEntityMixin",
-    "compat.apoli.condition.type.entity.ExposedToSunEntityConditionTypeMixin"
+    "attribute.swimspeed.LivingEntityMixin"
   ],
   "client": [
     "ability.swiminair.client.GuiMixin",
     "client.GuiMixin",
-    "compat.trinkets.client.PlayerRendererMixin",
     "item.umbrella.client.LivingEntityRendererMixin"
   ],
   "injectors": {
