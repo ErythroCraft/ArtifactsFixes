@@ -6,7 +6,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class FabricModListProvider implements ModListProvider {
 
     @Override
-    public boolean isModLoaded(String modid) {
-        return FabricLoader.getInstance().isModLoaded(modid);
+    public boolean isModLoaded(String modId) {
+        return FabricLoader.getInstance().isModLoaded(modId);
     }
 }
