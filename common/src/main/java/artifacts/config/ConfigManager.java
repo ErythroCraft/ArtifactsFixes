@@ -40,7 +40,7 @@ public abstract class ConfigManager {
     }
 
     protected void setup() {
-        config = CommentedFileConfig.builder(PlatformServices.platformHelper.getConfigDir().resolve(configPath))
+        config = CommentedFileConfig.builder(PlatformServices.getPlatformHelper().getConfigDir().resolve(configPath))
                 .sync()
                 .preserveInsertionOrder()
                 .autosave()
@@ -48,7 +48,7 @@ public abstract class ConfigManager {
                 .writingMode(WritingMode.REPLACE)
                 .build();
 
-        Path path = PlatformServices.platformHelper.getConfigDir().resolve(configPath);
+        Path path = PlatformServices.getPlatformHelper().getConfigDir().resolve(configPath);
 
         try {
             config.load();

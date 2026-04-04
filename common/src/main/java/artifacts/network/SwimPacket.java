@@ -23,7 +23,7 @@ public record SwimPacket(boolean shouldSwim) implements CustomPacketPayload {
         Player player = context.player();
         if (player != null) {
             context.queue(() -> {
-                SwimData swimData = PlatformServices.platformHelper.getSwimData(player);
+                SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
                 if (swimData != null && swimData.isSwimming() ^ shouldSwim()) {
                     swimData.toggleSwimming(player);
                 }

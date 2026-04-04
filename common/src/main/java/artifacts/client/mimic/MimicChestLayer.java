@@ -65,7 +65,7 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
         chestMaterials.add(vanillaChestMaterial);
         addQuarkMaterials(chestMaterials, "normal");
 
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.LOOTR)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.LOOTR)) {
             lootrMaterials.add(createMaterial(ModCompat.LOOTR, "chest"));
             addQuarkMaterials(lootrMaterials, "lootr_normal");
         }
@@ -78,7 +78,7 @@ public class MimicChestLayer extends RenderLayer<MimicEntity, MimicModel> {
     }
 
     private static void addQuarkMaterials(List<Material> chestMaterials, String chestVariant) {
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.QUARK)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.QUARK)) {
             for (String chestMaterial : QUARK_CHEST_MATERIALS) {
                 chestMaterials.add(createMaterial(ModCompat.QUARK, String.format("quark_variant_chests/%s/%s", chestMaterial, chestVariant)));
             }

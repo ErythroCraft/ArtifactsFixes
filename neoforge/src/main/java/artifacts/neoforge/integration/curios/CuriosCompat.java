@@ -12,10 +12,10 @@ import top.theillusivec4.curios.api.event.CurioChangeEvent;
 public class CuriosCompat {
 
     public static void setup() {
-        if (!PlatformServices.platformHelper.isModLoaded(ModCompat.CCLAYER)) {
+        if (!PlatformServices.getModList().isModLoaded(ModCompat.CCLAYER)) {
             EquipmentSlotManager.register(new CuriosSlotProvider());
         }
-        PlatformServices.platformHelper.addItemRegistryCallback(item -> {
+        PlatformServices.getPlatformHelper().addItemRegistryCallback(item -> {
             if (item instanceof WearableArtifactItem wearableArtifactItem) {
                 CuriosApi.registerCurio(wearableArtifactItem, new WearableArtifactCurio(wearableArtifactItem));
             }

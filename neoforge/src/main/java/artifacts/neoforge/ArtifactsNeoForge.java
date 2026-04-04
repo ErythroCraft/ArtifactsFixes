@@ -52,7 +52,7 @@ public class ArtifactsNeoForge {
         registerConfigScreen();
         ArtifactHooksNeoForge.register();
 
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.CURIOS)) {
             CuriosCompat.setup();
         }
 
@@ -60,7 +60,7 @@ public class ArtifactsNeoForge {
     }
 
     private void registerConfigScreen() {
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CLOTH_CONFIG)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.CLOTH_CONFIG)) {
             ModLoadingContext.get().registerExtensionPoint(
                     IConfigScreenFactory.class,
                     () -> (client, parent) -> new ArtifactsConfigScreen(parent).build()

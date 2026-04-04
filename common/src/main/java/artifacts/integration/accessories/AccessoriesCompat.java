@@ -11,10 +11,10 @@ import io.wispforest.accessories.api.events.AccessoryChangeCallback;
 public class AccessoriesCompat {
 
     public static void setup() {
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.ACCESSORIES)) {
             EquipmentSlotManager.register(new AccessoriesSlotProvider());
         }
-        PlatformServices.platformHelper.addItemRegistryCallback(item -> {
+        PlatformServices.getPlatformHelper().addItemRegistryCallback(item -> {
             if (item instanceof WearableArtifactItem wearableArtifactItem) {
                 AccessoriesAPI.registerAccessory(item, new WearableArtifactAccessory(wearableArtifactItem));
             }

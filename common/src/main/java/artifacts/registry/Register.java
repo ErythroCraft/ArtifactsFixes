@@ -23,7 +23,7 @@ public abstract class Register<R> implements Iterable<R> {
     }
 
     public static <R> Register<R> create(ResourceKey<Registry<R>> registry) {
-        return PlatformServices.platformHelper.createRegister(registry);
+        return PlatformServices.getPlatformHelper().createRegister(registry);
     }
 
     public ResourceKey<Registry<R>> getRegistry() {

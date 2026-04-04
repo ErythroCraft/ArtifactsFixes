@@ -28,8 +28,6 @@ public interface PlatformHelper {
 
     void addItemRegistryCallback(Consumer<Item> consumer);
 
-    boolean isModLoaded(String modid);
-
     <R> Register<R> createRegister(ResourceKey<Registry<R>> registry);
 
     SpawnEggItem createMimicSpawnEgg(Item.Properties properties);

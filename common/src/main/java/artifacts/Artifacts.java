@@ -48,10 +48,10 @@ public class Artifacts {
     public static void setup() {
         initConfigs();
         setupIntegrations();
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.TRINKETS)) {
             TrinketsCompat.setup();
         }
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.ACCESSORIES)) {
             AccessoriesCompat.setup();
         }
 

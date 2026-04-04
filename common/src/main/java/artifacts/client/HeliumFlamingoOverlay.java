@@ -23,7 +23,7 @@ public class HeliumFlamingoOverlay {
         ) {
             return false;
         }
-        SwimData swimData = PlatformServices.platformHelper.getSwimData(player);
+        SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
         if (swimData == null) {
             return false;
         }

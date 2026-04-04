@@ -7,7 +7,7 @@ import artifacts.platform.PlatformServices;
 public class TrinketsCompatClient {
 
     public static void setup() {
-        if (!PlatformServices.platformHelper.isModLoaded(ModCompat.TCLAYER)) {
+        if (!PlatformServices.getModList().isModLoaded(ModCompat.TCLAYER)) {
             EquipmentRenderingManager.register(new TrinketsRenderingHandler());
         }
     }

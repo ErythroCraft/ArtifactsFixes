@@ -37,8 +37,8 @@ public class ArtifactsNeoForgeClient {
         modBus.addListener(this::registerEntityRenderers);
         modBus.addListener((RegisterKeyMappingsEvent event) -> ModKeyMappings.register(event::register));
 
-        boolean isCuriosLoaded = PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS);
-        boolean isTrinketsLoaded = PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS);
+        boolean isCuriosLoaded = PlatformServices.getModList().isModLoaded(ModCompat.CURIOS);
+        boolean isTrinketsLoaded = PlatformServices.getModList().isModLoaded(ModCompat.TRINKETS);
 
         if (isCuriosLoaded || isTrinketsLoaded) {
             ArmRenderHandler.setup();

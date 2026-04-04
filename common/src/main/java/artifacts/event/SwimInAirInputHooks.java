@@ -21,7 +21,7 @@ public class SwimInAirInputHooks {
     }
 
     private static void handleSwimInAirInput(Player player) {
-        SwimData swimData = PlatformServices.platformHelper.getSwimData(player);
+        SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
         if (swimData == null) {
             return;
         }

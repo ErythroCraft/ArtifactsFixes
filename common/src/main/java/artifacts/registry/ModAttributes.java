@@ -30,7 +30,7 @@ public class ModAttributes {
     public static final Holder<Attribute> SLIP_RESISTANCE = addGenericAttribute("slip_resistance", 0, 0, 1);
     public static final Holder<Attribute> SPRINTING_SPEED = addGenericAttribute("sprinting_speed", 1, 1, 1024);
     public static final Holder<Attribute> SPRINTING_STEP_HEIGHT = addGenericAttribute("sprinting_step_height", 0, 0, 10);
-    public static final Holder<Attribute> SWIM_SPEED = PlatformServices.platformHelper.getSwimSpeedAttribute();
+    public static final Holder<Attribute> SWIM_SPEED = PlatformServices.getPlatformHelper().getSwimSpeedAttribute();
 
     public static Holder<Attribute> addPlayerAttribute(String name, double d, double min, double max) {
         String id = "player." + name;

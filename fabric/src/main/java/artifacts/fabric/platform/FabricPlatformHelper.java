@@ -54,11 +54,6 @@ public class FabricPlatformHelper implements PlatformHelper {
     }
 
     @Override
-    public boolean isModLoaded(String modid) {
-        return FabricLoader.getInstance().isModLoaded(modid);
-    }
-
-    @Override
     public <R> Register<R> createRegister(ResourceKey<Registry<R>> registry) {
         return new FabricRegister<>(registry);
     }

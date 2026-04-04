@@ -47,7 +47,7 @@ public class ArtifactHooks {
 
     public static void livingUpdate(LivingEntity entity) {
         if (entity instanceof Player player) {
-            SwimData swimData = PlatformServices.platformHelper.getSwimData(entity);
+            SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(entity);
             if (swimData != null) {
                 swimData.update(player);
             }
@@ -242,7 +242,7 @@ public class ArtifactHooks {
     }
 
     public static EventResult onPlayerSwim(Player player) {
-        SwimData swimData = PlatformServices.platformHelper.getSwimData(player);
+        SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
         if (swimData != null) {
             if (swimData.isSwimming()) {
                 return EventResult.SUCCESS;
@@ -254,7 +254,7 @@ public class ArtifactHooks {
     }
 
     public static boolean onFluidCollision(LivingEntity entity, FluidState fluidState) {
-        SwimData swimData = PlatformServices.platformHelper.getSwimData(entity);
+        SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(entity);
         if (swimData == null || swimData.isWet() || swimData.isSwimming()) {
             return false;
         }

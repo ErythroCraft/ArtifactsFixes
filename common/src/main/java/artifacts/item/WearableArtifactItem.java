@@ -43,9 +43,9 @@ public class WearableArtifactItem extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         if (Artifacts.CONFIG.client.showTooltips.get()
-                && !PlatformServices.platformHelper.isModLoaded(ModCompat.CURIOS)
-                && !PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS)
-                && !PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)
+                && !PlatformServices.getModList().isModLoaded(ModCompat.CURIOS)
+                && !PlatformServices.getModList().isModLoaded(ModCompat.TRINKETS)
+                && !PlatformServices.getModList().isModLoaded(ModCompat.ACCESSORIES)
         ) {
             list.add(Component.translatable("%s.tooltip.missing_dependency".formatted(Artifacts.MOD_ID)).withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
         } else {

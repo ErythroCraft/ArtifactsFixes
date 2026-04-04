@@ -18,7 +18,7 @@ import java.util.Set;
 public class CuriosCompatClient {
 
     public static void setup(IEventBus modBus) {
-        if (!PlatformServices.platformHelper.isModLoaded(ModCompat.CCLAYER)) {
+        if (!PlatformServices.getModList().isModLoaded(ModCompat.CCLAYER)) {
             EquipmentRenderingManager.register(new CuriosRenderingHandler());
         }
 

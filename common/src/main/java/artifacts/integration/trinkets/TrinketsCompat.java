@@ -13,10 +13,10 @@ import net.minecraft.world.item.ItemStack;
 public class TrinketsCompat {
 
     public static void setup() {
-        if (!PlatformServices.platformHelper.isModLoaded(ModCompat.TCLAYER)) {
+        if (!PlatformServices.getModList().isModLoaded(ModCompat.TCLAYER)) {
             EquipmentSlotManager.register(new TrinketsSlotProvider());
         }
-        PlatformServices.platformHelper.addItemRegistryCallback(item -> {
+        PlatformServices.getPlatformHelper().addItemRegistryCallback(item -> {
             if (item instanceof WearableArtifactItem wearableArtifactItem) {
                 TrinketsApi.registerTrinket(item, new WearableArtifactTrinket(wearableArtifactItem));
             }

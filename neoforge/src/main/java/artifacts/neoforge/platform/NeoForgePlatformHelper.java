@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.common.ItemAbilities;
@@ -52,11 +51,6 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public void addItemRegistryCallback(Consumer<Item> consumer) {
         BuiltInRegistries.ITEM.addCallback((AddCallback<Item>) (registry, i, key, item) -> consumer.accept(item));
-    }
-
-    @Override
-    public boolean isModLoaded(String modid) {
-        return ModList.get().isLoaded(modid);
     }
 
     @Override

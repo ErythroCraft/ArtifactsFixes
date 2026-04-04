@@ -51,6 +51,6 @@ public enum EntityCondition implements StringRepresentable {
 
     private static boolean isSubmerged(LivingEntity entity) {
         return entity.isEyeInFluid(FluidTags.WATER)
-                ^ (PlatformServices.platformHelper.isModLoaded(ModCompat.ORIGINS) && OriginsCompat.hasWaterBreathing(entity));
+                ^ (PlatformServices.getModList().isModLoaded(ModCompat.ORIGINS) && OriginsCompat.hasWaterBreathing(entity));
     }
 }

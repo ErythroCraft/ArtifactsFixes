@@ -25,10 +25,10 @@ import java.util.function.Supplier;
 public class ArtifactsClient {
 
     public static void setup() {
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.TRINKETS)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.TRINKETS)) {
             TrinketsCompatClient.setup();
         }
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.ACCESSORIES)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.ACCESSORIES)) {
             AccessoriesCompatClient.setup();
         }
     }

@@ -10,7 +10,7 @@ public class ModMenuIntegration implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        if (PlatformServices.platformHelper.isModLoaded(ModCompat.CLOTH_CONFIG)) {
+        if (PlatformServices.getModList().isModLoaded(ModCompat.CLOTH_CONFIG)) {
             return parent -> new ArtifactsConfigScreen(parent).build();
         }
         return ModMenuApi.super.getModConfigScreenFactory();

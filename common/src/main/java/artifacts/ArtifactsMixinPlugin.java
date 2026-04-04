@@ -33,7 +33,7 @@ public class ArtifactsMixinPlugin implements IMixinConfigPlugin {
             String compatPrefix = basePackage + ".compat.";
             if (mixinClassName.startsWith(compatPrefix)) {
                 String modid = mixinClassName.substring(compatPrefix.length()).split("\\.")[0];
-                return PlatformServices.platformHelper.isModLoaded(modid);
+                return PlatformServices.getModList().isModLoaded(modid);
             }
         }
 
