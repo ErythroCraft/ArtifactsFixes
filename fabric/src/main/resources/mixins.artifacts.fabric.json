@@ -20,8 +20,8 @@
   ],
   "client": [
     "ability.swiminair.client.GuiMixin",
-    "client.GuiMixin",
-    "compat.trinkets.client.AvatarRendererMixin"
+    "client.AvatarRendererMixin",
+    "client.GuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

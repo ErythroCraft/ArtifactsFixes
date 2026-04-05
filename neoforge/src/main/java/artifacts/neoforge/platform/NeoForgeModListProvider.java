@@ -10,7 +10,7 @@ public class NeoForgeModListProvider implements ModListProvider {
     public boolean isModLoaded(String modId) {
         var modlist = ModList.get();
         if (modlist == null) {
-            return FMLLoader.getLoadingModList().getModFileById(modId) != null;
+            return FMLLoader.getCurrent().getLoadingModList().getModFileById(modId) != null;
         }
 
         return ModList.get().isLoaded(modId);

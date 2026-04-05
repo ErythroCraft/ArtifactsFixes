@@ -45,7 +45,6 @@
     "accessors.client.LivingEntityRendererAccessor",
     "client.LivingEntityRendererMixin",
     "client.LivingEntityRenderStateMixin",
-    "compat.trinkets.client.PlayerRendererMixin",
     "item.pocketpiston.client.LivingEntityMixin",
     "item.umbrella.client.ItemInHandRendererMixin",
     "item.umbrella.client.SpearAnimationsMixin"
