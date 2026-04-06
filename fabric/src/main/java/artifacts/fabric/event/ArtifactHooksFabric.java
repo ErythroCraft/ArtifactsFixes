@@ -9,6 +9,7 @@ import be.florens.expandability.api.fabric.PlayerSwimCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -24,8 +25,11 @@ public class ArtifactHooksFabric {
         UseItemCallback.EVENT.register(ArtifactHooksFabric::onUseItem);
     }
 
-    private static EventResult onPlayerSwim(Player player) {
-        return ArtifactHooks.onPlayerSwim(player);
+    private static EventResult onPlayerSwim(Avatar avatar) {
+        if (avatar instanceof Player player) {
+            return ArtifactHooks.onPlayerSwim(player);
+        }
+        return EventResult.PASS;
     }
 
     private static boolean onAquaDashersFluidCollision(LivingEntity entity, FluidState fluidState) {

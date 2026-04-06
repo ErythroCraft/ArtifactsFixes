@@ -14,6 +14,7 @@ import be.florens.expandability.api.forge.PlayerSwimEvent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddAttributeTooltipsEvent;
@@ -121,8 +122,8 @@ public class ArtifactHooksNeoForge {
     }
 
     public static void onPlayerSwim(PlayerSwimEvent event) {
-        if (event.getResult() == EventResult.PASS) {
-            event.setResult(ArtifactHooks.onPlayerSwim(event.getEntity()));
+        if (event.getResult() == EventResult.PASS && event.getEntity() instanceof Player player) {
+            event.setResult(ArtifactHooks.onPlayerSwim(player));
         }
     }
 
