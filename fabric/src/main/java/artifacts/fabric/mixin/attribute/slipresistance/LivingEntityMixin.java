@@ -19,7 +19,6 @@ public abstract class LivingEntityMixin extends Entity {
         throw new UnsupportedOperationException();
     }
 
-    @SuppressWarnings("ConstantConditions")
     @WrapOperation(method = "travelInAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getFriction()F"))
     public float travel(Block block, Operation<Float> original) {
         return ArtifactHooks.getModifiedFriction(original.call(block), (LivingEntity) (Object) this, block);

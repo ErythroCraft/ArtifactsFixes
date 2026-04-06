@@ -25,7 +25,6 @@ public abstract class LivingEntityMixin {
         artifacts$applyBonusTicks();
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Unique
     private void artifacts$applyBonusTicks() {
         LivingEntity entity = (LivingEntity) (Object) this;

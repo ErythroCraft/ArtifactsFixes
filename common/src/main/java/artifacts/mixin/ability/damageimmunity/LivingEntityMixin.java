@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
-    @SuppressWarnings("ConstantConditions")
     @ModifyReturnValue(method = "isInvulnerableTo", at = @At("RETURN"))
     public boolean isInvulnerableTo(boolean original, ServerLevel level, DamageSource damageSource) {
-        if (!original && ((Object) this) instanceof LivingEntity entity && EquipmentHelper.hasAbilityActive(
+        LivingEntity entity = (LivingEntity) (Object) this;
+        if (!original && EquipmentHelper.hasAbilityActive(
                 ModDataComponents.DAMAGE_IMMUNITY.get(), entity, true,
                 ability -> ability.condition().test(entity) && damageSource.is(ability.tag())
         )) {

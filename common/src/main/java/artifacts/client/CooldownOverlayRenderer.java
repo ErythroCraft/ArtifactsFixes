@@ -11,8 +11,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 public class CooldownOverlayRenderer {
 
-    @SuppressWarnings("unused")
-    public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public static void render(GuiGraphics guiGraphics, DeltaTracker ignored) {
         if (!Artifacts.CONFIG.client.enableCooldownOverlay.get() || !(Minecraft.getInstance().getCameraEntity() instanceof Player player)) {
             return;
         }

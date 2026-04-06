@@ -9,8 +9,7 @@ import net.minecraft.world.entity.player.Player;
 
 public class HeliumFlamingoOverlayRenderer {
 
-    @SuppressWarnings("unused")
-    public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public static void render(GuiGraphics guiGraphics, DeltaTracker ignored) {
         if (Minecraft.getInstance().getCameraEntity() instanceof Player player) {
             Gui gui = Minecraft.getInstance().gui;
 

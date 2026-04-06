@@ -24,17 +24,17 @@ public final class UmbrellaHelper {
                 && UmbrellaHelper.isHoldingUmbrellaUpright(entity, true);
     }
 
-    private static boolean isHoldingUmbrellaUpright(LivingEntity entity, InteractionHand hand, boolean ignoreCosmetic) {
+    private static boolean isHoldingUmbrellaUpright(LivingEntity entity, InteractionHand hand, boolean allowCosmetic) {
         SimpleAbility gliderAbility = entity.getItemInHand(hand).get(ModDataComponents.HANDHELD_GLIDER.get());
         return gliderAbility != null
-                && (ignoreCosmetic || gliderAbility.isNonCosmetic())
+                && (allowCosmetic || gliderAbility.isNonCosmetic())
                 && (!entity.isUsingItem() || entity.getUsedItemHand() != hand)
                 && (!entity.swinging || entity.swingingArm != hand);
     }
 
-    public static boolean isHoldingUmbrellaUpright(Entity entity, boolean ignoreCosmetic) {
+    public static boolean isHoldingUmbrellaUpright(Entity entity, boolean allowCosmetic) {
         return entity instanceof LivingEntity livingEntity
-            && (isHoldingUmbrellaUpright(livingEntity, InteractionHand.MAIN_HAND, ignoreCosmetic)
-                || isHoldingUmbrellaUpright(livingEntity, InteractionHand.OFF_HAND, ignoreCosmetic));
+            && (isHoldingUmbrellaUpright(livingEntity, InteractionHand.MAIN_HAND, allowCosmetic)
+                || isHoldingUmbrellaUpright(livingEntity, InteractionHand.OFF_HAND, allowCosmetic));
     }
 }

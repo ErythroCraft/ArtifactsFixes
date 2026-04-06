@@ -10,9 +10,11 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 
-    @SuppressWarnings({"UnreachableCode", "ConstantValue"})
     @ModifyReturnValue(method = "isInRain", at = @At("RETURN"))
     private boolean blockRain(boolean original) {
+        if ((Object) this instanceof LivingEntity entity) {
+            return original && !UmbrellaHelper.isHoldingUmbrellaUpright(entity, true);
+        }
         return original && !((Object) this instanceof LivingEntity entity && UmbrellaHelper.isHoldingUmbrellaUpright(entity, true));
     }
 }

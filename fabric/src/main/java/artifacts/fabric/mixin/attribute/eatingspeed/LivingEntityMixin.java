@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 
-    @SuppressWarnings("ConstantConditions")
     @ModifyExpressionValue(method = "startUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseDuration(Lnet/minecraft/world/entity/LivingEntity;)I"))
     private int decreaseDrinkingDuration(int original, InteractionHand hand) {
         LivingEntity entity = (LivingEntity) (Object) this;

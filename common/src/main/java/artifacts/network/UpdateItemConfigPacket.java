@@ -24,7 +24,7 @@ public record UpdateItemConfigPacket(Value.ConfigValue<?> value) implements Cust
         return (Value.ConfigValue<T>) value;
     }
 
-    void apply(@SuppressWarnings("unused") NetworkHandler.PayloadContext context) {
+    void apply(NetworkHandler.PayloadContext ignored) {
         apply(value.getId(), value);
     }
 

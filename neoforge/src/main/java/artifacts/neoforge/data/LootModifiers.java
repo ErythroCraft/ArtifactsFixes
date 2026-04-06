@@ -328,7 +328,6 @@ public class LootModifiers extends GlobalLootModifierProvider {
         }
     }
 
-    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"})
     protected static class Builder {
 
         private final ResourceKey<LootTable> lootTable;
