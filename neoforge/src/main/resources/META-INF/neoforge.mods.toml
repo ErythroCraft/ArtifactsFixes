@@ -27,6 +27,6 @@ config="mixins.artifacts.neoforge.json"
 [[dependencies.artifacts]]
     modId = "minecraft"
     type="required"
-    versionRange = "1.21.1"
+    versionRange = "[1.21.11,26.1)"
     ordering = "NONE"
     side = "BOTH"
