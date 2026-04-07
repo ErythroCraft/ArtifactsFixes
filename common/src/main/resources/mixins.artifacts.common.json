@@ -42,6 +42,7 @@
     "ability.equipabletotem.client.ClientPacketListenerMixin",
     "ability.hurtsound.client.LivingEntityMixin",
     "ability.nightvision.client.GameRendererMixin",
+    "accessors.client.GuiAccessor",
     "accessors.client.LivingEntityRendererAccessor",
     "client.LivingEntityRendererMixin",
     "client.LivingEntityRenderStateMixin",

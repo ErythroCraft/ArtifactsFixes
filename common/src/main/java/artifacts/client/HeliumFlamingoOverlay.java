@@ -4,8 +4,10 @@ import artifacts.Artifacts;
 import artifacts.component.SwimData;
 import artifacts.component.ability.SwimInAir;
 import artifacts.equipment.EquipmentHelper;
+import artifacts.mixin.accessors.client.GuiAccessor;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -29,25 +31,30 @@ public class HeliumFlamingoOverlay {
 
     private static final Identifier AIR_SPRITE = Artifacts.id("hud/flamingo");
     private static final Identifier AIR_POPPING_SPRITE = Artifacts.id("hud/flamingo_bursting");
-    private static final Identifier AIR_EMPTY_SPRITE = Identifier.withDefaultNamespace("hud/air_empty");
+    private static final Identifier AIR_EMPTY_SPRITE = Artifacts.id("hud/flamingo_empty");
 
     private int lastBubblePopSoundPlayed = 0;
 
+    // Largely identical to Gui::renderAirBubbles
     public boolean renderOverlay(GuiGraphics guiGraphics, Player player, int height) {
         SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
         if (!EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player, false) || swimData == null) {
             return false;
         }
 
-        boolean isLosingAir = swimData.isSwimFlying();
+        GuiAccessor gui = (GuiAccessor) Minecraft.getInstance().gui;
+        boolean isLosingCharge = swimData.isSwimFlying();
 
-        int maxProgress = isLosingAir
+        // duration in ticks to fully charge/deplete
+        int maxProgress = isLosingCharge
                 ? SwimInAir.getMaxFlightDuration(player)
                 : SwimInAir.getRechargeDuration(player);
 
+        // current charging/depletion level, in ticks
         int progress = (int) Math.floor(swimData.getSwimFlyingCharge() * maxProgress);
 
-        if (!isLosingAir && progress >= maxProgress) {
+        if (!isLosingCharge && progress >= maxProgress) {
+            // fully charged and not depleting
             return false;
         }
 
@@ -55,28 +62,46 @@ public class HeliumFlamingoOverlay {
         // Set height from bottom of screen, add config offset
         height = guiGraphics.guiHeight() - height - Artifacts.CONFIG.client.heliumFlamingoOverlayOffset.get();
 
+        // the number of full bubbles (rendered right to left, index starting at 1)
         int fullBubble = getCurrentAirSupplyBubble(progress, maxProgress, -AIR_BUBBLE_POPPING_DURATION);
+        // the location of the currently popping bubble sprite
+        // only rendered when poppingBubble > fullBubble,
+        // i.e. for AIR_BUBBLE_POPPING_DURATION ticks after a full bubble disappears
         int poppingBubble = getCurrentAirSupplyBubble(progress, maxProgress, 0);
+        // the location of the rightmost empty bubble sprite
+        // nothing is rendered for EMPTY_AIR_BUBBLE_DELAY_DURATION ticks after a bubble pops
         int emptyBubble = getCurrentAirSupplyBubble(progress, maxProgress, EMPTY_AIR_BUBBLE_DELAY_DURATION);
 
-        if (!isLosingAir) {
+        if (!isLosingCharge) {
+            // reset last bubble popped when recharging
             lastBubblePopSoundPlayed = 0;
         }
 
         for (int currentBubble = 1; currentBubble <= NUM_AIR_BUBBLES; ++currentBubble) {
-            int x = hotbarEdge - (currentBubble - 1) * AIR_BUBBLE_SEPARATION - AIR_BUBBLE_SIZE;
             Identifier bubbleSprite = null;
             if (currentBubble <= fullBubble) {
                 bubbleSprite = AIR_SPRITE;
-            } else if (currentBubble == poppingBubble && isLosingAir) {
+            } else if (currentBubble == poppingBubble && isLosingCharge) {
                 bubbleSprite = AIR_POPPING_SPRITE;
                 playAirBubblePoppedSound(currentBubble, player, NUM_AIR_BUBBLES - emptyBubble);
-            } else if (!isLosingAir || currentBubble > emptyBubble) {
+            } else if (!isLosingCharge || currentBubble > emptyBubble) {
                 bubbleSprite = AIR_EMPTY_SPRITE;
             }
 
             if (bubbleSprite != null) {
-                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, bubbleSprite, x, height, AIR_BUBBLE_SIZE, AIR_BUBBLE_SIZE);
+                int x = hotbarEdge - (currentBubble - 1) * AIR_BUBBLE_SEPARATION - AIR_BUBBLE_SIZE;
+                // randomly offset the vertical height by 1 pixel every other tick
+                // frequency increases as air depletes, starting at 6 bubbles left and maxing out at 2 bubbles left
+                int y = height;
+                if (isLosingCharge
+                        && gui.getTickCount() % 2 == currentBubble % 2
+                        && fullBubble <= 6
+                        && gui.getRandom().nextInt(Math.max(1, (int) Math.pow(2, fullBubble - 2))) == 0
+                        && gui.getRandom().nextBoolean()
+                ) {
+                    y += 1;
+                }
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, bubbleSprite, x, y, AIR_BUBBLE_SIZE, AIR_BUBBLE_SIZE);
             }
         }
 
