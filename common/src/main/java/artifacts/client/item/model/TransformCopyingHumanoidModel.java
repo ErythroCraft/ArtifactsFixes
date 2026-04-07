@@ -48,8 +48,10 @@ public final class TransformCopyingHumanoidModel<S extends HumanoidRenderState> 
         delegate.xRot = source.xRot;
         delegate.yRot = source.yRot;
         delegate.zRot = source.zRot;
-        delegate.xScale = source.xScale;
-        delegate.yScale = source.yScale;
-        delegate.zScale = source.zScale;
+        // multiply to retain the necklace default part pose
+        // should be fine as long as setupAnim on the delegate doesn't change part scale anywhere else
+        delegate.xScale *= source.xScale;
+        delegate.yScale *= source.yScale;
+        delegate.zScale *= source.zScale;
     }
 }
