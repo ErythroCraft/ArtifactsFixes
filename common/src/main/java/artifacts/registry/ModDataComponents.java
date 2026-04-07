@@ -135,7 +135,9 @@ public class ModDataComponents {
         ));
         APPLIES_COOLDOWN.addAll(Set.of(
                 POST_DAMAGE_COOLDOWN,
-                RETALIATION_EFFECTS
+                RETALIATION_EFFECTS,
+                SWIM_IN_AIR,
+                ATTACK_EFFECTS
         ));
     }
 
