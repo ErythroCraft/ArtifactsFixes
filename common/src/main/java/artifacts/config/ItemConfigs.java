@@ -286,11 +286,11 @@ public class ItemConfigs extends ConfigManager {
     }
 
     private void sendToClients(MinecraftServer server) {
-        getValues().forEach((key, value) -> NetworkHandler.sendToPlayers(server.getPlayerList().getPlayers(), new UpdateItemConfigPacket(value)));
+        getValues().forEach((_, value) -> NetworkHandler.sendToPlayers(server.getPlayerList().getPlayers(), new UpdateItemConfigPacket(value)));
     }
 
     public void sendToClient(ServerPlayer player) {
         Artifacts.LOGGER.info("Sending item configs to client");
-        getValues().forEach((key, value) -> NetworkHandler.sendToPlayer(player, new UpdateItemConfigPacket(value)));
+        getValues().forEach((_, value) -> NetworkHandler.sendToPlayer(player, new UpdateItemConfigPacket(value)));
     }
 }

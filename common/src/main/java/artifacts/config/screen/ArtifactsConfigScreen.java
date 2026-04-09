@@ -103,7 +103,7 @@ public class ArtifactsConfigScreen {
     private static Component getTitle(String categoryKey) {
         String name = categoryKey.substring(categoryKey.lastIndexOf('.') + 1);
         if (Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
-            return BuiltInRegistries.ITEM.getValue(Artifacts.id(name)).getName();
+            return BuiltInRegistries.ITEM.getValue(Artifacts.id(name)).getDefaultInstance().getItemName();
         }
         return Component.translatable("%s.config.%s.title".formatted(Artifacts.MOD_ID, categoryKey));
     }

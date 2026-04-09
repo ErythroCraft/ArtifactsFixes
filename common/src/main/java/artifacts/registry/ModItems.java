@@ -28,6 +28,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.feline.CatSoundVariant;
+import net.minecraft.world.entity.animal.feline.CatSoundVariants;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
@@ -404,10 +406,10 @@ public class ModItems {
             .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.RABBIT_HURT), Artifacts.CONFIG.items.bunnyHoppersModifyHurtSounds))
     );
     public static final Holder<Item> KITTY_SLIPPERS = register("kitty_slippers", builder -> builder
-            .equipable(SoundEvents.CAT_AMBIENT)
+            .equipable(SoundEvents.CAT_SOUNDS.get(CatSoundVariants.SoundSet.CLASSIC).adultSounds().ambientSound())
             .component(ModDataComponents.CREEPER_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersRepelCreepers)
             .component(ModDataComponents.PHANTOM_REPELLENT.get(), Artifacts.CONFIG.items.kittySlippersRepelPhantoms)
-            .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.CAT_HURT), Artifacts.CONFIG.items.kittySlippersModifyHurtSounds))
+            .component(ModDataComponents.HURT_SOUND.get(), new HurtSound(SoundEvents.CAT_SOUNDS.get(CatSoundVariants.SoundSet.CLASSIC).adultSounds().hurtSound(), Artifacts.CONFIG.items.kittySlippersModifyHurtSounds))
     );
     public static final Holder<Item> RUNNING_SHOES = register("running_shoes", builder -> builder
             .equipable()

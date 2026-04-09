@@ -5,13 +5,13 @@ import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 public class CooldownOverlayRenderer {
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker ignored) {
+    public static void render(GuiGraphicsExtractor guiGraphics, DeltaTracker ignored) {
         if (!Artifacts.CONFIG.client.enableCooldownOverlay.get() || !(Minecraft.getInstance().getCameraEntity() instanceof Player player)) {
             return;
         }
@@ -37,8 +37,8 @@ public class CooldownOverlayRenderer {
             ) {
                 int x = start + step * k.intValue();
                 k.add(1);
-                guiGraphics.renderItem(player, stack, x, y, k.intValue() + 1);
-                guiGraphics.renderItemDecorations(Minecraft.getInstance().font, stack, x, y);
+                guiGraphics.item(player, stack, x, y, k.intValue() + 1);
+                guiGraphics.itemDecorations(Minecraft.getInstance().font, stack, x, y);
             }
         });
     }

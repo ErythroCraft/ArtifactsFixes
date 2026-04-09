@@ -39,7 +39,7 @@ public class ArtifactsNeoForgeClient {
             CuriosCompatClient.setup(modBus);
         }
 
-        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post event) -> ArtifactsClient.onClientTick(Minecraft.getInstance()));
+        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post _) -> ArtifactsClient.onClientTick(Minecraft.getInstance()));
     }
 
     public void onClientSetup(FMLClientSetupEvent event) {

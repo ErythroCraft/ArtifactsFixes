@@ -4,11 +4,11 @@ import artifacts.equipment.EquipmentSlotManager;
 import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
 import artifacts.util.DamageSourceHelper;
-import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketEnums;
-import dev.emi.trinkets.api.event.TrinketDropCallback;
-import dev.emi.trinkets.api.event.TrinketEquipCallback;
-import dev.emi.trinkets.api.event.TrinketUnequipCallback;
+import eu.pb4.trinkets.api.TrinketDropRule;
+import eu.pb4.trinkets.api.event.TrinketDropCallback;
+import eu.pb4.trinkets.api.event.TrinketEquipCallback;
+import eu.pb4.trinkets.api.event.TrinketUnequipCallback;
+import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,9 +24,9 @@ public class TrinketsCompat {
         TrinketDropCallback.EVENT.register(TrinketsCompat::onDropItem);
     }
 
-    public static TrinketEnums.DropRule onDropItem(TrinketEnums.DropRule dropRule, ItemStack stack, SlotReference slotReference, LivingEntity entity) {
-        if (dropRule == TrinketEnums.DropRule.DEFAULT && DamageSourceHelper.shouldDestroyWornItemOnDeath(entity, stack)) {
-            return TrinketEnums.DropRule.DESTROY;
+    public static TrinketDropRule onDropItem(TrinketDropRule dropRule, ItemStack stack, SlotReference slotReference, LivingEntity entity) {
+        if (dropRule == TrinketDropRule.DEFAULT && DamageSourceHelper.shouldDestroyWornItemOnDeath(entity, stack)) {
+            return TrinketDropRule.DESTROY;
         }
         return dropRule;
     }

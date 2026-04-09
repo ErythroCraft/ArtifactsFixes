@@ -15,8 +15,8 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.function.Predicate;
 
 public enum EntityCondition implements StringRepresentable {
-    ALWAYS("always", entity -> true),
-    NEVER("never", entity -> false),
+    ALWAYS("always", _ -> true),
+    NEVER("never", _ -> false),
     ABOVE_WATER("above_water", entity -> !isSubmerged(entity)),
     IN_WATER("in_water", Entity::isInWater),
     ON_GRASS("on_grass", entity -> entity.onGround() && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)),

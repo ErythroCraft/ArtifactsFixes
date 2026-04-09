@@ -34,7 +34,7 @@ public class ArtifactsFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntityTypes.MIMIC.get(), MimicRenderer::new);
         ModKeyMappings.register(KeyBindingHelper::registerKeyBinding);
 
-        ClientEntityEvents.ENTITY_LOAD.register((entity, level) -> ArtifactHooks.onEntityAdded(entity));
+        ClientEntityEvents.ENTITY_LOAD.register((entity, _) -> ArtifactHooks.onEntityAdded(entity));
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new IdentifiableArtifactRendererReloadListener());
     }
 

@@ -29,14 +29,14 @@ public class ArtifactsFabric implements ModInitializer {
         FabricNetworkHandler.registerServerboundReceivers();
         ModEntityTypes.registerMobAttributes(FabricDefaultAttributeRegistry::register);
 
-        ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> ArtifactHooks.onEntityAdded(entity));
+        ServerEntityEvents.ENTITY_LOAD.register((entity, _) -> ArtifactHooks.onEntityAdded(entity));
 
         ModGameEvents.VIBRATION_FREQUENCIES.forEach((holder, frequency) ->
                 SculkSensorFrequencyRegistry.register(holder.unwrapKey().orElseThrow(), frequency)
         );
 
         ServerLifecycleEvents.SERVER_STARTING.register(Artifacts::onServerStarting);
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> Artifacts.onServerStopping());
-        LootTableEvents.MODIFY.register((key, builder, source, registries) -> ModLootTablesFabric.onLootTableLoad(key, builder, source));
+        ServerLifecycleEvents.SERVER_STOPPING.register(_ -> Artifacts.onServerStopping());
+        LootTableEvents.MODIFY.register((key, builder, source, _) -> ModLootTablesFabric.onLootTableLoad(key, builder, source));
     }
 }

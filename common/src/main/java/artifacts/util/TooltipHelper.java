@@ -135,7 +135,7 @@ public class TooltipHelper {
         if (display.shows(DataComponents.ATTRIBUTE_MODIFIERS)) {
             for (EquipmentSlot slot : EquipmentSlot.values()) {
                 MutableBoolean b = new MutableBoolean(false);
-                stack.forEachModifier(slot, (holder, attributeModifier) -> b.setTrue());
+                stack.forEachModifier(slot, (_, _) -> b.setTrue());
                 if (b.booleanValue()) {
                     hasSlotTooltip = true;
 

@@ -4,7 +4,7 @@ import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.gui.entries.SubCategoryListEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -19,7 +19,7 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
 
     @SuppressWarnings("deprecation")
     public ItemSubCategoryListEntry(Item item, List<AbstractConfigListEntry<?>> entries) {
-        super(item.getName(), List.copyOf(entries), false);
+        super(item.getDefaultInstance().getItemName(), List.copyOf(entries), false);
         this.stack = new ItemStack(item);
         List<String> searchTags = List.of(getFieldName().getString().split(" "));
         // noinspection unchecked
@@ -39,11 +39,11 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isHovered, float delta) {
-        super.render(graphics, index, y, x, entryWidth, entryHeight, mouseX, mouseY, isHovered, delta);
+    public void lateRender(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        super.lateRender(graphics, mouseX, mouseY, delta);
 
-        graphics.renderItem(stack, x - 4, y + 2);
-        graphics.drawString(Minecraft.getInstance().font, this.getActualDisplayedFieldName().getVisualOrderText(), x + 16, y + 6, -1);
+        graphics.item(stack, -4, 2);
+        graphics.text(Minecraft.getInstance().font, this.getActualDisplayedFieldName().getVisualOrderText(), 16, 6, -1);
     }
 
     @Override

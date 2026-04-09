@@ -44,7 +44,7 @@ public class ArtifactsNeoForge {
         modBus.addListener(ArtifactsData::gatherServerData);
         modBus.addListener(NeoForgeNetworkHandler::registerPayloadHandlers);
         NeoForge.EVENT_BUS.addListener((ServerStartingEvent event) -> Artifacts.onServerStarting(event.getServer()));
-        NeoForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> Artifacts.onServerStopping());
+        NeoForge.EVENT_BUS.addListener((ServerStoppingEvent _) -> Artifacts.onServerStopping());
         NeoForge.EVENT_BUS.addListener(this::onPlayerLoggedIn);
         modBus.addListener((EntityAttributeCreationEvent event) -> ModEntityTypes.registerMobAttributes(event::put));
 
@@ -62,7 +62,7 @@ public class ArtifactsNeoForge {
         if (ModCompat.CLOTH_CONFIG.isLoaded()) {
             ModLoadingContext.get().registerExtensionPoint(
                     IConfigScreenFactory.class,
-                    () -> (client, parent) -> new ArtifactsConfigScreen(parent).build()
+                    () -> (_, parent) -> new ArtifactsConfigScreen(parent).build()
             );
         }
     }

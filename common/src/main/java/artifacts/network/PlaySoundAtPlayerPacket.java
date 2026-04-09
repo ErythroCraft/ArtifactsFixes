@@ -29,7 +29,7 @@ public record PlaySoundAtPlayerPacket(Holder<SoundEvent> soundEvent, float volum
     );
 
     public static void sendSound(ServerPlayer player, Holder<SoundEvent> soundEvent, float volume, float pitch) {
-        long seed = player.level().random.nextLong();
+        long seed = player.level().getRandom().nextLong();
         NetworkHandler.sendToPlayer(player, new PlaySoundAtPlayerPacket(soundEvent, volume, pitch, seed));
         player.level().playSeededSound(player, player, soundEvent, SoundSource.PLAYERS, volume, pitch, seed);
     }

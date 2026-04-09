@@ -57,7 +57,7 @@ public class LootTables extends LootTableProvider {
         new EntityEquipment(this).addLootTables();
 
         for (LootModifiers.Builder lootBuilder : lootModifiers.lootBuilders) {
-            addLootTable("inject/" + lootBuilder.getName(), provider -> lootBuilder.createLootTable(), lootBuilder.getContextKeySet());
+            addLootTable("inject/" + lootBuilder.getName(), _ -> lootBuilder.createLootTable(), lootBuilder.getContextKeySet());
         }
 
         addLootTable(
@@ -393,6 +393,6 @@ public class LootTables extends LootTableProvider {
     }
 
     private void addLootTable(String location, LootTable.Builder lootTable) {
-        addLootTable(location, provider -> lootTable, LootContextParamSets.ALL_PARAMS);
+        addLootTable(location, _ -> lootTable, LootContextParamSets.ALL_PARAMS);
     }
 }

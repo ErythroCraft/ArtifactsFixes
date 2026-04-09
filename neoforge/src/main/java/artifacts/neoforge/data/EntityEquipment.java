@@ -94,6 +94,6 @@ public class EntityEquipment {
         entityTypes.add(entityType);
         LootTable.Builder builder = LootTable.lootTable();
         builder.withPool(pool.when(ConfigValueChance.entityEquipmentChance()));
-        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(entityType).identifier().getPath(), provider -> builder, LootContextParamSets.ALL_PARAMS);
+        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(entityType).identifier().getPath(), _ -> builder, LootContextParamSets.ALL_PARAMS);
     }
 }

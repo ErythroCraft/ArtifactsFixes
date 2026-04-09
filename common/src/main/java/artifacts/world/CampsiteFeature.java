@@ -61,7 +61,7 @@ public class CampsiteFeature extends AbstractCampsiteFeature<CampsiteFeatureConf
             });
         } else {
             Direction bedDirection = random.nextBoolean() ? direction.getClockWise() : direction.getCounterClockWise();
-            BlockState bedBlock = config.beds().getState(random, pos).setValue(BedBlock.FACING, bedDirection);
+            BlockState bedBlock = config.beds().getState(level, random, pos).setValue(BedBlock.FACING, bedDirection);
             setBlock(level, pos, bedBlock.setValue(BedBlock.PART, BedPart.HEAD));
             setBlock(level, pos.relative(bedDirection.getOpposite()), bedBlock.setValue(BedBlock.PART, BedPart.FOOT));
             placeBarrel(level, pos.relative(bedDirection), random);
@@ -90,7 +90,7 @@ public class CampsiteFeature extends AbstractCampsiteFeature<CampsiteFeatureConf
                 .filter(pos -> Math.abs(pos.getX() - origin.getX()) < 2 ||  Math.abs(pos.getZ() - origin.getZ()) < 2)
                 .forEach(pos -> {
                     if (!level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP)) {
-                        setBlock(level, pos, config.floor().getState(random, pos));
+                        setBlock(level, pos, config.floor().getState(level, random, pos));
                     } else if (random.nextBoolean()) {
                         if (level.getBlockState(pos).is(Blocks.DEEPSLATE)) {
                             setBlock(level, pos, Blocks.COBBLED_DEEPSLATE.defaultBlockState());
@@ -102,31 +102,31 @@ public class CampsiteFeature extends AbstractCampsiteFeature<CampsiteFeatureConf
     }
 
     private void placeCampfire(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos origin, RandomSource random) {
-        BlockState campfire = config.unlitCampfires().getState(random, origin);
+        BlockState campfire = config.unlitCampfires().getState(level, random, origin);
         if (Artifacts.CONFIG.general.campsite.allowLightSources.get() && random.nextFloat() < 0.10) {
-            campfire = config.litCampfires().getState(random, origin);
+            campfire = config.litCampfires().getState(level, random, origin);
         }
         setBlock(level, origin, campfire);
     }
 
     private void placeLightSource(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos pos, RandomSource random) {
         if (random.nextFloat() < 0.5) {
-            BlockState lightSource = config.unlitLightSources().getState(random, pos);
+            BlockState lightSource = config.unlitLightSources().getState(level, random, pos);
             if (Artifacts.CONFIG.general.campsite.allowLightSources.get() && random.nextFloat() < 0.30) {
-                lightSource = config.lightSources().getState(random, pos);
+                lightSource = config.lightSources().getState(level, random, pos);
             }
             setBlock(level, pos, lightSource);
         }
     }
 
     private void placeCraftingStation(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos pos, RandomSource random, Direction facing) {
-        BlockState craftingStation = config.craftingStations().getState(random, pos);
+        BlockState craftingStation = config.craftingStations().getState(level, random, pos);
         if (craftingStation.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
             craftingStation = craftingStation.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
         }
         setBlock(level, pos, craftingStation);
         if (random.nextInt(3) == 0) {
-            setBlock(level, pos.above(), config.decorations().getState(random, pos));
+            setBlock(level, pos.above(), config.decorations().getState(level, random, pos));
         }
     }
 
@@ -135,7 +135,7 @@ public class CampsiteFeature extends AbstractCampsiteFeature<CampsiteFeatureConf
         furnace = furnace.setValue(FurnaceBlock.FACING, facing);
         setBlock(level, pos, furnace);
         if (random.nextBoolean()) {
-            setBlock(level, pos.above(), config.furnaceChimneys().getState(random, pos));
+            setBlock(level, pos.above(), config.furnaceChimneys().getState(level, random, pos));
         }
     }
 

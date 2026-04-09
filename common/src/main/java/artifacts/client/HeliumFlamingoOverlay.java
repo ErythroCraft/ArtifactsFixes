@@ -8,7 +8,7 @@ import artifacts.mixin.accessors.client.GuiAccessor;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
@@ -36,7 +36,7 @@ public class HeliumFlamingoOverlay {
     private int lastBubblePopSoundPlayed = 0;
 
     // Largely identical to Gui::renderAirBubbles
-    public boolean renderOverlay(GuiGraphics guiGraphics, Player player, int height) {
+    public boolean renderOverlay(GuiGraphicsExtractor guiGraphics, Player player, int height) {
         SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
         if (!EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player, false) || swimData == null) {
             return false;

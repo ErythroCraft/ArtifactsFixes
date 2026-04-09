@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.HashMap;
@@ -74,7 +74,7 @@ public class Advancements extends AdvancementProvider {
 
     private static DisplayInfo display(String title, ItemLike icon, boolean hidden) {
         return new DisplayInfo(
-                new ItemStack(icon),
+                new ItemStackTemplate(icon.asItem()),
                 Component.translatable("%s.advancements.%s.title".formatted(Artifacts.MOD_ID, title)),
                 Component.translatable("%s.advancements.%s.description".formatted(Artifacts.MOD_ID, title)),
                 Optional.empty(),

@@ -5,10 +5,10 @@ import artifacts.client.item.renderer.GloveArtifactRenderer;
 import artifacts.equipment.client.EquipmentRenderingHandler;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketsApi;
-import dev.emi.trinkets.api.client.TrinketRenderer;
-import dev.emi.trinkets.api.client.TrinketRendererRegistry;
+import eu.pb4.trinkets.api.TrinketSlotAccess;
+import eu.pb4.trinkets.api.TrinketsApi;
+import eu.pb4.trinkets.api.client.TrinketRenderer;
+import eu.pb4.trinkets.api.client.TrinketRendererRegistry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -41,25 +41,23 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
     @Override
     public void renderArm(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, AbstractClientPlayer player, HumanoidArm side) {
         String groupId = side == player.getMainArm() ? "hand" : "offhand";
-        TrinketsApi.getTrinketComponent(player).ifPresent(component -> {
-            for (Tuple<SlotReference, ItemStack> pair : component.getAllEquipped()) {
-                ItemStack stack = pair.getB();
-                if (pair.getA().inventory().getSlotType().getGroup().equals(groupId)) {
-                    GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
-                    if (gloveRenderer != null) {
-                        gloveRenderer.renderFirstPersonArm(poseStack, submitNodeCollector, packedLight, player, side, stack.hasFoil());
-                    }
+        for (Tuple<TrinketSlotAccess, ItemStack> pair : TrinketsApi.getAttachment(player).getAllEquipped()) {
+            ItemStack stack = pair.getB();
+            if (pair.getA().inventory().slotType().group().equals(groupId)) {
+                GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
+                if (gloveRenderer != null) {
+                    gloveRenderer.renderFirstPersonArm(poseStack, submitNodeCollector, packedLight, player, side, stack.hasFoil());
                 }
             }
-        });
+        }
     }
 
     public record ArtifactTrinketRenderer(Supplier<ArtifactRenderer> renderer) implements TrinketRenderer {
 
         @Override
-        public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntityRenderState> entityModel, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, LivingEntityRenderState renderState, float yRotation, float xRotation) {
+        public void extractStates(ItemStack stack, TrinketSlotAccess slotReference, EntityModel<? extends LivingEntityRenderState> entityModel, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, LivingEntityRenderState renderState, float limbAngle, float limbDistance) {
             int slotIndex = slotReference.index();
-            if (slotReference.inventory().getSlotType().getGroup().equals("offhand")) {
+            if (slotReference.inventory().slotType().group().equals("offhand")) {
                 slotIndex += 1;
             }
             renderer.get().render(stack, renderState, entityModel, slotIndex, poseStack, submitNodeCollector, light);

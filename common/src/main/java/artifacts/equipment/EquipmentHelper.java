@@ -18,7 +18,7 @@ import java.util.function.*;
 public class EquipmentHelper {
 
     public static boolean hasComponent(DataComponentType<?> type, @Nullable LivingEntity entity) {
-        return reduceComponents(type, entity, false, (prefix, stack, component) -> true);
+        return reduceComponents(type, entity, false, (_, _, _) -> true);
     }
 
     public static boolean hasAbilityActive(DataComponentType<? extends EquipmentAbility> type, @Nullable LivingEntity entity) {
@@ -26,14 +26,14 @@ public class EquipmentHelper {
     }
 
     public static boolean hasAbilityActive(DataComponentType<? extends EquipmentAbility> type, @Nullable LivingEntity entity, boolean skipItemsOnCooldown) {
-        return hasAbilityActive(type, entity, skipItemsOnCooldown, ability -> true);
+        return hasAbilityActive(type, entity, skipItemsOnCooldown, _ -> true);
     }
 
     public static <A extends EquipmentAbility> boolean hasAbilityActive(DataComponentType<A> type, @Nullable LivingEntity entity, boolean skipItemsOnCooldown, Predicate<A> predicate) {
         if (entity == null) {
             return false;
         }
-        return reduceAbilities(type, entity, skipItemsOnCooldown, true, false, (ability, stack, b) -> b || predicate.test(ability));
+        return reduceAbilities(type, entity, skipItemsOnCooldown, true, false, (ability, _, b) -> b || predicate.test(ability));
     }
 
     public static int getEnchantmentLevelIncrease(ResourceKey<Enchantment> enchantment, LivingEntity entity) {
@@ -49,27 +49,27 @@ public class EquipmentHelper {
     }
 
     public static <A extends EquipmentAbility> int sumInt(DataComponentType<A> type, LivingEntity entity, Function<A, Integer> f, boolean skipItemsOnCooldown) {
-        return reduceAbilities(type, entity, skipItemsOnCooldown, true, 0, (ability, stack, i) -> i + f.apply(ability));
+        return reduceAbilities(type, entity, skipItemsOnCooldown, true, 0, (ability, _, i) -> i + f.apply(ability));
     }
 
     public static <A extends EquipmentAbility> double maxDouble(DataComponentType<A> type, LivingEntity entity, Function<A, Double> f, boolean skipItemsOnCooldown) {
-        return reduceAbilities(type, entity, skipItemsOnCooldown, true, 0D, (ability, stack, d) -> Math.max(d, f.apply(ability)));
+        return reduceAbilities(type, entity, skipItemsOnCooldown, true, 0D, (ability, _, d) -> Math.max(d, f.apply(ability)));
     }
 
     public static <A extends EquipmentAbility> double minDouble(DataComponentType<A> type, LivingEntity entity, double init, Function<A, Double> f, boolean skipItemsOnCooldown) {
-        return reduceAbilities(type, entity, skipItemsOnCooldown, true, init, (ability, stack, d) -> Math.min(d, f.apply(ability)));
+        return reduceAbilities(type, entity, skipItemsOnCooldown, true, init, (ability, _, d) -> Math.min(d, f.apply(ability)));
     }
 
     public static <A extends EquipmentAbility> int maxInt(DataComponentType<A> type, LivingEntity entity, Function<A, Integer> f, boolean skipItemsOnCooldown) {
-        return reduceAbilities(type, entity, skipItemsOnCooldown, true, 0, (ability, stack, d) -> Math.max(d, f.apply(ability)));
+        return reduceAbilities(type, entity, skipItemsOnCooldown, true, 0, (ability, _, d) -> Math.max(d, f.apply(ability)));
     }
 
     public static <A extends EquipmentAbility> int minInt(DataComponentType<A> type, LivingEntity entity, int init, Function<A, Integer> f, boolean skipItemsOnCooldown) {
-        return reduceAbilities(type, entity, skipItemsOnCooldown, true, init, (ability, stack, d) -> Math.min(d, f.apply(ability)));
+        return reduceAbilities(type, entity, skipItemsOnCooldown, true, init, (ability, _, d) -> Math.min(d, f.apply(ability)));
     }
 
     public static <A extends EquipmentAbility> void iterateAbilities(DataComponentType<A> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, BiConsumer<A, ItemStack> consumer) {
-        reduceAbilities(type, entity, skipItemsOnCooldown, skipDisabledItems, Unit.INSTANCE, (ability, stack, unit) -> {
+        reduceAbilities(type, entity, skipItemsOnCooldown, skipDisabledItems, Unit.INSTANCE, (ability, stack, _) -> {
             consumer.accept(ability, stack);
             return Unit.INSTANCE;
         });
@@ -91,7 +91,7 @@ public class EquipmentHelper {
     }
 
     public static <C> void iterateComponents(DataComponentType<C> type, LivingEntity entity, Visitor<C> visitor) {
-        reduceComponents(type, entity, Unit.INSTANCE, (unit, stack, component) -> {
+        reduceComponents(type, entity, Unit.INSTANCE, (_, stack, component) -> {
             visitor.visit(stack, component);
             return Unit.INSTANCE;
         });

@@ -1,31 +1,27 @@
 package artifacts.integration.trinkets;
 
 import artifacts.equipment.EquipmentSlotProvider;
-import dev.emi.trinkets.TrinketSlot;
-import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketComponent;
-import dev.emi.trinkets.api.TrinketInventory;
-import dev.emi.trinkets.api.TrinketsApi;
+import eu.pb4.trinkets.api.TrinketAttachment;
+import eu.pb4.trinkets.api.TrinketInventory;
+import eu.pb4.trinkets.api.TrinketsApi;
+import eu.pb4.trinkets.impl.TrinketSlot;
+import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 public class TrinketsSlotProvider implements EquipmentSlotProvider {
 
     @Override
     public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
-        Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(entity);
-        if (component.isPresent()) {
-            for (Map<String, TrinketInventory> map : component.get().getInventory().values()) {
-                for (TrinketInventory inventory : map.values()) {
-                    for (int i = 0; i < inventory.getContainerSize(); i++) {
-                        ItemStack item = inventory.getItem(i);
-                        if (!item.isEmpty()) {
-                            init = f.apply(item, init);
-                        }
+        for (Map<String, TrinketInventory> map : TrinketsApi.getAttachment(entity).getInventory().values()) {
+            for (TrinketInventory inventory : map.values()) {
+                for (int i = 0; i < inventory.getContainerSize(); i++) {
+                    ItemStack item = inventory.getItem(i);
+                    if (!item.isEmpty()) {
+                        init = f.apply(item, init);
                     }
                 }
             }
@@ -36,11 +32,8 @@ public class TrinketsSlotProvider implements EquipmentSlotProvider {
     @Override
     public ItemStack tryEquip(LivingEntity entity, ItemStack stack, boolean allowSwapping) {
         // see TrinketItem::equipItem
-        Optional<TrinketComponent> optional = TrinketsApi.getTrinketComponent(entity);
-        if (optional.isEmpty()) {
-            return stack;
-        }
-        TrinketComponent trinkets = optional.get();
+        // TODO
+        TrinketAttachment trinkets = TrinketsApi.getAttachment(entity);
         for (Map<String, TrinketInventory> group : trinkets.getInventory().values()) {
             for (TrinketInventory inventory : group.values()) {
                 for (int slotId = 0; slotId < inventory.getContainerSize(); slotId++) {

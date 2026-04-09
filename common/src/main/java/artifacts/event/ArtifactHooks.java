@@ -151,7 +151,7 @@ public class ArtifactHooks {
         if (entity instanceof LivingEntity livingEntity) {
             updateHasTickingAbilities(livingEntity);
         }
-        if (entity instanceof PathfinderMob creeper && creeper.getType().is(ModTags.CREEPERS)) {
+        if (entity instanceof PathfinderMob creeper && creeper.is(ModTags.CREEPERS)) {
             Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target);
             ((MobAccessor) creeper).getGoalSelector().addGoal(3,
                     new AvoidEntityGoal<>(creeper, Player.class, predicate, 6, 1, 1.3, EntitySelector.NO_CREATIVE_OR_SPECTATOR)
@@ -160,7 +160,7 @@ public class ArtifactHooks {
     }
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
-        EquipmentHelper.iterateComponents(ModDataComponents.HURT_SOUND.get(), entity, (stack, ability) -> {
+        EquipmentHelper.iterateComponents(ModDataComponents.HURT_SOUND.get(), entity, (_, ability) -> {
             if (ability.enabled().get()) {
                 entity.playSound(ability.soundEvent().value(), volume, pitch);
             }
@@ -180,7 +180,7 @@ public class ArtifactHooks {
                         .recipeAccess()
                         .getRecipeFor(RecipeType.SMELTING, input, livingEntity.level());
                 if (recipe.isPresent()) {
-                    ItemStack smeltingResult = recipe.get().value().assemble(input, livingEntity.level().registryAccess());
+                    ItemStack smeltingResult = recipe.get().value().assemble(input);
                     if (!smeltingResult.isEmpty()) {
                         experienceConsumer.accept(getExperience(recipe.get().value().experience()));
                         return smeltingResult.copyWithCount(smeltingResult.getCount() * original.getCount());
@@ -224,7 +224,7 @@ public class ArtifactHooks {
     public static void absorbDamage(LivingEntity entity, DamageSource damageSource, float amount) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.DAMAGE_ABSORPTION.get(), attacker, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.DAMAGE_ABSORPTION.get(), attacker, true, true, (ability, _) -> {
                 double absorptionRatio = ability.absorptionRatio().get();
                 double maxHealthAbsorbed = ability.maxDamageAbsorbed().get();
 

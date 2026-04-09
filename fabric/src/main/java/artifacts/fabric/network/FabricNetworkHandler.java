@@ -26,11 +26,11 @@ public class FabricNetworkHandler {
     }
 
     private static <T extends CustomPacketPayload> void registerClientboundPayload(NetworkHandler.PayloadHandler<T> payloadHandler) {
-        PayloadTypeRegistry.playS2C().register(payloadHandler.type(), payloadHandler.codec());
+        PayloadTypeRegistry.clientboundPlay().register(payloadHandler.type(), payloadHandler.codec());
     }
 
     private static <T extends CustomPacketPayload> void registerServerboundPayload(NetworkHandler.PayloadHandler<T> payloadHandler) {
-        PayloadTypeRegistry.playC2S().register(payloadHandler.type(), payloadHandler.codec());
+        PayloadTypeRegistry.serverboundPlay().register(payloadHandler.type(), payloadHandler.codec());
     }
 
     private static <T extends CustomPacketPayload> void registerServerboundReceiver(NetworkHandler.PayloadHandler<T> payloadHandler) {

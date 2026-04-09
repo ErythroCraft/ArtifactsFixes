@@ -14,6 +14,6 @@ public class ModComponents implements EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(SWIM_DATA, provider -> new SwimDataComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
+        registry.registerForPlayers(SWIM_DATA, _ -> new SwimDataComponent(), RespawnCopyStrategy.LOSSLESS_ONLY);
     }
 }

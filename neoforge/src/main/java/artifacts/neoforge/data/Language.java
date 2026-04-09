@@ -179,7 +179,7 @@ public class Language extends LanguageProvider {
     }
 
     private void addConfigNames(ConfigManager config) {
-        config.getValues().forEach((key, value) -> {
+        config.getValues().forEach((key, _) -> {
             String[] words = key.split("\\.");
             String name = words[words.length - 1];
             if (!name.equals("cooldown") && !name.equals("enabled") && !name.equals("generateAsLoot")) {
@@ -198,7 +198,7 @@ public class Language extends LanguageProvider {
     }
 
     private void addConfigTooltips(ConfigManager config) {
-        config.getValues().forEach((key, value) -> {
+        config.getValues().forEach((key, _) -> {
             if (key.endsWith("generateAsLoot")) {
                 return;
             }
