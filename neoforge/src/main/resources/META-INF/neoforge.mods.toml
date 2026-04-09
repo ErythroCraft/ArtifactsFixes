@@ -1,32 +1,61 @@
 modLoader="javafml"
 loaderVersion="*"
-license="MIT"
-issueTrackerURL="https://github.com/ochotonida/artifacts/issues"
+license="${license}"
+issueTrackerURL="${issue_tracker}"
 
 [[mods]]
-modId="artifacts"
+modId="${mod_id}"
 version="${version}"
-displayName="Artifacts"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/artifacts"
+displayName="${mod_name}"
+displayURL="${homepage}"
 logoFile= "logo.png"
-authors="ochotonida"
-description='''Adds various new powerful uncraftable items to make exploration a bit more interesting'''
+logoBlur=false
+authors="${mod_author}"
+description='''${description}'''
 
 [[mixins]]
-config="mixins.artifacts.common.json"
+config="artifacts.common.mixins.json"
 [[mixins]]
-config="mixins.artifacts.neoforge.json"
+config="artifacts.neoforge.mixins.json"
 
 [[dependencies.artifacts]]
-    modId="neoforge"
-    type="required"
-    versionRange = "[21.0.133-beta,)"
-    ordering="NONE"
-    side="BOTH"
+modId="neoforge"
+type="required"
+versionRange = "*"
+ordering="NONE"
+side="BOTH"
 
 [[dependencies.artifacts]]
-    modId = "minecraft"
-    type="required"
-    versionRange = "[1.21.11,26.1)"
-    ordering = "NONE"
-    side = "BOTH"
+modId = "minecraft"
+type="required"
+versionRange = "${minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.artifacts]]
+modId = "curios"
+type="optional"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.artifacts]]
+modId = "accessories"
+type="optional"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.artifacts]]
+modId = "trinkets"
+type="optional"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.artifacts]]
+modId = "cloth_config"
+type="optional"
+versionRange = "*"
+ordering = "NONE"
+side = "CLIENT"
