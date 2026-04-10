@@ -11,9 +11,9 @@ import artifacts.registry.ModKeyMappings;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resources.Identifier;
@@ -29,10 +29,10 @@ public class ArtifactsFabricClient implements ClientModInitializer {
         ArtifactsClient.onClientStarted();
         FabricClientNetworkHandler.registerClientboundReceivers();
 
-        ArtifactsClient.registerLayerDefinitions((location, layerDefinition) -> EntityModelLayerRegistry.registerModelLayer(location, layerDefinition::get));
+        ArtifactsClient.registerLayerDefinitions((location, layerDefinition) -> ModelLayerRegistry.registerModelLayer(location, layerDefinition::get));
         ClientTickEvents.END_CLIENT_TICK.register(ArtifactsClient::onClientTick);
         EntityRendererRegistry.register(ModEntityTypes.MIMIC.get(), MimicRenderer::new);
-        ModKeyMappings.register(KeyBindingHelper::registerKeyBinding);
+        ModKeyMappings.register(KeyMappingHelper::registerKeyMapping);
 
         ClientEntityEvents.ENTITY_LOAD.register((entity, _) -> ArtifactHooks.onEntityAdded(entity));
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new IdentifiableArtifactRendererReloadListener());

@@ -28,7 +28,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.feline.CatSoundVariant;
 import net.minecraft.world.entity.animal.feline.CatSoundVariants;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
@@ -67,13 +66,13 @@ public class ModItems {
             .component(ModDataComponents.HANDHELD_GLIDER.get(), Artifacts.CONFIG.items.umbrellaIsGlider)
             .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.OFFHAND).setSwappable(false).build())
             .component(ModDataComponents.BLOCKS_ATTACKS.get(), Artifacts.CONFIG.items.umbrellaIsShield)
-            .component(DataComponents.BLOCKS_ATTACKS, Artifacts.CONFIG.items.umbrellaIsShield,
-                    new BlocksAttacks(
+            .delayedComponent(DataComponents.BLOCKS_ATTACKS, Artifacts.CONFIG.items.umbrellaIsShield,
+                    context -> new BlocksAttacks(
                             0.25F,
                             1,
                             List.of(new BlocksAttacks.DamageReduction(90, Optional.empty(), 0, 1)),
                             new BlocksAttacks.ItemDamageFunction(3, 1, 1),
-                            Optional.of(DamageTypeTags.BYPASSES_SHIELD),
+                            Optional.of(context.getOrThrow(DamageTypeTags.BYPASSES_SHIELD)),
                             Optional.of(SoundEvents.SHIELD_BLOCK),
                             Optional.of(SoundEvents.SHIELD_BREAK)
                     )

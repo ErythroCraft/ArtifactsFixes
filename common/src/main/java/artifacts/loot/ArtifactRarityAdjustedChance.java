@@ -7,7 +7,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public record ArtifactRarityAdjustedChance(float defaultProbability) implements LootItemCondition {
 
@@ -17,7 +16,7 @@ public record ArtifactRarityAdjustedChance(float defaultProbability) implements 
     );
 
     @Override
-    public LootItemConditionType getType() {
+    public MapCodec<? extends LootItemCondition> codec() {
         return ModLootConditions.ARTIFACT_RARITY_ADJUSTED_CHANCE.value();
     }
 

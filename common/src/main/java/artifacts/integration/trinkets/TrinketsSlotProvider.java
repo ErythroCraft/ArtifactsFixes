@@ -3,9 +3,10 @@ package artifacts.integration.trinkets;
 import artifacts.equipment.EquipmentSlotProvider;
 import eu.pb4.trinkets.api.TrinketAttachment;
 import eu.pb4.trinkets.api.TrinketInventory;
+import eu.pb4.trinkets.api.TrinketSlotAccess;
 import eu.pb4.trinkets.api.TrinketsApi;
+import eu.pb4.trinkets.api.callback.TrinketCallback;
 import eu.pb4.trinkets.impl.TrinketSlot;
-import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -32,14 +33,13 @@ public class TrinketsSlotProvider implements EquipmentSlotProvider {
     @Override
     public ItemStack tryEquip(LivingEntity entity, ItemStack stack, boolean allowSwapping) {
         // see TrinketItem::equipItem
-        // TODO
         TrinketAttachment trinkets = TrinketsApi.getAttachment(entity);
         for (Map<String, TrinketInventory> group : trinkets.getInventory().values()) {
             for (TrinketInventory inventory : group.values()) {
                 for (int slotId = 0; slotId < inventory.getContainerSize(); slotId++) {
-                    SlotReference slotReference = new SlotReference(inventory, slotId);
+                    TrinketSlotAccess slotReference = new TrinketSlotAccess(inventory, slotId);
                     ItemStack existingItem = inventory.getItem(slotId);
-                    boolean canUnequip = TrinketsApi.getTrinket(existingItem.getItem()).canUnequip(existingItem, slotReference, entity);
+                    boolean canUnequip = TrinketCallback.getCallback(existingItem).canUnequip(existingItem, slotReference, entity);
                     if (TrinketSlot.canInsert(stack, slotReference, entity)
                             && canUnequip
                             && (allowSwapping || inventory.getItem(slotId).isEmpty())

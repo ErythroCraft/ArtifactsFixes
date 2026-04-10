@@ -16,7 +16,7 @@ public class AccessoriesCompat {
         EquipmentSlotManager.register(new AccessoriesSlotProvider());
 
         AccessoryChangeCallback.EVENT.register(
-                (prevStack, currentStack, slotReference, slotStateChange) -> ArtifactHooks.onItemChanged(slotReference.entity(), prevStack, currentStack)
+                (prevStack, currentStack, slotReference, _) -> ArtifactHooks.onItemChanged(slotReference.entity(), prevStack, currentStack)
         );
 
         OnDropCallback.EVENT.register(AccessoriesCompat::onDropItem);

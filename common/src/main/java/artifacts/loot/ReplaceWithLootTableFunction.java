@@ -1,7 +1,6 @@
 package artifacts.loot;
 
 import artifacts.Artifacts;
-import artifacts.registry.ModLootFunctions;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -11,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.List;
@@ -31,8 +29,8 @@ public class ReplaceWithLootTableFunction extends LootItemConditionalFunction {
     }
 
     @Override
-    public LootItemFunctionType<ReplaceWithLootTableFunction> getType() {
-        return ModLootFunctions.REPLACE_WITH_LOOT_TABLE.get();
+    public MapCodec<? extends LootItemConditionalFunction> codec() {
+        return CODEC;
     }
 
     @Override

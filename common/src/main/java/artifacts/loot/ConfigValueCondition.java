@@ -9,7 +9,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public class ConfigValueCondition implements LootItemCondition {
 
@@ -28,7 +27,7 @@ public class ConfigValueCondition implements LootItemCondition {
     }
 
     @Override
-    public LootItemConditionType getType() {
+    public MapCodec<? extends LootItemCondition> codec() {
         return ModLootConditions.CONFIG_VALUE.value();
     }
 

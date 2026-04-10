@@ -8,6 +8,7 @@ import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.config.value.Value;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentInitializers;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -87,10 +88,16 @@ public final class ArtifactProperties {
     }
 
     public <T> ArtifactProperties component(DataComponentType<T> type, Value.ConfigValue<Boolean> condition, T component) {
+        return delayedComponent(type, condition, _ -> component);
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, Value.ConfigValue<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
         if (!condition.requiresRestart()) {
             throw new IllegalArgumentException();
         }
-        return component(type, condition.get() ? component : null);
+        properties.delayedComponent(type, context -> condition.get() ? initializer.create(context) : null);
+        return this;
     }
 
     @SuppressWarnings("DataFlowIssue")

@@ -8,23 +8,25 @@ neoForge {
 }
 
 dependencies {
+    // fabric (used by accessories (and maybe some other deps))
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
     // mixin
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.5.3'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.5.3'
 
     // required dependencies
-    compileOnly "be.florens:expandability-fabric:${project.expandability_version}"
-    compileOnly "com.electronwill.night-config:toml:${project.night_config_version}"
+    compileOnly "be.florens:expandability-fabric:${expandability_version}"
+    compileOnly "com.electronwill.night-config:toml:${night_config_version}"
 
     // optional dependencies
-    compileOnly("io.wispforest:accessories-common:${project.accessories_version}") {
+    compileOnly("io.wispforest:accessories-common:${accessories_version}") {
         exclude(group: 'net.fabricmc.fabric-api')
     }
 
-    compileOnly("eu.pb4:trinkets:${project.trinkets_version}") {
-        exclude(group: 'net.fabricmc.fabric-api')
-    }
+    implementation "eu.pb4:trinkets:${trinkets_version}"
+    compileOnly "dev.yumi.mc.core:yumi-mc-foundation:${yumi_version}"
 
     compileOnly("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude(group: 'net.fabricmc.fabric-api')

@@ -3,6 +3,7 @@ package artifacts.registry;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderOwner;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -55,6 +56,11 @@ public class RegistryHolder<R, V extends R> implements Holder<R>, Supplier<V> {
     }
 
     @Override
+    public boolean areComponentsBound() {
+        return isBound() && holder.areComponentsBound();
+    }
+
+    @Override
     public boolean is(Identifier resourceLocation) {
         return resourceLocation.equals(key.identifier());
     }
@@ -77,12 +83,17 @@ public class RegistryHolder<R, V extends R> implements Holder<R>, Supplier<V> {
     @Override
     @SuppressWarnings("deprecation")
     public boolean is(Holder<R> holder) {
-        return isBound() && holder.is(holder);
+        return isBound() && this.holder.is(holder);
     }
 
     @Override
     public Stream<TagKey<R>> tags() {
         return isBound() ? holder.tags() : Stream.empty();
+    }
+
+    @Override
+    public DataComponentMap components() {
+        return isBound() ? holder.components() : DataComponentMap.EMPTY;
     }
 
     @Override

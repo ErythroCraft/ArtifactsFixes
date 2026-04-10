@@ -8,7 +8,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 import java.util.function.Supplier;
 
@@ -20,7 +19,7 @@ public record ConfigValueChance(ChanceConfig chanceConfig) implements LootItemCo
     );
 
     @Override
-    public LootItemConditionType getType() {
+    public MapCodec<? extends LootItemCondition> codec() {
         return ModLootConditions.CONFIG_VALUE_CHANCE.value();
     }
 
