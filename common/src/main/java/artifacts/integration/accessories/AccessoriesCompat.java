@@ -1,18 +1,9 @@
 package artifacts.integration.accessories;
 
-import artifacts.equipment.EquipmentSlotManager;
-import artifacts.event.ArtifactHooks;
-import artifacts.util.DamageSourceHelper;
-import io.wispforest.accessories.api.events.AccessoryChangeCallback;
-import io.wispforest.accessories.api.events.DropRule;
-import io.wispforest.accessories.api.events.OnDropCallback;
-import io.wispforest.accessories.api.slot.SlotReference;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.item.ItemStack;
-
 public class AccessoriesCompat {
 
     public static void setup() {
+        /* FIXME: accessories 26.1+
         EquipmentSlotManager.register(new AccessoriesSlotProvider());
 
         AccessoryChangeCallback.EVENT.register(
@@ -27,5 +18,6 @@ public class AccessoriesCompat {
             return DropRule.DESTROY;
         }
         return dropRule;
+        */
     }
 }

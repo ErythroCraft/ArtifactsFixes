@@ -1,11 +1,6 @@
 package artifacts.integration.accessories;
 
 import artifacts.equipment.EquipmentSlotProvider;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.equip.EquipAction;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
-import io.wispforest.accessories.api.slot.SlotReference;
-import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -15,6 +10,7 @@ public class AccessoriesSlotProvider implements EquipmentSlotProvider {
 
     @Override
     public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+        /* FIXME: Accessories 26.1+
         AccessoriesCapability capability = AccessoriesCapability.get(entity);
 
         if (capability != null) {
@@ -23,11 +19,13 @@ public class AccessoriesSlotProvider implements EquipmentSlotProvider {
             }
         }
 
+        */
         return init;
     }
 
     @Override
     public ItemStack tryEquip(LivingEntity entity, ItemStack stack, boolean allowSwapping) {
+        /* FIXME: Accessories 26.1+
         AccessoriesCapability capability = AccessoriesCapability.get(entity);
 
         if (capability != null) {
@@ -38,6 +36,7 @@ public class AccessoriesSlotProvider implements EquipmentSlotProvider {
             }
         }
 
+        */
         return stack;
     }
 }
