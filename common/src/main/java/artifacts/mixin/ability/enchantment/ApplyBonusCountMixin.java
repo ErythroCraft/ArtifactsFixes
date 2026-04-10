@@ -23,9 +23,9 @@ public class ApplyBonusCountMixin {
     @Final
     private Holder<Enchantment> enchantment;
 
-    @ModifyExpressionValue(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getItemEnchantmentLevel(Lnet/minecraft/core/Holder;Lnet/minecraft/world/item/ItemStack;)I"))
-    private int addFortuneLevel(int level, ItemStack stack, LootContext lootContext) {
-        Entity entity = lootContext.getOptionalParameter(LootContextParams.THIS_ENTITY);
+    @ModifyExpressionValue(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getItemEnchantmentLevel(Lnet/minecraft/core/Holder;Lnet/minecraft/world/item/ItemInstance;)I"))
+    private int addFortuneLevel(int level, ItemStack itemStack, LootContext context) {
+        Entity entity = context.getOptionalParameter(LootContextParams.THIS_ENTITY);
 
         if (this.enchantment.is(Enchantments.FORTUNE) && entity instanceof LivingEntity livingEntity) {
             level += EquipmentHelper.getEnchantmentLevelIncrease(Enchantments.FORTUNE, livingEntity);

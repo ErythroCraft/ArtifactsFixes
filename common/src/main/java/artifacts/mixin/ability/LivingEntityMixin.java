@@ -48,8 +48,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     public abstract ItemStack getItemBySlot(EquipmentSlot slot);
 
     @Inject(method = "handleEquipmentChanges", at = @At("HEAD"))
-    private void handleEquipmentChanges(Map<EquipmentSlot, ItemStack> map, CallbackInfo info) {
-        for (EquipmentSlot slot : map.keySet()) {
+    private void handleEquipmentChanges(Map<EquipmentSlot, ItemStack> changedItems, CallbackInfo info) {
+        for (EquipmentSlot slot : changedItems.keySet()) {
             if (!slot.isArmor()) {
                 continue;
             }

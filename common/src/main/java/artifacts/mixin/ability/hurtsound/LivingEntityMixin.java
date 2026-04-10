@@ -27,7 +27,6 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "playHurtSound", at = @At("HEAD"))
     private void onServerPlayHurtSound(CallbackInfo info) {
-        //noinspection ConstantConditions
         ArtifactHooks.onPlaySoundAtEntity((LivingEntity) (Object) this, this.getSoundVolume(), this.getVoicePitch());
     }
 }

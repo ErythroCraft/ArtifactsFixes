@@ -24,8 +24,8 @@ public class NaturalSpawnerMixin {
 
     @Inject(method = "spawnCategoryForPosition(Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/NaturalSpawner$SpawnPredicate;Lnet/minecraft/world/level/NaturalSpawner$AfterSpawnCallback;)V",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;addFreshEntityWithPassengers(Lnet/minecraft/world/entity/Entity;)V", shift = At.Shift.AFTER))
-    private static void spawnCategoryForPosition(MobCategory mobCategory, ServerLevel serverLevel, ChunkAccess chunkAccess, BlockPos blockPos, NaturalSpawner.SpawnPredicate spawnPredicate, NaturalSpawner.AfterSpawnCallback afterSpawnCallback, CallbackInfo ci, @Local(ordinal = 0) Mob mob) {
-        if (ModLootTables.ENTITY_EQUIPMENT.containsKey(mob.getType()) && mob.level() instanceof ServerLevel level) {
+    private static void spawnCategoryForPosition(MobCategory mobCategory, ServerLevel level, ChunkAccess chunk, BlockPos start, NaturalSpawner.SpawnPredicate spawnPredicate, NaturalSpawner.AfterSpawnCallback spawnCallback, CallbackInfo ci, @Local(name = "mob") Mob mob) {
+        if (ModLootTables.ENTITY_EQUIPMENT.containsKey(mob.getType())) {
             ResourceKey<LootTable> id = ModLootTables.ENTITY_EQUIPMENT.get(mob.getType());
             LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(id);
             LootParams.Builder params = new LootParams.Builder(level);

@@ -4,8 +4,11 @@ import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.minecraft.core.Holder;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.feline.CatSoundVariants;
 import net.minecraft.world.entity.monster.Phantom;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -30,7 +33,8 @@ public class PhantomSweepAttackGoalMixin {
             if (target != null && artifacts$phantom.distanceToSqr(target) < 16 * 16
                     && EquipmentHelper.hasAbilityActive(ModDataComponents.PHANTOM_REPELLENT.get(), target)
             ) {
-                artifacts$phantom.level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.CAT_HISS, target.getSoundSource(), 1F, 1F);
+                Holder<SoundEvent> hiss = SoundEvents.CAT_SOUNDS.get(CatSoundVariants.SoundSet.CLASSIC).adultSounds().hissSound();
+                target.level().playSound(null, target.getX(), target.getY(), target.getZ(), hiss, target.getSoundSource(), 1F, 1F);
                 return false;
             }
         }

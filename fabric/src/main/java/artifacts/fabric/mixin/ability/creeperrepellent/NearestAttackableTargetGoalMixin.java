@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> extends TargetGoal {
 
     @Unique
-    private static final TargetingConditions.Selector NOT_WEARING_KITTY_SLIPPERS = (entity, level) ->
+    private static final TargetingConditions.Selector NOT_WEARING_KITTY_SLIPPERS = (entity, _) ->
             !EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), entity);
 
     @Shadow
@@ -35,7 +35,7 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> e
 
     @ModifyArg(method = "<init>(Lnet/minecraft/world/entity/Mob;Ljava/lang/Class;IZZLnet/minecraft/world/entity/ai/targeting/TargetingConditions$Selector;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;selector(Lnet/minecraft/world/entity/ai/targeting/TargetingConditions$Selector;)Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;"))
     private TargetingConditions.Selector addCreeperTargetPredicate(@Nullable TargetingConditions.Selector selector) {
-        if (mob.getType().is(ModTags.CREEPERS) && this.targetType == Player.class) {
+        if (mob.is(ModTags.CREEPERS) && this.targetType == Player.class) {
             return selector == null
                     ? NOT_WEARING_KITTY_SLIPPERS
                     : (entity, level) -> selector.test(entity, level) && NOT_WEARING_KITTY_SLIPPERS.test(entity, level);

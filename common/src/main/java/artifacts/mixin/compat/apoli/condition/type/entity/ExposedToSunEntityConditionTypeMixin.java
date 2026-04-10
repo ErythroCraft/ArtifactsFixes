@@ -12,8 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class ExposedToSunEntityConditionTypeMixin {
 
 	@ModifyReturnValue(method = "test(Lio/github/apace100/apoli/condition/context/EntityConditionContext;)Z", at = @At("RETURN"), remap = false)
-	private boolean accountForUprightUmbrella(boolean original, @Local Entity entity) {
+	private boolean accountForUprightUmbrella(boolean original, @Local(name = "entity") Entity entity) {
 		return original && !UmbrellaHelper.isHoldingUmbrellaUpright(entity, true);
 	}
-
 }

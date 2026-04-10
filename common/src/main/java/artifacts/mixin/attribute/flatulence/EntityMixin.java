@@ -19,13 +19,13 @@ public abstract class EntityMixin {
     public abstract boolean isShiftKeyDown();
 
     @Inject(method = "setShiftKeyDown", at = @At("HEAD"))
-    private void setShiftKeyDown(boolean isDown, CallbackInfo ci) {
-        // noinspection ConstantValue
-        if (isDown && !isShiftKeyDown() && ((Entity) (Object) this) instanceof LivingEntity entity && !entity.level().isClientSide()) {
-            double chance = entity.getAttributeValue(ModAttributes.FLATULENCE);
-            if (entity.getRandom().nextFloat() < chance) {
-                entity.gameEvent(ModGameEvents.FART);
-                entity.level().playSound(null, entity, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + entity.getRandom().nextFloat() * 0.2F);
+    private void setShiftKeyDown(boolean shiftKeyDown, CallbackInfo ci) {
+        Entity self = (Entity) (Object) this;
+        if (shiftKeyDown && !isShiftKeyDown() && self instanceof LivingEntity livingEntity && !self.level().isClientSide()) {
+            double chance = livingEntity.getAttributeValue(ModAttributes.FLATULENCE);
+            if (self.getRandom().nextFloat() < chance) {
+                self.gameEvent(ModGameEvents.FART);
+                self.level().playSound(null, livingEntity, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + self.getRandom().nextFloat() * 0.2F);
             }
         }
     }

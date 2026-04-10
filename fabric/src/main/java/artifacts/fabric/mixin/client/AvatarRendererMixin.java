@@ -18,13 +18,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class AvatarRendererMixin {
 
     @Inject(method = "renderLeftHand", at = @At("TAIL"))
-    private void renderLeftGlove(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, Identifier identifier, boolean bl, CallbackInfo ci) {
-        artifacts$renderArm(poseStack, submitNodeCollector, packedLight, HumanoidArm.LEFT);
+    private void renderLeftGlove(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, Identifier skinTexture, boolean hasSleeve, CallbackInfo ci) {
+        artifacts$renderArm(poseStack, submitNodeCollector, lightCoords, HumanoidArm.LEFT);
     }
 
     @Inject(method = "renderRightHand", at = @At("TAIL"))
-    private void renderRightGlove(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, Identifier identifier, boolean bl, CallbackInfo ci) {
-        artifacts$renderArm(poseStack, submitNodeCollector, packedLight, HumanoidArm.RIGHT);
+    private void renderRightGlove(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, Identifier skinTexture, boolean hasSleeve, CallbackInfo ci) {
+        artifacts$renderArm(poseStack, submitNodeCollector, lightCoords, HumanoidArm.RIGHT);
     }
 
     @Unique

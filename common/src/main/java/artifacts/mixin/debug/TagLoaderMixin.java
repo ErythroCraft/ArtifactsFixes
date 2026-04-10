@@ -19,15 +19,15 @@ import java.util.Map;
 public class TagLoaderMixin {
 
     @Inject(method = "load", require = 1, at = @At(value = "INVOKE", target = "Ljava/util/List;clear()V"))
-    private void detectClear(ResourceManager resourceManager, CallbackInfoReturnable<Map<Identifier, List<TagLoader.EntryWithSource>>> cir, @Local(ordinal = 0) Identifier resourceLocation, @Local Resource resource) {
-        String namespace = resourceLocation.getNamespace();
+    private void detectClear(ResourceManager resourceManager, CallbackInfoReturnable<Map<Identifier, List<TagLoader.EntryWithSource>>> cir, @Local(name = "location") Identifier location, @Local(name = "resource") Resource resource) {
+        String namespace = location.getNamespace();
 
-        if (namespace.equals(ModCompat.TRINKETS) || namespace.equals(ModCompat.CURIOS) || namespace.equals(ModCompat.ACCESSORIES) || namespace.equals("artifacts")) {
+        if (namespace.equals(ModCompat.TRINKETS.modId()) || namespace.equals(ModCompat.CURIOS.modId()) || namespace.equals(ModCompat.ACCESSORIES.modId()) || namespace.equals(Artifacts.MOD_ID)) {
             Artifacts.LOGGER.warn(
                     "Tag entries for {} cleared by {}, this is probably a bug. " +
                             "If you're unable to equip specific items, " +
                             "try removing the offending mod before reporting",
-                    resourceLocation, resource.sourcePackId()
+                    location, resource.sourcePackId()
             );
         }
     }

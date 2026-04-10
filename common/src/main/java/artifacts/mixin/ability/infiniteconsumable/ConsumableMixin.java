@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class ConsumableMixin {
 
     @ModifyReceiver(method = "onConsume", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V"))
-    public ItemStack modifyConsumedStack(ItemStack stack, int amount, LivingEntity entity) {
+    public ItemStack modifyConsumedStack(ItemStack stack, int amount, LivingEntity owner) {
         SimpleAbility ability = stack.get(ModDataComponents.INFINITE_CONSUMABLE.get());
         if (ability != null && ability.isNonCosmetic()) {
             return stack.copy();

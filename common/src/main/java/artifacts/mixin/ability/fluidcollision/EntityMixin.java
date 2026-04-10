@@ -47,8 +47,7 @@ public abstract class EntityMixin {
     @Inject(method = "playStepSound", at = @At("HEAD"))
     private void playWaterStepSound(BlockPos pos, BlockState blockState, CallbackInfo callbackInfo) {
         if (blockState.liquid() && artifacts$isRunningWithAquaDashers()) {
-            //noinspection ConstantConditions
-            ((LivingEntity) (Object) this).playSound(ModSoundEvents.WATER_STEP.value(), 0.15F, 1);
+            ((Entity) (Object) this).playSound(ModSoundEvents.WATER_STEP.value(), 0.15F, 1);
         }
     }
 

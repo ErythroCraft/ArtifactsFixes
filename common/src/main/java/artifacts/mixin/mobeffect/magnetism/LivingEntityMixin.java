@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class LivingEntityMixin {
 
     @Inject(method = "drop", at = @At("RETURN"))
-    private void setItemThrower(ItemStack stack, boolean bl, boolean setThrower, CallbackInfoReturnable<ItemEntity> cir) {
-        if (setThrower && cir.getReturnValue() != null) {
+    private void setItemThrower(ItemStack itemStack, boolean randomly, boolean thrownFromHand, CallbackInfoReturnable<ItemEntity> cir) {
+        if (thrownFromHand && cir.getReturnValue() != null) {
             ((ItemEntityExtensions) cir.getReturnValue()).artifacts$setThrower((LivingEntity) (Object) this);
         }
     }

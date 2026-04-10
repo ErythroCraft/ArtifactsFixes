@@ -15,6 +15,6 @@ public abstract class EntityMixin {
         if ((Object) this instanceof LivingEntity entity) {
             return original && !UmbrellaHelper.isHoldingUmbrellaUpright(entity, true);
         }
-        return original && !((Object) this instanceof LivingEntity entity && UmbrellaHelper.isHoldingUmbrellaUpright(entity, true));
+        return original;
     }
 }

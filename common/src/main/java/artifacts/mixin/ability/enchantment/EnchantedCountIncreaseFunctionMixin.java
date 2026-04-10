@@ -24,8 +24,8 @@ public class EnchantedCountIncreaseFunctionMixin {
     private Holder<Enchantment> enchantment;
 
     @ModifyExpressionValue(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getEnchantmentLevel(Lnet/minecraft/core/Holder;Lnet/minecraft/world/entity/LivingEntity;)I"))
-    private int addLootingLevel(int level, ItemStack itemStack, LootContext lootContext) {
-        Entity entity = lootContext.getOptionalParameter(LootContextParams.ATTACKING_ENTITY);
+    private int addLootingLevel(int level, ItemStack itemStack, LootContext context) {
+        Entity entity = context.getOptionalParameter(LootContextParams.ATTACKING_ENTITY);
 
         if (this.enchantment.is(Enchantments.LOOTING) && entity instanceof LivingEntity livingEntity) {
             level += EquipmentHelper.getEnchantmentLevelIncrease(Enchantments.LOOTING, livingEntity);

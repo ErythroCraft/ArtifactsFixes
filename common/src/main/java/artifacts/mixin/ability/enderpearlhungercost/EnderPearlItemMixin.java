@@ -22,13 +22,13 @@ public abstract class EnderPearlItemMixin extends Item {
     }
 
     @WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V"))
-    private void shouldConsumeEnderPearl(ItemStack stack, int amount, LivingEntity entity, Operation<Void> operation) {
-        if (EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), entity) && entity instanceof Player player) {
+    private void shouldConsumeEnderPearl(ItemStack stack, int amount, LivingEntity owner, Operation<Void> operation) {
+        if (EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), owner) && owner instanceof Player player) {
             int cost = EquipmentHelper.minInt(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), player, 20, ability -> ability.cost().get(), true);
             if (player.getFoodData().getFoodLevel() >= cost || player.isCreative()) {
                 if (cost > 0 && !player.isCreative()) {
                     player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() - cost);
-                    entity.level().playSound(
+                    owner.level().playSound(
                             null,
                             player.getX(),
                             player.getY(),
@@ -36,7 +36,7 @@ public abstract class EnderPearlItemMixin extends Item {
                             SoundEvents.GENERIC_EAT,
                             SoundSource.PLAYERS,
                             0.5F,
-                            0.8F + entity.getRandom().nextFloat() * 0.4F
+                            0.8F + owner.getRandom().nextFloat() * 0.4F
                     );
                 }
                 int cooldown = EquipmentHelper.maxInt(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), player, ability -> ability.cooldown().get(), true);
@@ -44,6 +44,6 @@ public abstract class EnderPearlItemMixin extends Item {
                 return;
             }
         }
-        operation.call(stack, amount, entity);
+        operation.call(stack, amount, owner);
     }
 }

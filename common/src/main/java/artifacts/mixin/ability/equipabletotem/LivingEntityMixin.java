@@ -22,9 +22,8 @@ import java.util.Objects;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
-    @SuppressWarnings("UnreachableCode")
     @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
-    private void checkTotemDeathProtection(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+    private void checkTotemDeathProtection(DamageSource killingDamage, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity self = (LivingEntity) (Object) this;
 
         // finds the first equipped totem with the equipable_totem component
@@ -32,7 +31,7 @@ public class LivingEntityMixin {
 
         // identical to the remainder of the logic in checkTotemDeathProtection
         // injecting on the variable assignments instead of HEAD might simplify this somewhat
-        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && totem != null) {
+        if (!killingDamage.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && totem != null) {
             DeathProtection deathProtection = Objects.requireNonNull(totem.get(DataComponents.DEATH_PROTECTION));
             ItemStack copy = totem.copy();
             totem.shrink(1);

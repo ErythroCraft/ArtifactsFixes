@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.function.Consumer;
 
@@ -20,17 +19,17 @@ import java.util.function.Consumer;
 public abstract class ItemStackMixin {
 
     @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V"))
-    private void getTooltipLines(Item.TooltipContext context, TooltipDisplay tooltipDisplay, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltip, CallbackInfo ci) {
+    private void getTooltipLines(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {
         ItemStack stack = (ItemStack) (Object) this;
-        TooltipHelper.addAbilityDescriptions(tooltip, stack, context, tooltipDisplay, tooltipFlag, player);
+        TooltipHelper.addAbilityDescriptions(builder, stack, context, display, tooltipFlag, player);
     }
 
     /*
      * On NeoForge the call to addAttributeTooltips is replaced with a call to AttributeUtil.addAttributeTooltips, this is only injected on Fabric.
      * An AddAttributeTooltipsEvent listener calls TooltipHelper.addAttributeTooltips on NeoForge
      */
-    @Inject(method = "addDetailsToTooltip", require = 0, locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/item/ItemStack;addAttributeTooltips(Ljava/util/function/Consumer;Lnet/minecraft/world/item/component/TooltipDisplay;Lnet/minecraft/world/entity/player/Player;)V"))
-    private void addAttributeTooltips(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> tooltip, CallbackInfo ci) {
-        TooltipHelper.addAttributeTooltips(tooltip, (ItemStack) (Object) this, context, display);
+    @Inject(method = "addDetailsToTooltip", require = 0, at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/world/item/ItemStack;addAttributeTooltips(Ljava/util/function/Consumer;Lnet/minecraft/world/item/component/TooltipDisplay;Lnet/minecraft/world/entity/player/Player;)V"))
+    private void addAttributeTooltips(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {
+        TooltipHelper.addAttributeTooltips(builder, (ItemStack) (Object) this, context, display);
     }
 }

@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EnchantmentHelperMixin {
 
     @Inject(method = "doPostAttackEffectsWithItemSource", at = @At("HEAD"))
-    private static void doPostAttackEffects(ServerLevel serverLevel, Entity entity, DamageSource damageSource, ItemStack itemStack, CallbackInfo ci) {
-        if (entity instanceof LivingEntity livingEntity) {
+    private static void doPostAttackEffects(ServerLevel serverLevel, Entity victim, DamageSource damageSource, ItemStack source, CallbackInfo ci) {
+        if (victim instanceof LivingEntity livingEntity) {
             ArtifactHooks.doPostAttackEffects(livingEntity, damageSource);
         }
     }

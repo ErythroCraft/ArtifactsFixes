@@ -30,7 +30,7 @@ public abstract class LivingEntityMixin implements LivingEntityExtensions {
     @Inject(method = "tick", at = @At("HEAD"))
     private void updatePocketPistonLength(CallbackInfo ci) {
         float d = (artifacts$pocketPistonTimeRemaining < RETRACTION_DURATION ? -1F : 1F) / RETRACTION_DURATION;
-        artifacts$pocketPistonLength = Math.max(0, Math.min(1, artifacts$pocketPistonLength + d));
+        artifacts$pocketPistonLength = Math.clamp(artifacts$pocketPistonLength + d, 0, 1);
 
         if (swingTime != 0) {
             artifacts$pocketPistonTimeRemaining = RETRACTION_DELAY + RETRACTION_DURATION;
@@ -45,6 +45,6 @@ public abstract class LivingEntityMixin implements LivingEntityExtensions {
     @Override
     public float artifacts$getPocketPistonLength(float partialTicks) {
         float d = (artifacts$pocketPistonTimeRemaining + partialTicks < RETRACTION_DURATION ? -1F : 1F) / RETRACTION_DURATION;
-        return Math.max(0, Math.min(1, artifacts$pocketPistonLength + d * partialTicks));
+        return Math.clamp(artifacts$pocketPistonLength + d * partialTicks, 0, 1);
     }
 }

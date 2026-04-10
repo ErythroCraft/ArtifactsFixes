@@ -2,7 +2,7 @@ package artifacts.fabric.mixin.ability.swiminair.client;
 
 import artifacts.ArtifactsClient;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,25 +17,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class GuiMixin {
 
     @Shadow
-    protected abstract int getVisibleVehicleHeartRows(int i);
+    protected abstract int getVisibleVehicleHeartRows(int hearts);
 
     @Shadow
     protected abstract LivingEntity getPlayerVehicleWithHealth();
 
     @Shadow
-    protected abstract int getVehicleMaxHearts(LivingEntity livingEntity);
+    protected abstract int getVehicleMaxHearts(LivingEntity vehicle);
 
     @Shadow
     protected abstract Player getCameraPlayer();
 
-    @Inject(method = "renderPlayerHealth", require = 0, at = @At(value = "TAIL"))
-    private void renderFlamingoAir(GuiGraphics guiGraphics, CallbackInfo ci) {
+    @Inject(method = "extractPlayerHealth", at = @At(value = "TAIL"))
+    private void renderFlamingoAir(GuiGraphicsExtractor graphics, CallbackInfo ci) {
         Player player = this.getCameraPlayer();
         if (player == null) {
             return;
         }
 
-        ArtifactsClient.getHeliumFlamingoOverlay().renderOverlay(guiGraphics, player, -artifacts$getStatusBarHeightOffset(player));
+        ArtifactsClient.getHeliumFlamingoOverlay().renderOverlay(graphics, player, -artifacts$getStatusBarHeightOffset(player));
     }
 
     /**

@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class FoodPropertiesMixin {
 
     @Inject(method = "onConsume", at = @At("HEAD"))
-    public void eat(Level level, LivingEntity entity, ItemStack stack, Consumable consumable, CallbackInfo ci) {
+    public void eat(Level level, LivingEntity user, ItemStack stack, Consumable consumable, CallbackInfo ci) {
         FoodProperties foodProperties = (FoodProperties) (Object) this;
-        PostEatingEffect.applyEffects(entity, foodProperties);
-        ArtifactHooks.applyBoneMealAfterEating(entity, foodProperties);
+        PostEatingEffect.applyEffects(user, foodProperties);
+        ArtifactHooks.applyBoneMealAfterEating(user, foodProperties);
     }
 }

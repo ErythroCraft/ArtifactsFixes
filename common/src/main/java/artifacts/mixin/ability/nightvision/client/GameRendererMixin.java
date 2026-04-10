@@ -15,17 +15,17 @@ import org.spongepowered.asm.mixin.injection.At;
 public class GameRendererMixin {
 
     @ModifyReturnValue(method = "getNightVisionScale", at = @At("RETURN"))
-    private static float getNightVisionScale(float original, LivingEntity entity, float f) {
-        MobEffectInstance effect = entity.getEffect(MobEffects.NIGHT_VISION);
+    private static float getNightVisionScale(float original, LivingEntity camera, float a) {
+        MobEffectInstance effect = camera.getEffect(MobEffects.NIGHT_VISION);
         if (effect == null || !effect.endsWithin(12 * 20)) {
             return original;
         }
-        double scale = EquipmentHelper.reduceComponents(ModDataComponents.REDUCED_NIGHT_VISION.get(), entity, 0D,
-                (prefix, stack, component) -> Math.max(component.get(), prefix)
+        double scale = EquipmentHelper.reduceComponents(ModDataComponents.REDUCED_NIGHT_VISION.get(), camera, 0D,
+                (prefix, _, component) -> Math.max(component.get(), prefix)
         );
         if (scale == 0) {
             return original;
         }
-        return Mth.lerp(Math.max(0, effect.getDuration() - f - 11 * 20) / (12 * 20 - 11 * 20), (float) scale, original);
+        return Mth.lerp(Math.max(0, effect.getDuration() - a - 11 * 20) / (12 * 20 - 11 * 20), (float) scale, original);
     }
 }

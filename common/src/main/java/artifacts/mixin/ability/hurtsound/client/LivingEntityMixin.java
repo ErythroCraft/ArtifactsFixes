@@ -19,8 +19,7 @@ public abstract class LivingEntityMixin {
     public abstract float getVoicePitch();
 
     @Inject(method = "handleDamageEvent", at = @At(value = "HEAD"))
-    private void onClientPlayHurtSound(DamageSource damageSource, CallbackInfo ci) {
-        //noinspection ConstantConditions
+    private void onClientPlayHurtSound(DamageSource source, CallbackInfo ci) {
         ArtifactHooks.onPlaySoundAtEntity((LivingEntity) (Object) this, this.getSoundVolume(), this.getVoicePitch());
     }
 }
