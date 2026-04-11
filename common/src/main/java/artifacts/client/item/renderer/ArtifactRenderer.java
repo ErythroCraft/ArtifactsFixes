@@ -81,7 +81,6 @@ public abstract class ArtifactRenderer {
         return Artifacts.id(path.toString());
     }
 
-    @SuppressWarnings("DataFlowIssue")
     protected static <S> void renderModelWithFoil(Model<S> model, S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Identifier texture, int packedLight, boolean hasFoil) {
         RenderType renderType = model.renderType(texture);
         submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, 0, null);

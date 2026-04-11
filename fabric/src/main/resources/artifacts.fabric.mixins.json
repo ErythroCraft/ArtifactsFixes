@@ -2,11 +2,10 @@
   "required": true,
   "minVersion": "0.8",
   "package": "artifacts.fabric.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "plugin": "artifacts.ArtifactsMixinPlugin",
   "mixins": [
     "PlayerListMixin",
-    "ability.LivingEntitiesMixin",
     "ability.LivingEntityMixin",
     "ability.PlayerMixin",
     "ability.autosmelt.LootTableMixin",

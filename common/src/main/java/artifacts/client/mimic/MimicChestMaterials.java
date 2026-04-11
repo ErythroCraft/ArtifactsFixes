@@ -7,10 +7,12 @@ import artifacts.integration.lootr.LootrCompat;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.SpecialDates;
 
+import java.time.Month;
+import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class MimicChestMaterials {
@@ -39,7 +41,8 @@ public class MimicChestMaterials {
         chestMaterials = new ArrayList<>();
         lootrMaterials = new ArrayList<>();
 
-        boolean isChristmas = isChristmas();
+        boolean isChristmas = SpecialDates.isExtendedChristmas()
+                || SpecialDates.dayNow().equals(MonthDay.of(Month.APRIL, 1));
 
         vanillaChestMaterial = isChristmas ? Sheets.CHEST_XMAS_LOCATION : Sheets.CHEST_LOCATION;
 
@@ -55,12 +58,6 @@ public class MimicChestMaterials {
             lootrMaterials.add(createMaterial(ModCompat.LOOTR.id("chest")));
             addQuarkMaterials(lootrMaterials, "lootr_normal");
         }
-    }
-
-    private static boolean isChristmas() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.MONTH) == Calendar.DECEMBER && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26
-                || calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) == 1;
     }
 
     private static Material createMaterial(Identifier id) {

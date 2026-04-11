@@ -14,9 +14,9 @@ authors="${mod_author}"
 description='''${description}'''
 
 [[mixins]]
-config="artifacts.common.mixins.json"
+config="${mod_id}.common.mixins.json"
 [[mixins]]
-config="artifacts.neoforge.mixins.json"
+config="${mod_id}.neoforge.mixins.json"
 
 [[dependencies.artifacts]]
 modId="neoforge"
