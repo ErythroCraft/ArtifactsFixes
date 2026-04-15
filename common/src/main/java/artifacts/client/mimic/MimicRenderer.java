@@ -15,7 +15,7 @@ public class MimicRenderer extends MobRenderer<MimicEntity, MimicRenderState, Mi
     public MimicRenderer(EntityRendererProvider.Context context) {
         super(context, new MimicModel(context.bakeLayer(MimicModel.LAYER_LOCATION)), 0.45F);
         this.chestMaterials = new MimicChestMaterials();
-        addLayer(new MimicChestLayer(this, context.getModelSet(), context.getMaterials()));
+        addLayer(new MimicChestLayer(this, context.getModelSet(), context.getSprites()));
     }
 
     @Override

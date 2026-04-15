@@ -10,14 +10,14 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.MaterialSet;
+import net.minecraft.client.resources.model.sprite.SpriteGetter;
 
 public class MimicChestLayer extends RenderLayer<MimicRenderState, MimicModel> {
 
     private final MimicModel chestModel;
-    private final MaterialSet materials;
+    private final SpriteGetter materials;
 
-    public MimicChestLayer(RenderLayerParent<MimicRenderState, MimicModel> parent, EntityModelSet modelSet, MaterialSet materials) {
+    public MimicChestLayer(RenderLayerParent<MimicRenderState, MimicModel> parent, EntityModelSet modelSet, SpriteGetter materials) {
         super(parent);
         chestModel = new MimicModel(modelSet.bakeLayer(MimicModel.CHEST_LAYER_LOCATION));
         this.materials = materials;
