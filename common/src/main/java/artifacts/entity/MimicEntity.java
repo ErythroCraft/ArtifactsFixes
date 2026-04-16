@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -27,6 +26,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.EnumSet;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MimicEntity extends Mob implements Enemy {
 
@@ -394,10 +394,8 @@ public class MimicEntity extends Mob implements Enemy {
     private class NearestPlayerTargetGoal extends NearestAttackableTargetGoal<Player> {
 
         public NearestPlayerTargetGoal() {
-            super(MimicEntity.this, Player.class, 1, true, false, null);
-            // noinspection ConstantConditions
-            super.targetConditions = TargetingConditions.forNonCombat().range(this.getFollowDistance()).selector(
-                    (entity, level) -> entity.canBeSeenAsEnemy() && (!isDormant || distanceTo(entity) < getAttribute(Attributes.FOLLOW_RANGE).getValue() / 2.5)
+            super(MimicEntity.this, Player.class, 1, true, false,
+                    (entity, _) -> entity.canBeSeenAsEnemy() && (!isDormant || distanceTo(entity) < Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).getValue() / 2.5)
             );
         }
     }

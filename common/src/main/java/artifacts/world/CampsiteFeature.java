@@ -131,7 +131,7 @@ public class CampsiteFeature extends AbstractCampsiteFeature<CampsiteFeatureConf
     }
 
     private void placeFurnace(CampsiteFeatureConfiguration config, WorldGenLevel level, BlockPos pos, RandomSource random, Direction facing) {
-        BlockState furnace = config.furnaces().getState(random, pos);
+        BlockState furnace = config.furnaces().getState(level, random, pos);
         furnace = furnace.setValue(FurnaceBlock.FACING, facing);
         setBlock(level, pos, furnace);
         if (random.nextBoolean()) {

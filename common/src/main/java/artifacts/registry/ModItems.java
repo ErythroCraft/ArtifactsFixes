@@ -89,7 +89,7 @@ public class ModItems {
                             Optional.of(SoundEvents.SPEAR_WOOD_HIT)
                     )
             )
-            .component(DataComponents.DAMAGE_TYPE, new EitherHolder<>(DamageTypes.SPEAR))
+            .properties(p -> p.delayedHolderComponent(DataComponents.DAMAGE_TYPE, DamageTypes.SPEAR))
             .component(DataComponents.ATTACK_RANGE, new AttackRange(0, 3.5F, 0, 5.5F, 0.25F, 0.5F))
             .component(DataComponents.MINIMUM_ATTACK_CHARGE, 1F)
             .component(DataComponents.WEAPON, new Weapon(1))
