@@ -51,14 +51,6 @@ public class ModItems {
     public static final Register<Item> ITEMS = Register.create(Registries.ITEM);
     public static final Register<CreativeModeTab> CREATIVE_MODE_TABS = Register.create(Registries.CREATIVE_MODE_TAB);
 
-    @SuppressWarnings({"unused", "ConstantConditions"})
-    public static final RegistryHolder<CreativeModeTab, CreativeModeTab> CREATIVE_TAB = CREATIVE_MODE_TABS.register("main", () -> new CreativeModeTab.Builder(null, 0)
-            .title(Component.translatable("%s.creative_tab".formatted(Artifacts.MOD_ID)))
-            .icon(() -> new ItemStack(ModItems.BUNNY_HOPPERS.value()))
-            .displayItems((parameters, output) -> ITEMS.forEach(output::accept))
-            .build()
-    );
-
     public static final Holder<Item> MIMIC_SPAWN_EGG = register("mimic_spawn_egg", SpawnEggItem::new,
             () -> new Item.Properties().spawnEgg(ModEntityTypes.MIMIC.get())
     );

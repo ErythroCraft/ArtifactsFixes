@@ -5,6 +5,7 @@ import artifacts.event.ArtifactHooks;
 import artifacts.fabric.event.ArtifactHooksFabric;
 import artifacts.fabric.network.FabricNetworkHandler;
 import artifacts.fabric.registry.ModFeaturesFabric;
+import artifacts.fabric.registry.ModItemsFabric;
 import artifacts.fabric.registry.ModLootTablesFabric;
 import artifacts.fabric.registry.ModResourceConditions;
 import artifacts.registry.ModEntityTypes;
@@ -24,6 +25,7 @@ public class ArtifactsFabric implements ModInitializer {
         ArtifactHooksFabric.register();
         ModFeaturesFabric.register();
         ModResourceConditions.register();
+        ModItemsFabric.registerCreativeModeTab();
         FabricNetworkHandler.registerClientboundPayloads();
         FabricNetworkHandler.registerServerboundPayloads();
         FabricNetworkHandler.registerServerboundReceivers();

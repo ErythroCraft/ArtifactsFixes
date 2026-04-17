@@ -8,6 +8,7 @@ import artifacts.neoforge.integration.curios.CuriosCompat;
 import artifacts.neoforge.network.NeoForgeNetworkHandler;
 import artifacts.neoforge.registry.ModAttachmentTypes;
 import artifacts.neoforge.registry.ModConditions;
+import artifacts.neoforge.registry.ModItemsNeoForge;
 import artifacts.neoforge.registry.ModLootModifiers;
 import artifacts.registry.ModEntityTypes;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,6 +38,7 @@ public class ArtifactsNeoForge {
             new ArtifactsNeoForgeClient(modBus);
         }
 
+        ModItemsNeoForge.registerCreativeModeTab();
         ModConditions.CONDITIONS.register();
         ModLootModifiers.LOOT_MODIFIERS.register();
         ModAttachmentTypes.ATTACHMENT_TYPES.register();
