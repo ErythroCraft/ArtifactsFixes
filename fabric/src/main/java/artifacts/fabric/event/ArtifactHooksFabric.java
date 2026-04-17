@@ -19,8 +19,8 @@ public class ArtifactHooksFabric {
 
     public static void register() {
         if (ModCompat.EXPANDABILITY.isLoaded()) {
-            PlayerSwimCallback.EVENT.register(ArtifactHooksFabric::onPlayerSwim);
-            LivingFluidCollisionCallback.EVENT.register(ArtifactHooksFabric::onAquaDashersFluidCollision);
+            // PlayerSwimCallback.EVENT.register(ArtifactHooksFabric::onPlayerSwim);
+            // LivingFluidCollisionCallback.EVENT.register(ArtifactHooksFabric::onAquaDashersFluidCollision);
         }
         UseItemCallback.EVENT.register(ArtifactHooksFabric::onUseItem);
     }

@@ -10,7 +10,7 @@
   "contact": {
     "homepage": "${homepage}",
     "sources": "${sources}",
-    "issues": "${issues}"
+    "issues": "${issue_tracker}"
   },
   "license": "${license}",
   "icon": "assets/artifacts/icon.png",
@@ -34,7 +34,7 @@
     "artifacts.fabric.mixins.json"
   ],
   "depends": {
-    "fabric": "*",
+    "fabric-api": "*",
     "minecraft": "~${minecraft_version}",
     "java": ">=${java_version}"
   },

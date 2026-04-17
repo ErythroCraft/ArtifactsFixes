@@ -51,9 +51,11 @@ configurations {
     }
 }
 
+sourceSets.main.resources.srcDirs = ['src/main/resources', 'src/generated/resources']
+
 artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
-    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.files
 }
 
 // Implement mcgradleconventions loader attribute

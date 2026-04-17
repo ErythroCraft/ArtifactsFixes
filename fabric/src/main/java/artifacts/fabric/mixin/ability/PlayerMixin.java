@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PlayerMixin {
 
     @Inject(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;setHealth(F)V", shift = At.Shift.AFTER))
-    private void onEntityDamaged(ServerLevel level, DamageSource source, @Local(name = "dmg", argsOnly = true) float dmg, CallbackInfo ci) {
+    private void onEntityDamaged(ServerLevel level, DamageSource source, float dmg, CallbackInfo ci) {
         LivingEntity self = (LivingEntity) (Object) this;
         if (!self.isInvulnerableTo(level, source)) {
             ArtifactHooks.onLivingDamaged(self, source, dmg);
