@@ -1,7 +1,7 @@
-// 1.21.11	2026-04-13T16:20:15.7930697	Artifacts Recipes
+// 26.1.1	2026-04-19T15:41:29.9379595	Artifacts Recipes
 7140be7399b62aafd56835fdeb2ee195f145b05f data/artifacts/advancement/recipes/food/eternal_steak_from_campfire_cooking.json
 af057ef0cfc701a9e926db3fee84a4768f2c5243 data/artifacts/advancement/recipes/food/eternal_steak_from_smelting.json
 25a422a485e5b3cf0578939a0d3eeab3f40993d0 data/artifacts/advancement/recipes/food/eternal_steak_from_smoking.json
-d166ff423b37460fcb07a8ea915dbab7c6361b25 data/artifacts/recipe/eternal_steak_from_campfire_cooking.json
-2f4f9f12af72415bffac1e30a2178cd64d9be228 data/artifacts/recipe/eternal_steak_from_smelting.json
-c38da7507069eedb019811effbacc13f96bd8182 data/artifacts/recipe/eternal_steak_from_smoking.json
+d175ef8ff550244929b65a4208dc67eec79fbaf8 data/artifacts/recipe/eternal_steak_from_campfire_cooking.json
+23d031d1adbe99a41aeeec9af828943bc7cae56f data/artifacts/recipe/eternal_steak_from_smelting.json
+7619b15c03749a3e3a7249d0f0e73d6393313240 data/artifacts/recipe/eternal_steak_from_smoking.json
