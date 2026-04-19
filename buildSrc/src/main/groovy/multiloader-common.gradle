@@ -147,22 +147,23 @@ jar {
 
 processResources {
     var expandProps = [
-            'version'                      : version,
-            'group'                        : project.group, // Else we target the task's group.
-            'minecraft_version'            : minecraft_version,
-            'minecraft_version_range'      : minecraft_version_range,
-            'fabric_version'               : fabric_version,
-            'fabric_loader_version'        : fabric_loader_version,
-            'mod_name'                     : mod_name,
-            'mod_author'                   : mod_author,
-            'mod_id'                       : mod_id,
-            'license'                      : license,
-            'description'                  : project.description,
-            'homepage'                     : homepage,
-            'issue_tracker'                : issue_tracker,
-            'sources'                      : sources,
-            'neoforge_version'             : neoforge_version,
-            'java_version'                 : java_version
+            'version'                           : version,
+            'group'                             : project.group, // Else we target the task's group.
+            'minecraft_version'                 : minecraft_version,
+            'minecraft_version_range_neoforge'  : minecraft_version_range_neoforge,
+            'minecraft_version_range_fabric'    : minecraft_version_range_fabric,
+            'fabric_version'                    : fabric_version,
+            'fabric_loader_version'             : fabric_loader_version,
+            'mod_name'                          : mod_name,
+            'mod_author'                        : mod_author,
+            'mod_id'                            : mod_id,
+            'license'                           : license,
+            'description'                       : project.description,
+            'homepage'                          : homepage,
+            'issue_tracker'                     : issue_tracker,
+            'sources'                           : sources,
+            'neoforge_version'                  : neoforge_version,
+            'java_version'                      : java_version
     ]
 
     var jsonExpandProps = expandProps.collectEntries {

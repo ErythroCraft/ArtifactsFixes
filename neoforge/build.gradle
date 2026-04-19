@@ -11,11 +11,16 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
     implementation "eu.pb4:trinkets:${trinkets_version}"
+    compileOnly "dev.yumi.mc.core:yumi-mc-foundation:${yumi_version}"
 
     compileOnly "io.wispforest:accessories-neoforge:${accessories_version}"
     compileOnly "io.wispforest:owo-lib:${owo_version}"
 
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+
+    // compat & integration
+    compileOnly "maven.modrinth:lootr:s0EnSZFB"
+    compileOnly "io.github.apace100:apoli:${apoli_version}"
 }
 
 neoForge {
@@ -33,7 +38,7 @@ neoForge {
             clientData()
             gameDirectory = this.mkdir(this.file("runs/data"))
             // DataGen can be run by - "./gradlew :neoforge:runData" in Terminal.
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', findProject(':common').file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
         server {
             server()

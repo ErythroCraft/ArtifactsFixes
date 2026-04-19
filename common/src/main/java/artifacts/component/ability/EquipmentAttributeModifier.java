@@ -95,9 +95,6 @@ public record EquipmentAttributeModifier(
     @Override
     public void addToTooltip(TooltipWriter writer) {
         String attributeName = attribute().unwrapKey().orElseThrow().identifier().getPath();
-        if (attributeName.equals("swim_speed")) { // neoforge swim speed
-            attributeName = "generic.swim_speed";
-        }
 
         if (amount().get() > 0) {
             for (Holder<Attribute> attribute : POSITIVE_ATTRIBUTES_WITH_TOOLTIP) {

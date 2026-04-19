@@ -10,7 +10,7 @@ public class ModCompat {
     public static final ModInfo CREEPER_OVERHAUL = new ModInfo("creeperoverhaul");
     public static final ModInfo EXPANDABILITY = new ModInfo("expandability");
     public static final ModInfo CURIOS = new ModInfo("curios");
-    public static final ModInfo TRINKETS = new ModInfo("trinkets");
+    public static final ModInfo TRINKETS = new ModInfo("trinkets_updated");
     public static final ModInfo ACCESSORIES = new ModInfo("accessories");
     public static final ModInfo CCLAYER = new ModInfo("cclayer");
     public static final ModInfo TCLAYER = new ModInfo("tclayer");

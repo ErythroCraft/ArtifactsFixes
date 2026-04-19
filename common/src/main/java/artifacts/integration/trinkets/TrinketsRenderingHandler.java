@@ -32,8 +32,10 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
     @Override
     public @Nullable ArtifactRenderer getArtifactRenderer(Item item) {
         Optional<TrinketRenderer> renderer = TrinketRendererRegistry.getRenderer(item);
-        if (renderer.isPresent() && renderer.get() instanceof ArtifactTrinketRenderer artifactTrinketRenderer) {
-            return artifactTrinketRenderer.renderer().get();
+        if (renderer.isPresent() && renderer.get() instanceof ArtifactTrinketRenderer(
+                Supplier<ArtifactRenderer> supplier
+        )) {
+            return supplier.get();
         }
         return null;
     }
@@ -55,12 +57,12 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
     public record ArtifactTrinketRenderer(Supplier<ArtifactRenderer> renderer) implements TrinketRenderer {
 
         @Override
-        public void extractStates(ItemStack stack, TrinketSlotAccess slotReference, EntityModel<? extends LivingEntityRenderState> entityModel, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, LivingEntityRenderState renderState, float limbAngle, float limbDistance) {
+        public void submit(ItemStack stack, TrinketSlotAccess slotReference, EntityModel<? extends LivingEntityRenderState> contextModel, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, LivingEntityRenderState state, float limbAngle, float limbDistance) {
             int slotIndex = slotReference.index();
             if (slotReference.inventory().slotType().group().equals("offhand")) {
                 slotIndex += 1;
             }
-            renderer.get().render(stack, renderState, entityModel, slotIndex, poseStack, submitNodeCollector, light);
+            renderer.get().render(stack, state, contextModel, slotIndex, poseStack, submitNodeCollector, light);
         }
     }
 }

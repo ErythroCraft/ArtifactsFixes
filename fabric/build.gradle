@@ -12,7 +12,7 @@ dependencies {
     include "com.electronwill.night-config:core:${night_config_version}"
     include implementation("com.electronwill.night-config:toml:${night_config_version}")
 
-    include compileOnly("be.florens:expandability-fabric:${expandability_version}") // TODO
+    include implementation("be.florens:expandability-fabric:${expandability_version}")
 
     include implementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}")
     include implementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}")
@@ -30,7 +30,7 @@ dependencies {
 
     // compat & integration
     compileOnly "maven.modrinth:lootr:s0EnSZFB"
-    compileOnly "io.github.apace100:apoli:2.12.0-alpha.15+mc.1.21.1"
+    compileOnly "io.github.apace100:apoli:${apoli_version}"
 }
 
 loom {

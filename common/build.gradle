@@ -37,7 +37,7 @@ dependencies {
     // compat & integration
     compileOnly "maven.modrinth:lootr:s0EnSZFB"
     compileOnly "maven.modrinth:origins:5o5sFcLS"
-    compileOnly "io.github.apace100:apoli:2.12.0-alpha.15+mc.1.21.1"
+    compileOnly "io.github.apace100:apoli:${apoli_version}"
 }
 
 configurations {

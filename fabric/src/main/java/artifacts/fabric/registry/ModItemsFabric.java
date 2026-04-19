@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModItemsFabric {
 
+    // TODO: move this back to common
     public static void registerCreativeModeTab() {
         ModItems.CREATIVE_MODE_TABS.register("main", () -> FabricCreativeModeTab.builder()
                 .title(Component.translatable("%s.creative_tab".formatted(Artifacts.MOD_ID)))
@@ -15,5 +16,6 @@ public class ModItemsFabric {
                 .displayItems((_, output) -> ModItems.ITEMS.forEach(output::accept))
                 .build()
         );
+        ModItems.CREATIVE_MODE_TABS.register();
     }
 }

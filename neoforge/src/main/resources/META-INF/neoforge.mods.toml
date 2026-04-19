@@ -28,7 +28,7 @@ side="BOTH"
 [[dependencies.artifacts]]
 modId = "minecraft"
 type="required"
-versionRange = "${minecraft_version_range}"
+versionRange = "${minecraft_version_range_neoforge}"
 ordering = "NONE"
 side = "BOTH"
 
@@ -47,7 +47,7 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.artifacts]]
-modId = "trinkets"
+modId = "trinkets_updated"
 type="optional"
 versionRange = "*"
 ordering = "NONE"

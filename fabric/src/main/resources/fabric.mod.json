@@ -35,11 +35,11 @@
   ],
   "depends": {
     "fabric-api": "*",
-    "minecraft": "~${minecraft_version}",
+    "minecraft": "${minecraft_version_range_fabric}",
     "java": ">=${java_version}"
   },
   "suggests": {
-    "trinkets": "*",
+    "trinkets_updated": "*",
     "accessories": "*",
     "cloth-config": "*",
     "modmenu": "*"
