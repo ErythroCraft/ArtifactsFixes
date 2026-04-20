@@ -43,7 +43,7 @@ public class HeliumFlamingoOverlay {
         }
 
         GuiAccessor gui = (GuiAccessor) Minecraft.getInstance().gui;
-        boolean isLosingCharge = swimData.isSwimFlying();
+        boolean isLosingCharge = swimData.shouldDepleteSwimFlyingCharge(player);
 
         // duration in ticks to fully charge/deplete
         int maxProgress = isLosingCharge

@@ -54,7 +54,7 @@ public class SwimData {
     }
 
     private void updateSwimProgress(Player player) {
-        if (shouldDepleteSwimFlyingCharge(player)) {
+        if (shouldDepleteSwimFlyingCharge(player) && !player.isCreative()) {
             int maxFlightDuration = SwimInAir.getMaxFlightDuration(player);
             swimFlyingCharge -= 1D / maxFlightDuration;
             swimFlyingCharge = Math.max(0, swimFlyingCharge);
@@ -70,9 +70,9 @@ public class SwimData {
         }
     }
 
-    private boolean shouldDepleteSwimFlyingCharge(Player player) {
+    public boolean shouldDepleteSwimFlyingCharge(Player player) {
         boolean hasSinkingAbility = EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player);
-        return isSwimFlying && !player.isCreative() && (!player.isUnderWater() || hasSinkingAbility);
+        return isSwimFlying && (!player.isUnderWater() || hasSinkingAbility);
     }
 
     public void toggleSwimFlying(Player player) {

@@ -31,7 +31,7 @@ public class SwimInAirInputHooks {
         wasSwimKeyDown = isSwimKeyDown;
 
         if (isSwimKeyPressed) {
-            if (swimData.isSwimFlying() ? player.isSwimming() : SwimInAir.canSwim(player)) {
+            if (swimData.isSwimFlying() ? player.isSwimming() && swimData.shouldDepleteSwimFlyingCharge(player) : SwimInAir.canSwim(player)) {
                 swimData.toggleSwimFlying(player);
                 swimData.syncSwimming(player);
             }
