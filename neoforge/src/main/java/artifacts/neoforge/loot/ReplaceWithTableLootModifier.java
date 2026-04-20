@@ -15,13 +15,13 @@ import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 
 public class ReplaceWithTableLootModifier extends AddTableLootModifier {
 
-    public static final MapCodec<ReplaceWithTableLootModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            IGlobalLootModifier.LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(m -> m.conditions),
-            ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("table").forGetter(AddTableLootModifier::table)
-    ).apply(instance, ReplaceWithTableLootModifier::new));
+    public static final MapCodec<ReplaceWithTableLootModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> codecStart(instance)
+            .and(ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("table").forGetter(ReplaceWithTableLootModifier::table))
+            .apply(instance, ReplaceWithTableLootModifier::new)
+    );
 
-    public ReplaceWithTableLootModifier(LootItemCondition[] conditions, ResourceKey<LootTable> lootTable) {
-        super(conditions, lootTable);
+    public ReplaceWithTableLootModifier(LootItemCondition[] conditions, int priority, ResourceKey<LootTable> lootTable) {
+        super(conditions, priority, lootTable);
     }
 
     @Override

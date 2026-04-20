@@ -21,7 +21,7 @@ config="${mod_id}.neoforge.mixins.json"
 [[dependencies.artifacts]]
 modId="neoforge"
 type="required"
-versionRange = "*"
+versionRange = "${neoforge_version_range}"
 ordering="NONE"
 side="BOTH"
 

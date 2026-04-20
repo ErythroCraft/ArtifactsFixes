@@ -26,6 +26,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import net.neoforged.neoforge.common.loot.AddTableLootModifier;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 
@@ -346,9 +347,9 @@ public class LootModifiers extends GlobalLootModifierProvider {
             LootItemCondition[] conditions = this.conditions.toArray(new LootItemCondition[]{});
             ResourceKey<LootTable> table = Artifacts.key(Registries.LOOT_TABLE, "inject/" + lootTable.identifier().getPath());
             if (replace) {
-                return new ReplaceWithTableLootModifier(conditions, table);
+                return new ReplaceWithTableLootModifier(conditions, IGlobalLootModifier.DEFAULT_PRIORITY / 2, table);
             }
-            return new AddTableLootModifier(conditions, table);
+            return new AddTableLootModifier(conditions, IGlobalLootModifier.DEFAULT_PRIORITY, table);
         }
 
         protected LootTable.Builder createLootTable() {

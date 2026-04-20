@@ -1,9 +1,9 @@
-// 26.1.1	2026-04-19T15:41:29.9329584	Global Loot Modifiers : artifacts
-b117bf3b581819421d98a3513a2d2377f329d86b data/artifacts/loot_modifiers/inject/archaeology/desert_pyramid.json
-9b335ed6249f3625ee3815e6af61d9cb5f500772 data/artifacts/loot_modifiers/inject/archaeology/desert_well.json
-45e45f25724131f72a9252a759fe9d4c78a41176 data/artifacts/loot_modifiers/inject/archaeology/ocean_ruin_cold.json
-44e98ff03c74a20c7b97c032e1cb204e731d1ffe data/artifacts/loot_modifiers/inject/archaeology/ocean_ruin_warm.json
-c76a4faf0967bd47b0fda26cc7e55bbb54215d80 data/artifacts/loot_modifiers/inject/archaeology/trail_ruins_rare.json
+// 26.1.2	2026-04-20T13:00:43.0811471	Global Loot Modifiers : artifacts
+01a92c97bddc23ae50dce8b0bb14376301f28c06 data/artifacts/loot_modifiers/inject/archaeology/desert_pyramid.json
+1672da3bd1d4632e7c1b7a97df97bf480cd79a54 data/artifacts/loot_modifiers/inject/archaeology/desert_well.json
+62b699a0e8d975be21038777c49dcfd55e2fd746 data/artifacts/loot_modifiers/inject/archaeology/ocean_ruin_cold.json
+fc840f1fb00f6bd4cb3d742cfc79159dad0d8fba data/artifacts/loot_modifiers/inject/archaeology/ocean_ruin_warm.json
+8a72f28207e338c02060167803e4f05ccc9d7467 data/artifacts/loot_modifiers/inject/archaeology/trail_ruins_rare.json
 56e82fe2444ecf4f08e5af5a4e9d9097ac0c6328 data/artifacts/loot_modifiers/inject/chests/abandoned_mineshaft.json
 dcef5af14d6d1d2541e1d6c873a32aa6aba917c5 data/artifacts/loot_modifiers/inject/chests/ancient_city.json
 387efcb10156cb7a26d9929112d8ef2013a2c911 data/artifacts/loot_modifiers/inject/chests/ancient_city_ice_box.json
@@ -36,4 +36,3 @@ f6dceb23b2cecc3ac77bd1dd916ee030cc3b114c data/artifacts/loot_modifiers/inject/ch
 3f3e3cf2dc1cd021d03f73417afeab4be3309616 data/artifacts/loot_modifiers/inject/chests/woodland_mansion.json
 2105a8ec2eec5d72dea7144ce6583563aaa564fc data/artifacts/loot_modifiers/inject/entities/cow.json
 c27a9b76c2d12d54eebf52f4ff079c5d9b010e06 data/artifacts/loot_modifiers/inject/entities/mooshroom.json
-a9190a44904e8bca3423fafff20618d87a5a4a11 data/neoforge/loot_modifiers/global_loot_modifiers.json

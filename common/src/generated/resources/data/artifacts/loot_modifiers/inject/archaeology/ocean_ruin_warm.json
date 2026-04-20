@@ -10,5 +10,6 @@
       "config": "archaeology"
     }
   ],
+  "priority": 500,
   "table": "artifacts:inject/archaeology/ocean_ruin_warm"
 }

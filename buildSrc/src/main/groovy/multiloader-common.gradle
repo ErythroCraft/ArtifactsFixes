@@ -4,7 +4,7 @@ plugins {
 }
 
 base {
-    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+    archivesName = "${mod_id}-${project.name}"
 }
 
 java {
@@ -163,6 +163,7 @@ processResources {
             'issue_tracker'                     : issue_tracker,
             'sources'                           : sources,
             'neoforge_version'                  : neoforge_version,
+            'neoforge_version_range'            : neoforge_version_range,
             'java_version'                      : java_version
     ]
 
