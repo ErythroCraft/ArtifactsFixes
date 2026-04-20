@@ -10,17 +10,25 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class ItemSubCategoryListEntry extends SubCategoryListEntry {
 
-    private final ItemStack stack;
+    @Nullable
+    private ItemStack stack;
 
     @SuppressWarnings("deprecation")
     public ItemSubCategoryListEntry(Item item, List<AbstractConfigListEntry<?>> entries) {
-        super(item.getDefaultInstance().getItemName(), List.copyOf(entries), false);
-        this.stack = new ItemStack(item);
+        // Item components might not be bound yet when opened from the main menu
+        super(Component.translatable(item.getDescriptionId()), List.copyOf(entries), false);
+        try {
+            this.stack = new ItemStack(item);
+        } catch (NullPointerException ignored) {
+            // 🤠
+        }
+
         List<String> searchTags = List.of(getFieldName().getString().split(" "));
         // noinspection unchecked
         getValue().forEach(value -> value.appendSearchTags(searchTags));
@@ -39,16 +47,22 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
     }
 
     @Override
-    public void lateRender(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-        super.lateRender(graphics, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isHovered, float delta) {
+        super.extractRenderState(graphics, index, y, x, entryWidth, entryHeight, mouseX, mouseY, isHovered, delta);
 
-        graphics.item(stack, -4, 2);
-        graphics.text(Minecraft.getInstance().font, this.getActualDisplayedFieldName().getVisualOrderText(), 16, 6, -1);
+        if (stack != null) {
+            graphics.fakeItem(stack, x - 4, y + 2);
+            graphics.text(Minecraft.getInstance().font, this.getActualDisplayedFieldName().getVisualOrderText(), x + 16, y + 6, -1);
+        }
     }
 
     @Override
     public Component getDisplayedFieldName() {
-        return CommonComponents.EMPTY;
+        if (stack != null) {
+            // We render this ourselves, offset to the right
+            return CommonComponents.EMPTY;
+        }
+        return super.getDisplayedFieldName();
     }
 
     public Component getActualDisplayedFieldName() {
