@@ -5,6 +5,7 @@ import artifacts.component.Equipable;
 import artifacts.component.ability.*;
 import artifacts.component.ability.mobeffect.EquipmentMobEffect;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
+import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.Holder;
@@ -87,12 +88,12 @@ public final class ArtifactProperties {
         return component(type, new SimpleAbility(enabled));
     }
 
-    public <T> ArtifactProperties component(DataComponentType<T> type, Value.ConfigValue<Boolean> condition, T component) {
+    public <T> ArtifactProperties component(DataComponentType<T> type, ConfigValue<Boolean> condition, T component) {
         return delayedComponent(type, condition, _ -> component);
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, Value.ConfigValue<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
+    public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, ConfigValue<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
         if (!condition.requiresRestart()) {
             throw new IllegalArgumentException();
         }
