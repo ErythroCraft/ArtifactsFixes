@@ -40,6 +40,9 @@ public class Artifacts {
         return ResourceKey.create(registry, id(path));
     }
 
+    /**
+     * The dedicated server or logical server currently running on this machine. Can be null for clients.
+     */
     public static @Nullable MinecraftServer getCurrentServer() {
         return currentServer;
     }
@@ -83,6 +86,9 @@ public class Artifacts {
 
     public static void onServerStarting(MinecraftServer server) {
         currentServer = server;
+        // Read the config from disk when starting a server or loading a single-player world,
+        // the current loaded values could be outdated if the user previously played on a server this session.
+        // Syncing to clients isn't needed, since none are connected at this time
         for (ConfigManager config : CONFIG.configs) {
             config.readValuesFromConfig();
         }

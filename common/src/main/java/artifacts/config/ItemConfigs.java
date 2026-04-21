@@ -278,6 +278,7 @@ public class ItemConfigs extends ConfigManager {
 
     @Override
     public void onConfigChanged() {
+        // Clients should always receive item configs from the server, only servers should read this config from disk
         if (Artifacts.getCurrentServer() != null) {
             Artifacts.LOGGER.info("Sending updated item configs to connected clients");
             readValuesFromConfig();

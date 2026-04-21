@@ -94,6 +94,11 @@ public class ArtifactsConfigScreen {
         return configEntry.build();
     }
 
+    /* Config entries read and write from the config file directly when saved,
+     * rather than modifying the in-memory config and then saving it to disk.
+     * This allows connected clients to display and modify their own config options,
+     * without overriding settings received from the server.
+     */
     private <T> FieldBuilder<?, ?, ?> createConfigEntry(ConfigManager config, Value.ConfigValue<T> value, Component title) {
         FieldBuilder<?, ?, ?> configEntry = value.type().getConfigEntryFactory().createConfigEntry(config, builder.entryBuilder(), title, value);
         configEntry.requireRestart(value.requiresRestart());
