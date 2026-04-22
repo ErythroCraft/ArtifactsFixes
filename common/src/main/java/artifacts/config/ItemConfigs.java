@@ -605,10 +605,10 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The probability that the Thorn Pendant damages an attacking entity").build();
 
         public final ConfigValue<Integer> maxDamage = define("maxDamage", ValueTypes.NON_NEGATIVE_INT, 6)
-                .tooltipLine("The minimum amount of damage that is dealt when the Thorn Pendant activates").build();
+                .tooltipLine("The maximum amount of damage that is dealt when the Thorn Pendant activates").build();
 
         public final ConfigValue<Integer> minDamage = define("minDamage", ValueTypes.NON_NEGATIVE_INT, 2)
-                .tooltipLine("The maximum amount of damage that is dealt when the Thorn Pendant activates").build();
+                .tooltipLine("The minimum amount of damage that is dealt when the Thorn Pendant activates").build();
 
         public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 0)
                 .tooltipLine("The duration in seconds the Thorn Pendant goes on cooldown for after activating").build();
@@ -689,7 +689,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class WhoopeeCushion extends ItemCategory {
 
-        public final ConfigValue<Double> fartChance = define("fartChance", ValueTypes.FRACTION, 0.12)
+        public final ConfigValue<Double> fartChance = define("fartChance", ValueTypes.ATTRIBUTE_MODIFIER, 0.12)
                 .tooltipLine("The probability that a fart sound plays when sneaking or double jumping while wearing the Whoopee Cushion").build();
 
         private WhoopeeCushion() {
