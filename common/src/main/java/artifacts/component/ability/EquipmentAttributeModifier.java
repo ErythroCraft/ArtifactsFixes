@@ -57,7 +57,7 @@ public record EquipmentAttributeModifier(
 
     public static final Codec<EquipmentAttributeModifier> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BuiltInRegistries.ATTRIBUTE.holderByNameCodec().fieldOf("attribute").forGetter(EquipmentAttributeModifier::attribute),
-            ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT.codec().fieldOf("amount").forGetter(EquipmentAttributeModifier::amount),
+            ValueTypes.ATTRIBUTE_MODIFIER.codec().fieldOf("amount").forGetter(EquipmentAttributeModifier::amount),
             AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(EquipmentAttributeModifier::operation),
             Identifier.CODEC.fieldOf("id").forGetter(EquipmentAttributeModifier::id),
             Codec.BOOL.optionalFieldOf("ignore_cooldown", true).forGetter(EquipmentAttributeModifier::ignoreCooldown)
@@ -66,7 +66,7 @@ public record EquipmentAttributeModifier(
     public static final StreamCodec<RegistryFriendlyByteBuf, EquipmentAttributeModifier> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.holderRegistry(Registries.ATTRIBUTE),
             EquipmentAttributeModifier::attribute,
-            ValueTypes.ATTRIBUTE_MODIFIER_AMOUNT.streamCodec(),
+            ValueTypes.ATTRIBUTE_MODIFIER.streamCodec(),
             EquipmentAttributeModifier::amount,
             AttributeModifier.Operation.STREAM_CODEC,
             EquipmentAttributeModifier::operation,
