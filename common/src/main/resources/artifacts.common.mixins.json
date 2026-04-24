@@ -23,7 +23,6 @@
     "ability.retaliation.EnchantmentHelperMixin",
     "ability.walkonpowdersnow.PowderSnowBlockMixin",
     "accessors.EntityAccessor",
-    "accessors.LivingEntityAccessor",
     "accessors.MobAccessor",
     "attribute.LivingEntityMixin",
     "attribute.PlayerMixin",

@@ -1,6 +1,5 @@
 package artifacts.util;
 
-import artifacts.mixin.accessors.LivingEntityAccessor;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -33,9 +32,6 @@ public class DamageSourceHelper {
     }
 
     public static boolean wasLastHurtByPlayer(LivingEntity entity) {
-        if (entity instanceof LivingEntityAccessor mob) {
-            return mob.getLastHurtByPlayerMemoryTime() > 0 && mob.getLastHurtByPlayer() != null;
-        }
-        return false;
+        return entity.getLastHurtByPlayerMemoryTime() > 0 && entity.getLastHurtByPlayer() != null;
     }
 }
