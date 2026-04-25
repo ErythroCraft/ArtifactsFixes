@@ -13,9 +13,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.Util;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -29,7 +27,12 @@ public abstract class ValueType<T, C> {
 
     public abstract T read(C c);
 
-    public abstract C write(T c);
+    @SuppressWarnings("unchecked")
+    public T cast(Object value) {
+        return (T) value;
+    }
+
+    public abstract C write(T value);
 
     public final Codec<Value<T>> codec() {
         return ModCodecs.xorAlternative(
@@ -75,19 +78,9 @@ public abstract class ValueType<T, C> {
         return ByteBufCodecs.idMapper(i -> values[i], Util.createIndexLookup(Arrays.asList(values)));
     }
 
-    public final StreamCodec<ByteBuf, ConfigValue<T>> directConfigStreamCodec(String id) {
-        return valueStreamCodec().map(v -> new ConfigValue<>(this, id, v), ConfigValue::get);
-    }
-
     @SuppressWarnings("unchecked")
     private ConfigValue<T>[] getConfigValues() {
-        List<ConfigValue<T>> values = List.copyOf(Artifacts.CONFIG.items.getValues(this).values());
-        // yikes
-        ConfigValue<T>[] result = (ConfigValue<T>[]) Array.newInstance(values.getFirst().getClass(), values.size());
-        for (int i = 0; i < values.size(); i++) {
-            result[i] = values.get(i);
-        }
-        return result;
+        return Artifacts.CONFIG.items.getValues(this).values().toArray(ConfigValue[]::new);
     }
 
     public abstract ConfigEntries.ConfigEntryFactory<T> getConfigEntryFactory();

@@ -12,15 +12,12 @@ public final class ConfigValue<T> implements Value<T>, StringRepresentable {
 
     private T value;
 
-    public ConfigValue(ValueType<T, ?> type, String id, T defaultValue) {
-        this(type, id, defaultValue, false);
-    }
-
     public ConfigValue(ValueType<T, ?> type, String id, T defaultValue, boolean requiresRestart) {
         this.type = type;
         this.id = id;
         this.requiresRestart = requiresRestart;
-        this.defaultValue = this.value = defaultValue;
+        this.defaultValue = defaultValue;
+        this.value = defaultValue;
     }
 
     public String getId() {
@@ -28,7 +25,7 @@ public final class ConfigValue<T> implements Value<T>, StringRepresentable {
     }
 
     public String getSerializedName() {
-        return getId();
+        return id;
     }
 
     public T get() {
@@ -52,18 +49,14 @@ public final class ConfigValue<T> implements Value<T>, StringRepresentable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof artifacts.config.value.ConfigValue<?> that)) return false;
-
-        return type.equals(that.type) && getId().equals(that.getId()) && getDefaultValue().equals(that.getDefaultValue());
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof ConfigValue<?> that)) return false;
+        return id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = type.hashCode();
-        result = 31 * result + getId().hashCode();
-        result = 31 * result + getDefaultValue().hashCode();
-        return result;
+        return id.hashCode();
     }
 }

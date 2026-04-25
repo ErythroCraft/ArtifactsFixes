@@ -58,8 +58,8 @@ public class EnumValueType<T extends Enum<T> & StringRepresentable> extends Valu
     }
 
     @Override
-    public String write(T c) {
-        return c.getSerializedName();
+    public String write(T value) {
+        return value.getSerializedName();
     }
 
     @Override
