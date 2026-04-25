@@ -16,7 +16,6 @@ import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
-// TODO cleanup this mess
 public class ArtifactsConfigScreen {
 
     private final ConfigBuilder builder;
@@ -39,64 +38,83 @@ public class ArtifactsConfigScreen {
             addConfigs(config);
         }
 
+        // Add nested subcategories into their parents
+        subCategories.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key -> {
+            List<String> keyParts = splitKey(key);
+            String parentKey = String.join(".", keyParts.subList(0, keyParts.size() - 1));
+            if (subCategories.containsKey(parentKey)) {
+                subCategories.get(parentKey).add(buildSubCategory(key));
+            }
+        });
+
+        // Add top-level subcategories to their categories
         subCategories.keySet().stream().sorted().forEach(key -> {
             List<String> keyParts = splitKey(key);
-            ConfigCategory category = builder.getOrCreateCategory(getTitle(keyParts.getFirst()));
-            AbstractConfigListEntry<?> subCategory;
-            String name = keyParts.getLast();
-            if (Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
-                subCategory = new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.getValue(Artifacts.id(name)), subCategories.get(key));
-            } else {
-                subCategory = builder.entryBuilder().startSubCategory(getTitle(key), List.copyOf(subCategories.get(key))).build();
+            String parentKey = String.join(".", keyParts.subList(0, keyParts.size() - 1));
+            if (!subCategories.containsKey(parentKey)) {
+                builder.getOrCreateCategory(getTitle(keyParts.getFirst())).addEntry(buildSubCategory(key));
             }
-            category.addEntry(subCategory);
         });
 
         return builder.build();
     }
 
+    private AbstractConfigListEntry<?> buildSubCategory(String key) {
+        String name = splitKey(key).getLast();
+        List<AbstractConfigListEntry<?>> entries = subCategories.get(key);
+        if (isItem(name)) {
+            return new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.getValue(Artifacts.id(name)), entries);
+        }
+        return builder.entryBuilder().startSubCategory(getTitle(key), List.copyOf(entries)).build();
+    }
+
+    private void addConfigEntry(ConfigCategory category, ConfigManager config, String key) {
+        List<String> keyParts = splitKey(key);
+        AbstractConfigListEntry<?> field = createField(config, config.getName(), key, config.getValues().get(key), config.getDescription(key).size());
+        if (keyParts.size() == 1) {
+            category.addEntry(field);
+        } else {
+            // Ensure all intermediate subcategories exist
+            for (int i = 1; i < keyParts.size() - 1; i++) {
+                String intermediateKey = config.getName() + '.' + String.join(".", keyParts.subList(0, i));
+                getOrCreateSubCategory(intermediateKey);
+            }
+            String parentKey = config.getName() + '.' + String.join(".", keyParts.subList(0, keyParts.size() - 1));
+            getOrCreateSubCategory(parentKey).add(field);
+        }
+    }
+
     private void addConfigs(ConfigManager config) {
-        ConfigCategory configBuilder = builder.getOrCreateCategory(getTitle(config.getName()));
+        ConfigCategory category = builder.getOrCreateCategory(getTitle(config.getName()));
         config.getValues().keySet()
                 .stream()
-                // Sort fields alphabetically, and move nested fields to bottom
-                .sorted()
-                // Move generateAsLoot config options to top
-                .sorted(Comparator.comparing(key -> !key.endsWith("generateAsLoot")))
-                .forEach(key -> {
-            List<String> keyParts = splitKey(key);
-            ConfigValue<?> value = config.getValues().get(key);
-            AbstractConfigListEntry<?> field = createField(config, config.getName(), key, value, config.getDescription(key).size());
-            if (keyParts.size() == 1) {
-                configBuilder.addEntry(field);
-            } else {
-                String subCategoryKey = config.getName() + '.' + keyParts.getFirst();
-                List<AbstractConfigListEntry<?>> subCategory = getOrCreateSubCategory(subCategoryKey);
-                subCategory.add(field);
-            }
-        });
+                .sorted(Comparator.comparing((String key) -> !key.endsWith("generateAsLoot"))
+                        .thenComparing(Comparator.naturalOrder()))
+                .forEach(key -> addConfigEntry(category, config, key));
     }
 
     private List<AbstractConfigListEntry<?>> getOrCreateSubCategory(String key) {
-        if (subCategories.containsKey(key)) {
-            return subCategories.get(key);
-        }
-        subCategories.put(key, new ArrayList<>());
-        return subCategories.get(key);
+        return subCategories.computeIfAbsent(key, _ -> new ArrayList<>());
     }
 
     private AbstractConfigListEntry<?> createField(ConfigManager config, String categoryName, String key, ConfigValue<?> value, int tooltipCount) {
-        key = categoryName + '.' + key;
-        String name = splitKey(key).getLast();
-        name = name.equals("cooldown") || name.equals("enabled") || name.equals("generateAsLoot") ? name : key;
-        Component[] tooltips = getTooltips(key, tooltipCount);
-        FieldBuilder<?, ?, ?> configEntry = createConfigEntry(config, value, getTitle(name));
-        if (configEntry instanceof AbstractFieldBuilder<?,?,?> fieldBuilder) {
-            fieldBuilder.setTooltip(tooltips);
-        } else if (configEntry instanceof DropdownMenuBuilder<?> dropdownBuilder) {
-            dropdownBuilder.setTooltip(tooltips);
+        String fullKey = categoryName + '.' + key;
+        String name = splitKey(fullKey).getLast();
+        if (!name.equals("cooldown") && !name.equals("enabled") && !name.equals("generateAsLoot")) {
+            name = fullKey;
         }
+        Component[] tooltips = getTooltips(fullKey, tooltipCount);
+        FieldBuilder<?, ?, ?> configEntry = createConfigEntry(config, value, getTitle(name));
+        applyTooltip(configEntry, tooltips);
         return configEntry.build();
+    }
+
+    private static void applyTooltip(FieldBuilder<?, ?, ?> builder, Component[] tooltips) {
+        if (builder instanceof AbstractFieldBuilder<?, ?, ?> b) {
+            b.setTooltip(tooltips);
+        } else if (builder instanceof DropdownMenuBuilder<?> b) {
+            b.setTooltip(tooltips);
+        }
     }
 
     /* Config entries read and write from the config file directly when saved,
@@ -111,30 +129,32 @@ public class ArtifactsConfigScreen {
     }
 
     private static List<String> splitKey(String key) {
-        return new ArrayList<>(Arrays.asList(key.split("\\.")));
+        return Arrays.asList(key.split("\\."));
     }
 
     private static Component getTitle(String categoryKey) {
         String name = categoryKey.substring(categoryKey.lastIndexOf('.') + 1);
-        if (Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
-            return BuiltInRegistries.ITEM.getValue(Artifacts.id(name)).getDefaultInstance().getItemName();
-        }
-        return Component.translatable("%s.config.%s.title".formatted(Artifacts.MOD_ID, categoryKey));
+        return isItem(name)
+                ? BuiltInRegistries.ITEM.getValue(Artifacts.id(name)).getDefaultInstance().getItemName()
+                : Component.translatable("%s.config.%s.title".formatted(Artifacts.MOD_ID, categoryKey));
+    }
+
+    private static boolean isItem(String name) {
+        return Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name));
     }
 
     private static Component[] getTooltips(String name, int count) {
-        Component[] tooltips = new Component[count];
         if (count > 1) {
-            for (int i = 0; i < tooltips.length; i++) {
+            Component[] tooltips = new Component[count];
+            for (int i = 0; i < count; i++) {
                 tooltips[i] = Component.translatable("%s.config.%s.description.%s".formatted(Artifacts.MOD_ID, name, i));
             }
-        } else {
-            if (name.endsWith("generateAsLoot")) {
-                tooltips[0] = Component.translatable("%s.config.%s.description".formatted(Artifacts.MOD_ID, "generateAsLoot"));
-            } else {
-                tooltips[0] = Component.translatable("%s.config.%s.description".formatted(Artifacts.MOD_ID, name));
-            }
+            return tooltips;
         }
-        return tooltips;
+        // TODO: cleanup shared descriptions/titles
+        String tooltipKey = name.endsWith("generateAsLoot") ? "generateAsLoot" : name;
+        return new Component[] {
+                Component.translatable("%s.config.%s.description".formatted(Artifacts.MOD_ID, tooltipKey))
+        };
     }
 }
