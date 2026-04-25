@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemSubCategoryListEntry extends SubCategoryListEntry {
@@ -28,10 +29,6 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
         } catch (NullPointerException ignored) {
             // 🤠
         }
-
-        List<String> searchTags = List.of(getFieldName().getString().split(" "));
-        // noinspection unchecked
-        getValue().forEach(value -> value.appendSearchTags(searchTags));
     }
 
     // https://github.com/shedaniel/cloth-config/issues/153

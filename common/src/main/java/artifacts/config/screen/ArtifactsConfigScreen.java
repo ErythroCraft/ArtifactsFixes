@@ -6,6 +6,7 @@ import artifacts.config.value.ConfigValue;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.gui.entries.SubCategoryListEntry;
 import me.shedaniel.clothconfig2.impl.builders.AbstractFieldBuilder;
 import me.shedaniel.clothconfig2.impl.builders.DropdownMenuBuilder;
 import me.shedaniel.clothconfig2.impl.builders.FieldBuilder;
@@ -52,7 +53,9 @@ public class ArtifactsConfigScreen {
             List<String> keyParts = splitKey(key);
             String parentKey = String.join(".", keyParts.subList(0, keyParts.size() - 1));
             if (!subCategories.containsKey(parentKey)) {
-                builder.getOrCreateCategory(getTitle(keyParts.getFirst())).addEntry(buildSubCategory(key));
+                SubCategoryListEntry subCategory = (SubCategoryListEntry) buildSubCategory(key);
+                appendSearchTagsToSubCategories(List.of(), subCategory.getFieldName(), subCategory.getValue());
+                builder.getOrCreateCategory(getTitle(keyParts.getFirst())).addEntry(subCategory);
             }
         });
 
@@ -66,6 +69,19 @@ public class ArtifactsConfigScreen {
             return new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.getValue(Artifacts.id(name)), entries);
         }
         return builder.entryBuilder().startSubCategory(getTitle(key), List.copyOf(entries)).build();
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"}) // Dumbass api uses raw types
+    private static void appendSearchTagsToSubCategories(List<String> parentSearchTags, Component fieldName, List<AbstractConfigListEntry> entries) {
+        List<String> searchTags = new ArrayList<>(parentSearchTags);
+        searchTags.addAll(List.of(fieldName.getString().split(" ")));
+        entries.forEach(value -> {
+            // noinspection unchecked
+            value.appendSearchTags(searchTags);
+            if (value instanceof SubCategoryListEntry entry) {
+                appendSearchTagsToSubCategories(searchTags, value.getFieldName(), entry.getValue());
+            }
+        });
     }
 
     private void addConfigEntry(ConfigCategory category, ConfigManager config, String key) {
