@@ -11,6 +11,7 @@ import artifacts.registry.ModDataComponents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentInitializers;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class ArtifactProperties {
 
@@ -80,6 +82,13 @@ public final class ArtifactProperties {
         return this;
     }
 
+    public ArtifactProperties durability(ItemDamageProperties durability) {
+        // Vanilla also sets max stack size to 1, but we already do this by default in ArtifactProperties#build()
+        delayedComponent(DataComponents.DAMAGE, durability::canBeDamaged, _ -> 0);
+        delayedComponent(DataComponents.MAX_DAMAGE, durability::canBeDamaged, _ -> durability.getMaxDamage());
+        return this;
+    }
+
     public ArtifactProperties component(DataComponentType<Unit> type) {
         return component(type, Unit.INSTANCE);
     }
@@ -92,17 +101,20 @@ public final class ArtifactProperties {
         return delayedComponent(type, condition, _ -> component);
     }
 
-    @SuppressWarnings("DataFlowIssue")
     public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, ConfigValue<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
         if (!condition.requiresRestart()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Config value '%s' used as a component condition should require reload".formatted(condition.getId()));
         }
+        return delayedComponent(type, (Supplier<Boolean>) condition, initializer);
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, Supplier<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
         properties.delayedComponent(type, context -> condition.get() ? initializer.create(context) : null);
         return this;
     }
 
-    @SuppressWarnings("DataFlowIssue")
-    public <T> ArtifactProperties component(DataComponentType<T> type, @Nullable T component) {
+    public <T> ArtifactProperties component(DataComponentType<T> type, T component) {
         properties.component(type, component);
         return this;
     }
@@ -117,9 +129,9 @@ public final class ArtifactProperties {
             component(ModDataComponents.DEPENDENCY_CHECK_TOOLTIP.get());
         }
         component(ModDataComponents.COSMETIC_TOOLTIP.get());
-        properties.stacksTo(1)
-                .rarity(Rarity.RARE)
-                .fireResistant();
+        properties.stacksTo(1);
+        properties.rarity(Rarity.RARE);
+        properties.fireResistant();
         if (!attributes.isEmpty()) {
             properties.component(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), new CompositeAbility<>(attributes));
         }

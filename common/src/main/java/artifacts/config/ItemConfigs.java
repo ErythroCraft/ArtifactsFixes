@@ -5,6 +5,7 @@ import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.item.ItemDamageProperties;
 import artifacts.network.NetworkHandler;
 import artifacts.network.UpdateItemConfigPacket;
 import artifacts.registry.ModItems;
@@ -627,6 +628,9 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Boolean> isGlider = define("isGlider", true)
                 .tooltipLine("Whether the Umbrella slows the player's falling speed when held").build();
 
+        // default max damage is twice that of a normal shield
+        public final ItemDamageProperties durability = defineDurability(336 * 2);
+
         private Umbrella() {
             super(ModItems.UMBRELLA);
         }
@@ -752,6 +756,38 @@ public final class ItemConfigs extends ConfigManager {
             super(holder.unwrapKey().orElseThrow().identifier().getPath());
             // shouldn't really do this from a constructor but whatever
             ItemConfigs.this.itemCategories.put(holder.unwrapKey().orElseThrow(), this);
+        }
+
+        protected DurabilityCategory defineDurability(int maxDamage) {
+            return new DurabilityCategory(getName() + ".durability", maxDamage);
+        }
+
+        private final class DurabilityCategory extends Category implements ItemDamageProperties {
+
+            private final ConfigValue<Boolean> canBeDamaged;
+            private final ConfigValue<Integer> maxDamage;
+
+            private DurabilityCategory(String name, int maxDamage) {
+                super(name);
+                this.canBeDamaged = define("canBeDamaged", false)
+                        .tooltipLine("Whether this item has a limited number of uses")
+                        .requiresRestart()
+                        .build();
+                this.maxDamage = define("maxDamage", ValueTypes.NON_NEGATIVE_INT, maxDamage)
+                        .tooltipLine("The maximum amount of damage that this item can take before breaking")
+                        .requiresRestart()
+                        .build();
+            }
+
+            @Override
+            public boolean canBeDamaged() {
+                return canBeDamaged.get();
+            }
+
+            @Override
+            public int getMaxDamage() {
+                return maxDamage.get();
+            }
         }
     }
 }

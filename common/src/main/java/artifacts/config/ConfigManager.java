@@ -214,6 +214,10 @@ public abstract class ConfigManager {
             this.name = name;
         }
 
+        protected String getName() {
+            return name;
+        }
+
         protected ConfigValueBuilder<Boolean> define(String key, boolean defaultValue) {
             return ConfigManager.this.define(addPrefix(key), defaultValue);
         }

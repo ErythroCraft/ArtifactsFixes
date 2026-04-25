@@ -86,6 +86,7 @@ public class ModItems {
             .component(DataComponents.MINIMUM_ATTACK_CHARGE, 1F)
             .component(DataComponents.WEAPON, new Weapon(1))
             .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
+            .durability(Artifacts.CONFIG.items.umbrella.durability)
             .properties(p -> p.attributes(ItemAttributeModifiers.builder()
                     .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, ToolMaterial.STONE.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                     .add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, (1 / 0.75F) - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
