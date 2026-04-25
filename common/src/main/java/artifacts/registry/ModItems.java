@@ -65,7 +65,11 @@ public class ModItems {
                             0.25F,
                             1,
                             List.of(new BlocksAttacks.DamageReduction(90, Optional.empty(), 0, 1)),
-                            new BlocksAttacks.ItemDamageFunction(3, 1, 1),
+                            new BlocksAttacks.ItemDamageFunction(
+                                    3,
+                                    Artifacts.CONFIG.items.umbrella.durability.damagePerBlockedAttackBase.get(),
+                                    Artifacts.CONFIG.items.umbrella.durability.damagePerBlockedAttackFactor.get().floatValue()
+                            ),
                             Optional.of(context.getOrThrow(DamageTypeTags.BYPASSES_SHIELD)),
                             Optional.of(SoundEvents.SHIELD_BLOCK),
                             Optional.of(SoundEvents.SHIELD_BREAK)
@@ -84,7 +88,7 @@ public class ModItems {
             .properties(p -> p.delayedHolderComponent(DataComponents.DAMAGE_TYPE, DamageTypes.SPEAR))
             .component(DataComponents.ATTACK_RANGE, new AttackRange(0, 3.5F, 0, 5.5F, 0.25F, 0.5F))
             .component(DataComponents.MINIMUM_ATTACK_CHARGE, 1F)
-            .component(DataComponents.WEAPON, new Weapon(1))
+            .component(DataComponents.WEAPON, new Weapon(Artifacts.CONFIG.items.umbrella.durability.damagePerAttack.get()))
             .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
             .durability(Artifacts.CONFIG.items.umbrella.durability)
             .properties(p -> p.attributes(ItemAttributeModifiers.builder()

@@ -183,7 +183,10 @@ public class Language extends LanguageProvider {
             String[] words = key.split("\\.");
             String name = words[words.length - 1];
             if (!name.equals("cooldown") && !name.equals("enabled") && !name.equals("generateAsLoot")) {
-                String translation = fromCamelCasedString(name);
+                String translation = config.getTitleOverride(key);
+                if (translation == null) {
+                    translation = fromCamelCasedString(name);
+                }
                 key = config.getName() + '.' + key;
                 add(configTitle(key), translation);
                 StringBuilder categoryKey = new StringBuilder(config.getName());

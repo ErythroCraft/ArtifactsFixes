@@ -15,6 +15,7 @@ import com.electronwill.nightconfig.core.io.ParsingException;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import net.minecraft.util.StringRepresentable;
 import org.apache.commons.io.FilenameUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,6 +32,7 @@ public abstract class ConfigManager {
 
     private final Map<String, ConfigValue<?>> values = new HashMap<>();
     private final Map<String, List<String>> tooltips = new HashMap<>();
+    private final Map<String, String> titleOverrides = new HashMap<>();
 
     private final Map<ValueType<?, ?>, ValueMap<?>> typeToValues = new HashMap<>();
 
@@ -102,6 +104,11 @@ public abstract class ConfigManager {
 
     public List<String> getDescription(String key) {
         return tooltips.get(key);
+    }
+
+    @Nullable
+    public String getTitleOverride(String key) {
+        return titleOverrides.get(key);
     }
 
     public <T, C> T read(ValueType<T, C> type, String key) {
@@ -242,6 +249,7 @@ public abstract class ConfigManager {
         private final T defaultValue;
 
         private final List<String> tooltip = new ArrayList<>();
+        private Optional<String> title = Optional.empty();
         private boolean requiresRestart = false;
 
         public ConfigValueBuilder(String key, ValueType<T, ?> type, T defaultValue) {
@@ -252,24 +260,19 @@ public abstract class ConfigManager {
 
         protected abstract void defineInSpec();
 
-        protected ConfigValue<T> createValue(String key, ValueType<T, ?> type, T defaultValue, boolean requiresRestart, String... tooltips) {
+        public ConfigValue<T> build() {
+            defineInSpec();
+
             ConfigValue<T> value = new ConfigValue<>(type, key, defaultValue, requiresRestart);
             values.put(key, value);
-            ConfigManager.this.tooltips.put(key, List.of(tooltips));
+            ConfigManager.this.tooltips.put(key, List.copyOf(this.tooltip));
             if (!ConfigManager.this.typeToValues.containsKey(type)) {
                 typeToValues.put(type, new ValueMap<>());
             }
+            title.ifPresent(s -> ConfigManager.this.titleOverrides.put(key, s));
             // noinspection unchecked
             ((ValueMap<T>) typeToValues.get(type)).getMap().put(key, value);
             return value;
-        }
-
-        public ConfigValue<T> build() {
-            defineInSpec();
-            return createValue(
-                    key, type, defaultValue, requiresRestart,
-                    tooltip.toArray(new String[0])
-            );
         }
 
         public ConfigValueBuilder<T> requiresRestart() {
@@ -279,6 +282,11 @@ public abstract class ConfigManager {
 
         public ConfigValueBuilder<T> tooltipLine(String line) {
             tooltip.add(line);
+            return this;
+        }
+
+        public ConfigValueBuilder<T> customTitle(String title) {
+            this.title = Optional.of(title);
             return this;
         }
     }

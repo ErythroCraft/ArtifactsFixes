@@ -628,11 +628,35 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Boolean> isGlider = define("isGlider", true)
                 .tooltipLine("Whether the Umbrella slows the player's falling speed when held").build();
 
-        // default max damage is twice that of a normal shield
-        public final ItemDamageProperties durability = defineDurability(336 * 2);
+        public final Durability durability = new Durability();
 
         private Umbrella() {
             super(ModItems.UMBRELLA);
+        }
+
+        public final class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerAttack
+                    = define("damagePerAttack", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .tooltipLine("The amount of durability lost for each attack performed with the umbrella")
+                    .requiresRestart().build();
+
+            public final ConfigValue<Integer> damagePerBlockedAttackBase
+                    = define("damagePerBlockedAttackBase", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .customTitle("Damage per Blocked Attack (Base)")
+                    .tooltipLine("The constant amount of damage that should be applied to the umbrella when an attack is blocked")
+                    .requiresRestart().build();
+
+            public final ConfigValue<Double> damagePerBlockedAttackFactor
+                    = define("damagePerBlockedAttackFactor", ValueTypes.NON_NEGATIVE_DOUBLE, 1D)
+                    .customTitle("Damage per Blocked Attack (Factor)")
+                    .tooltipLine("The fraction of the dealt damage that should be applied to the umbrella when an attack is blocked")
+                    .requiresRestart().build();
+
+            private Durability() {
+                // default max damage is twice that of a normal shield
+                super(336 * 2);
+            }
         }
     }
 
@@ -758,17 +782,13 @@ public final class ItemConfigs extends ConfigManager {
             ItemConfigs.this.itemCategories.put(holder.unwrapKey().orElseThrow(), this);
         }
 
-        protected DurabilityCategory defineDurability(int maxDamage) {
-            return new DurabilityCategory(getName() + ".durability", maxDamage);
-        }
-
-        private final class DurabilityCategory extends SubCategory implements ItemDamageProperties {
+        protected class DurabilityCategory extends SubCategory implements ItemDamageProperties {
 
             private final ConfigValue<Boolean> canBeDamaged;
             private final ConfigValue<Integer> maxDamage;
 
-            private DurabilityCategory(String name, int maxDamage) {
-                super(name);
+            private DurabilityCategory(int maxDamage) {
+                super(ItemSubCategory.this.getName() + ".durability");
                 this.canBeDamaged = define("canBeDamaged", false)
                         .tooltipLine("Whether this item has a limited number of uses")
                         .requiresRestart()
