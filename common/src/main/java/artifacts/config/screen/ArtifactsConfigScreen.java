@@ -16,6 +16,7 @@ import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
+// TODO cleanup this mess
 public class ArtifactsConfigScreen {
 
     private final ConfigBuilder builder;
@@ -39,9 +40,10 @@ public class ArtifactsConfigScreen {
         }
 
         subCategories.keySet().stream().sorted().forEach(key -> {
-            ConfigCategory category = builder.getOrCreateCategory(getTitle(key.split("\\.")[0]));
+            List<String> keyParts = splitKey(key);
+            ConfigCategory category = builder.getOrCreateCategory(getTitle(keyParts.getFirst()));
             AbstractConfigListEntry<?> subCategory;
-            String name = key.substring(key.lastIndexOf('.') + 1);
+            String name = keyParts.getLast();
             if (Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name))) {
                 subCategory = new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.getValue(Artifacts.id(name)), subCategories.get(key));
             } else {
@@ -56,22 +58,26 @@ public class ArtifactsConfigScreen {
     private void addConfigs(ConfigManager config) {
         ConfigCategory configBuilder = builder.getOrCreateCategory(getTitle(config.getName()));
         config.getValues().keySet()
-                .stream().sorted()
+                .stream()
+                // Sort fields alphabetically, and move nested fields to bottom
+                .sorted()
+                // Move generateAsLoot config options to top
                 .sorted(Comparator.comparing(key -> !key.endsWith("generateAsLoot")))
                 .forEach(key -> {
-            String[] names = key.split("\\.");
+            List<String> keyParts = splitKey(key);
             ConfigValue<?> value = config.getValues().get(key);
             AbstractConfigListEntry<?> field = createField(config, config.getName(), key, value, config.getDescription(key).size());
-            if (names.length == 1) {
+            if (keyParts.size() == 1) {
                 configBuilder.addEntry(field);
             } else {
-                List<AbstractConfigListEntry<?>> subCategory = getSubCategory(config.getName() + '.' +  names[0]);
+                String subCategoryKey = config.getName() + '.' + keyParts.getFirst();
+                List<AbstractConfigListEntry<?>> subCategory = getOrCreateSubCategory(subCategoryKey);
                 subCategory.add(field);
             }
         });
     }
 
-    private List<AbstractConfigListEntry<?>> getSubCategory(String key) {
+    private List<AbstractConfigListEntry<?>> getOrCreateSubCategory(String key) {
         if (subCategories.containsKey(key)) {
             return subCategories.get(key);
         }
@@ -80,9 +86,8 @@ public class ArtifactsConfigScreen {
     }
 
     private AbstractConfigListEntry<?> createField(ConfigManager config, String categoryName, String key, ConfigValue<?> value, int tooltipCount) {
-        String[] names = key.split("\\.");
         key = categoryName + '.' + key;
-        String name = names[names.length - 1];
+        String name = splitKey(key).getLast();
         name = name.equals("cooldown") || name.equals("enabled") || name.equals("generateAsLoot") ? name : key;
         Component[] tooltips = getTooltips(key, tooltipCount);
         FieldBuilder<?, ?, ?> configEntry = createConfigEntry(config, value, getTitle(name));
@@ -103,6 +108,10 @@ public class ArtifactsConfigScreen {
         FieldBuilder<?, ?, ?> configEntry = value.type().getConfigEntryFactory().createConfigEntry(config, builder.entryBuilder(), title, value);
         configEntry.requireRestart(value.requiresRestart());
         return configEntry;
+    }
+
+    private static List<String> splitKey(String key) {
+        return new ArrayList<>(Arrays.asList(key.split("\\.")));
     }
 
     private static Component getTitle(String categoryKey) {

@@ -206,11 +206,11 @@ public abstract class ConfigManager {
         }
     }
 
-    public abstract class Category {
+    public abstract class SubCategory {
 
         private final String name;
 
-        protected Category(String name) {
+        protected SubCategory(String name) {
             this.name = name;
         }
 

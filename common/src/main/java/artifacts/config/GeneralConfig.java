@@ -34,7 +34,7 @@ public final class GeneralConfig extends ConfigManager {
         super("general");
     }
 
-    public final class Campsite extends Category {
+    public final class Campsite extends SubCategory {
 
         public final ConfigValue<Integer> count
                 = define("campsiteCount", ValueTypes.NON_NEGATIVE_INT, 40)
@@ -85,7 +85,7 @@ public final class GeneralConfig extends ConfigManager {
     }
 
     // FIXME: Data pack overlays don't work in dev
-    public final class Slots extends Category {
+    public final class Slots extends SubCategory {
 
         public final ConfigValue<Boolean> enableAccessoriesCompat
                 = define("enableAccessoriesCompat", true)

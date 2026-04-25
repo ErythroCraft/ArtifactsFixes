@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public final class ItemConfigs extends ConfigManager {
 
-    private final Map<ResourceKey<Item>, ItemCategory> itemCategories = new HashMap<>();
+    private final Map<ResourceKey<Item>, ItemSubCategory> itemCategories = new HashMap<>();
 
     public final AnglersHat anglersHat = new AnglersHat();
     public final AntidoteVessel antidoteVessel = new AntidoteVessel();
@@ -77,7 +77,7 @@ public final class ItemConfigs extends ConfigManager {
         super("items");
     }
 
-    public final class AnglersHat extends ItemCategory {
+    public final class AnglersHat extends ItemSubCategory {
 
         public final ConfigValue<Integer> luckOfTheSeaLevelBonus = define("luckOfTheSeaLevelBonus", ValueTypes.ENCHANTMENT_LEVEL, 1)
                 .tooltipLine("The amount of extra levels of luck of the sea that are granted by the Angler's Hat").build();
@@ -90,7 +90,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class AntidoteVessel extends ItemCategory {
+    public final class AntidoteVessel extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Antidote Vessel reduces the duration of negative effects").build();
@@ -103,7 +103,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class AquaDashers extends ItemCategory {
+    public final class AquaDashers extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Aqua-Dashers allow the wearer to sprint on water").build();
@@ -113,7 +113,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class BunnyHoppers extends ItemCategory {
+    public final class BunnyHoppers extends ItemSubCategory {
 
         public final ConfigValue<Boolean> modifyHurtSounds = define("modifyHurtSounds", true)
                 .tooltipLine("Whether the Bunny Hoppers change the player's hurt sounds").build();
@@ -134,7 +134,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class CharmOfShrinking extends ItemCategory {
+    public final class CharmOfShrinking extends ItemSubCategory {
 
         public final ConfigValue<Double> scaleModifier = define("scaleModifier", ValueTypes.ATTRIBUTE_MODIFIER, -0.50)
                 .tooltipLine("How much the Charm of Shrinking decreases or increases the player's Scale")
@@ -146,7 +146,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class CharmOfSinking extends ItemCategory {
+    public final class CharmOfSinking extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Charm of Sinking removes the wearer's collision with water")
@@ -164,7 +164,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class ChorusTotem extends ItemCategory {
+    public final class ChorusTotem extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Chorus Totem prevents the wearer's death")
@@ -178,7 +178,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class CloudInABottle extends ItemCategory {
+    public final class CloudInABottle extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Cloud in a Bottle allows the wearer to double jump").build();
@@ -202,7 +202,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class CowboyHat extends ItemCategory {
+    public final class CowboyHat extends ItemSubCategory {
 
         public final ConfigValue<Double> mountSpeedBonus = define("mountSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.40)
                 .tooltipLine("How much the Cowboy Hat increases the speed of ridden mounts").build();
@@ -212,7 +212,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class CrossNecklace extends ItemCategory {
+    public final class CrossNecklace extends ItemSubCategory {
 
         public final ConfigValue<Double> bonusInvincibilityTicks = define("bonusInvincibilityTicks", ValueTypes.ATTRIBUTE_MODIFIER, 20D)
                 .tooltipLine("The amount of extra ticks the player stays invincible for after taking damage while wearing the Cross Necklace").build();
@@ -225,7 +225,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class CrystalHeart extends ItemCategory {
+    public final class CrystalHeart extends ItemSubCategory {
 
         public final ConfigValue<Double> healthBonus = define("healthBonus", ValueTypes.ATTRIBUTE_MODIFIER, 10D)
                 .tooltipLine("The amount of extra health points that are granted by the Crystal Heart").build();
@@ -235,7 +235,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class DiggingClaws extends ItemCategory {
+    public final class DiggingClaws extends ItemSubCategory {
 
         public final ConfigValue<Double> blockBreakSpeedBonus = define("blockBreakSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.30)
                 .tooltipLine("How much the Digging Claws increase the wearer's mining speed").build();
@@ -248,7 +248,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class DrinkingHat extends ItemCategory {
+    public final class DrinkingHat extends ItemSubCategory {
 
         public final ConfigValue<Double> drinkingSpeedBonus;
         public final ConfigValue<Double> eatingSpeedBonus;
@@ -262,7 +262,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class EternalSteak extends ItemCategory {
+    public final class EternalSteak extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Eternal Steak can be eaten")
@@ -277,7 +277,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class EverlastingBeef extends ItemCategory {
+    public final class EverlastingBeef extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Everlasting Beef can be eaten")
@@ -295,7 +295,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class FeralClaws extends ItemCategory {
+    public final class FeralClaws extends ItemSubCategory {
 
         public final ConfigValue<Double> attackSpeedBonus = define("attackSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.30)
                 .tooltipLine("How much the Feral Claws increase the wearer's attack speed").build();
@@ -305,7 +305,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class FireGauntlet extends ItemCategory {
+    public final class FireGauntlet extends ItemSubCategory {
 
         public final ConfigValue<Double> fireDuration = define("fireDuration", ValueTypes.ATTRIBUTE_MODIFIER, 8D)
                 .tooltipLine("How long an entity is set on fire for after being attacked by an entity wearing the Fire Gauntlet").build();
@@ -315,7 +315,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class FlamePendant extends ItemCategory {
+    public final class FlamePendant extends ItemSubCategory {
 
         public final ConfigValue<Double> strikeChance = define("strikeChance", ValueTypes.FRACTION, 0.40)
                 .tooltipLine("The probability that the Flame Pendant lights an attacker on fire").build();
@@ -334,7 +334,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class Flippers extends ItemCategory {
+    public final class Flippers extends ItemSubCategory {
 
         public final ConfigValue<Double> swimSpeedBonus = define("swimSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.70)
                 .tooltipLine("How much the Flippers increase the wearer's swim speed").build();
@@ -344,7 +344,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class GoldenHook extends ItemCategory {
+    public final class GoldenHook extends ItemSubCategory {
 
         public final ConfigValue<Double> entityExperienceBonus = define("entityExperienceBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.50)
                 .tooltipLine("The amount of extra experience dropped by entities that are killed by players wearing the Golden Hook").build();
@@ -354,7 +354,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class HeliumFlamingo extends ItemCategory {
+    public final class HeliumFlamingo extends ItemSubCategory {
 
         public final ConfigValue<Integer> flightDuration = define("flightDuration", ValueTypes.DURATION, 8)
                 .tooltipLine("The amount of time in seconds a player can fly with the Helium Flamingo before needing to recharge").build();
@@ -370,7 +370,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class KittySlippers extends ItemCategory {
+    public final class KittySlippers extends ItemSubCategory {
 
         public final ConfigValue<Boolean> modifyHurtSounds = define("modifyHurtSounds", true)
                 .tooltipLine("Whether the Kitty Slippers change the player's hurt sounds").build();
@@ -386,7 +386,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class LuckyScarf extends ItemCategory {
+    public final class LuckyScarf extends ItemSubCategory {
 
         public final ConfigValue<Integer> fortuneLevelBonus = define("fortuneLevelBonus", ValueTypes.ENCHANTMENT_LEVEL, 1)
                 .tooltipLine("The amount of extra levels of fortune that are granted by the Lucky Scarf").build();
@@ -396,7 +396,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class NightVisionGoggles extends ItemCategory {
+    public final class NightVisionGoggles extends ItemSubCategory {
 
         public final ConfigValue<Double> strength = define("strength", ValueTypes.FRACTION, 0.15)
                 .tooltipLine("The strength of the night vision effect applied by the Night Vision Goggles").build();
@@ -406,7 +406,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class ObsidianSkull extends ItemCategory {
+    public final class ObsidianSkull extends ItemSubCategory {
 
         public final ConfigValue<Integer> fireResistanceDuration = define("fireResistanceDuration", ValueTypes.DURATION, 30)
                 .tooltipLine("The duration of the fire resistance effect that is applied when taking fire damage while wearing the Obsidian Skull").build();
@@ -419,7 +419,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class OnionRing extends ItemCategory {
+    public final class OnionRing extends ItemSubCategory {
 
         public final ConfigValue<Integer> hasteDurationPerFoodPoint = define("hasteDurationPerFoodPoint", ValueTypes.DURATION, 6)
                 .tooltipLine("The duration of haste that is applied per food point eaten while wearing the Onion Ring").build();
@@ -432,7 +432,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class PanicNecklace extends ItemCategory {
+    public final class PanicNecklace extends ItemSubCategory {
 
         public final ConfigValue<Integer> speedLevel = define("speedLevel", ValueTypes.MOB_EFFECT_LEVEL, 1)
                 .tooltipLine("The level of the speed effect that is applied by the Panic Necklace").build();
@@ -448,7 +448,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class PickaxeHeater extends ItemCategory {
+    public final class PickaxeHeater extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Pickaxe Heater smelts mined ores").build();
@@ -458,7 +458,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class PocketPiston extends ItemCategory {
+    public final class PocketPiston extends ItemSubCategory {
 
         public final ConfigValue<Double> attackKnockbackBonus = define("attackKnockbackBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.75)
                 .tooltipLine("The amount of extra knockback that is granted by the Pocket Piston").build();
@@ -468,7 +468,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class PowerGlove extends ItemCategory {
+    public final class PowerGlove extends ItemSubCategory {
 
         public final ConfigValue<Double> attackDamageBonus = define("attackDamageBonus", ValueTypes.ATTRIBUTE_MODIFIER, 4D)
                 .tooltipLine("The amount of extra damage that is dealt by melee attacks from players wearing the Power Glove").build();
@@ -478,7 +478,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class RootedBoots extends ItemCategory {
+    public final class RootedBoots extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Rooted Boots replenish hunger when standing on grass").build();
@@ -494,7 +494,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class RunningShoes extends ItemCategory {
+    public final class RunningShoes extends ItemSubCategory {
 
         public final ConfigValue<Double> sprintingSpeedBonus = define("sprintingSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.40)
                 .tooltipLine("How much the Running Shoes increase the wearer's sprinting speed").build();
@@ -507,7 +507,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class ScarfOfInvisibility extends ItemCategory {
+    public final class ScarfOfInvisibility extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Scarf of Invisibility makes players invisible")
@@ -521,7 +521,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class ShockPendant extends ItemCategory {
+    public final class ShockPendant extends ItemSubCategory {
 
         public final ConfigValue<Double> strikeChance = define("strikeChance", ValueTypes.FRACTION, 0.25)
                 .tooltipLine("The probability that the Shock Pendant strikes an attacking entity with lightning").build();
@@ -537,7 +537,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class Snorkel extends ItemCategory {
+    public final class Snorkel extends ItemSubCategory {
 
         public final ConfigValue<Boolean> isInfinite = define("isInfinite", false)
                 .tooltipLine("Whether the Snorkel's water breathing effect depletes when underwater")
@@ -551,7 +551,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class Snowshoes extends ItemCategory {
+    public final class Snowshoes extends ItemSubCategory {
 
         public final ConfigValue<Boolean> allowWalkingOnPowderedSnow = define("allowWalkingOnPowderedSnow", true)
                 .tooltipLine("Whether the Snowshoes allow the wearer to walk on powdered snow").build();
@@ -564,7 +564,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class SteadfastSpikes extends ItemCategory {
+    public final class SteadfastSpikes extends ItemSubCategory {
 
         public final ConfigValue<Double> knockbackResistance = define("knockbackResistance", ValueTypes.ATTRIBUTE_MODIFIER, 1.00)
                 .tooltipLine("How much knockback resistance is granted by the Steadfast Spikes").build();
@@ -577,7 +577,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class StriderShoes extends ItemCategory {
+    public final class StriderShoes extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Strider Shoes allow sneaking on lava").build();
@@ -590,7 +590,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class SuperstitiousHat extends ItemCategory {
+    public final class SuperstitiousHat extends ItemSubCategory {
 
         public final ConfigValue<Integer> lootingLevelBonus = define("lootingLevelBonus", ValueTypes.ENCHANTMENT_LEVEL, 1)
                 .tooltipLine("The amount of extra levels of Looting that are granted by the Superstitious Hat").build();
@@ -600,7 +600,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class ThornPendant extends ItemCategory {
+    public final class ThornPendant extends ItemSubCategory {
 
         public final ConfigValue<Double> strikeChance = define("strikeChance", ValueTypes.FRACTION, 0.50)
                 .tooltipLine("The probability that the Thorn Pendant damages an attacking entity").build();
@@ -619,7 +619,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class Umbrella extends ItemCategory {
+    public final class Umbrella extends ItemSubCategory {
 
         public final ConfigValue<Boolean> isShield = define("isShield", true)
                 .tooltipLine("Whether the Umbrella can be used as a shield")
@@ -636,7 +636,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class UniversalAttractor extends ItemCategory {
+    public final class UniversalAttractor extends ItemSubCategory {
 
         public final ConfigValue<Integer> magnetismLevel = define("magnetismLevel", ValueTypes.MOB_EFFECT_LEVEL, 5)
                 .tooltipLine("The level of the magnetism effect that is applied by the Universal Attractor").build();
@@ -646,7 +646,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class VampiricGlove extends ItemCategory {
+    public final class VampiricGlove extends ItemSubCategory {
 
         public final ConfigValue<Double> absorptionRatio = define("absorptionRatio", ValueTypes.NON_NEGATIVE_DOUBLE, 0.20)
                 .tooltipLine("The proportion of melee damage dealt that is absorbed by the Vampiric Gloves").build();
@@ -662,7 +662,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class VillagerHat extends ItemCategory {
+    public final class VillagerHat extends ItemSubCategory {
 
         public final ConfigValue<Double> reputationBonus = define("reputationBonus", ValueTypes.ATTRIBUTE_MODIFIER, 75D)
                 .tooltipLine("The amount of extra reputation that is granted by the Villager Hat when trading with villagers").build();
@@ -672,7 +672,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class WarpDrive extends ItemCategory {
+    public final class WarpDrive extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = define("enabled", true)
                 .tooltipLine("Whether the Warp Drive causes ender pearls to not be consumed").build();
@@ -691,7 +691,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class WhoopeeCushion extends ItemCategory {
+    public final class WhoopeeCushion extends ItemSubCategory {
 
         public final ConfigValue<Double> fartChance = define("fartChance", ValueTypes.ATTRIBUTE_MODIFIER, 0.12)
                 .tooltipLine("The probability that a fart sound plays when sneaking or double jumping while wearing the Whoopee Cushion").build();
@@ -701,7 +701,7 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class WitheredBracelet extends ItemCategory {
+    public final class WitheredBracelet extends ItemSubCategory {
 
         public final ConfigValue<Double> witherChance = define("witherChance", ValueTypes.FRACTION, 0.3)
                 .tooltipLine("The probability that the Withered Bracelet inflicts a wither effect").build();
@@ -747,12 +747,12 @@ public final class ItemConfigs extends ConfigManager {
         getValues().forEach((_, value) -> NetworkHandler.sendToPlayer(player, new UpdateItemConfigPacket(value)));
     }
 
-    private abstract class ItemCategory extends Category {
+    private abstract class ItemSubCategory extends SubCategory {
 
         public final ConfigValue<Boolean> generateAsLoot = define("generateAsLoot", true)
                 .tooltipLine("Whether this item can be found in structures or drop from entities").build();
 
-        public ItemCategory(Holder<Item> holder) {
+        public ItemSubCategory(Holder<Item> holder) {
             super(holder.unwrapKey().orElseThrow().identifier().getPath());
             // shouldn't really do this from a constructor but whatever
             ItemConfigs.this.itemCategories.put(holder.unwrapKey().orElseThrow(), this);
@@ -762,7 +762,7 @@ public final class ItemConfigs extends ConfigManager {
             return new DurabilityCategory(getName() + ".durability", maxDamage);
         }
 
-        private final class DurabilityCategory extends Category implements ItemDamageProperties {
+        private final class DurabilityCategory extends SubCategory implements ItemDamageProperties {
 
             private final ConfigValue<Boolean> canBeDamaged;
             private final ConfigValue<Integer> maxDamage;
