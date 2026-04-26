@@ -38,7 +38,12 @@ public class ArtifactsConfigScreen {
     }
 
     public Screen build() {
-        for (ConfigManager config : Artifacts.CONFIG.configs.values()) {
+        for (ConfigManager config : List.of(
+                // Explicitly define category order
+                Artifacts.CONFIG.general,
+                Artifacts.CONFIG.client,
+                Artifacts.CONFIG.items
+        )) {
             addConfigs(config);
         }
 
@@ -104,17 +109,7 @@ public class ArtifactsConfigScreen {
                 .stream()
                 .sorted(Comparator.naturalOrder())
                 .sorted(Comparator.comparingInt(key -> getDisplay(key).displayPriority()))
-                .sorted(Comparator.comparingInt(this::getConfigCategoryPriority))
                 .forEach(key -> addConfigEntry(category, config, key));
-    }
-
-    private int getConfigCategoryPriority(ConfigEntryKey key) {
-        return switch (key.configManager()) {
-            case "general" -> 0;
-            case "client" -> 1;
-            case "items" -> 2;
-            default -> 3;
-        };
     }
 
     private List<AbstractConfigListEntry<?>> getOrCreateSubCategory(ConfigEntryKey key) {
