@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "obsidian_skull.generateAsLoot"
+                  "value": "items.obsidian_skull.generateAsLoot"
                 }
               ],
               "name": "artifacts:obsidian_skull"

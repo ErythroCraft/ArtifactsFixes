@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "running_shoes.generateAsLoot"
+                  "value": "items.running_shoes.generateAsLoot"
                 }
               ],
               "name": "artifacts:running_shoes"

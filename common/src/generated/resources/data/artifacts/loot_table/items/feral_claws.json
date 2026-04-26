@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "feral_claws.generateAsLoot"
+                  "value": "items.feral_claws.generateAsLoot"
                 }
               ],
               "name": "artifacts:feral_claws"

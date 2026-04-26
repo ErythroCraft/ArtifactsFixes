@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "crystal_heart.generateAsLoot"
+                  "value": "items.crystal_heart.generateAsLoot"
                 }
               ],
               "name": "artifacts:crystal_heart"

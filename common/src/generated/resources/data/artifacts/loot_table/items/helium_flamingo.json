@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "helium_flamingo.generateAsLoot"
+                  "value": "items.helium_flamingo.generateAsLoot"
                 }
               ],
               "name": "artifacts:helium_flamingo"

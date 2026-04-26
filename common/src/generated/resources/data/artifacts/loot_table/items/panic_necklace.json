@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "panic_necklace.generateAsLoot"
+                  "value": "items.panic_necklace.generateAsLoot"
                 }
               ],
               "name": "artifacts:panic_necklace"

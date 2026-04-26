@@ -4,7 +4,7 @@
     {
       "type": "artifacts:config_value_filter",
       "expected": true,
-      "value": "campsite.minimalistCampsites"
+      "value": "general.campsite.minimalistCampsites"
     },
     {
       "type": "artifacts:campsite_count"

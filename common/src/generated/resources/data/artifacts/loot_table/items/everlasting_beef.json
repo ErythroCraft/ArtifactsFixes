@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "everlasting_beef.generateAsLoot"
+                  "value": "items.everlasting_beef.generateAsLoot"
                 }
               ],
               "name": "artifacts:everlasting_beef"

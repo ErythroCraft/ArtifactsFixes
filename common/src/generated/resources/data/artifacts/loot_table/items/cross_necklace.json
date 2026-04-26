@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "cross_necklace.generateAsLoot"
+                  "value": "items.cross_necklace.generateAsLoot"
                 }
               ],
               "name": "artifacts:cross_necklace"

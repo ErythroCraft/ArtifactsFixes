@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "bunny_hoppers.generateAsLoot"
+                  "value": "items.bunny_hoppers.generateAsLoot"
                 }
               ],
               "name": "artifacts:bunny_hoppers"

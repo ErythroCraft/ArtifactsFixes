@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "plastic_drinking_hat.generateAsLoot"
+                  "value": "items.plastic_drinking_hat.generateAsLoot"
                 }
               ],
               "name": "artifacts:plastic_drinking_hat",
@@ -31,7 +31,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "novelty_drinking_hat.generateAsLoot"
+                  "value": "items.novelty_drinking_hat.generateAsLoot"
                 }
               ],
               "name": "artifacts:novelty_drinking_hat"

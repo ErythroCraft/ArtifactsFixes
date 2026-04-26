@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "steadfast_spikes.generateAsLoot"
+                  "value": "items.steadfast_spikes.generateAsLoot"
                 }
               ],
               "name": "artifacts:steadfast_spikes"

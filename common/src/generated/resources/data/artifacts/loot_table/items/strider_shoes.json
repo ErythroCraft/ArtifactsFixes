@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "strider_shoes.generateAsLoot"
+                  "value": "items.strider_shoes.generateAsLoot"
                 }
               ],
               "name": "artifacts:strider_shoes"

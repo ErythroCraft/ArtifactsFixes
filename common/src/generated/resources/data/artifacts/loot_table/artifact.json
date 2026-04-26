@@ -8,7 +8,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "anglers_hat.generateAsLoot"
+              "value": "items.anglers_hat.generateAsLoot"
             }
           ],
           "value": "artifacts:items/anglers_hat",
@@ -19,7 +19,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "antidote_vessel.generateAsLoot"
+              "value": "items.antidote_vessel.generateAsLoot"
             }
           ],
           "value": "artifacts:items/antidote_vessel",
@@ -30,7 +30,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "aqua_dashers.generateAsLoot"
+              "value": "items.aqua_dashers.generateAsLoot"
             }
           ],
           "value": "artifacts:items/aqua_dashers",
@@ -41,7 +41,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "bunny_hoppers.generateAsLoot"
+              "value": "items.bunny_hoppers.generateAsLoot"
             }
           ],
           "value": "artifacts:items/bunny_hoppers",
@@ -52,7 +52,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "charm_of_shrinking.generateAsLoot"
+              "value": "items.charm_of_shrinking.generateAsLoot"
             }
           ],
           "value": "artifacts:items/charm_of_shrinking",
@@ -63,7 +63,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "charm_of_sinking.generateAsLoot"
+              "value": "items.charm_of_sinking.generateAsLoot"
             }
           ],
           "value": "artifacts:items/charm_of_sinking",
@@ -74,7 +74,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "chorus_totem.generateAsLoot"
+              "value": "items.chorus_totem.generateAsLoot"
             }
           ],
           "value": "artifacts:items/chorus_totem",
@@ -85,7 +85,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "cloud_in_a_bottle.generateAsLoot"
+              "value": "items.cloud_in_a_bottle.generateAsLoot"
             }
           ],
           "value": "artifacts:items/cloud_in_a_bottle",
@@ -96,7 +96,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "cowboy_hat.generateAsLoot"
+              "value": "items.cowboy_hat.generateAsLoot"
             }
           ],
           "value": "artifacts:items/cowboy_hat",
@@ -107,7 +107,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "cross_necklace.generateAsLoot"
+              "value": "items.cross_necklace.generateAsLoot"
             }
           ],
           "value": "artifacts:items/cross_necklace",
@@ -118,7 +118,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "crystal_heart.generateAsLoot"
+              "value": "items.crystal_heart.generateAsLoot"
             }
           ],
           "value": "artifacts:items/crystal_heart",
@@ -129,7 +129,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "digging_claws.generateAsLoot"
+              "value": "items.digging_claws.generateAsLoot"
             }
           ],
           "value": "artifacts:items/digging_claws",
@@ -140,7 +140,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "feral_claws.generateAsLoot"
+              "value": "items.feral_claws.generateAsLoot"
             }
           ],
           "value": "artifacts:items/feral_claws",
@@ -151,7 +151,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "fire_gauntlet.generateAsLoot"
+              "value": "items.fire_gauntlet.generateAsLoot"
             }
           ],
           "value": "artifacts:items/fire_gauntlet",
@@ -162,7 +162,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "flame_pendant.generateAsLoot"
+              "value": "items.flame_pendant.generateAsLoot"
             }
           ],
           "value": "artifacts:items/flame_pendant",
@@ -173,7 +173,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "flippers.generateAsLoot"
+              "value": "items.flippers.generateAsLoot"
             }
           ],
           "value": "artifacts:items/flippers",
@@ -184,7 +184,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "golden_hook.generateAsLoot"
+              "value": "items.golden_hook.generateAsLoot"
             }
           ],
           "value": "artifacts:items/golden_hook",
@@ -195,7 +195,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "kitty_slippers.generateAsLoot"
+              "value": "items.kitty_slippers.generateAsLoot"
             }
           ],
           "value": "artifacts:items/kitty_slippers",
@@ -206,7 +206,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "lucky_scarf.generateAsLoot"
+              "value": "items.lucky_scarf.generateAsLoot"
             }
           ],
           "value": "artifacts:items/lucky_scarf",
@@ -217,7 +217,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "night_vision_goggles.generateAsLoot"
+              "value": "items.night_vision_goggles.generateAsLoot"
             }
           ],
           "value": "artifacts:items/night_vision_goggles",
@@ -228,7 +228,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "obsidian_skull.generateAsLoot"
+              "value": "items.obsidian_skull.generateAsLoot"
             }
           ],
           "value": "artifacts:items/obsidian_skull",
@@ -239,7 +239,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "onion_ring.generateAsLoot"
+              "value": "items.onion_ring.generateAsLoot"
             }
           ],
           "value": "artifacts:items/onion_ring",
@@ -250,7 +250,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "panic_necklace.generateAsLoot"
+              "value": "items.panic_necklace.generateAsLoot"
             }
           ],
           "value": "artifacts:items/panic_necklace",
@@ -261,7 +261,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "pickaxe_heater.generateAsLoot"
+              "value": "items.pickaxe_heater.generateAsLoot"
             }
           ],
           "value": "artifacts:items/pickaxe_heater",
@@ -272,7 +272,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "pocket_piston.generateAsLoot"
+              "value": "items.pocket_piston.generateAsLoot"
             }
           ],
           "value": "artifacts:items/pocket_piston",
@@ -283,7 +283,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "power_glove.generateAsLoot"
+              "value": "items.power_glove.generateAsLoot"
             }
           ],
           "value": "artifacts:items/power_glove",
@@ -294,7 +294,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "rooted_boots.generateAsLoot"
+              "value": "items.rooted_boots.generateAsLoot"
             }
           ],
           "value": "artifacts:items/rooted_boots",
@@ -305,7 +305,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "running_shoes.generateAsLoot"
+              "value": "items.running_shoes.generateAsLoot"
             }
           ],
           "value": "artifacts:items/running_shoes",
@@ -316,7 +316,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "scarf_of_invisibility.generateAsLoot"
+              "value": "items.scarf_of_invisibility.generateAsLoot"
             }
           ],
           "value": "artifacts:items/scarf_of_invisibility",
@@ -327,7 +327,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "shock_pendant.generateAsLoot"
+              "value": "items.shock_pendant.generateAsLoot"
             }
           ],
           "value": "artifacts:items/shock_pendant",
@@ -338,7 +338,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "snorkel.generateAsLoot"
+              "value": "items.snorkel.generateAsLoot"
             }
           ],
           "value": "artifacts:items/snorkel",
@@ -349,7 +349,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "snowshoes.generateAsLoot"
+              "value": "items.snowshoes.generateAsLoot"
             }
           ],
           "value": "artifacts:items/snowshoes",
@@ -360,7 +360,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "steadfast_spikes.generateAsLoot"
+              "value": "items.steadfast_spikes.generateAsLoot"
             }
           ],
           "value": "artifacts:items/steadfast_spikes",
@@ -371,7 +371,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "strider_shoes.generateAsLoot"
+              "value": "items.strider_shoes.generateAsLoot"
             }
           ],
           "value": "artifacts:items/strider_shoes",
@@ -382,7 +382,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "superstitious_hat.generateAsLoot"
+              "value": "items.superstitious_hat.generateAsLoot"
             }
           ],
           "value": "artifacts:items/superstitious_hat",
@@ -393,7 +393,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "thorn_pendant.generateAsLoot"
+              "value": "items.thorn_pendant.generateAsLoot"
             }
           ],
           "value": "artifacts:items/thorn_pendant",
@@ -404,7 +404,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "universal_attractor.generateAsLoot"
+              "value": "items.universal_attractor.generateAsLoot"
             }
           ],
           "value": "artifacts:items/universal_attractor",
@@ -415,7 +415,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "vampiric_glove.generateAsLoot"
+              "value": "items.vampiric_glove.generateAsLoot"
             }
           ],
           "value": "artifacts:items/vampiric_glove",
@@ -426,7 +426,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "villager_hat.generateAsLoot"
+              "value": "items.villager_hat.generateAsLoot"
             }
           ],
           "value": "artifacts:items/villager_hat",
@@ -437,7 +437,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "warp_drive.generateAsLoot"
+              "value": "items.warp_drive.generateAsLoot"
             }
           ],
           "value": "artifacts:items/warp_drive",
@@ -448,7 +448,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "withered_bracelet.generateAsLoot"
+              "value": "items.withered_bracelet.generateAsLoot"
             }
           ],
           "value": "artifacts:items/withered_bracelet",
@@ -462,11 +462,11 @@
               "terms": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "plastic_drinking_hat.generateAsLoot"
+                  "value": "items.plastic_drinking_hat.generateAsLoot"
                 },
                 {
                   "condition": "artifacts:config_value",
-                  "value": "novelty_drinking_hat.generateAsLoot"
+                  "value": "items.novelty_drinking_hat.generateAsLoot"
                 }
               ]
             }
@@ -479,7 +479,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "umbrella.generateAsLoot"
+              "value": "items.umbrella.generateAsLoot"
             }
           ],
           "value": "artifacts:items/umbrella",
@@ -490,7 +490,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "whoopee_cushion.generateAsLoot"
+              "value": "items.whoopee_cushion.generateAsLoot"
             }
           ],
           "value": "artifacts:items/whoopee_cushion",
@@ -501,7 +501,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "helium_flamingo.generateAsLoot"
+              "value": "items.helium_flamingo.generateAsLoot"
             }
           ],
           "value": "artifacts:items/helium_flamingo",
@@ -512,7 +512,7 @@
           "conditions": [
             {
               "condition": "artifacts:config_value",
-              "value": "everlasting_beef.generateAsLoot"
+              "value": "items.everlasting_beef.generateAsLoot"
             }
           ],
           "value": "artifacts:items/everlasting_beef",

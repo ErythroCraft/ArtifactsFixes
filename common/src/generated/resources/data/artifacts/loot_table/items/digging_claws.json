@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "digging_claws.generateAsLoot"
+                  "value": "items.digging_claws.generateAsLoot"
                 }
               ],
               "name": "artifacts:digging_claws"

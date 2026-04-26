@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "warp_drive.generateAsLoot"
+                  "value": "items.warp_drive.generateAsLoot"
                 }
               ],
               "name": "artifacts:warp_drive"

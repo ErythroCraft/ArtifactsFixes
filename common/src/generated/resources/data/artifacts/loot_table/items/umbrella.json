@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "umbrella.generateAsLoot"
+                  "value": "items.umbrella.generateAsLoot"
                 }
               ],
               "name": "artifacts:umbrella"

@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "night_vision_goggles.generateAsLoot"
+                  "value": "items.night_vision_goggles.generateAsLoot"
                 }
               ],
               "name": "artifacts:night_vision_goggles"

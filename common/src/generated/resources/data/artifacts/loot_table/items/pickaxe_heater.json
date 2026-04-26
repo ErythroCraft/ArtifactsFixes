@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "pickaxe_heater.generateAsLoot"
+                  "value": "items.pickaxe_heater.generateAsLoot"
                 }
               ],
               "name": "artifacts:pickaxe_heater"

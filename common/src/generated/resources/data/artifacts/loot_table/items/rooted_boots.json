@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "rooted_boots.generateAsLoot"
+                  "value": "items.rooted_boots.generateAsLoot"
                 }
               ],
               "name": "artifacts:rooted_boots"

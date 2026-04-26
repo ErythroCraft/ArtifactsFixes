@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "superstitious_hat.generateAsLoot"
+                  "value": "items.superstitious_hat.generateAsLoot"
                 }
               ],
               "name": "artifacts:superstitious_hat"

@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "villager_hat.generateAsLoot"
+                  "value": "items.villager_hat.generateAsLoot"
                 }
               ],
               "name": "artifacts:villager_hat"

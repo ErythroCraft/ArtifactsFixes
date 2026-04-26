@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "whoopee_cushion.generateAsLoot"
+                  "value": "items.whoopee_cushion.generateAsLoot"
                 }
               ],
               "name": "artifacts:whoopee_cushion"

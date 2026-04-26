@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "withered_bracelet.generateAsLoot"
+                  "value": "items.withered_bracelet.generateAsLoot"
                 }
               ],
               "name": "artifacts:withered_bracelet"

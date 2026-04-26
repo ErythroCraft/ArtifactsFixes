@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "chorus_totem.generateAsLoot"
+                  "value": "items.chorus_totem.generateAsLoot"
                 }
               ],
               "name": "artifacts:chorus_totem"

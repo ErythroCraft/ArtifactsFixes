@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "shock_pendant.generateAsLoot"
+                  "value": "items.shock_pendant.generateAsLoot"
                 }
               ],
               "name": "artifacts:shock_pendant"

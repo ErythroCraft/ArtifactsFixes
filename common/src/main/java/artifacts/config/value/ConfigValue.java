@@ -26,7 +26,7 @@ public final class ConfigValue<T> implements Value<T>, StringRepresentable {
     }
 
     public String getSerializedName() {
-        return key.path(); // TODO return full id
+        return key.toString();
     }
 
     public T get() {

@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "aqua_dashers.generateAsLoot"
+                  "value": "items.aqua_dashers.generateAsLoot"
                 }
               ],
               "name": "artifacts:aqua_dashers"

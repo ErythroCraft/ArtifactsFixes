@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "pocket_piston.generateAsLoot"
+                  "value": "items.pocket_piston.generateAsLoot"
                 }
               ],
               "name": "artifacts:pocket_piston"

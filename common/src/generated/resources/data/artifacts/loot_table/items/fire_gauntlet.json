@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "fire_gauntlet.generateAsLoot"
+                  "value": "items.fire_gauntlet.generateAsLoot"
                 }
               ],
               "name": "artifacts:fire_gauntlet"

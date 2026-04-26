@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "scarf_of_invisibility.generateAsLoot"
+                  "value": "items.scarf_of_invisibility.generateAsLoot"
                 }
               ],
               "name": "artifacts:scarf_of_invisibility"

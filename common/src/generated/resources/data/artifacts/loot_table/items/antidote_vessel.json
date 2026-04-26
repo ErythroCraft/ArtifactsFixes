@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "antidote_vessel.generateAsLoot"
+                  "value": "items.antidote_vessel.generateAsLoot"
                 }
               ],
               "name": "artifacts:antidote_vessel"

@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "universal_attractor.generateAsLoot"
+                  "value": "items.universal_attractor.generateAsLoot"
                 }
               ],
               "name": "artifacts:universal_attractor"

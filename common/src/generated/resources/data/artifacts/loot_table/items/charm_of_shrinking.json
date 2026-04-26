@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "charm_of_shrinking.generateAsLoot"
+                  "value": "items.charm_of_shrinking.generateAsLoot"
                 }
               ],
               "name": "artifacts:charm_of_shrinking"

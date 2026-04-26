@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "power_glove.generateAsLoot"
+                  "value": "items.power_glove.generateAsLoot"
                 }
               ],
               "name": "artifacts:power_glove"

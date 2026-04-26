@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "onion_ring.generateAsLoot"
+                  "value": "items.onion_ring.generateAsLoot"
                 }
               ],
               "name": "artifacts:onion_ring"

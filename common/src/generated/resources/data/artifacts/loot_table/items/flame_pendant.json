@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "flame_pendant.generateAsLoot"
+                  "value": "items.flame_pendant.generateAsLoot"
                 }
               ],
               "name": "artifacts:flame_pendant"

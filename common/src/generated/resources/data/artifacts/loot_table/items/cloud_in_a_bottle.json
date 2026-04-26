@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "cloud_in_a_bottle.generateAsLoot"
+                  "value": "items.cloud_in_a_bottle.generateAsLoot"
                 }
               ],
               "name": "artifacts:cloud_in_a_bottle"

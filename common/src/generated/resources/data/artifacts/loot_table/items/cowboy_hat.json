@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "cowboy_hat.generateAsLoot"
+                  "value": "items.cowboy_hat.generateAsLoot"
                 }
               ],
               "name": "artifacts:cowboy_hat"

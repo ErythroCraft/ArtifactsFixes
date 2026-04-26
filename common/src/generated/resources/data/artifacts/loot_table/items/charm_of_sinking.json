@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "charm_of_sinking.generateAsLoot"
+                  "value": "items.charm_of_sinking.generateAsLoot"
                 }
               ],
               "name": "artifacts:charm_of_sinking"

@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "lucky_scarf.generateAsLoot"
+                  "value": "items.lucky_scarf.generateAsLoot"
                 }
               ],
               "name": "artifacts:lucky_scarf"

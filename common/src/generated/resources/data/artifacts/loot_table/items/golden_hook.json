@@ -11,7 +11,7 @@
               "conditions": [
                 {
                   "condition": "artifacts:config_value",
-                  "value": "golden_hook.generateAsLoot"
+                  "value": "items.golden_hook.generateAsLoot"
                 }
               ],
               "name": "artifacts:golden_hook"
