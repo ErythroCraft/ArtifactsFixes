@@ -13,24 +13,24 @@ import net.minecraft.util.StringRepresentable;
 public class ConfigEntries {
 
     public static ConfigEntryFactory<Boolean> booleanConfigEntryFactory() {
-        return (config, entryBuilder, title, value) -> entryBuilder.startBooleanToggle(title, config.read(value.type(), value.getId()))
+        return (config, entryBuilder, title, value) -> entryBuilder.startBooleanToggle(title, config.read(value.type(), value.getKey()))
                 .setDefaultValue(value.getDefaultValue())
-                .setSaveConsumer(v -> config.write(value.type(), value.getId(), v));
+                .setSaveConsumer(v -> config.write(value.type(), value.getKey(), v));
     }
 
     public static ConfigEntryFactory<Integer> integerConfigEntryFactory(NumberValueType<Integer> type) {
-        return (config, entryBuilder, title, value) -> entryBuilder.startIntField(title, config.read(value.type(), value.getId()))
+        return (config, entryBuilder, title, value) -> entryBuilder.startIntField(title, config.read(value.type(), value.getKey()))
                 .setDefaultValue(value.getDefaultValue())
-                .setSaveConsumer(v -> config.write(value.type(), value.getId(), v))
+                .setSaveConsumer(v -> config.write(value.type(), value.getKey(), v))
                 .setMin(type.getMin())
                 .setMax(type.getMax());
     }
 
     public static ConfigEntryFactory<Double> doubleConfigEntryFactory(NumberValueType<Double> type) {
         return (config, entryBuilder, title, value) -> entryBuilder
-                .startDoubleField(title, config.read(value.type(), value.getId()))
+                .startDoubleField(title, config.read(value.type(), value.getKey()))
                 .setDefaultValue(value.getDefaultValue())
-                .setSaveConsumer(v -> config.write(value.type(), value.getId(), v))
+                .setSaveConsumer(v -> config.write(value.type(), value.getKey(), v))
                 .setMin(type.getMin())
                 .setMax(type.getMax());
     }
@@ -38,10 +38,10 @@ public class ConfigEntries {
     public static <T extends Enum<T> & StringRepresentable> ConfigEntryFactory<T> enumConfigEntryFactory(EnumValueType<T> type) {
         // noinspection unchecked
         return (config, entryBuilder, title, value) -> entryBuilder
-                .startEnumSelector(title, (Class<T>) value.getDefaultValue().getClass(), config.read(value.type(), value.getId()))
+                .startEnumSelector(title, (Class<T>) value.getDefaultValue().getClass(), config.read(value.type(), value.getKey()))
                 .setEnumNameProvider(e -> type.getAsComponent((T) e))
                 .setDefaultValue(value.getDefaultValue())
-                .setSaveConsumer(v -> config.write(value.type(), value.getId(), v));
+                .setSaveConsumer(v -> config.write(value.type(), value.getKey(), v));
     }
 
     public interface ConfigEntryFactory<T> {

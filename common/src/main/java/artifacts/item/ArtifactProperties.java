@@ -103,7 +103,7 @@ public final class ArtifactProperties {
 
     public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, ConfigValue<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
         if (!condition.requiresRestart()) {
-            throw new IllegalArgumentException("Config value '%s' used as a component condition should require reload".formatted(condition.getId()));
+            throw new IllegalArgumentException("Config value '%s' used as a component condition should require reload".formatted(condition.getKey()));
         }
         return delayedComponent(type, (Supplier<Boolean>) condition, initializer);
     }

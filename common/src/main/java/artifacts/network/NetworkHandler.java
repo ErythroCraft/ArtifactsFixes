@@ -21,7 +21,7 @@ public class NetworkHandler {
 
     public static void initPayloads() {
         registerClientbound(PlaySoundAtPlayerPacket.TYPE, PlaySoundAtPlayerPacket.CODEC, PlaySoundAtPlayerPacket::apply);
-        registerClientbound(UpdateItemConfigPacket.TYPE, UpdateItemConfigPacket.CODEC, UpdateItemConfigPacket::apply);
+        registerClientbound(UpdateConfigValuePacket.TYPE, UpdateConfigValuePacket.CODEC, UpdateConfigValuePacket::apply);
         registerClientbound(UpdateSwimFlyingPacket.TYPE, UpdateSwimFlyingPacket.CODEC, UpdateSwimFlyingPacket::apply);
 
         registerServerbound(DoubleJumpPacket.TYPE, DoubleJumpPacket.CODEC, DoubleJumpPacket::apply);

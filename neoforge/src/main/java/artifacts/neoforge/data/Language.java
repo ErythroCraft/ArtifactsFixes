@@ -171,7 +171,7 @@ public class Language extends LanguageProvider {
         add("artifacts.config.cooldown.title", "Cooldown");
         add("artifacts.config.generateAsLoot.title", "Generate as loot");
         add("artifacts.config.generateAsLoot.description", "Whether this item can be found in structures or drop from entities");
-        for (ConfigManager config : Artifacts.CONFIG.configs) {
+        for (ConfigManager config : Artifacts.CONFIG.configs.values()) {
             add(configTitle(config.getName()), fromCamelCasedString(config.getName()));
             addConfigNames(config);
             addConfigTooltips(config);
@@ -180,15 +180,14 @@ public class Language extends LanguageProvider {
 
     private void addConfigNames(ConfigManager config) {
         config.getValues().forEach((key, _) -> {
-            String[] words = key.split("\\.");
+            String[] words = key.path().split("\\.");
             String name = words[words.length - 1];
             if (!name.equals("cooldown") && !name.equals("enabled") && !name.equals("generateAsLoot")) {
                 String translation = config.getTitleOverride(key);
                 if (translation == null) {
                     translation = fromCamelCasedString(name);
                 }
-                key = config.getName() + '.' + key;
-                add(configTitle(key), translation);
+                add(configTitle(key.toString()), translation);
                 StringBuilder categoryKey = new StringBuilder(config.getName());
                 for (int i = 0; i < words.length - 1; i++) {
                     categoryKey.append('.').append(words[i]);
@@ -202,16 +201,15 @@ public class Language extends LanguageProvider {
 
     private void addConfigTooltips(ConfigManager config) {
         config.getValues().forEach((key, _) -> {
-            if (key.endsWith("generateAsLoot")) {
+            if (key.toString().endsWith("generateAsLoot")) {
                 return;
             }
             List<String> tooltips = config.getDescription(key);
-            key = config.getName() + '.' + key;
             if (tooltips.size() == 1) {
-                add(configDescription(key), tooltips.getFirst());
+                add(configDescription(key.toString()), tooltips.getFirst());
             } else {
                 for (int i = 0; i < tooltips.size(); i++) {
-                    add(concat(configDescription(key), Integer.toString(i)), tooltips.get(i));
+                    add(concat(configDescription(key.toString()), Integer.toString(i)), tooltips.get(i));
                 }
             }
         });

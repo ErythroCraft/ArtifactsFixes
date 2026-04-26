@@ -75,7 +75,7 @@ public class Artifacts {
     public static void initConfigs() {
         CONFIG = new ModConfig();
         CONFIG.setup();
-        for (ConfigManager config : CONFIG.configs) {
+        for (ConfigManager config : CONFIG.configs.values()) {
             config.readValuesFromConfig();
         }
     }
@@ -89,7 +89,7 @@ public class Artifacts {
         // Read the config from disk when starting a server or loading a single-player world,
         // the current loaded values could be outdated if the user previously played on a server this session.
         // Syncing to clients isn't needed, since none are connected at this time
-        for (ConfigManager config : CONFIG.configs) {
+        for (ConfigManager config : CONFIG.configs.values()) {
             config.readValuesFromConfig();
         }
     }

@@ -30,15 +30,25 @@ public abstract class ConfigManager {
     private final Path configPath;
     private final String name;
 
-    private final Map<String, ConfigValue<?>> values = new HashMap<>();
-    private final Map<String, List<String>> tooltips = new HashMap<>();
-    private final Map<String, String> titleOverrides = new HashMap<>();
+    private final Map<ConfigEntryKey, ConfigValue<?>> values = new HashMap<>();
+    private final Map<ConfigEntryKey, List<String>> tooltips = new HashMap<>();
+    private final Map<ConfigEntryKey, String> titleOverrides = new HashMap<>();
 
-    private final Map<ValueType<?, ?>, Map<String, ConfigValue<?>>> typeToValues = new HashMap<>();
+    private final Map<ValueType<?, ?>, Map<ConfigEntryKey, ConfigValue<?>>> typeToValues = new HashMap<>();
 
     protected ConfigManager(String fileName) {
         this.name = fileName;
         this.configPath = Path.of(Artifacts.MOD_ID, "%s.toml".formatted(fileName));
+    }
+
+    protected ConfigEntryKey key(String path) {
+        return new ConfigEntryKey(getName(), path);
+    }
+
+    protected void checkKey(ConfigEntryKey key) {
+        if (!key.configManager().equals(getName())) {
+            throw new IllegalArgumentException();
+        }
     }
 
     protected void setup() {
@@ -92,37 +102,40 @@ public abstract class ConfigManager {
         return name;
     }
 
-    public Map<String, ConfigValue<?>> getValues() {
+    public Map<ConfigEntryKey, ConfigValue<?>> getValues() {
         return values;
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Map<String, ConfigValue<T>> getValues(ValueType<T, ?> type) {
-        return (Map<String, ConfigValue<T>>) (Object) typeToValues.get(type);
+    public <T> Map<ConfigEntryKey, ConfigValue<T>> getValues(ValueType<T, ?> type) {
+        return (Map<ConfigEntryKey, ConfigValue<T>>) (Object) typeToValues.get(type);
     }
 
-    public List<String> getDescription(String key) {
+    public List<String> getDescription(ConfigEntryKey key) {
         return tooltips.get(key);
     }
 
     @Nullable
-    public String getTitleOverride(String key) {
+    public String getTitleOverride(ConfigEntryKey key) {
         return titleOverrides.get(key);
     }
 
-    public <T, C> T read(ValueType<T, C> type, String key) {
-        return type.read(config.get(key));
+    public <T, C> T read(ValueType<T, C> type, ConfigEntryKey key) {
+        checkKey(key);
+        return type.read(config.get(key.path()));
     }
 
-    public <T, C> void write(ValueType<T, C> type, String key, T value) {
-        config.set(key, type.write(value));
+    public <T, C> void write(ValueType<T, C> type, ConfigEntryKey key, T value) {
+        checkKey(key);
+        config.set(key.path(), type.write(value));
     }
 
-    private <T> void reset(String key, ConfigValue<T> value) {
-        config.add(key, value.type().write(value.getDefaultValue()));
+    private <T> void reset(ConfigEntryKey key, ConfigValue<T> value) {
+        checkKey(key);
+        config.add(key.path(), value.type().write(value.getDefaultValue()));
     }
 
-    protected <T> void readValueFromConfig(String key, ConfigValue<T> value) {
+    protected <T> void readValueFromConfig(ConfigEntryKey key, ConfigValue<T> value) {
         value.set(read(value.type(), key));
     }
 
@@ -131,12 +144,12 @@ public abstract class ConfigManager {
     }
 
     protected void addMissingKeys() {
-        Map<String, ConfigValue<?>> values = getValues();
+        Map<ConfigEntryKey, ConfigValue<?>> values = getValues();
 
-        List<String> keys = new ArrayList<>(values.keySet());
+        List<ConfigEntryKey> keys = new ArrayList<>(values.keySet());
         Collections.sort(keys);
-        for (String key : keys) {
-            if (!config.contains(key)) {
+        for (ConfigEntryKey key : keys) {
+            if (!config.contains(key.path())) {
                 ConfigValue<?> value = values.get(key);
                 reset(key, value);
                 StringBuilder builder = new StringBuilder();
@@ -144,7 +157,7 @@ public abstract class ConfigManager {
                     builder.append(tooltip).append('\n');
                 }
                 builder.append(value.type().getAllowedValuesComment());
-                config.setComment(key, builder.toString());
+                config.setComment(key.path(), builder.toString());
             }
         }
     }
@@ -174,11 +187,11 @@ public abstract class ConfigManager {
         }
     }
 
-    protected ConfigValueBuilder<Boolean> define(String key, boolean defaultValue) {
-        return new ConfigValueBuilder<>(key, ValueTypes.BOOLEAN, defaultValue) {
+    protected ConfigValueBuilder<Boolean> define(String path, boolean defaultValue) {
+        return new ConfigValueBuilder<>(path, ValueTypes.BOOLEAN, defaultValue) {
             @Override
             protected void defineInSpec() {
-                spec.define(key, defaultValue);
+                spec.define(path, defaultValue);
             }
         };
     }
@@ -235,7 +248,7 @@ public abstract class ConfigManager {
 
     public abstract class ConfigValueBuilder<T> {
 
-        private final String key;
+        private final String path;
         private final ValueType<T, ?> type;
         private final T defaultValue;
 
@@ -243,8 +256,8 @@ public abstract class ConfigManager {
         private Optional<String> title = Optional.empty();
         private boolean requiresRestart = false;
 
-        public ConfigValueBuilder(String key, ValueType<T, ?> type, T defaultValue) {
-            this.key = key;
+        public ConfigValueBuilder(String path, ValueType<T, ?> type, T defaultValue) {
+            this.path = path;
             this.defaultValue = defaultValue;
             this.type = type;
         }
@@ -254,6 +267,7 @@ public abstract class ConfigManager {
         public ConfigValue<T> build() {
             defineInSpec();
 
+            ConfigEntryKey key = key(path);
             ConfigValue<T> value = new ConfigValue<>(type, key, defaultValue, requiresRestart);
             values.put(key, value);
             ConfigManager.this.tooltips.put(key, List.copyOf(this.tooltip));

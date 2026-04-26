@@ -1,31 +1,32 @@
 package artifacts.config.value;
 
+import artifacts.config.ConfigEntryKey;
 import artifacts.config.value.type.ValueType;
 import net.minecraft.util.StringRepresentable;
 
 public final class ConfigValue<T> implements Value<T>, StringRepresentable {
 
     private final ValueType<T, ?> type;
-    private final String id;
+    private final ConfigEntryKey key;
     private final T defaultValue;
     private final boolean requiresRestart;
 
     private T value;
 
-    public ConfigValue(ValueType<T, ?> type, String id, T defaultValue, boolean requiresRestart) {
+    public ConfigValue(ValueType<T, ?> type, ConfigEntryKey key, T defaultValue, boolean requiresRestart) {
         this.type = type;
-        this.id = id;
+        this.key = key;
         this.requiresRestart = requiresRestart;
         this.defaultValue = defaultValue;
         this.value = defaultValue;
     }
 
-    public String getId() {
-        return id;
+    public ConfigEntryKey getKey() {
+        return key;
     }
 
     public String getSerializedName() {
-        return id;
+        return key.path(); // TODO return full id
     }
 
     public T get() {
@@ -52,11 +53,11 @@ public final class ConfigValue<T> implements Value<T>, StringRepresentable {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof ConfigValue<?> that)) return false;
-        return id.equals(that.id);
+        return key.equals(that.key);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return key.hashCode();
     }
 }

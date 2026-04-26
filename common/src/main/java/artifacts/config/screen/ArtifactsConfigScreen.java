@@ -1,6 +1,7 @@
 package artifacts.config.screen;
 
 import artifacts.Artifacts;
+import artifacts.config.ConfigEntryKey;
 import artifacts.config.ConfigManager;
 import artifacts.config.value.ConfigValue;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
@@ -28,20 +29,20 @@ public class ArtifactsConfigScreen {
                 .setParentScreen(parent)
                 .setTitle(Component.translatable("%s.config.title".formatted(Artifacts.MOD_ID)))
                 .setSavingRunnable(() -> {
-                    for (ConfigManager config : Artifacts.CONFIG.configs) {
+                    for (ConfigManager config : Artifacts.CONFIG.configs.values()) {
                         config.onConfigChanged();
                     }
                 });
     }
 
     public Screen build() {
-        for (ConfigManager config : Artifacts.CONFIG.configs) {
+        for (ConfigManager config : Artifacts.CONFIG.configs.values()) {
             addConfigs(config);
         }
 
         // Add nested subcategories into their parents
         subCategories.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key -> {
-            List<String> keyParts = splitKey(key);
+            List<String> keyParts = splitKeyPath(key);
             String parentKey = String.join(".", keyParts.subList(0, keyParts.size() - 1));
             if (subCategories.containsKey(parentKey)) {
                 subCategories.get(parentKey).add(buildSubCategory(key));
@@ -50,7 +51,7 @@ public class ArtifactsConfigScreen {
 
         // Add top-level subcategories to their categories
         subCategories.keySet().stream().sorted().forEach(key -> {
-            List<String> keyParts = splitKey(key);
+            List<String> keyParts = splitKeyPath(key);
             String parentKey = String.join(".", keyParts.subList(0, keyParts.size() - 1));
             if (!subCategories.containsKey(parentKey)) {
                 SubCategoryListEntry subCategory = (SubCategoryListEntry) buildSubCategory(key);
@@ -63,7 +64,7 @@ public class ArtifactsConfigScreen {
     }
 
     private AbstractConfigListEntry<?> buildSubCategory(String key) {
-        String name = splitKey(key).getLast();
+        String name = splitKeyPath(key).getLast();
         List<AbstractConfigListEntry<?>> entries = subCategories.get(key);
         if (isItem(name)) {
             return new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.getValue(Artifacts.id(name)), entries);
@@ -84,9 +85,9 @@ public class ArtifactsConfigScreen {
         });
     }
 
-    private void addConfigEntry(ConfigCategory category, ConfigManager config, String key) {
-        List<String> keyParts = splitKey(key);
-        AbstractConfigListEntry<?> field = createField(config, config.getName(), key, config.getValues().get(key), config.getDescription(key).size());
+    private void addConfigEntry(ConfigCategory category, ConfigManager config, ConfigEntryKey key) {
+        List<String> keyParts = splitKeyPath(key.path());
+        AbstractConfigListEntry<?> field = createField(config, key, config.getValues().get(key), config.getDescription(key).size());
         if (keyParts.size() == 1) {
             category.addEntry(field);
         } else {
@@ -104,7 +105,7 @@ public class ArtifactsConfigScreen {
         ConfigCategory category = builder.getOrCreateCategory(getTitle(config.getName()));
         config.getValues().keySet()
                 .stream()
-                .sorted(Comparator.comparing((String key) -> !key.endsWith("generateAsLoot"))
+                .sorted(Comparator.comparing((ConfigEntryKey key) -> !key.path().endsWith("generateAsLoot"))
                         .thenComparing(Comparator.naturalOrder()))
                 .forEach(key -> addConfigEntry(category, config, key));
     }
@@ -113,13 +114,12 @@ public class ArtifactsConfigScreen {
         return subCategories.computeIfAbsent(key, _ -> new ArrayList<>());
     }
 
-    private AbstractConfigListEntry<?> createField(ConfigManager config, String categoryName, String key, ConfigValue<?> value, int tooltipCount) {
-        String fullKey = categoryName + '.' + key;
-        String name = splitKey(fullKey).getLast();
+    private AbstractConfigListEntry<?> createField(ConfigManager config, ConfigEntryKey key, ConfigValue<?> value, int tooltipCount) {
+        String name = splitKeyPath(key.path()).getLast();
         if (!name.equals("cooldown") && !name.equals("enabled") && !name.equals("generateAsLoot")) {
-            name = fullKey;
+            name = key.toString();
         }
-        Component[] tooltips = getTooltips(fullKey, tooltipCount);
+        Component[] tooltips = getTooltips(key, tooltipCount);
         FieldBuilder<?, ?, ?> configEntry = createConfigEntry(config, value, getTitle(name));
         applyTooltip(configEntry, tooltips);
         return configEntry.build();
@@ -144,7 +144,7 @@ public class ArtifactsConfigScreen {
         return configEntry;
     }
 
-    private static List<String> splitKey(String key) {
+    private static List<String> splitKeyPath(String key) {
         return Arrays.asList(key.split("\\."));
     }
 
@@ -159,16 +159,16 @@ public class ArtifactsConfigScreen {
         return Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name));
     }
 
-    private static Component[] getTooltips(String name, int count) {
+    private static Component[] getTooltips(ConfigEntryKey key, int count) {
         if (count > 1) {
             Component[] tooltips = new Component[count];
             for (int i = 0; i < count; i++) {
-                tooltips[i] = Component.translatable("%s.config.%s.description.%s".formatted(Artifacts.MOD_ID, name, i));
+                tooltips[i] = Component.translatable("%s.config.%s.description.%s".formatted(Artifacts.MOD_ID, key.toString(), i));
             }
             return tooltips;
         }
         // TODO: cleanup shared descriptions/titles
-        String tooltipKey = name.endsWith("generateAsLoot") ? "generateAsLoot" : name;
+        String tooltipKey = key.toString().endsWith("generateAsLoot") ? "generateAsLoot" : key.toString();
         return new Component[] {
                 Component.translatable("%s.config.%s.description".formatted(Artifacts.MOD_ID, tooltipKey))
         };

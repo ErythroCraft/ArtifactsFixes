@@ -1,6 +1,6 @@
 package artifacts.config;
 
-import java.util.List;
+import java.util.Map;
 
 public class ModConfig {
 
@@ -8,9 +8,13 @@ public class ModConfig {
     public final GeneralConfig general = new GeneralConfig();
     public final ItemConfigs items = new ItemConfigs();
 
-    public final List<ConfigManager> configs = List.of(general, client, items);
+    public final Map<String, ConfigManager> configs = Map.of(
+            "general", general,
+            "client", client,
+            "items", items
+    );
 
     public void setup() {
-        configs.forEach(ConfigManager::setup);
+        configs.values().forEach(ConfigManager::setup);
     }
 }

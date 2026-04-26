@@ -7,7 +7,7 @@ import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.item.ItemDamageProperties;
 import artifacts.network.NetworkHandler;
-import artifacts.network.UpdateItemConfigPacket;
+import artifacts.network.UpdateConfigValuePacket;
 import artifacts.registry.ModItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -763,12 +763,12 @@ public final class ItemConfigs extends ConfigManager {
     }
 
     private void sendToClients(MinecraftServer server) {
-        getValues().forEach((_, value) -> NetworkHandler.sendToPlayers(server.getPlayerList().getPlayers(), UpdateItemConfigPacket.of(value)));
+        getValues().forEach((_, value) -> NetworkHandler.sendToPlayers(server.getPlayerList().getPlayers(), UpdateConfigValuePacket.of(value)));
     }
 
     public void sendToClient(ServerPlayer player) {
         Artifacts.LOGGER.info("Sending item configs to client");
-        getValues().forEach((_, value) -> NetworkHandler.sendToPlayer(player, UpdateItemConfigPacket.of(value)));
+        getValues().forEach((_, value) -> NetworkHandler.sendToPlayer(player, UpdateConfigValuePacket.of(value)));
     }
 
     private abstract class ItemSubCategory extends SubCategory {

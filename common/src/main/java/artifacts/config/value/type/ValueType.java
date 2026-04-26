@@ -40,7 +40,7 @@ public abstract class ValueType<T, C> {
                         DataResult::success,
                         value -> {
                             if (value instanceof ConfigValue<T> configValue
-                                    && Artifacts.CONFIG.items.getValues(this).containsKey(configValue.getId())
+                                    && Artifacts.CONFIG.items.getValues(this).containsKey(configValue.getKey())
                             ) {
                                 return DataResult.success(configValue);
                             }
