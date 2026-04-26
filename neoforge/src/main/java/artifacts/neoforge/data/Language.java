@@ -2,10 +2,10 @@ package artifacts.neoforge.data;
 
 import artifacts.Artifacts;
 import artifacts.config.ConfigManager;
+import artifacts.datagen.LangEntry;
+import artifacts.datagen.LangUtil;
 import artifacts.neoforge.data.tags.ItemTags;
 import artifacts.registry.*;
-import com.google.common.base.CaseFormat;
-import joptsimple.internal.Strings;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -58,8 +58,8 @@ public class Language extends LanguageProvider {
         add("artifacts.creative_tab", "Artifacts");
         ModKeyMappings.register(keyMapping -> {
             List<String> list = Arrays.asList(keyMapping.getName().split("\\."));
-            String action = fromSnakeCasedString(list.getLast());
-            String itemName = fromSnakeCasedString(list.get(list.size() - 2));
+            String action = LangUtil.fromSnakeCasedString(list.getLast());
+            String itemName = LangUtil.fromSnakeCasedString(list.get(list.size() - 2));
             add(keyMapping.getName(), "%s %s".formatted(action, itemName));
         });
         add("artifacts.key_category", "Artifacts");
@@ -150,14 +150,14 @@ public class Language extends LanguageProvider {
         for (RegistryHolder<Attribute, ?> attribute : ModAttributes.ATTRIBUTES.getEntries()) {
             String[] path = attribute.unwrapKey().orElseThrow().identifier().getPath().split("\\.");
             String name = path[path.length - 1];
-            add(attribute.get().getDescriptionId(), fromSnakeCasedString(name));
+            add(attribute.get().getDescriptionId(), LangUtil.fromSnakeCasedString(name));
         }
         add("attribute.artifacts.swim_speed", "Swim Speed");
     }
 
     private void addEntities() {
         for (RegistryHolder<EntityType<?>, ?> entityType : ModEntityTypes.ENTITY_TYPES.getEntries()) {
-            add(entityType.get().getDescriptionId(), fromSnakeCasedString(entityType.unwrapKey().orElseThrow().identifier().getPath()));
+            add(entityType.get().getDescriptionId(), LangUtil.fromSnakeCasedString(entityType.unwrapKey().orElseThrow().identifier().getPath()));
         }
         add(ModSoundEvents.MIMIC_CLOSE.value(), "Mimic closes");
         add(ModSoundEvents.MIMIC_DEATH.value(), "Mimic dies");
@@ -167,57 +167,24 @@ public class Language extends LanguageProvider {
 
     private void addConfigs() {
         add(configTitle(), "Artifacts Config");
-        add("artifacts.config.enabled.title", "Enabled");
-        add("artifacts.config.cooldown.title", "Cooldown");
-        add("artifacts.config.generateAsLoot.title", "Generate as loot");
-        add("artifacts.config.generateAsLoot.description", "Whether this item can be found in structures or drop from entities");
         for (ConfigManager config : Artifacts.CONFIG.configs.values()) {
-            add(configTitle(config.getName()), fromCamelCasedString(config.getName()));
+            add(configTitle(config.getName()), LangUtil.fromCamelCasedString(config.getName()));
             addConfigNames(config);
-            addConfigTooltips(config);
         }
     }
 
     private void addConfigNames(ConfigManager config) {
-        config.getValues().forEach((key, _) -> {
-            String[] words = key.path().split("\\.");
-            String name = words[words.length - 1];
-            if (!name.equals("cooldown") && !name.equals("enabled") && !name.equals("generateAsLoot")) {
-                String translation = config.getTitleOverride(key);
-                if (translation == null) {
-                    translation = fromCamelCasedString(name);
-                }
-                add(configTitle(key.toString()), translation);
-                StringBuilder categoryKey = new StringBuilder(config.getName());
-                for (int i = 0; i < words.length - 1; i++) {
-                    categoryKey.append('.').append(words[i]);
-                    if (!BuiltInRegistries.ITEM.containsKey(Artifacts.id(words[i]))) {
-                        override(configTitle(categoryKey.toString()), fromSnakeCasedString(words[i]));
-                    }
-                }
-            }
-        });
-    }
-
-    private void addConfigTooltips(ConfigManager config) {
-        config.getValues().forEach((key, _) -> {
-            if (key.toString().endsWith("generateAsLoot")) {
-                return;
-            }
-            List<String> tooltips = config.getDescription(key);
-            if (tooltips.size() == 1) {
-                add(configDescription(key.toString()), tooltips.getFirst());
-            } else {
-                for (int i = 0; i < tooltips.size(); i++) {
-                    add(concat(configDescription(key.toString()), Integer.toString(i)), tooltips.get(i));
-                }
+        config.getDisplays().values().forEach(display -> {
+            addOrReplace(display.title());
+            for (LangEntry entry : display.description()) {
+                addOrReplace(entry);
             }
         });
     }
 
     private void addItems() {
         for (Holder<Item> item : ModItems.ITEMS.getEntries()) {
-            add(item.value(), fromSnakeCasedString(item.unwrapKey().orElseThrow().identifier().getPath()));
+            add(item.value(), LangUtil.fromSnakeCasedString(item.unwrapKey().orElseThrow().identifier().getPath()));
         }
         override(ModItems.ANGLERS_HAT.value().getDescriptionId(), "Angler's Hat");
         override(ModItems.AQUA_DASHERS.value().getDescriptionId(), "Aqua-Dashers");
@@ -270,6 +237,12 @@ public class Language extends LanguageProvider {
         add(key.formatted(id.getNamespace(), id.getPath()), value);
     }
 
+    private void addOrReplace(LangEntry entry) {
+        entry.english().ifPresent(
+                english -> override(entry.key(), english)
+        );
+    }
+
     private void addAbilityTooltip(DataComponentType<?> type, Holder<?> holder, String... s) {
         List<String> list = new java.util.ArrayList<>(List.of(s));
         list.addFirst(holder.unwrapKey().orElseThrow().identifier().getPath());
@@ -290,29 +263,6 @@ public class Language extends LanguageProvider {
 
     private void tooltip(String key, String value) {
         add("%s.tooltip.%s".formatted(Artifacts.MOD_ID, key), value);
-    }
-
-    private static String fromCamelCasedString(String string) {
-        return fromSnakeCasedString(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, string));
-    }
-
-    private static String fromSnakeCasedString(String string) {
-        String[] words = string.split("_");
-        for (int i = 0; i < words.length; i++) {
-            words[i] = Character.toUpperCase(words[i].charAt(0)) + words[i].substring(1);
-        }
-        return Strings.join(words, " ")
-                .replace(" A ", " a ")
-                .replace(" An ", " an ")
-                .replaceFirst(" In ", " in ")
-                .replace(" Of ", " of ")
-                .replace(" On ", " on ")
-                .replaceFirst(" Per ", " per ")
-                .replace(" The ", " the ");
-    }
-
-    private static String configDescription(String... names) {
-        return key("config", concat(names), "description");
     }
 
     private static String configTitle(String... names) {

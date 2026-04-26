@@ -3,7 +3,9 @@ package artifacts.config.screen;
 import artifacts.Artifacts;
 import artifacts.config.ConfigEntryKey;
 import artifacts.config.ConfigManager;
+import artifacts.config.display.ConfigEntryDisplay;
 import artifacts.config.value.ConfigValue;
+import artifacts.datagen.LangEntry;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -22,7 +24,7 @@ public class ArtifactsConfigScreen {
 
     private final ConfigBuilder builder;
 
-    private final Map<String, List<AbstractConfigListEntry<?>>> subCategories = new HashMap<>();
+    private final Map<ConfigEntryKey, List<AbstractConfigListEntry<?>>> subCategories = new HashMap<>();
 
     public ArtifactsConfigScreen(Screen parent) {
         builder = ConfigBuilder.create()
@@ -41,33 +43,29 @@ public class ArtifactsConfigScreen {
         }
 
         // Add nested subcategories into their parents
-        subCategories.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key -> {
-            List<String> keyParts = splitKeyPath(key);
-            String parentKey = String.join(".", keyParts.subList(0, keyParts.size() - 1));
-            if (subCategories.containsKey(parentKey)) {
-                subCategories.get(parentKey).add(buildSubCategory(key));
-            }
-        });
+        subCategories.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key ->
+                key.parent().ifPresent(parentKey ->
+                        subCategories.get(parentKey).add(buildSubCategory(key))
+                )
+        );
 
         // Add top-level subcategories to their categories
         subCategories.keySet().stream().sorted().forEach(key -> {
-            List<String> keyParts = splitKeyPath(key);
-            String parentKey = String.join(".", keyParts.subList(0, keyParts.size() - 1));
-            if (!subCategories.containsKey(parentKey)) {
+            if (key.parent().isEmpty()) {
                 SubCategoryListEntry subCategory = (SubCategoryListEntry) buildSubCategory(key);
                 appendSearchTagsToSubCategories(List.of(), subCategory.getFieldName(), subCategory.getValue());
-                builder.getOrCreateCategory(getTitle(keyParts.getFirst())).addEntry(subCategory);
+                builder.getOrCreateCategory(getCategoryTitle(key.configManager())).addEntry(subCategory);
             }
         });
 
         return builder.build();
     }
 
-    private AbstractConfigListEntry<?> buildSubCategory(String key) {
-        String name = splitKeyPath(key).getLast();
+    private AbstractConfigListEntry<?> buildSubCategory(ConfigEntryKey key) {
         List<AbstractConfigListEntry<?>> entries = subCategories.get(key);
-        if (isItem(name)) {
-            return new ItemSubCategoryListEntry(BuiltInRegistries.ITEM.getValue(Artifacts.id(name)), entries);
+        // TODO: Query actual item holder/key instead of parsing from string
+        if (isItem(key.path().getLast())) {
+            return new ItemSubCategoryListEntry(getTitle(key), BuiltInRegistries.ITEM.getValue(Artifacts.id(key.path().getLast())), entries);
         }
         return builder.entryBuilder().startSubCategory(getTitle(key), List.copyOf(entries)).build();
     }
@@ -86,46 +84,51 @@ public class ArtifactsConfigScreen {
     }
 
     private void addConfigEntry(ConfigCategory category, ConfigManager config, ConfigEntryKey key) {
-        List<String> keyParts = splitKeyPath(key.path());
-        AbstractConfigListEntry<?> field = createField(config, key, config.getValues().get(key), config.getDescription(key).size());
-        if (keyParts.size() == 1) {
+        AbstractConfigListEntry<?> field = createField(config, key, config.getValues().get(key));
+        Optional<ConfigEntryKey> parent = key.parent();
+        if (parent.isEmpty()) {
             category.addEntry(field);
         } else {
+            getOrCreateSubCategory(parent.get()).add(field);
             // Ensure all intermediate subcategories exist
-            for (int i = 1; i < keyParts.size() - 1; i++) {
-                String intermediateKey = config.getName() + '.' + String.join(".", keyParts.subList(0, i));
-                getOrCreateSubCategory(intermediateKey);
-            }
-            String parentKey = config.getName() + '.' + String.join(".", keyParts.subList(0, keyParts.size() - 1));
-            getOrCreateSubCategory(parentKey).add(field);
+            do {
+                getOrCreateSubCategory(parent.get());
+                parent = parent.get().parent();
+            } while (parent.isPresent());
         }
     }
 
     private void addConfigs(ConfigManager config) {
-        ConfigCategory category = builder.getOrCreateCategory(getTitle(config.getName()));
+        ConfigCategory category = builder.getOrCreateCategory(getCategoryTitle(config.getName()));
         config.getValues().keySet()
                 .stream()
-                .sorted(Comparator.comparing((ConfigEntryKey key) -> !key.path().endsWith("generateAsLoot"))
-                        .thenComparing(Comparator.naturalOrder()))
+                .sorted(Comparator.naturalOrder())
+                .sorted(Comparator.comparingInt(key -> getDisplay(key).displayPriority()))
+                .sorted(Comparator.comparingInt(this::getConfigCategoryPriority))
                 .forEach(key -> addConfigEntry(category, config, key));
     }
 
-    private List<AbstractConfigListEntry<?>> getOrCreateSubCategory(String key) {
+    private int getConfigCategoryPriority(ConfigEntryKey key) {
+        return switch (key.configManager()) {
+            case "general" -> 0;
+            case "client" -> 1;
+            case "items" -> 2;
+            default -> 3;
+        };
+    }
+
+    private List<AbstractConfigListEntry<?>> getOrCreateSubCategory(ConfigEntryKey key) {
         return subCategories.computeIfAbsent(key, _ -> new ArrayList<>());
     }
 
-    private AbstractConfigListEntry<?> createField(ConfigManager config, ConfigEntryKey key, ConfigValue<?> value, int tooltipCount) {
-        String name = splitKeyPath(key.path()).getLast();
-        if (!name.equals("cooldown") && !name.equals("enabled") && !name.equals("generateAsLoot")) {
-            name = key.toString();
-        }
-        Component[] tooltips = getTooltips(key, tooltipCount);
-        FieldBuilder<?, ?, ?> configEntry = createConfigEntry(config, value, getTitle(name));
-        applyTooltip(configEntry, tooltips);
+    private AbstractConfigListEntry<?> createField(ConfigManager config, ConfigEntryKey key, ConfigValue<?> value) {
+        Component[] tooltips = getTooltips(key);
+        FieldBuilder<?, ?, ?> configEntry = createConfigEntry(config, value, config.getDisplay(key).title().asComponent());
+        setTooltips(configEntry, tooltips);
         return configEntry.build();
     }
 
-    private static void applyTooltip(FieldBuilder<?, ?, ?> builder, Component[] tooltips) {
+    private static void setTooltips(FieldBuilder<?, ?, ?> builder, Component[] tooltips) {
         if (builder instanceof AbstractFieldBuilder<?, ?, ?> b) {
             b.setTooltip(tooltips);
         } else if (builder instanceof DropdownMenuBuilder<?> b) {
@@ -139,38 +142,29 @@ public class ArtifactsConfigScreen {
      * without overriding settings received from the server.
      */
     private <T> FieldBuilder<?, ?, ?> createConfigEntry(ConfigManager config, ConfigValue<T> value, Component title) {
-        FieldBuilder<?, ?, ?> configEntry = value.type().getConfigEntryFactory().createConfigEntry(config, builder.entryBuilder(), title, value);
+        FieldBuilder<?, ?, ?> configEntry = value.type().getConfigEntryFactory()
+                .createConfigEntry(config, builder.entryBuilder(), title, value);
         configEntry.requireRestart(value.requiresRestart());
         return configEntry;
-    }
-
-    private static List<String> splitKeyPath(String key) {
-        return Arrays.asList(key.split("\\."));
-    }
-
-    private static Component getTitle(String categoryKey) {
-        String name = categoryKey.substring(categoryKey.lastIndexOf('.') + 1);
-        return isItem(name)
-                ? BuiltInRegistries.ITEM.getValue(Artifacts.id(name)).getDefaultInstance().getItemName()
-                : Component.translatable("%s.config.%s.title".formatted(Artifacts.MOD_ID, categoryKey));
     }
 
     private static boolean isItem(String name) {
         return Identifier.isValidPath(name) && BuiltInRegistries.ITEM.containsKey(Artifacts.id(name));
     }
 
-    private static Component[] getTooltips(ConfigEntryKey key, int count) {
-        if (count > 1) {
-            Component[] tooltips = new Component[count];
-            for (int i = 0; i < count; i++) {
-                tooltips[i] = Component.translatable("%s.config.%s.description.%s".formatted(Artifacts.MOD_ID, key.toString(), i));
-            }
-            return tooltips;
-        }
-        // TODO: cleanup shared descriptions/titles
-        String tooltipKey = key.toString().endsWith("generateAsLoot") ? "generateAsLoot" : key.toString();
-        return new Component[] {
-                Component.translatable("%s.config.%s.description".formatted(Artifacts.MOD_ID, tooltipKey))
-        };
+    private static Component getCategoryTitle(String categoryKey) {
+        return Component.translatable("%s.config.%s.title".formatted(Artifacts.MOD_ID, categoryKey));
+    }
+
+    private static Component getTitle(ConfigEntryKey key) {
+        return getDisplay(key).title().asComponent();
+    }
+
+    private static Component[] getTooltips(ConfigEntryKey key) {
+        return getDisplay(key).description().stream().map(LangEntry::asComponent).toArray(Component[]::new);
+    }
+
+    private static ConfigEntryDisplay getDisplay(ConfigEntryKey key) {
+        return Artifacts.CONFIG.configs.get(key.configManager()).getDisplay(key);
     }
 }

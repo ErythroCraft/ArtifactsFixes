@@ -1,11 +1,14 @@
 package artifacts.config;
 
 import artifacts.Artifacts;
+import artifacts.config.display.ConfigEntryDisplay;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.ValueTypes;
 import artifacts.config.value.type.EnumValueType;
 import artifacts.config.value.type.NumberValueType;
 import artifacts.config.value.type.ValueType;
+import artifacts.datagen.LangEntry;
+import artifacts.datagen.LangUtil;
 import artifacts.platform.PlatformServices;
 import com.electronwill.nightconfig.core.ConfigFormat;
 import com.electronwill.nightconfig.core.ConfigSpec;
@@ -15,7 +18,6 @@ import com.electronwill.nightconfig.core.io.ParsingException;
 import com.electronwill.nightconfig.core.io.WritingMode;
 import net.minecraft.util.StringRepresentable;
 import org.apache.commons.io.FilenameUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,8 +33,7 @@ public abstract class ConfigManager {
     private final String name;
 
     private final Map<ConfigEntryKey, ConfigValue<?>> values = new HashMap<>();
-    private final Map<ConfigEntryKey, List<String>> tooltips = new HashMap<>();
-    private final Map<ConfigEntryKey, String> titleOverrides = new HashMap<>();
+    private final Map<ConfigEntryKey, ConfigEntryDisplay> displays = new HashMap<>();
 
     private final Map<ValueType<?, ?>, Map<ConfigEntryKey, ConfigValue<?>>> typeToValues = new HashMap<>();
 
@@ -106,33 +107,36 @@ public abstract class ConfigManager {
         return values;
     }
 
+    public Map<ConfigEntryKey, ConfigEntryDisplay> getDisplays() {
+        return displays;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> Map<ConfigEntryKey, ConfigValue<T>> getValues(ValueType<T, ?> type) {
         return (Map<ConfigEntryKey, ConfigValue<T>>) (Object) typeToValues.get(type);
     }
 
-    public List<String> getDescription(ConfigEntryKey key) {
-        return tooltips.get(key);
+    public ConfigEntryDisplay getDisplay(ConfigEntryKey key) {
+        return displays.get(key);
     }
 
-    @Nullable
-    public String getTitleOverride(ConfigEntryKey key) {
-        return titleOverrides.get(key);
+    public List<LangEntry> getDescription(ConfigEntryKey key) {
+        return displays.get(key).description();
     }
 
     public <T, C> T read(ValueType<T, C> type, ConfigEntryKey key) {
         checkKey(key);
-        return type.read(config.get(key.path()));
+        return type.read(config.get(key.joinedPath()));
     }
 
     public <T, C> void write(ValueType<T, C> type, ConfigEntryKey key, T value) {
         checkKey(key);
-        config.set(key.path(), type.write(value));
+        config.set(key.joinedPath(), type.write(value));
     }
 
     private <T> void reset(ConfigEntryKey key, ConfigValue<T> value) {
         checkKey(key);
-        config.add(key.path(), value.type().write(value.getDefaultValue()));
+        config.add(key.joinedPath(), value.type().write(value.getDefaultValue()));
     }
 
     protected <T> void readValueFromConfig(ConfigEntryKey key, ConfigValue<T> value) {
@@ -149,15 +153,15 @@ public abstract class ConfigManager {
         List<ConfigEntryKey> keys = new ArrayList<>(values.keySet());
         Collections.sort(keys);
         for (ConfigEntryKey key : keys) {
-            if (!config.contains(key.path())) {
+            if (!config.contains(key.joinedPath())) {
                 ConfigValue<?> value = values.get(key);
                 reset(key, value);
                 StringBuilder builder = new StringBuilder();
-                for (String tooltip : getDescription(key)) {
-                    builder.append(tooltip).append('\n');
+                for (LangEntry tooltip : getDescription(key)) {
+                    builder.append(tooltip.english()).append('\n');
                 }
                 builder.append(value.type().getAllowedValuesComment());
-                config.setComment(key.path(), builder.toString());
+                config.setComment(key.joinedPath(), builder.toString());
             }
         }
     }
@@ -219,14 +223,31 @@ public abstract class ConfigManager {
 
     public abstract class SubCategory {
 
-        private final String name;
+        private final ConfigEntryKey key;
 
-        protected SubCategory(String name) {
-            this.name = name;
+        protected SubCategory(SubCategory parent, String name) {
+            this(parent.addPrefix(name));
         }
 
-        protected String getName() {
-            return name;
+        protected SubCategory(String name) {
+            this.key = new ConfigEntryKey(ConfigManager.this.getName(), name);
+        }
+
+        public ConfigEntryKey getKey() {
+            return key;
+        }
+
+        protected void setTitle(String english) {
+            setTitle(new LangEntry(key.toString(), english)
+                    .withPrefix("artifacts.config")
+                    .withSuffix("title")
+            );
+        }
+
+        // TODO: Title should be a constructor argument
+        // TODO: Subcategories do not respect display priority
+        protected void setTitle(LangEntry title) {
+            ConfigManager.this.displays.put(key, new ConfigEntryDisplay(title, List.of(), 1));
         }
 
         protected ConfigValueBuilder<Boolean> define(String key, boolean defaultValue) {
@@ -241,25 +262,28 @@ public abstract class ConfigManager {
             return ConfigManager.this.define(addPrefix(key), type, defaultValue);
         }
 
-        private String addPrefix(String key) {
-            return name + '.' + key;
+        protected String addPrefix(String key) {
+            return this.key.joinedPath() + '.' + key;
         }
     }
 
     public abstract class ConfigValueBuilder<T> {
 
-        private final String path;
+        private final ConfigEntryKey key;
         private final ValueType<T, ?> type;
         private final T defaultValue;
 
-        private final List<String> tooltip = new ArrayList<>();
-        private Optional<String> title = Optional.empty();
+        private int displayPriority = 0;
+        private int customTooltipCount = 0;
+        private final List<LangEntry> tooltip = new ArrayList<>();
+        private LangEntry title;
         private boolean requiresRestart = false;
 
         public ConfigValueBuilder(String path, ValueType<T, ?> type, T defaultValue) {
-            this.path = path;
+            this.key = key(path);
             this.defaultValue = defaultValue;
             this.type = type;
+            setDefaultTitle(key);
         }
 
         protected abstract void defineInSpec();
@@ -267,16 +291,26 @@ public abstract class ConfigManager {
         public ConfigValue<T> build() {
             defineInSpec();
 
-            ConfigEntryKey key = key(path);
+            if (customTooltipCount == 1) {
+                tooltip.replaceAll(entry -> entry.dropSuffix(".0"));
+            }
+
             ConfigValue<T> value = new ConfigValue<>(type, key, defaultValue, requiresRestart);
             values.put(key, value);
-            ConfigManager.this.tooltips.put(key, List.copyOf(this.tooltip));
+
+            ConfigEntryDisplay display = new ConfigEntryDisplay(title, List.copyOf(this.tooltip), displayPriority);
+            ConfigManager.this.displays.put(key, display);
+
             if (!ConfigManager.this.typeToValues.containsKey(type)) {
                 typeToValues.put(type, new HashMap<>());
             }
-            title.ifPresent(s -> ConfigManager.this.titleOverrides.put(key, s));
             getValues(type).put(key, value);
             return value;
+        }
+
+        public ConfigValueBuilder<T> displayPriority(int priority) {
+            this.displayPriority = priority;
+            return this;
         }
 
         public ConfigValueBuilder<T> requiresRestart() {
@@ -285,13 +319,32 @@ public abstract class ConfigManager {
         }
 
         public ConfigValueBuilder<T> tooltipLine(String line) {
+            return tooltipLine(new LangEntry(key.toString(), line)
+                    .withPrefix("artifacts.config")
+                    .withSuffix("description")
+                    .withSuffix(Integer.toString(customTooltipCount++))
+            );
+        }
+
+        public ConfigValueBuilder<T> tooltipLine(LangEntry line) {
             tooltip.add(line);
             return this;
         }
 
-        public ConfigValueBuilder<T> customTitle(String title) {
-            this.title = Optional.of(title);
+        public ConfigValueBuilder<T> title(String title) {
+            return title(new LangEntry(key.toString(), title)
+                    .withPrefix("artifacts.config")
+                    .withSuffix("title")
+            );
+        }
+
+        public ConfigValueBuilder<T> title(LangEntry title) {
+            this.title = title;
             return this;
+        }
+
+        private void setDefaultTitle(ConfigEntryKey key) {
+            title(LangUtil.fromCamelCasedString(key.path().getLast()));
         }
     }
 

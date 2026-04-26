@@ -2,9 +2,11 @@ package artifacts.config;
 
 import artifacts.Artifacts;
 import artifacts.component.ability.ToolTierUpgrade;
+import artifacts.config.display.SharedNames;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.datagen.LangEntry;
 import artifacts.item.ItemDamageProperties;
 import artifacts.network.NetworkHandler;
 import artifacts.network.UpdateConfigValuePacket;
@@ -92,7 +94,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class AntidoteVessel extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Antidote Vessel reduces the duration of negative effects").build();
 
         public final ConfigValue<Integer> maxEffectDuration = define("maxEffectDuration", ValueTypes.DURATION, 5)
@@ -105,7 +107,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class AquaDashers extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Aqua-Dashers allow the wearer to sprint on water").build();
 
         private AquaDashers() {
@@ -148,7 +150,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class CharmOfSinking extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Charm of Sinking removes the wearer's collision with water")
                 .requiresRestart().build();
 
@@ -166,7 +168,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class ChorusTotem extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Chorus Totem prevents the wearer's death")
                 .requiresRestart().build();
 
@@ -180,7 +182,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class CloudInABottle extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Cloud in a Bottle allows the wearer to double jump").build();
 
         public final ConfigValue<Double> sprintJumpVerticalVelocity
@@ -217,7 +219,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Double> bonusInvincibilityTicks = define("bonusInvincibilityTicks", ValueTypes.ATTRIBUTE_MODIFIER, 20D)
                 .tooltipLine("The amount of extra ticks the player stays invincible for after taking damage while wearing the Cross Necklace").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(0)
                 .tooltipLine("The duration in seconds the Cross Necklace goes on cooldown for after activating").build();
 
         private CrossNecklace() {
@@ -264,11 +266,11 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class EternalSteak extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Eternal Steak can be eaten")
                 .requiresRestart().build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 15)
+        public final ConfigValue<Integer> cooldown = defineCooldown(15)
                 .tooltipLine("The duration in seconds the Eternal Steak goes on cooldown for after being eaten")
                 .requiresRestart().build();
 
@@ -279,11 +281,11 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class EverlastingBeef extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Everlasting Beef can be eaten")
                 .requiresRestart().build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 15)
+        public final ConfigValue<Integer> cooldown = defineCooldown(15)
                 .tooltipLine("The duration in seconds the Everlasting Beef goes on cooldown for after being eaten")
                 .requiresRestart().build();
 
@@ -326,7 +328,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Boolean> grantFireResistance = define("grantFireResistance", true)
                 .tooltipLine("Whether the Flame Pendant grants Fire Resistance after igniting an entity").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(0)
                 .tooltipLine("The duration in seconds the Flame Pendant goes on cooldown for after setting an entity on fire").build();
 
         private FlamePendant() {
@@ -362,7 +364,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Integer> rechargeDuration = define("rechargeDuration", ValueTypes.DURATION, 15)
                 .tooltipLine("The amount of time in seconds it takes for the Helium Flamingo to recharge").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 3)
+        public final ConfigValue<Integer> cooldown = defineCooldown(3)
                 .tooltipLine("The duration in seconds the Helium Flamingo goes on cooldown for when stopping flight").build();
 
         private HeliumFlamingo() {
@@ -411,7 +413,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Integer> fireResistanceDuration = define("fireResistanceDuration", ValueTypes.DURATION, 30)
                 .tooltipLine("The duration of the fire resistance effect that is applied when taking fire damage while wearing the Obsidian Skull").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 60)
+        public final ConfigValue<Integer> cooldown = defineCooldown(60)
                 .tooltipLine("The amount of time in seconds the Obsidian Skull goes on cooldown for after taking fire damage").build();
 
         private ObsidianSkull() {
@@ -440,7 +442,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Integer> speedDuration = define("speedDuration", ValueTypes.DURATION, 8)
                 .tooltipLine("The duration in seconds of the speed effect that is applied when taking damage while wearing the Panic Necklace").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(0)
                 .tooltipLine("The duration in seconds the Panic Necklace goes on cooldown for after taking damage").build();
 
         private PanicNecklace() {
@@ -450,7 +452,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class PickaxeHeater extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Pickaxe Heater smelts mined ores").build();
 
         private PickaxeHeater() {
@@ -480,7 +482,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class RootedBoots extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Rooted Boots replenish hunger when standing on grass").build();
 
         public final ConfigValue<Integer> hungerReplenishingDuration = define("hungerReplenishingDuration", ValueTypes.DURATION, 10)
@@ -509,7 +511,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class ScarfOfInvisibility extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Scarf of Invisibility makes players invisible")
                 .requiresRestart().build();
 
@@ -529,7 +531,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Boolean> cancelLightningDamage = define("cancelLightningDamage", true)
                 .tooltipLine("Whether the Shock Pendant cancels damage from lightning").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(0)
                 .tooltipLine("The amount of time in seconds the Shock Pendant goes on cooldown for after striking an attacker with lightning").build();
 
         private ShockPendant() {
@@ -579,7 +581,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class StriderShoes extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Strider Shoes allow sneaking on lava").build();
 
         public final ConfigValue<Boolean> cancelHotFloorDamage = define("cancelHotFloorDamage", true)
@@ -611,7 +613,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Integer> minDamage = define("minDamage", ValueTypes.NON_NEGATIVE_INT, 2)
                 .tooltipLine("The minimum amount of damage that is dealt when the Thorn Pendant activates").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(0)
                 .tooltipLine("The duration in seconds the Thorn Pendant goes on cooldown for after activating").build();
 
         private ThornPendant() {
@@ -643,13 +645,13 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerBlockedAttackBase
                     = define("damagePerBlockedAttackBase", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .customTitle("Damage per Blocked Attack (Base)")
+                    .title("Damage per Blocked Attack (Base)")
                     .tooltipLine("The constant amount of damage that should be applied to the umbrella when an attack is blocked")
                     .requiresRestart().build();
 
             public final ConfigValue<Double> damagePerBlockedAttackFactor
                     = define("damagePerBlockedAttackFactor", ValueTypes.NON_NEGATIVE_DOUBLE, 1D)
-                    .customTitle("Damage per Blocked Attack (Factor)")
+                    .title("Damage per Blocked Attack (Factor)")
                     .tooltipLine("The fraction of the dealt damage that should be applied to the umbrella when an attack is blocked")
                     .requiresRestart().build();
 
@@ -698,7 +700,7 @@ public final class ItemConfigs extends ConfigManager {
 
     public final class WarpDrive extends ItemSubCategory {
 
-        public final ConfigValue<Boolean> enabled = define("enabled", true)
+        public final ConfigValue<Boolean> enabled = defineEnabled(true)
                 .tooltipLine("Whether the Warp Drive causes ender pearls to not be consumed").build();
 
         public final ConfigValue<Integer> hungerCost = define("hungerCost", ValueTypes.NON_NEGATIVE_INT, 2)
@@ -707,7 +709,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Boolean> nullifyEnderPearlDamage = define("nullifyEnderPearlDamage", true)
                 .tooltipLine("Whether the Warp Drive causes Ender Pearls not to deal any damage").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(0)
                 .tooltipLine("The duration Ender Pearls go on cooldown for after being thrown using the Warp Drive").build();
 
         private WarpDrive() {
@@ -736,7 +738,7 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Integer> witherLevel = define("witherLevel", ValueTypes.MOB_EFFECT_LEVEL, 2)
                 .tooltipLine("The level of the wither effect that is inflicted by the Withered Bracelet").build();
 
-        public final ConfigValue<Integer> cooldown = define("cooldown", ValueTypes.DURATION, 0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(0)
                 .tooltipLine("The duration the Withered Bracelet goes on cooldown for after inflicting wither on an entity").build();
 
         private WitheredBracelet() {
@@ -774,12 +776,27 @@ public final class ItemConfigs extends ConfigManager {
     private abstract class ItemSubCategory extends SubCategory {
 
         public final ConfigValue<Boolean> generateAsLoot = define("generateAsLoot", true)
-                .tooltipLine("Whether this item can be found in structures or drop from entities").build();
+                .title(SharedNames.Titles.GENERATE_AS_LOOT)
+                .tooltipLine(SharedNames.Descriptions.GENERATE_AS_LOOT)
+                .displayPriority(-2)
+                .build();
 
         public ItemSubCategory(Holder<Item> holder) {
             super(holder.unwrapKey().orElseThrow().identifier().getPath());
+            setTitle(new LangEntry(getKey().joinedPath()).withPrefix("item.artifacts"));
             // shouldn't really do this from a constructor but whatever
             ItemConfigs.this.itemCategories.put(holder.unwrapKey().orElseThrow(), this);
+        }
+
+        protected ConfigValueBuilder<Boolean> defineEnabled(boolean defaultValue) {
+            return define("enabled", defaultValue)
+                    .displayPriority(-1)
+                    .title(SharedNames.Titles.ENABLED);
+        }
+
+        protected ConfigValueBuilder<Integer> defineCooldown(int defaultValue) {
+            return define("cooldown", ValueTypes.DURATION, defaultValue)
+                    .title(SharedNames.Titles.COOLDOWN);
         }
 
         protected class DurabilityCategory extends SubCategory implements ItemDamageProperties {
@@ -788,13 +805,16 @@ public final class ItemConfigs extends ConfigManager {
             private final ConfigValue<Integer> maxDamage;
 
             private DurabilityCategory(int maxDamage) {
-                super(ItemSubCategory.this.getName() + ".durability");
+                super(ItemSubCategory.this, "durability");
+                setTitle(SharedNames.Titles.DURABILITY);
                 this.canBeDamaged = define("canBeDamaged", false)
-                        .tooltipLine("Whether this item has a limited number of uses")
+                        .title(SharedNames.Titles.CAN_BE_DAMAGED)
+                        .tooltipLine(SharedNames.Descriptions.CAN_BE_DAMAGED)
                         .requiresRestart()
                         .build();
                 this.maxDamage = define("maxDamage", ValueTypes.NON_NEGATIVE_INT, maxDamage)
-                        .tooltipLine("The maximum amount of damage that this item can take before breaking")
+                        .title(SharedNames.Titles.MAX_DAMAGE)
+                        .tooltipLine(SharedNames.Descriptions.MAX_DAMAGE)
                         .requiresRestart()
                         .build();
             }

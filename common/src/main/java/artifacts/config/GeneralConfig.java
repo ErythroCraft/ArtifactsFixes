@@ -74,6 +74,7 @@ public final class GeneralConfig extends ConfigManager {
 
         private Campsite() {
             super("campsite");
+            setTitle("Campsite");
         }
 
         @SuppressWarnings("unchecked")
@@ -119,6 +120,7 @@ public final class GeneralConfig extends ConfigManager {
 
         private Slots() {
             super("slots");
+            setTitle("Slots");
         }
 
         @SuppressWarnings("unchecked")

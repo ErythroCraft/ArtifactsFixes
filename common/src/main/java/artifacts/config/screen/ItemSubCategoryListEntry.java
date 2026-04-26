@@ -12,7 +12,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemSubCategoryListEntry extends SubCategoryListEntry {
@@ -21,9 +20,9 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
     private ItemStack stack;
 
     @SuppressWarnings("deprecation")
-    public ItemSubCategoryListEntry(Item item, List<AbstractConfigListEntry<?>> entries) {
+    public ItemSubCategoryListEntry(Component title, Item item, List<AbstractConfigListEntry<?>> entries) {
         // Item components might not be bound yet when opened from the main menu
-        super(Component.translatable(item.getDescriptionId()), List.copyOf(entries), false);
+        super(title, List.copyOf(entries), false);
         try {
             this.stack = new ItemStack(item);
         } catch (NullPointerException ignored) {
