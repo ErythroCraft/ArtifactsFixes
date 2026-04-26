@@ -264,36 +264,37 @@ public final class ItemConfigs extends ConfigManager {
         }
     }
 
-    public final class EternalSteak extends ItemSubCategory {
+    public sealed abstract class EverlastingFood extends ItemSubCategory
+            permits ItemConfigs.EverlastingBeef, ItemConfigs.EternalSteak {
 
-        public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Eternal Steak can be eaten")
-                .requiresRestart().build();
+        public final ConfigValue<Boolean> enabled;
+        public final ConfigValue<Integer> cooldown;
 
-        public final ConfigValue<Integer> cooldown = defineCooldown(15)
-                .tooltipLine("The duration in seconds the Eternal Steak goes on cooldown for after being eaten")
-                .requiresRestart().build();
-
-        private EternalSteak() {
-            super(ModItems.ETERNAL_STEAK);
+        public EverlastingFood(Holder<Item> holder, String itemName) {
+            super(holder);
+            enabled = defineEnabled(true)
+                    .tooltipLine("Whether the %s can be eaten".formatted(itemName))
+                    .requiresRestart().build();
+            cooldown = defineCooldown(15)
+                    .tooltipLine("The duration in seconds the %s goes on cooldown for after being eaten".formatted(itemName))
+                    .requiresRestart().build();
         }
     }
 
-    public final class EverlastingBeef extends ItemSubCategory {
+    public final class EternalSteak extends EverlastingFood {
 
-        public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Everlasting Beef can be eaten")
-                .requiresRestart().build();
+        private EternalSteak() {
+            super(ModItems.ETERNAL_STEAK, "Eternal Steak");
+        }
+    }
 
-        public final ConfigValue<Integer> cooldown = defineCooldown(15)
-                .tooltipLine("The duration in seconds the Everlasting Beef goes on cooldown for after being eaten")
-                .requiresRestart().build();
+    public final class EverlastingBeef extends EverlastingFood {
 
         public final ConfigValue<Double> dropRate = define("dropRate", ValueTypes.FRACTION, 1 / 500D)
                 .tooltipLine("The probability that Everlasting Beef drops when a cow or mooshroom is killed by a player").build();
 
         private EverlastingBeef() {
-            super(ModItems.EVERLASTING_BEEF);
+            super(ModItems.EVERLASTING_BEEF, "Everlasting Beef");
         }
     }
 
