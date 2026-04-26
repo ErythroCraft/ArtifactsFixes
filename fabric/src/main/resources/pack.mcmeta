@@ -10,14 +10,14 @@
         "directory": "overlay_add_face_slot",
         "condition": {
           "condition": "artifacts:config_value",
-          "value": "slots.addFaceSlot"
+          "value": "general.slots.addFaceSlot"
         }
       },
       {
         "directory": "overlay_remove_slot_restrictions",
         "condition": {
           "condition": "artifacts:config_value",
-          "value": "slots.removeSlotRestrictions"
+          "value": "general.slots.removeSlotRestrictions"
         }
       },
       {
@@ -26,7 +26,7 @@
           "condition": "fabric:not",
           "value": {
             "condition": "artifacts:config_value",
-            "value": "slots.enableAccessoriesCompat"
+            "value": "general.slots.enableAccessoriesCompat"
           }
         }
       },
@@ -36,7 +36,7 @@
           "condition": "fabric:not",
           "value": {
             "condition": "artifacts:config_value",
-            "value": "slots.enableCuriosCompat"
+            "value": "general.slots.enableCuriosCompat"
           }
         }
       },
@@ -46,7 +46,7 @@
           "condition": "fabric:not",
           "value": {
             "condition": "artifacts:config_value",
-            "value": "slots.enableTrinketsCompat"
+            "value": "general.slots.enableTrinketsCompat"
           }
         }
       }
