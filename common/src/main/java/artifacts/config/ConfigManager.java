@@ -157,8 +157,8 @@ public abstract class ConfigManager {
                 ConfigValue<?> value = values.get(key);
                 reset(key, value);
                 StringBuilder builder = new StringBuilder();
-                for (LangEntry tooltip : getDescription(key)) {
-                    builder.append(tooltip.english()).append('\n');
+                for (LangEntry entry : getDescription(key)) {
+                    entry.english().ifPresent(line -> builder.append(line).append('\n'));
                 }
                 builder.append(value.type().getAllowedValuesComment());
                 config.setComment(key.joinedPath(), builder.toString());

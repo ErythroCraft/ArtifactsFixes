@@ -270,6 +270,8 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Boolean> enabled;
         public final ConfigValue<Integer> cooldown;
 
+        public final Durability durability = new Durability();
+
         public EverlastingFood(Holder<Item> holder, String itemName) {
             super(holder);
             enabled = defineEnabled(true)
@@ -278,6 +280,19 @@ public final class ItemConfigs extends ConfigManager {
             cooldown = defineCooldown(15)
                     .tooltipLine("The duration in seconds the %s goes on cooldown for after being eaten".formatted(itemName))
                     .requiresRestart().build();
+        }
+
+        public final class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damageWhenConsumed
+                    = define("damageWhenConsumed", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_WHEN_CONSUMED)
+                    .tooltipLine(SharedNames.Descriptions.DAMAGE_WHEN_CONSUMED)
+                    .build();
+
+            private Durability() {
+                super(64 * 5);
+            }
         }
     }
 

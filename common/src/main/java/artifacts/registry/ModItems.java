@@ -14,6 +14,7 @@ import artifacts.component.ability.retaliation.RetaliationEffects;
 import artifacts.component.ability.retaliation.ThornsEffect;
 import artifacts.config.value.Value;
 import artifacts.item.ArtifactProperties;
+import artifacts.item.consumeeffects.DamageItemConsumeEffect;
 import artifacts.item.consumeeffects.HealConsumeEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -98,8 +99,13 @@ public class ModItems {
             ))
     );
     public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", builder -> builder
+            .durability(Artifacts.CONFIG.items.everlastingBeef.durability)
             .component(DataComponents.FOOD, Artifacts.CONFIG.items.everlastingBeef.enabled, Foods.BEEF)
-            .component(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.everlastingBeef.enabled, Consumables.DEFAULT_FOOD)
+            .component(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.everlastingBeef.enabled,
+                    Consumables.defaultFood().onConsume(new DamageItemConsumeEffect(
+                            Artifacts.CONFIG.items.everlastingBeef.durability.damageWhenConsumed
+                    )).build()
+            )
             .component(
                     DataComponents.USE_COOLDOWN,
                     Artifacts.CONFIG.items.everlastingBeef.enabled,
@@ -108,8 +114,13 @@ public class ModItems {
             .component(ModDataComponents.INFINITE_CONSUMABLE.get(), Artifacts.CONFIG.items.everlastingBeef.enabled)
     );
     public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", builder -> builder
+            .durability(Artifacts.CONFIG.items.eternalSteak.durability)
             .component(DataComponents.FOOD, Artifacts.CONFIG.items.eternalSteak.enabled, Foods.COOKED_BEEF)
-            .component(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.eternalSteak.enabled, Consumables.DEFAULT_FOOD)
+            .component(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.eternalSteak.enabled,
+                    Consumables.defaultFood().onConsume(new DamageItemConsumeEffect(
+                            Artifacts.CONFIG.items.eternalSteak.durability.damageWhenConsumed
+                    )).build()
+            )
             .component(
                     DataComponents.USE_COOLDOWN,
                     Artifacts.CONFIG.items.eternalSteak.enabled,

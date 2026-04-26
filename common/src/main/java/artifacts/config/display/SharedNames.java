@@ -11,6 +11,7 @@ public class SharedNames {
         public static final LangEntry DURABILITY = title("durability", "Durability");
         public static final LangEntry CAN_BE_DAMAGED = title("durability.canBeDamaged", "Can Be Damaged");
         public static final LangEntry MAX_DAMAGE = title("durability.maxDamage", "Max Damage");
+        public static final LangEntry DAMAGE_WHEN_CONSUMED = title("durability.damageWhenConsumed", "Damage When Consumed");
     }
 
     public static class Descriptions {
@@ -22,6 +23,9 @@ public class SharedNames {
         );
         public static final LangEntry MAX_DAMAGE = description("durability.maxDamage",
                 "The maximum amount of damage that this item can take before breaking"
+        );
+        public static final LangEntry DAMAGE_WHEN_CONSUMED = description("durability.damageWhenConsumed",
+                "The amount of durability that is lost when this item is consumed"
         );
     }
 
