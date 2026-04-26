@@ -34,7 +34,7 @@ public abstract class ConfigManager {
     private final Map<String, List<String>> tooltips = new HashMap<>();
     private final Map<String, String> titleOverrides = new HashMap<>();
 
-    private final Map<ValueType<?, ?>, ValueMap<?>> typeToValues = new HashMap<>();
+    private final Map<ValueType<?, ?>, Map<String, ConfigValue<?>>> typeToValues = new HashMap<>();
 
     protected ConfigManager(String fileName) {
         this.name = fileName;
@@ -98,8 +98,7 @@ public abstract class ConfigManager {
 
     @SuppressWarnings("unchecked")
     public <T> Map<String, ConfigValue<T>> getValues(ValueType<T, ?> type) {
-        ValueMap<T> valueMap = (ValueMap<T>) typeToValues.get(type);
-        return valueMap.getMap();
+        return (Map<String, ConfigValue<T>>) (Object) typeToValues.get(type);
     }
 
     public List<String> getDescription(String key) {
@@ -205,14 +204,6 @@ public abstract class ConfigManager {
         };
     }
 
-    private static class ValueMap<T> {
-        private final Map<String, ConfigValue<T>> map = new HashMap<>();
-
-        public Map<String, ConfigValue<T>> getMap() {
-            return map;
-        }
-    }
-
     public abstract class SubCategory {
 
         private final String name;
@@ -267,11 +258,10 @@ public abstract class ConfigManager {
             values.put(key, value);
             ConfigManager.this.tooltips.put(key, List.copyOf(this.tooltip));
             if (!ConfigManager.this.typeToValues.containsKey(type)) {
-                typeToValues.put(type, new ValueMap<>());
+                typeToValues.put(type, new HashMap<>());
             }
             title.ifPresent(s -> ConfigManager.this.titleOverrides.put(key, s));
-            // noinspection unchecked
-            ((ValueMap<T>) typeToValues.get(type)).getMap().put(key, value);
+            getValues(type).put(key, value);
             return value;
         }
 
