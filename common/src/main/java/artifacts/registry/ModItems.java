@@ -89,7 +89,7 @@ public class ModItems {
             .properties(p -> p.delayedHolderComponent(DataComponents.DAMAGE_TYPE, DamageTypes.SPEAR))
             .component(DataComponents.ATTACK_RANGE, new AttackRange(0, 3.5F, 0, 5.5F, 0.25F, 0.5F))
             .component(DataComponents.MINIMUM_ATTACK_CHARGE, 1F)
-            .component(DataComponents.WEAPON, new Weapon(Artifacts.CONFIG.items.umbrella.durability.damagePerAttack.get()))
+            .delayedComponent(DataComponents.WEAPON, _ -> new Weapon(Artifacts.CONFIG.items.umbrella.durability.damagePerAttack.get()))
             .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
             .durability(Artifacts.CONFIG.items.umbrella.durability)
             .properties(p -> p.attributes(ItemAttributeModifiers.builder()
@@ -100,31 +100,31 @@ public class ModItems {
     );
     public static final Holder<Item> EVERLASTING_BEEF = register("everlasting_beef", builder -> builder
             .durability(Artifacts.CONFIG.items.everlastingBeef.durability)
-            .component(DataComponents.FOOD, Artifacts.CONFIG.items.everlastingBeef.enabled, Foods.BEEF)
-            .component(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.everlastingBeef.enabled,
-                    Consumables.defaultFood().onConsume(new DamageItemConsumeEffect(
+            .delayedComponent(DataComponents.FOOD, Artifacts.CONFIG.items.everlastingBeef.enabled, _ -> Foods.BEEF)
+            .delayedComponent(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.everlastingBeef.enabled,
+                    _ -> Consumables.defaultFood().onConsume(new DamageItemConsumeEffect(
                             Artifacts.CONFIG.items.everlastingBeef.durability.damageWhenConsumed
                     )).build()
             )
-            .component(
+            .delayedComponent(
                     DataComponents.USE_COOLDOWN,
                     Artifacts.CONFIG.items.everlastingBeef.enabled,
-                    new UseCooldown(Artifacts.CONFIG.items.everlastingBeef.cooldown.get())
+                    _ -> new UseCooldown(Artifacts.CONFIG.items.everlastingBeef.cooldown.get())
             )
             .component(ModDataComponents.INFINITE_CONSUMABLE.get(), Artifacts.CONFIG.items.everlastingBeef.enabled)
     );
     public static final Holder<Item> ETERNAL_STEAK = register("eternal_steak", builder -> builder
             .durability(Artifacts.CONFIG.items.eternalSteak.durability)
-            .component(DataComponents.FOOD, Artifacts.CONFIG.items.eternalSteak.enabled, Foods.COOKED_BEEF)
-            .component(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.eternalSteak.enabled,
-                    Consumables.defaultFood().onConsume(new DamageItemConsumeEffect(
+            .delayedComponent(DataComponents.FOOD, Artifacts.CONFIG.items.eternalSteak.enabled, _ -> Foods.COOKED_BEEF)
+            .delayedComponent(DataComponents.CONSUMABLE, Artifacts.CONFIG.items.eternalSteak.enabled,
+                    _ -> Consumables.defaultFood().onConsume(new DamageItemConsumeEffect(
                             Artifacts.CONFIG.items.eternalSteak.durability.damageWhenConsumed
                     )).build()
             )
-            .component(
+            .delayedComponent(
                     DataComponents.USE_COOLDOWN,
                     Artifacts.CONFIG.items.eternalSteak.enabled,
-                    new UseCooldown(Artifacts.CONFIG.items.eternalSteak.cooldown.get())
+                    _ -> new UseCooldown(Artifacts.CONFIG.items.eternalSteak.cooldown.get())
             )
             .component(ModDataComponents.INFINITE_CONSUMABLE.get(), Artifacts.CONFIG.items.eternalSteak.enabled)
     );
@@ -146,12 +146,12 @@ public class ModItems {
     public static final Holder<Item> SNORKEL = register("snorkel", builder -> builder
             .equipable()
             .mobEffect(MobEffects.WATER_BREATHING, Value.of(1), Artifacts.CONFIG.items.snorkel.waterBreathingDuration,
-                    Artifacts.CONFIG.items.snorkel.isInfinite.get() ? EntityCondition.ALWAYS : EntityCondition.ABOVE_WATER
+                    () -> Artifacts.CONFIG.items.snorkel.isInfinite.get() ? EntityCondition.ALWAYS : EntityCondition.ABOVE_WATER
             )
     );
     public static final Holder<Item> NIGHT_VISION_GOGGLES = register("night_vision_goggles", builder -> builder
             .equipable()
-            .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), EntityCondition.ALWAYS)
+            .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), () -> EntityCondition.ALWAYS)
             .component(ModDataComponents.REDUCED_NIGHT_VISION.get(), Artifacts.CONFIG.items.nightVisionGoggles.strength)
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.NIGHT_VISION_GOGGLES)
     );
@@ -181,7 +181,7 @@ public class ModItems {
     public static final Holder<Item> SCARF_OF_INVISIBILITY = register("scarf_of_invisibility", builder -> builder
             .equipable()
             .mobEffect(MobEffects.INVISIBILITY, Value.of(1), Value.of(10),
-                    Artifacts.CONFIG.items.scarfOfInvisibility.enabled.get() ? EntityCondition.ALWAYS : EntityCondition.NEVER
+                    () -> Artifacts.CONFIG.items.scarfOfInvisibility.enabled.get() ? EntityCondition.ALWAYS : EntityCondition.NEVER
             )
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.SCARF_OF_INVISIBILITY)
             .component(ModDataComponents.HIDE_WHEN_INVISIBLE.get(), Artifacts.CONFIG.items.scarfOfInvisibility.hideWhenInvisible)
@@ -190,7 +190,7 @@ public class ModItems {
             .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .component(ModDataComponents.PIGLIN_LOVED.get())
             .component(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), new PostDamageCooldown(Artifacts.CONFIG.items.crossNecklace.cooldown, Optional.empty()))
-            .addAttributeModifier(ModAttributes.INVINCIBILITY_TICKS, Artifacts.CONFIG.items.crossNecklace.bonusInvincibilityTicks, AttributeModifier.Operation.ADD_VALUE, false)
+            .addAttributeModifier(ModAttributes.INVINCIBILITY_TICKS, Artifacts.CONFIG.items.crossNecklace.bonusInvincibilityTicks, AttributeModifier.Operation.ADD_VALUE, () -> true, false)
     );
     public static final Holder<Item> PANIC_NECKLACE = register("panic_necklace", builder -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
@@ -251,13 +251,17 @@ public class ModItems {
     public static final Holder<Item> CHARM_OF_SINKING = register("charm_of_sinking", builder -> builder
             .equipable()
             .component(ModDataComponents.SINKING.get(), Artifacts.CONFIG.items.charmOfSinking.enabled)
-            .component(ModDataComponents.DAMAGE_IMMUNITY.get(), new DamageImmunity(
+            .delayedComponent(ModDataComponents.DAMAGE_IMMUNITY.get(), _ -> new DamageImmunity(
                     Artifacts.CONFIG.items.charmOfSinking.enabled,
                     DamageTypeTags.IS_FALL,
                     Artifacts.CONFIG.items.charmOfSinking.underwaterFallDamage.get() ? EntityCondition.NEVER : EntityCondition.IN_WATER
             ))
-            .addAttributeModifier(Attributes.OXYGEN_BONUS, Artifacts.CONFIG.items.charmOfSinking.enabled.get() ?
-                    Artifacts.CONFIG.items.charmOfSinking.oxygenBonus : Value.of(0D), AttributeModifier.Operation.ADD_VALUE
+            .addAttributeModifier(
+                    Attributes.OXYGEN_BONUS,
+                    Artifacts.CONFIG.items.charmOfSinking.oxygenBonus,
+                    AttributeModifier.Operation.ADD_VALUE,
+                    Artifacts.CONFIG.items.charmOfSinking.enabled,
+                    true
             )
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SINKING)
     );
@@ -301,7 +305,7 @@ public class ModItems {
     public static final Holder<Item> UNIVERSAL_ATTRACTOR = register("universal_attractor", builder -> builder
             .equipable()
             .component(ModDataComponents.PIGLIN_LOVED.get())
-            .mobEffect(ModMobEffects.MAGNETISM, Artifacts.CONFIG.items.universalAttractor.magnetismLevel, Value.of(10), EntityCondition.ALWAYS)
+            .mobEffect(ModMobEffects.MAGNETISM, Artifacts.CONFIG.items.universalAttractor.magnetismLevel, Value.of(10), () -> EntityCondition.ALWAYS)
             .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.UNIVERSAL_ATTRACTOR)
     );
     public static final Holder<Item> CRYSTAL_HEART = register("crystal_heart", builder -> builder
@@ -321,10 +325,10 @@ public class ModItems {
             .component(ModDataComponents.EQUIPABLE_TOTEM.get(), new EquipableTotem(
                     Artifacts.CONFIG.items.chorusTotem.enabled
             ))
-            .component(
+            .delayedComponent(
                     DataComponents.DEATH_PROTECTION,
                     Artifacts.CONFIG.items.chorusTotem.enabled,
-                    new DeathProtection(List.of(
+                    _ -> new DeathProtection(List.of(
                             new ClearAllStatusEffectsConsumeEffect(),
                             new TeleportRandomlyConsumeEffect(32),
                             new HealConsumeEffect(Artifacts.CONFIG.items.chorusTotem.healthRestored))

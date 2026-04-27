@@ -26,7 +26,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -34,7 +36,7 @@ public final class ArtifactProperties {
 
     private final String itemName;
     private final Item.Properties properties;
-    private final List<EquipmentAttributeModifier> attributes;
+    private final Map<Supplier<Boolean>, EquipmentAttributeModifier> attributes;
     private final List<EnchantmentLevelModifier> enchantments;
 
     private boolean isEquipable = false;
@@ -42,7 +44,7 @@ public final class ArtifactProperties {
     public ArtifactProperties(String itemName) {
         this.itemName = itemName;
         this.properties = new Item.Properties();
-        this.attributes = new ArrayList<>();
+        this.attributes = new HashMap<>();
         this.enchantments = new ArrayList<>();
     }
 
@@ -61,19 +63,19 @@ public final class ArtifactProperties {
     }
 
     public ArtifactProperties addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation) {
-        return addAttributeModifier(attribute, amount, operation, true);
+        return addAttributeModifier(attribute, amount, operation, () -> true, true);
     }
 
-    public ArtifactProperties addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, boolean ignoreCooldown) {
-        attributes.add(new EquipmentAttributeModifier(attribute, amount, operation,
+    public ArtifactProperties addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, Supplier<Boolean> condition, boolean ignoreCooldown) {
+        attributes.put(condition, new EquipmentAttributeModifier(attribute, amount, operation,
                 Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().identifier().getPath()), ignoreCooldown)
         );
         return this;
     }
 
-    public ArtifactProperties mobEffect(Holder<MobEffect> effect, Value<Integer> level, Value<Integer> duration, EntityCondition condition) {
-        return component(ModDataComponents.MOB_EFFECTS.get(), new CompositeAbility<>(List.of(
-                new EquipmentMobEffect(new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition))
+    public ArtifactProperties mobEffect(Holder<MobEffect> effect, Value<Integer> level, Value<Integer> duration, Supplier<EntityCondition> condition) {
+        return delayedComponent(ModDataComponents.MOB_EFFECTS.get(), _ -> new CompositeAbility<>(List.of(
+                new EquipmentMobEffect(new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition.get()))
         )));
     }
 
@@ -97,19 +99,13 @@ public final class ArtifactProperties {
         return component(type, new SimpleAbility(enabled));
     }
 
-    public <T> ArtifactProperties component(DataComponentType<T> type, ConfigValue<Boolean> condition, T component) {
-        return delayedComponent(type, condition, _ -> component);
-    }
-
-    public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, ConfigValue<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
-        if (!condition.requiresRestart()) {
-            throw new IllegalArgumentException("Config value '%s' used as a component condition should require reload".formatted(condition.getKey()));
-        }
-        return delayedComponent(type, (Supplier<Boolean>) condition, initializer);
+    public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
+        return delayedComponent(type, () -> true, initializer);
     }
 
     @SuppressWarnings("DataFlowIssue")
     public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, Supplier<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
+        assertRequiresWorldRestart(condition);
         properties.delayedComponent(type, context -> condition.get() ? initializer.create(context) : null);
         return this;
     }
@@ -133,11 +129,28 @@ public final class ArtifactProperties {
         properties.rarity(Rarity.RARE);
         properties.fireResistant();
         if (!attributes.isEmpty()) {
-            properties.component(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), new CompositeAbility<>(attributes));
+            properties.delayedComponent(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), _ -> {
+                List<EquipmentAttributeModifier> result = new ArrayList<>();
+                for (Map.Entry<Supplier<Boolean>, EquipmentAttributeModifier> entry : attributes.entrySet()) {
+                    assertRequiresWorldRestart(entry.getKey());
+                    if (entry.getKey().get()) {
+                        result.add(entry.getValue());
+                    }
+                }
+                return new CompositeAbility<>(List.copyOf(result));
+            });
         }
         if (!enchantments.isEmpty()) {
             properties.component(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get(), new CompositeAbility<>(enchantments));
         }
         return properties;
+    }
+
+    private static void assertRequiresWorldRestart(Supplier<Boolean> condition) {
+        if (condition instanceof ConfigValue<Boolean> configValue && !configValue.requiresRestart()) {
+            throw new IllegalArgumentException(
+                    "Config value '%s' used as a component condition should require world restart".formatted(configValue.getKey())
+            );
+        }
     }
 }
