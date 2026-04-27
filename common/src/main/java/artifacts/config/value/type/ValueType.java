@@ -14,14 +14,9 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.Util;
 
 import java.util.Arrays;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class ValueType<T, C> {
-
-    public abstract boolean isCorrect(T value);
-
-    public abstract String makeError(T value);
 
     public abstract String getAllowedValuesComment();
 
@@ -54,10 +49,7 @@ public abstract class ValueType<T, C> {
     protected abstract Codec<T> valueCodec();
 
     public final Codec<Value<T>> constantCodec() {
-        return valueCodec().comapFlatMap(
-                value -> isCorrect(value) ? DataResult.success(value) : DataResult.error(() -> makeError(value)),
-                Function.identity()
-        ).xmap(Value.Constant::new, Supplier::get);
+        return valueCodec().xmap(Value.Constant::new, Supplier::get);
     }
 
     public final Codec<ConfigValue<T>> configCodec() {

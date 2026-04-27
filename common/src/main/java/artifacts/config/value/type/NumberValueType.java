@@ -37,19 +37,6 @@ public abstract class NumberValueType<T extends Number & Comparable<T>> extends 
     }
 
     @Override
-    public boolean isCorrect(T value) {
-        return value.compareTo(min) >= 0 && value.compareTo(max) <= 0;
-    }
-
-    @Override
-    public String makeError(T value) {
-        if (min.doubleValue() == 0 && max.intValue() == Integer.MAX_VALUE) {
-            return "Value must be non-negative: %s".formatted(value);
-        }
-        return "Value must be within range [%s;%s]: %s".formatted(min, max, value);
-    }
-
-    @Override
     public String getAllowedValuesComment() {
         return "Range: %s ~ %s".formatted(getMin(), getMax())
                 .replace("0.0 ~ Infinity", "> 0.0")

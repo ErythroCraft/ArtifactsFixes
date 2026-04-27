@@ -28,16 +28,6 @@ public class EnumValueType<T extends Enum<T> & StringRepresentable> extends Valu
     }
 
     @Override
-    public boolean isCorrect(T value) {
-        return true;
-    }
-
-    @Override
-    public String makeError(T value) {
-        return "";
-    }
-
-    @Override
     public String getAllowedValuesComment() {
         StringBuilder builder = new StringBuilder("Allowed Values: ");
         builder.append(enumClass.getEnumConstants()[0].getSerializedName());

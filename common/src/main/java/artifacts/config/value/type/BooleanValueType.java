@@ -19,16 +19,6 @@ public class BooleanValueType extends ValueType<Boolean, Boolean> {
     }
 
     @Override
-    public boolean isCorrect(Boolean value) {
-        return true;
-    }
-
-    @Override
-    public String makeError(Boolean value) {
-        return "";
-    }
-
-    @Override
     public String getAllowedValuesComment() {
         return "Allowed Values: true, false";
     }
