@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_25",
   "plugin": "artifacts.ArtifactsMixinPlugin",
   "mixins": [
-    "PlayerListMixin",
     "ability.LivingEntityMixin",
     "ability.PlayerMixin",
     "ability.autosmelt.LootTableMixin",

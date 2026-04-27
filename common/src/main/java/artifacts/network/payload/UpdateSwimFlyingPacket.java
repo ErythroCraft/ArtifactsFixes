@@ -1,7 +1,8 @@
-package artifacts.network;
+package artifacts.network.payload;
 
 import artifacts.Artifacts;
 import artifacts.component.SwimData;
+import artifacts.network.NetworkHandler;
 import artifacts.platform.PlatformServices;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -19,7 +20,7 @@ public record UpdateSwimFlyingPacket(boolean shouldSwim) implements CustomPacket
             UpdateSwimFlyingPacket::new
     );
 
-    void apply(NetworkHandler.PayloadContext context) {
+    public void apply(NetworkHandler.PayloadContext context) {
         Player player = context.player();
         if (player != null) {
             context.queue(() -> {

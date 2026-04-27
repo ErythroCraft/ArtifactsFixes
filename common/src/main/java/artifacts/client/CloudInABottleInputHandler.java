@@ -2,7 +2,7 @@ package artifacts.client;
 
 import artifacts.component.ability.DoubleJump;
 import artifacts.equipment.EquipmentHelper;
-import artifacts.network.DoubleJumpPacket;
+import artifacts.network.payload.DoubleJumpPacket;
 import artifacts.network.NetworkHandler;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.client.Minecraft;

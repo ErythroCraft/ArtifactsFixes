@@ -3,7 +3,7 @@ package artifacts.component.ability;
 import artifacts.component.ability.mobeffect.PostEatingEffect;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.network.PlaySoundAtPlayerPacket;
+import artifacts.network.payload.PlaySoundAtPlayerPacket;
 import artifacts.registry.ModTags;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

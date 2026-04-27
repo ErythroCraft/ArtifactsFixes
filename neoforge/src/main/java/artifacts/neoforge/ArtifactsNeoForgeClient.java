@@ -14,10 +14,7 @@ import artifacts.registry.ModKeyMappings;
 import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 
@@ -40,9 +37,10 @@ public class ArtifactsNeoForgeClient {
         }
 
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Post _) -> ArtifactsClient.onClientTick(Minecraft.getInstance()));
+        NeoForge.EVENT_BUS.addListener(this::onPlayerLoggingOut);
     }
 
-    public void onClientSetup(FMLClientSetupEvent event) {
+    private void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(
                 () -> {
                     ArtifactRenderers.register();
@@ -51,16 +49,20 @@ public class ArtifactsNeoForgeClient {
         );
     }
 
-    public void registerGuiLayers(RegisterGuiLayersEvent event) {
+    private void registerGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAbove(VanillaGuiLayers.AIR_LEVEL, Artifacts.id("helium_flamingo_charge"), HeliumFlamingoOverlayRenderer::render);
         event.registerAbove(VanillaGuiLayers.HOTBAR, Artifacts.id("artifact_cooldowns"), CooldownOverlayRenderer::render);
     }
 
-    public void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+    private void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         ArtifactsClient.registerLayerDefinitions(event::registerLayerDefinition);
     }
 
-    public void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+    private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.MIMIC.get(), MimicRenderer::new);
+    }
+
+    private void onPlayerLoggingOut(ClientPlayerNetworkEvent.LoggingOut ignored) {
+        Artifacts.onClientDisconnect();
     }
 }

@@ -11,7 +11,8 @@ import artifacts.neoforge.registry.ModConditions;
 import artifacts.neoforge.registry.ModItemsNeoForge;
 import artifacts.neoforge.registry.ModLootModifiers;
 import artifacts.registry.ModEntityTypes;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.network.ConfigurationTask;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
@@ -20,10 +21,12 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.network.event.RegisterConfigurationTasksEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Consumer;
 
 @Mod(Artifacts.MOD_ID)
 public class ArtifactsNeoForge {
@@ -45,9 +48,9 @@ public class ArtifactsNeoForge {
 
         modBus.addListener(ArtifactsData::gatherServerData);
         modBus.addListener(NeoForgeNetworkHandler::registerPayloadHandlers);
+        modBus.addListener(this::registerConfigurationTasks);
         NeoForge.EVENT_BUS.addListener((ServerStartingEvent event) -> Artifacts.onServerStarting(event.getServer()));
         NeoForge.EVENT_BUS.addListener((ServerStoppingEvent _) -> Artifacts.onServerStopping());
-        NeoForge.EVENT_BUS.addListener(this::onPlayerLoggedIn);
         modBus.addListener((EntityAttributeCreationEvent event) -> ModEntityTypes.registerMobAttributes(event::put));
 
         registerConfigScreen();
@@ -69,10 +72,22 @@ public class ArtifactsNeoForge {
         }
     }
 
-    private void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            Artifacts.onPlayerJoin(player);
-        }
+    private void registerConfigurationTasks(RegisterConfigurationTasksEvent event) {
+        event.register(new ConfigurationTask() {
+
+            private static final Type TYPE = new Type(Artifacts.id("configuration"));
+
+            @Override
+            public void start(Consumer<Packet<?>> consumer) {
+                Artifacts.onSendConfiguration(consumer);
+                event.getListener().finishCurrentTask(TYPE);
+            }
+
+            @Override
+            public Type type() {
+                return TYPE;
+            }
+        });
     }
 
     public static void addDeferredRegister(DeferredRegister<?> register) {

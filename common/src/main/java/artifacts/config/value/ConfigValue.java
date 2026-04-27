@@ -10,15 +10,17 @@ public final class ConfigValue<T> implements Value<T>, StringRepresentable {
     private final ConfigEntryKey key;
     private final T defaultValue;
     private final boolean requiresRestart;
+    private final boolean shouldSyncToClients;
 
     private T value;
 
-    public ConfigValue(ValueType<T, ?> type, ConfigEntryKey key, T defaultValue, boolean requiresRestart) {
+    public ConfigValue(ValueType<T, ?> type, ConfigEntryKey key, T defaultValue, boolean requiresRestart, boolean shouldSyncToClient) {
         this.type = type;
         this.key = key;
-        this.requiresRestart = requiresRestart;
         this.defaultValue = defaultValue;
-        this.value = defaultValue;
+        this.requiresRestart = requiresRestart;
+        this.shouldSyncToClients = shouldSyncToClient;
+        this.value = this.defaultValue;
     }
 
     public ConfigEntryKey getKey() {
@@ -47,6 +49,10 @@ public final class ConfigValue<T> implements Value<T>, StringRepresentable {
 
     public boolean requiresRestart() {
         return requiresRestart;
+    }
+
+    public boolean shouldSyncToClients() {
+        return shouldSyncToClients;
     }
 
     @Override

@@ -9,6 +9,8 @@ import artifacts.config.value.type.NumberValueType;
 import artifacts.config.value.type.ValueType;
 import artifacts.datagen.LangEntry;
 import artifacts.datagen.LangUtil;
+import artifacts.network.NetworkHandler;
+import artifacts.network.payload.UpdateConfigValuePacket;
 import artifacts.platform.PlatformServices;
 import com.electronwill.nightconfig.core.ConfigFormat;
 import com.electronwill.nightconfig.core.ConfigSpec;
@@ -16,6 +18,8 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.file.FileWatcher;
 import com.electronwill.nightconfig.core.io.ParsingException;
 import com.electronwill.nightconfig.core.io.WritingMode;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StringRepresentable;
 import org.apache.commons.io.FilenameUtils;
 
@@ -23,6 +27,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Consumer;
 
 // see Neoforge ConfigFileTypeHandler
 public abstract class ConfigManager {
@@ -143,8 +148,13 @@ public abstract class ConfigManager {
         value.set(read(value.type(), key));
     }
 
-    public void readValuesFromConfig() {
-        getValues().forEach(this::readValueFromConfig);
+    public void readValuesFromConfig(boolean readSyncedValues) {
+        getValues().forEach((key, value) -> {
+            // Clients should always receive synced configs from the server, only servers should read these
+            if (!value.shouldSyncToClients() || readSyncedValues) {
+                readValueFromConfig(key, value);
+            }
+        });
     }
 
     protected void addMissingKeys() {
@@ -167,7 +177,28 @@ public abstract class ConfigManager {
     }
 
     public void onConfigChanged() {
-        readValuesFromConfig();
+        readValuesFromConfig(Artifacts.getCurrentServer() != null);
+        if (Artifacts.getCurrentServer() != null) {
+            Artifacts.LOGGER.info("Sending updated {} config values to connected clients", getName());
+            sendToClients(Artifacts.getCurrentServer());
+        }
+    }
+
+    private void sendToClients(MinecraftServer server) {
+        getValues().forEach((_, value) -> {
+            if (value.shouldSyncToClients()) {
+                NetworkHandler.sendToPlayers(server.getPlayerList().getPlayers(), UpdateConfigValuePacket.of(value));
+            }
+        });
+    }
+
+    public void sendToClient(Consumer<Packet<?>> connection) {
+        Artifacts.LOGGER.info("Sending {} config values to client", getName());
+        getValues().forEach((_, value) -> {
+            if (value.shouldSyncToClients()) {
+                NetworkHandler.sendToClient(connection, UpdateConfigValuePacket.of(value));
+            }
+        });
     }
 
     public static void createBackup(final Path commentedFileConfig, final int maxBackups) {
@@ -278,6 +309,7 @@ public abstract class ConfigManager {
         private final List<LangEntry> tooltip = new ArrayList<>();
         private LangEntry title;
         private boolean requiresRestart = false;
+        private boolean shouldSyncToClients = false;
 
         public ConfigValueBuilder(String path, ValueType<T, ?> type, T defaultValue) {
             this.key = key(path);
@@ -295,7 +327,7 @@ public abstract class ConfigManager {
                 tooltip.replaceAll(entry -> entry.dropSuffix(".0"));
             }
 
-            ConfigValue<T> value = new ConfigValue<>(type, key, defaultValue, requiresRestart);
+            ConfigValue<T> value = new ConfigValue<>(type, key, defaultValue, requiresRestart, shouldSyncToClients);
             values.put(key, value);
 
             ConfigEntryDisplay display = new ConfigEntryDisplay(title, List.copyOf(this.tooltip), displayPriority);
@@ -315,6 +347,16 @@ public abstract class ConfigManager {
 
         public ConfigValueBuilder<T> requiresRestart() {
             requiresRestart = true;
+            return this;
+        }
+
+        /**
+         * Sync this config option from the server to connected clients.
+         * Required when clientside logic is performed on the client using this config option,
+         * or the value itself is displayed on the client somewhere, such as in a tooltip.
+         */
+        public ConfigValueBuilder<T> syncToClients() {
+            shouldSyncToClients = true;
             return this;
         }
 

@@ -14,6 +14,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.VibrationFrequencyRegistry;
 
@@ -26,9 +27,7 @@ public class ArtifactsFabric implements ModInitializer {
         ModFeaturesFabric.register();
         ModResourceConditions.register();
         ModItemsFabric.registerCreativeModeTab();
-        FabricNetworkHandler.registerClientboundPayloads();
-        FabricNetworkHandler.registerServerboundPayloads();
-        FabricNetworkHandler.registerServerboundReceivers();
+        FabricNetworkHandler.register();
         ModEntityTypes.registerMobAttributes(FabricDefaultAttributeRegistry::register);
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, _) -> ArtifactHooks.onEntityAdded(entity));
@@ -39,6 +38,9 @@ public class ArtifactsFabric implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTING.register(Artifacts::onServerStarting);
         ServerLifecycleEvents.SERVER_STOPPING.register(_ -> Artifacts.onServerStopping());
+
+        ServerConfigurationConnectionEvents.CONFIGURE.register((listener, _) -> Artifacts.onSendConfiguration(listener::send));
+
         LootTableEvents.MODIFY.register((key, builder, source, _) -> ModLootTablesFabric.onLootTableLoad(key, builder, source));
     }
 }

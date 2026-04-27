@@ -1,8 +1,9 @@
-package artifacts.network;
+package artifacts.network.payload;
 
 import artifacts.Artifacts;
 import artifacts.component.ToggleIdentifier;
 import artifacts.equipment.EquipmentHelper;
+import artifacts.network.NetworkHandler;
 import artifacts.registry.ModDataComponents;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -17,7 +18,7 @@ public record ToggleKeyPressedPacket(ToggleIdentifier identifier) implements Cus
     public static final StreamCodec<ByteBuf, ToggleKeyPressedPacket> CODEC =
             ToggleIdentifier.STREAM_CODEC.map(ToggleKeyPressedPacket::new, ToggleKeyPressedPacket::identifier);
 
-    void apply(NetworkHandler.PayloadContext context) {
+    public void apply(NetworkHandler.PayloadContext context) {
         Player player = context.player();
         context.queue(() -> EquipmentHelper.iterateEquipment(player, stack -> {
             if (stack.get(ModDataComponents.TOGGLE_KEY.get()) instanceof ToggleIdentifier id && id == identifier) {

@@ -3,7 +3,7 @@ package artifacts.client;
 import artifacts.Artifacts;
 import artifacts.component.ToggleIdentifier;
 import artifacts.network.NetworkHandler;
-import artifacts.network.ToggleKeyPressedPacket;
+import artifacts.network.payload.ToggleKeyPressedPacket;
 import artifacts.registry.ModKeyMappings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;

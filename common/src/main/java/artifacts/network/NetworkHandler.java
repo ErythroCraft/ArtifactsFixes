@@ -1,9 +1,11 @@
 package artifacts.network;
 
+import artifacts.network.payload.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -13,15 +15,16 @@ import net.minecraft.world.entity.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class NetworkHandler {
 
     public static final List<PayloadHandler<?>> SERVERBOUND_HANDLERS = new ArrayList<>();
     public static final List<PayloadHandler<?>> CLIENTBOUND_HANDLERS = new ArrayList<>();
 
-    public static void initPayloads() {
+    public static void registerPayloads() {
         registerClientbound(PlaySoundAtPlayerPacket.TYPE, PlaySoundAtPlayerPacket.CODEC, PlaySoundAtPlayerPacket::apply);
-        registerClientbound(UpdateConfigValuePacket.TYPE, UpdateConfigValuePacket.CODEC, UpdateConfigValuePacket::apply);
+        registerClientbound(UpdateConfigValuePacket.TYPE, UpdateConfigValuePacket.CODEC, (p, _) -> p.apply());
         registerClientbound(UpdateSwimFlyingPacket.TYPE, UpdateSwimFlyingPacket.CODEC, UpdateSwimFlyingPacket::apply);
 
         registerServerbound(DoubleJumpPacket.TYPE, DoubleJumpPacket.CODEC, DoubleJumpPacket::apply);
@@ -49,12 +52,18 @@ public class NetworkHandler {
     }
 
     public static void sendToPlayer(ServerPlayer player, CustomPacketPayload payload) {
-        player.connection.send(new ClientboundCustomPayloadPacket(payload));
+        sendToClient(player.connection::send, payload);
     }
 
-    public record PayloadHandler<T extends CustomPacketPayload>(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Receiver<T> receiver) {
-
+    public static void sendToClient(Consumer<Packet<?>> connection, CustomPacketPayload payload) {
+        connection.accept(new ClientboundCustomPayloadPacket(payload));
     }
+
+    public record PayloadHandler<T extends CustomPacketPayload>(
+            CustomPacketPayload.Type<T> type,
+            StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
+            Receiver<T> receiver
+    ) { }
 
     public interface PayloadContext {
 

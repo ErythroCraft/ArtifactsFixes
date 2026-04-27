@@ -1,5 +1,6 @@
 package artifacts.neoforge.network;
 
+import artifacts.network.ConfigurationNetworkHandler;
 import artifacts.network.NetworkHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -14,30 +15,48 @@ public class NeoForgeNetworkHandler {
 
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
+        // register serverbound payloads
         for (NetworkHandler.PayloadHandler<?> payloadHandler : NetworkHandler.SERVERBOUND_HANDLERS) {
+            // bidirectional payloads can't be registered separately to playToServer and playToClient (as the same type),
+            // they need to be registered using registrar#playBidirectional
             if (NetworkHandler.CLIENTBOUND_HANDLERS.stream().anyMatch(p -> p.type() == payloadHandler.type())) {
+                // this cast is needed to get the 4-argument playBidirectional overload,
+                // the 3-argument overload passes null as the client-side payload handler
                 register((BidirectionalPayloadRegistration) registrar::playBidirectional, payloadHandler);
             } else {
+                // register serverbound payloads that aren't bidirectional
                 register(registrar::playToServer, payloadHandler);
             }
         }
+        // register clientbound payloads
         for (NetworkHandler.PayloadHandler<?> payloadHandler : NetworkHandler.CLIENTBOUND_HANDLERS) {
+            // make sure we don't re-register a payload that was already registered as a bidirectional payload above
             if (NetworkHandler.SERVERBOUND_HANDLERS.stream().noneMatch(p -> p.type() == payloadHandler.type())) {
                 register(registrar::playToClient, payloadHandler);
             }
         }
+        // register clientbound configuration payloads
+        for (ConfigurationNetworkHandler.PayloadHandler<?> payloadHandler : ConfigurationNetworkHandler.CLIENTBOUND_HANDLERS) {
+            register(registrar::configurationToClient, payloadHandler);
+        }
     }
 
+    // A bunch of nonsense that I don't want to repeat for every packet
     private static <T extends CustomPacketPayload> void register(PayloadRegistration registration, NetworkHandler.PayloadHandler<T> payloadHandler) {
         @SuppressWarnings("unchecked")
         StreamCodec<? super FriendlyByteBuf, T> codec = ((StreamCodec<? super FriendlyByteBuf, T>) payloadHandler.codec());
         registration.register(
                 payloadHandler.type(), codec,
-                (arg, context) -> payloadHandler.receiver().receive(arg, new NeoForgePayloadContext(context.player(), context))
+                (arg, context) -> payloadHandler.receiver().receive(arg, new PayloadContext(context.player(), context))
         );
     }
 
-    private record NeoForgePayloadContext(Player player, IPayloadContext context) implements NetworkHandler.PayloadContext {
+    // Same thing but for configuration phase payloads
+    private static <T extends CustomPacketPayload> void register(PayloadRegistration registration, ConfigurationNetworkHandler.PayloadHandler<T> payloadHandler) {
+        registration.register(payloadHandler.type(), payloadHandler.codec(), (arg, _) -> payloadHandler.receiver().receive(arg));
+    }
+
+    private record PayloadContext(Player player, IPayloadContext context) implements NetworkHandler.PayloadContext {
 
         @Override
         public void queue(Runnable runnable) {

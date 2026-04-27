@@ -7,16 +7,19 @@ import artifacts.integration.ModCompat;
 import artifacts.integration.accessories.AccessoriesCompat;
 import artifacts.integration.minecraft.ArmorSlotProvider;
 import artifacts.integration.trinkets.TrinketsCompat;
+import artifacts.network.ConfigurationNetworkHandler;
 import artifacts.network.NetworkHandler;
 import artifacts.registry.*;
 import net.minecraft.core.Registry;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 public class Artifacts {
 
@@ -57,7 +60,8 @@ public class Artifacts {
             AccessoriesCompat.setup();
         }
 
-        NetworkHandler.initPayloads();
+        ConfigurationNetworkHandler.registerPayloads();
+        NetworkHandler.registerPayloads();
 
         ModMobEffects.MOB_EFFECTS.register();
         ModDataComponents.DATA_COMPONENT_TYPES.register();
@@ -75,8 +79,9 @@ public class Artifacts {
     public static void initConfigs() {
         CONFIG = new ModConfig();
         CONFIG.setup();
+        // Read config as early as possible
         for (ConfigManager config : CONFIG.configs.values()) {
-            config.readValuesFromConfig();
+            config.readValuesFromConfig(true);
         }
     }
 
@@ -86,19 +91,24 @@ public class Artifacts {
 
     public static void onServerStarting(MinecraftServer server) {
         currentServer = server;
-        // Read the config from disk when starting a server or loading a single-player world,
-        // the current loaded values could be outdated if the user previously played on a server this session.
-        // Syncing to clients isn't needed, since none are connected at this time
-        for (ConfigManager config : CONFIG.configs.values()) {
-            config.readValuesFromConfig();
-        }
     }
 
     public static void onServerStopping() {
         currentServer = null;
     }
 
-    public static void onPlayerJoin(ServerPlayer player) {
-        CONFIG.items.sendToClient(player);
+    public static void onClientDisconnect() {
+        // Re-read all values from the config after disconnecting from a server,
+        // to restore any values that were overridden with the server's value
+        for (ConfigManager config : CONFIG.configs.values()) {
+            config.readValuesFromConfig(true);
+        }
+    }
+
+    public static void onSendConfiguration(Consumer<Packet<?>> connection) {
+        // Send synced config values to connecting client
+        for (ConfigManager config : CONFIG.configs.values()) {
+            config.sendToClient(connection);
+        }
     }
 }

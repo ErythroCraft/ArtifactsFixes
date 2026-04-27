@@ -1,4 +1,4 @@
-package artifacts.network;
+package artifacts.network.payload;
 
 import artifacts.Artifacts;
 import artifacts.config.ConfigEntryKey;
@@ -10,7 +10,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public final class UpdateConfigValuePacket implements CustomPacketPayload {
 
-    public static final Type<UpdateConfigValuePacket> TYPE = new Type<>(Artifacts.id("update_item_configs"));
+    public static final Type<UpdateConfigValuePacket> TYPE = new Type<>(Artifacts.id("update_config_value"));
 
     public static final StreamCodec<ByteBuf, UpdateConfigValuePacket> CODEC = ConfigEntryKey.STREAM_CODEC.dispatch(
             packet -> packet.key,
@@ -42,7 +42,8 @@ public final class UpdateConfigValuePacket implements CustomPacketPayload {
         );
     }
 
-    void apply(NetworkHandler.PayloadContext ignored) {
+    public void apply() {
+        // TODO: probably shouldn't do this from the networking thread
         Artifacts.LOGGER.debug("Received updated config value for {} from server", key);
         Artifacts.CONFIG.configs.get(key.configManager()).getValues(type).get(key).set(type.cast(value));
     }

@@ -3,7 +3,7 @@ package artifacts.component;
 import artifacts.component.ability.SwimInAir;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.network.NetworkHandler;
-import artifacts.network.UpdateSwimFlyingPacket;
+import artifacts.network.payload.UpdateSwimFlyingPacket;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModSoundEvents;
 import net.minecraft.server.level.ServerPlayer;
