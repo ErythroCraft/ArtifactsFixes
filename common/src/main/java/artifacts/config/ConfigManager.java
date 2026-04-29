@@ -168,7 +168,7 @@ public abstract class ConfigManager {
                 reset(key, value);
                 StringBuilder builder = new StringBuilder();
                 for (LangEntry entry : getDescription(key)) {
-                    entry.english().ifPresent(line -> builder.append(line).append('\n'));
+                    entry.english().ifPresent(line -> builder.append(line.formatted(entry.args())).append('\n'));
                 }
                 builder.append(value.type().getAllowedValuesComment());
                 config.setComment(key.joinedPath(), builder.toString());

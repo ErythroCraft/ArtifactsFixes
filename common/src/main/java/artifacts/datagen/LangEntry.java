@@ -4,14 +4,18 @@ import net.minecraft.network.chat.Component;
 
 import java.util.Optional;
 
-public record LangEntry(String key, Optional<String> english) {
+public record LangEntry(String key, Optional<String> english, Object... args) {
 
-    public LangEntry(String key, String english) {
-        this(key, Optional.of(english));
+    public LangEntry(String key, String english, Object... args) {
+        this(key, Optional.of(english), args);
     }
 
     public LangEntry(String key) {
         this(key, Optional.empty());
+    }
+
+    public LangEntry withArgs(Object args) {
+        return new LangEntry(key, english, args);
     }
 
     public LangEntry withPrefix(String prefix) {
@@ -30,6 +34,6 @@ public record LangEntry(String key, Optional<String> english) {
     }
 
     public Component asComponent() {
-        return Component.translatable(key);
+        return Component.translatable(key, args);
     }
 }

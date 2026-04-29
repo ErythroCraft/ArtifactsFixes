@@ -3,6 +3,7 @@ package artifacts.neoforge.data.tags;
 import artifacts.Artifacts;
 import artifacts.integration.ModCompat;
 import artifacts.registry.ModItems;
+import artifacts.registry.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -10,6 +11,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -120,5 +122,9 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         tag(net.minecraft.tags.ItemTags.SPEARS).add(
                 ModItems.UMBRELLA.value()
         );
+
+        tag(ModTags.REPAIRS_ETERNAL_STEAK).add(Items.COOKED_BEEF);
+        tag(ModTags.REPAIRS_EVERLASTING_BEEF).add(Items.BEEF);
+        tag(ModTags.REPAIRS_UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
     }
 }

@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Repairable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -88,6 +89,9 @@ public final class ArtifactProperties {
         // Vanilla also sets max stack size to 1, but we already do this by default in ArtifactProperties#build()
         delayedComponent(DataComponents.DAMAGE, durability::canBeDamaged, _ -> 0);
         delayedComponent(DataComponents.MAX_DAMAGE, durability::canBeDamaged, _ -> durability.getMaxDamage());
+        delayedComponent(DataComponents.REPAIRABLE, () -> durability.canBeDamaged() && durability.canBeRepaired(), registries -> new Repairable(
+                registries.getOrThrow(durability.getRepairMaterials())
+        ));
         return this;
     }
 

@@ -34,6 +34,14 @@ public class ModTags {
     /** Items that are affected by the pickaxe heater */
     public static final TagKey<Item> RAW_MATERIALS = conventionTag(Registries.ITEM, "raw_materials");
 
+    public static final TagKey<Item> REPAIRS_ETERNAL_STEAK = create("repairs_eternal_steak");
+    public static final TagKey<Item> REPAIRS_EVERLASTING_BEEF = create("repairs_everlasting_beef");
+    public static final TagKey<Item> REPAIRS_UMBRELLA = create("repairs_umbrella");
+
+    private static TagKey<Item> create(String name) {
+        return create(Registries.ITEM, name);
+    }
+
     private static <T> TagKey<T> create(ResourceKey<Registry<T>> registry, String name) {
         return TagKey.create(registry, Artifacts.id(name));
     }

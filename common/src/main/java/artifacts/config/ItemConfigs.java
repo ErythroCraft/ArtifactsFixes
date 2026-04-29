@@ -8,9 +8,11 @@ import artifacts.config.value.ValueTypes;
 import artifacts.datagen.LangEntry;
 import artifacts.item.ItemDamageProperties;
 import artifacts.registry.ModItems;
+import artifacts.registry.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
@@ -293,9 +295,9 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Boolean> enabled;
         public final ConfigValue<Integer> cooldown;
 
-        public final Durability durability = new Durability();
+        public final Durability durability;
 
-        public EverlastingFood(Holder<Item> holder, String itemName) {
+        public EverlastingFood(Holder<Item> holder, String itemName, TagKey<Item> repairMaterials) {
             super(holder);
             enabled = defineEnabled(true)
                     .tooltipLine("Whether the %s can be eaten".formatted(itemName))
@@ -305,6 +307,7 @@ public final class ItemConfigs extends ConfigManager {
                     .tooltipLine("The duration in seconds the %s goes on cooldown for after being eaten".formatted(itemName))
                     .syncToClients()
                     .requiresRestart().build();
+            durability = new Durability(repairMaterials);
         }
 
         public final class Durability extends DurabilityCategory {
@@ -315,8 +318,8 @@ public final class ItemConfigs extends ConfigManager {
                     .tooltipLine(SharedNames.Descriptions.DAMAGE_WHEN_CONSUMED)
                     .syncToClients().build();
 
-            private Durability() {
-                super(64 * 5);
+            private Durability(TagKey<Item> repairMaterials) {
+                super(64 * 5, repairMaterials);
             }
         }
     }
@@ -324,7 +327,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class EternalSteak extends EverlastingFood {
 
         private EternalSteak() {
-            super(ModItems.ETERNAL_STEAK, "Eternal Steak");
+            super(ModItems.ETERNAL_STEAK, "Eternal Steak", ModTags.REPAIRS_ETERNAL_STEAK);
         }
     }
 
@@ -334,7 +337,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The probability that Everlasting Beef drops when a cow or mooshroom is killed by a player").build();
 
         private EverlastingBeef() {
-            super(ModItems.EVERLASTING_BEEF, "Everlasting Beef");
+            super(ModItems.EVERLASTING_BEEF, "Everlasting Beef", ModTags.REPAIRS_EVERLASTING_BEEF);
         }
     }
 
@@ -752,7 +755,7 @@ public final class ItemConfigs extends ConfigManager {
 
             private Durability() {
                 // default max damage is twice that of a normal shield
-                super(336 * 2);
+                super(336 * 2, ModTags.REPAIRS_UMBRELLA);
             }
         }
     }
@@ -891,15 +894,25 @@ public final class ItemConfigs extends ConfigManager {
 
         protected class DurabilityCategory extends SubCategory implements ItemDamageProperties {
 
+            private final TagKey<Item> repairMaterials;
+
             private final ConfigValue<Boolean> canBeDamaged;
+            private final ConfigValue<Boolean> canBeRepaired;
             private final ConfigValue<Integer> maxDamage;
 
-            private DurabilityCategory(int maxDamage) {
+            private DurabilityCategory(int maxDamage, TagKey<Item> repairMaterials) {
                 super(ItemSubCategory.this, "durability");
+                this.repairMaterials = repairMaterials;
                 setTitle(SharedNames.Titles.DURABILITY);
                 this.canBeDamaged = define("canBeDamaged", false)
                         .title(SharedNames.Titles.CAN_BE_DAMAGED)
                         .tooltipLine(SharedNames.Descriptions.CAN_BE_DAMAGED)
+                        .syncToClients()
+                        .requiresRestart()
+                        .build();
+                this.canBeRepaired = define("canBeRepaired", false)
+                        .title(SharedNames.Titles.CAN_BE_REPAIRED)
+                        .tooltipLine(SharedNames.Descriptions.CAN_BE_REPAIRED.withArgs(repairMaterials.location().toString()))
                         .syncToClients()
                         .requiresRestart()
                         .build();
@@ -917,8 +930,18 @@ public final class ItemConfigs extends ConfigManager {
             }
 
             @Override
+            public boolean canBeRepaired() {
+                return canBeRepaired.get();
+            }
+
+            @Override
             public int getMaxDamage() {
                 return maxDamage.get();
+            }
+
+            @Override
+            public TagKey<Item> getRepairMaterials() {
+                return repairMaterials;
             }
         }
     }

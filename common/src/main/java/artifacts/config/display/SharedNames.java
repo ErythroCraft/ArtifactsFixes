@@ -10,6 +10,7 @@ public class SharedNames {
         public static final LangEntry GENERATE_AS_LOOT = title("generateAsLoot", "Generate as Loot");
         public static final LangEntry DURABILITY = title("durability", "Durability");
         public static final LangEntry CAN_BE_DAMAGED = title("durability.canBeDamaged", "Can Be Damaged");
+        public static final LangEntry CAN_BE_REPAIRED = title("durability.canBeRepaired", "Can Be Repaired");
         public static final LangEntry MAX_DAMAGE = title("durability.maxDamage", "Max Damage");
         public static final LangEntry DAMAGE_WHEN_CONSUMED = title("durability.damageWhenConsumed", "Damage When Consumed");
     }
@@ -20,6 +21,9 @@ public class SharedNames {
         );
         public static final LangEntry CAN_BE_DAMAGED = description("durability.canBeDamaged",
                 "Whether this item has a limited number of uses"
+        );
+        public static final LangEntry CAN_BE_REPAIRED = description("durability.canBeRepaired",
+                "Whether this item can be repaired using items in the '#%s' item tag"
         );
         public static final LangEntry MAX_DAMAGE = description("durability.maxDamage",
                 "The maximum amount of damage that this item can take before breaking"

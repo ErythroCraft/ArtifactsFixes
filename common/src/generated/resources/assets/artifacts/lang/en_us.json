@@ -23,6 +23,8 @@
   "artifacts.config.cooldown.title": "Cooldown",
   "artifacts.config.durability.canBeDamaged.description": "Whether this item has a limited number of uses",
   "artifacts.config.durability.canBeDamaged.title": "Can Be Damaged",
+  "artifacts.config.durability.canBeRepaired.description": "Whether this item can be repaired using items in the '#%s' item tag",
+  "artifacts.config.durability.canBeRepaired.title": "Can Be Repaired",
   "artifacts.config.durability.damageWhenConsumed.description": "The amount of durability that is lost when this item is consumed",
   "artifacts.config.durability.damageWhenConsumed.title": "Damage When Consumed",
   "artifacts.config.durability.maxDamage.description": "The maximum amount of damage that this item can take before breaking",
