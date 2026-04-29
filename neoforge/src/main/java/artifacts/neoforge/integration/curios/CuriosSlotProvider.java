@@ -1,10 +1,12 @@
 package artifacts.neoforge.integration.curios;
 
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.equipment.EquipmentSlotProvider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
@@ -16,14 +18,15 @@ import java.util.function.BiFunction;
 public class CuriosSlotProvider implements EquipmentSlotProvider {
 
     @Override
-    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<EquipmentSlotAccess, T, T> f) {
         Optional<ICuriosItemHandler> itemHandler = CuriosApi.getCuriosInventory(entity);
         if (itemHandler.isPresent()) {
             for (ICurioStacksHandler stacksHandler : itemHandler.get().getCurios().values()) {
-                for (int i = 0; i < stacksHandler.getStacks().getSlots(); i++) {
-                    ItemStack item = stacksHandler.getStacks().getStackInSlot(i);
+                for (int slot = 0; slot < stacksHandler.getStacks().getSlots(); slot++) {
+                    ItemStack item = stacksHandler.getStacks().getStackInSlot(slot);
                     if (!item.isEmpty()) {
-                        init = f.apply(item, init);
+                        EquipmentSlotAccess slotAccess = new SlotAccess(item, stacksHandler, slot);
+                        init = f.apply(slotAccess, init);
                     }
                 }
             }
@@ -69,5 +72,20 @@ public class CuriosSlotProvider implements EquipmentSlotProvider {
             }
         }
         return stack;
+    }
+
+    private record SlotAccess(ItemStack item, ICurioStacksHandler stacksHandler, int slot) implements EquipmentSlotAccess {
+
+        @Override
+        public ItemStack get() {
+            return item;
+        }
+
+        @Override
+        public void broadcastBreakEvent(LivingEntity entity) {
+            CuriosApi.broadcastCurioBreakEvent(
+                    new SlotContext(stacksHandler.getIdentifier(), entity, slot, false, stacksHandler.isVisible())
+            );
+        }
     }
 }

@@ -1,5 +1,6 @@
 package artifacts.integration.minecraft;
 
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.equipment.EquipmentSlotProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -11,14 +12,15 @@ import java.util.function.BiFunction;
 public class ArmorSlotProvider implements EquipmentSlotProvider {
 
     @Override
-    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<EquipmentSlotAccess, T, T> f) {
         for (EquipmentSlot slot : EquipmentSlot.VALUES) {
             if (EquipmentSlotGroup.HAND.test(slot)) {
                 continue;
             }
             ItemStack stack = entity.getItemBySlot(slot);
             if (!stack.isEmpty()) {
-                init = f.apply(stack, init);
+                EquipmentSlotAccess slotAccess = new SlotAccess(stack, slot);
+                init = f.apply(slotAccess, init);
             }
         }
         return init;
@@ -27,5 +29,18 @@ public class ArmorSlotProvider implements EquipmentSlotProvider {
     @Override
     public ItemStack tryEquip(LivingEntity entity, ItemStack stack, boolean allowSwapping) {
         return stack;
+    }
+
+    private record SlotAccess(ItemStack stack, EquipmentSlot slot) implements EquipmentSlotAccess {
+
+        @Override
+        public ItemStack get() {
+            return stack;
+        }
+
+        @Override
+        public void broadcastBreakEvent(LivingEntity entity) {
+            entity.onEquippedItemBroken(stack.getItem(), slot);
+        }
     }
 }

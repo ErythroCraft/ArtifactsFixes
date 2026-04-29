@@ -47,12 +47,12 @@ public record AttackEffect(MobEffectProvider provider, Value<Double> chance, Val
     public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.ATTACK_EFFECTS.get(), attacker, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.ATTACK_EFFECTS.get(), attacker, true, true, (ability, slotAccess) -> {
                 for (AttackEffect effect : ability.entries()) {
                     if (effect.chance().get() > entity.getRandom().nextDouble()) {
                         entity.addEffect(effect.provider().createEffect(), attacker);
                         if (attacker instanceof Player player) {
-                            player.getCooldowns().addCooldown(stack, effect.cooldown().get() * 20);
+                            player.getCooldowns().addCooldown(slotAccess.get(), effect.cooldown().get() * 20);
                         }
                     }
                 }

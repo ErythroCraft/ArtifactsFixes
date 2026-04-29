@@ -22,7 +22,7 @@ public class EquipmentSlotManager {
         SLOT_PROVIDERS.add(integration);
     }
 
-    protected static <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    protected static <ACC> ACC reduceEquipment(LivingEntity entity, ACC init, BiFunction<EquipmentSlotAccess, ACC, ACC> f) {
         for (EquipmentSlotProvider slotProvider : SLOT_PROVIDERS) {
             init = slotProvider.reduceEquipment(entity, init, f);
         }

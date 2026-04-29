@@ -1,5 +1,6 @@
 package artifacts.integration.accessories;
 
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.equipment.EquipmentSlotProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -9,7 +10,7 @@ import java.util.function.BiFunction;
 public class AccessoriesSlotProvider implements EquipmentSlotProvider {
 
     @Override
-    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f) {
+    public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<EquipmentSlotAccess, T, T> f) {
         /* FIXME: Accessories 26.1+
         AccessoriesCapability capability = AccessoriesCapability.get(entity);
 

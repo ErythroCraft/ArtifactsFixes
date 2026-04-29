@@ -11,14 +11,14 @@ public interface EquipmentSlotProvider {
      * Reduces all items equipped in this slot provider into a single value
      * by iteratively applying a combining function, skipping empty slots.
      *
-     * @param <T> the type of the accumulated result
+     * @param <ACC> the type of the accumulated result
      * @param entity the entity whose equipment slots will be iterated over
      * @param init the initial accumulator value
      * @param f a function that takes the current accumulated value and the current {@link ItemStack}
      *          and returns the next accumulated value
      * @return the final accumulated value, or {@code init} if no items are equipped on the entity
      */
-    <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<ItemStack, T, T> f);
+    <ACC> ACC reduceEquipment(LivingEntity entity, ACC init, BiFunction<EquipmentSlotAccess, ACC, ACC> f);
 
     /**
      * Equips the item in the first available slot

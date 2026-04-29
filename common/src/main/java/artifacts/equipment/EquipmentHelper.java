@@ -10,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.*;
@@ -68,67 +67,67 @@ public class EquipmentHelper {
         return reduceAbilities(type, entity, skipItemsOnCooldown, true, init, (ability, _, d) -> Math.min(d, f.apply(ability)));
     }
 
-    public static <A extends EquipmentAbility> void iterateAbilities(DataComponentType<A> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, BiConsumer<A, ItemStack> consumer) {
-        reduceAbilities(type, entity, skipItemsOnCooldown, skipDisabledItems, Unit.INSTANCE, (ability, stack, _) -> {
-            consumer.accept(ability, stack);
+    public static <A extends EquipmentAbility> void iterateAbilities(DataComponentType<A> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, ComponentVisitor<A> consumer) {
+        reduceAbilities(type, entity, skipItemsOnCooldown, skipDisabledItems, Unit.INSTANCE, (ability, slotAccess, _) -> {
+            consumer.visit(ability, slotAccess);
             return Unit.INSTANCE;
         });
     }
 
-    public static <ABILITY extends EquipmentAbility, ACC> ACC reduceAbilities(DataComponentType<ABILITY> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, ACC init, TriFunction<ABILITY, ItemStack, ACC, ACC> f) {
-        return reduceEquipment(entity, init, (stack, init_) -> {
-            ABILITY ability = stack.get(type);
+    public static <ABILITY extends EquipmentAbility, ACC> ACC reduceAbilities(DataComponentType<ABILITY> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, ACC init, ComponentAccumulator<ABILITY, ACC> f) {
+        return reduceEquipment(entity, init, (slotAccess, init_) -> {
+            ABILITY ability = slotAccess.get().get(type);
             if (ability != null) {
-                boolean checkCooldown = !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(stack);
-                boolean checkDisabled = !skipDisabledItems || !stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get());
+                boolean checkCooldown = !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(slotAccess.get());
+                boolean checkDisabled = !skipDisabledItems || !slotAccess.get().has(ModDataComponents.DISABLED_BY_TOGGLE.get());
                 boolean checkCosmetic = !skipDisabledItems || ability.isNonCosmetic();
                 if (checkCooldown && checkDisabled && checkCosmetic) {
-                    init_ = f.apply(ability, stack, init_);
+                    init_ = f.accumulate(ability, slotAccess, init_);
                 }
             }
             return init_;
         });
     }
 
-    public static <C> void iterateComponents(DataComponentType<C> type, LivingEntity entity, Visitor<C> visitor) {
-        reduceComponents(type, entity, Unit.INSTANCE, (_, stack, component) -> {
-            visitor.visit(stack, component);
+    public static <C> void iterateComponents(DataComponentType<C> type, LivingEntity entity, ComponentVisitor<C> visitor) {
+        reduceComponents(type, entity, Unit.INSTANCE, (component, stack, _) -> {
+            visitor.visit(component, stack);
             return Unit.INSTANCE;
         });
     }
 
-    public static <C, ACC> ACC reduceComponents(DataComponentType<C> type, LivingEntity entity, ACC init, Accumulator<C, ACC> visitor) {
-        return reduceEquipment(entity, init, (stack, acc) -> {
-            C component = stack.get(type);
+    public static <C, ACC> ACC reduceComponents(DataComponentType<C> type, LivingEntity entity, ACC init, ComponentAccumulator<C, ACC> visitor) {
+        return reduceEquipment(entity, init, (slotAccess, acc) -> {
+            C component = slotAccess.get().get(type);
             if (component != null) {
-                acc = visitor.accumulate(acc, stack, component);
+                acc = visitor.accumulate(component, slotAccess, acc);
             }
             return acc;
         });
     }
 
     public static void iterateEquipment(LivingEntity entity, Consumer<ItemStack> consumer) {
-        reduceEquipment(entity, Unit.INSTANCE, (stack, unit) -> {
-            consumer.accept(stack);
+        reduceEquipment(entity, Unit.INSTANCE, (slotAccess, unit) -> {
+            consumer.accept(slotAccess.get());
             return unit;
         });
     }
 
-    public static <ACC> ACC reduceEquipment(LivingEntity entity, ACC init, BiFunction<ItemStack, ACC, ACC> f) {
+    public static <ACC> ACC reduceEquipment(LivingEntity entity, ACC init, BiFunction<EquipmentSlotAccess, ACC, ACC> f) {
         return EquipmentSlotManager.reduceEquipment(entity, init, f);
     }
 
     @FunctionalInterface
-    public interface Accumulator<E, ACC> {
+    public interface ComponentAccumulator<C, ACC> {
 
-        ACC accumulate(ACC prefix, ItemStack stack, E element);
+        ACC accumulate(C element, EquipmentSlotAccess slotAccess, ACC prefix);
 
     }
 
     @FunctionalInterface
-    public interface Visitor<E> {
+    public interface ComponentVisitor<C> {
 
-        void visit(ItemStack stack, E element);
+        void visit(C element, EquipmentSlotAccess slotAccess);
 
     }
 }

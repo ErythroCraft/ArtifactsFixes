@@ -28,7 +28,12 @@ public record EquipableTotem(Value<Boolean> enabled) implements EquipmentAbility
     public static ItemStack findTotem(LivingEntity entity) {
         ItemStack totem = EquipmentHelper.reduceAbilities(
                 ModDataComponents.EQUIPABLE_TOTEM.get(), entity, true, true, ItemStack.EMPTY,
-                (_, stack, result) -> result.isEmpty() && stack.has(DataComponents.DEATH_PROTECTION) ? stack : result
+                (_, slotAccess, result) -> {
+                    if (result.isEmpty() && slotAccess.get().has(DataComponents.DEATH_PROTECTION)) {
+                        return slotAccess.get();
+                    }
+                    return result;
+                }
         );
         return totem.isEmpty() ? null : totem;
     }

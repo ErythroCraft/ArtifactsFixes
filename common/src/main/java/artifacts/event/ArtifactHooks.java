@@ -96,11 +96,11 @@ public class ArtifactHooks {
     }
 
     public static void updateHasTickingAbilities(LivingEntity entity) {
-        boolean shouldTick = EquipmentHelper.reduceEquipment(entity, false, (stack, hasTickingAbilities) -> {
+        boolean shouldTick = EquipmentHelper.reduceEquipment(entity, false, (slotAccess, hasTickingAbilities) -> {
             for (var entry : ModDataComponents.TICKING_ABILITIES) {
                 // abilities are tracked as ticking even when they're cosmetic,
                 // since updating the config does not trigger onItemChanged
-                if (stack.has(entry.type().get())) {
+                if (slotAccess.get().has(entry.type().get())) {
                     return true;
                 }
             }
@@ -123,9 +123,9 @@ public class ArtifactHooks {
             ModDataComponents.TickingAbility<T> entry,
             LivingEntity entity
     ) {
-        EquipmentHelper.iterateAbilities(entry.type().get(), entity, false, false, (ability, stack) -> {
-            boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(stack);
-            entry.ticker().wornTick(ability, entity, isOnCooldown, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
+        EquipmentHelper.iterateAbilities(entry.type().get(), entity, false, false, (ability, slotAccess) -> {
+            boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(slotAccess.get());
+            entry.ticker().wornTick(ability, entity, isOnCooldown, slotAccess.get().has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
         });
 
     }
@@ -140,7 +140,7 @@ public class ArtifactHooks {
 
     public static void doPostAttackEffects(LivingEntity entity, DamageSource damageSource) {
         EquipmentHelper.iterateAbilities(ModDataComponents.RETALIATION_EFFECTS.get(), entity, true, true,
-                (ability, stack) -> ability.onLivingHurt(entity, stack, damageSource)
+                (ability, slotAccess) -> ability.onLivingHurt(entity, slotAccess.get(), damageSource)
         );
 
         AttackEffect.onLivingHurt(entity, damageSource);
@@ -160,7 +160,7 @@ public class ArtifactHooks {
     }
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
-        EquipmentHelper.iterateComponents(ModDataComponents.HURT_SOUND.get(), entity, (_, ability) -> {
+        EquipmentHelper.iterateComponents(ModDataComponents.HURT_SOUND.get(), entity, (ability, _) -> {
             if (ability.enabled().get()) {
                 entity.playSound(ability.soundEvent().value(), volume, pitch);
             }
