@@ -3,66 +3,62 @@ package artifacts.component.ability.retaliation;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.DamageSourceHelper;
-import com.mojang.datafixers.Products;
+import artifacts.util.ItemStackUtil;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+
+import java.util.Objects;
 
 public abstract class RetaliationEffect implements EquipmentAbility {
 
     private final String name;
-    private final Value<Double> strikeChance;
-    private final Value<Integer> cooldown;
+    private final ActivationParams activationParams;
 
-    protected static <T extends RetaliationEffect> Products.P2<RecordCodecBuilder.Mu<T>, Value<Double>, Value<Integer>> codecStart(RecordCodecBuilder.Instance<T> instance) {
-        return instance.group(
-                ValueTypes.FRACTION.codec().fieldOf("chance").forGetter(RetaliationEffect::strikeChance),
-                ValueTypes.cooldownField().forGetter(RetaliationEffect::cooldown)
-        );
-    }
-
-    public RetaliationEffect(String name, Value<Double> strikeChance, Value<Integer> cooldown) {
+    public RetaliationEffect(String name, ActivationParams activationParams) {
         this.name = name;
-        this.strikeChance = strikeChance;
-        this.cooldown = cooldown;
+        this.activationParams = activationParams;
     }
 
-    public Value<Double> strikeChance() {
-        return strikeChance;
+    public ActivationParams activationParams() {
+        return activationParams;
     }
 
-    public Value<Integer> cooldown() {
-        return cooldown;
-    }
-
-    public void onLivingHurt(LivingEntity entity, ItemStack stack, DamageSource damageSource) {
+    public void onLivingHurt(LivingEntity entity, EquipmentSlotAccess slotAccess, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (attacker != null && !stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()) && entity.getRandom().nextDouble() < strikeChance().get()) {
-            applyEffect(entity, attacker);
-            if (entity instanceof Player player && cooldown().get() > 0) {
-                player.getCooldowns().addCooldown(stack, cooldown().get() * 20);
+        if (attacker != null && !slotAccess.get().has(ModDataComponents.DISABLED_BY_TOGGLE.get()) && entity.getRandom().nextDouble() < activationParams.strikeChance.get()) {
+            if (applyEffect(entity, attacker)) {
+                if (entity instanceof Player player && activationParams.cooldown.get() > 0) {
+                    player.getCooldowns().addCooldown(slotAccess.get(), activationParams.cooldown.get() * 20);
+                }
+                if (activationParams.durabilityCost.get() > 0) {
+                    ItemStackUtil.hurtAndBreak(slotAccess, activationParams.durabilityCost.get(), entity);
+                }
             }
         }
     }
 
-    protected abstract void applyEffect(LivingEntity target, LivingEntity attacker);
+    protected abstract boolean applyEffect(LivingEntity target, LivingEntity attacker);
 
     @Override
     public boolean isNonCosmetic() {
-        return !Mth.equal(strikeChance().get(), 0);
+        return !Mth.equal(activationParams.strikeChance.get(), 0);
     }
 
     @Override
     public void addToTooltip(TooltipWriter writer) {
-        if (Mth.equal(strikeChance().get(), 1)) {
+        if (Mth.equal(activationParams.strikeChance.get(), 1)) {
             writer.add(name + ".constant");
         } else {
-            writer.add(name + ".chance", Math.round(strikeChance().get() * 100));
+            writer.add(name + ".chance", Math.round(activationParams.strikeChance.get() * 100));
         }
     }
 
@@ -71,13 +67,34 @@ public abstract class RetaliationEffect implements EquipmentAbility {
         if (this == o) return true;
         if (!(o instanceof RetaliationEffect that)) return false;
 
-        return strikeChance.equals(that.strikeChance) && cooldown.equals(that.cooldown);
+        return activationParams.equals(that.activationParams);
     }
 
     @Override
     public int hashCode() {
-        int result = strikeChance.hashCode();
-        result = 31 * result + cooldown.hashCode();
-        return result;
+        return Objects.hash(activationParams);
+    }
+
+    public record ActivationParams(
+            Value<Double> strikeChance,
+            Value<Integer> cooldown,
+            Value<Integer> durabilityCost
+    ) {
+
+        public static final MapCodec<ActivationParams> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ValueTypes.FRACTION.codec().fieldOf("chance").forGetter(ActivationParams::strikeChance),
+                ValueTypes.cooldownField().forGetter(ActivationParams::cooldown),
+                ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("damage_per_activation").forGetter(ActivationParams::durabilityCost)
+        ).apply(instance, ActivationParams::new));
+
+        public static final StreamCodec<ByteBuf, ActivationParams> STREAM_CODEC = StreamCodec.composite(
+                ValueTypes.FRACTION.streamCodec(),
+                ActivationParams::strikeChance,
+                ValueTypes.DURATION.streamCodec(),
+                ActivationParams::cooldown,
+                ValueTypes.NON_NEGATIVE_INT.streamCodec(),
+                ActivationParams::durabilityCost,
+                ActivationParams::new
+        );
     }
 }

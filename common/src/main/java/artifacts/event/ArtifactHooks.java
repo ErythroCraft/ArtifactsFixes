@@ -140,7 +140,7 @@ public class ArtifactHooks {
 
     public static void doPostAttackEffects(LivingEntity entity, DamageSource damageSource) {
         EquipmentHelper.iterateAbilities(ModDataComponents.RETALIATION_EFFECTS.get(), entity, true, true,
-                (ability, slotAccess) -> ability.onLivingHurt(entity, slotAccess.get(), damageSource)
+                (ability, slotAccess) -> ability.onLivingHurt(entity, slotAccess, damageSource)
         );
 
         AttackEffect.onLivingHurt(entity, damageSource);

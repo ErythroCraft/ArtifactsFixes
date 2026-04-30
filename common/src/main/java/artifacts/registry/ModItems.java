@@ -8,10 +8,7 @@ import artifacts.component.ability.mobeffect.AttackEffect;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.component.ability.mobeffect.PostDamageEffect;
 import artifacts.component.ability.mobeffect.PostEatingEffect;
-import artifacts.component.ability.retaliation.FireEffect;
-import artifacts.component.ability.retaliation.LightningEffect;
-import artifacts.component.ability.retaliation.RetaliationEffects;
-import artifacts.component.ability.retaliation.ThornsEffect;
+import artifacts.component.ability.retaliation.*;
 import artifacts.config.value.Value;
 import artifacts.item.ArtifactProperties;
 import artifacts.item.consumeeffects.DamageItemConsumeEffect;
@@ -206,12 +203,16 @@ public class ModItems {
     );
     public static final Holder<Item> SHOCK_PENDANT = register("shock_pendant", builder -> builder
             .equipable()
+            .durability(Artifacts.CONFIG.items.shockPendant.durability)
             .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(
                     Optional.empty(),
                     Optional.empty(),
                     Optional.of(new LightningEffect(
-                            Artifacts.CONFIG.items.shockPendant.strikeChance,
-                            Artifacts.CONFIG.items.shockPendant.cooldown
+                            new RetaliationEffect.ActivationParams(
+                                    Artifacts.CONFIG.items.shockPendant.strikeChance,
+                                    Artifacts.CONFIG.items.shockPendant.cooldown,
+                                    Artifacts.CONFIG.items.shockPendant.durability.damagePerActivation
+                            )
                     ))
             ))
             .component(ModDataComponents.DAMAGE_IMMUNITY.get(),
@@ -224,11 +225,15 @@ public class ModItems {
     );
     public static final Holder<Item> FLAME_PENDANT = register("flame_pendant", builder -> builder
             .equipable()
+            .durability(Artifacts.CONFIG.items.flamePendant.durability)
             .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(
                     Optional.empty(),
                     Optional.of(new FireEffect(
-                            Artifacts.CONFIG.items.flamePendant.strikeChance,
-                            Artifacts.CONFIG.items.flamePendant.cooldown,
+                            new RetaliationEffect.ActivationParams(
+                                    Artifacts.CONFIG.items.flamePendant.strikeChance,
+                                    Artifacts.CONFIG.items.flamePendant.cooldown,
+                                    Artifacts.CONFIG.items.flamePendant.durability.damagePerActivation
+                            ),
                             Artifacts.CONFIG.items.flamePendant.fireDuration,
                             Artifacts.CONFIG.items.flamePendant.grantFireResistance
                     )),
@@ -237,10 +242,14 @@ public class ModItems {
     );
     public static final Holder<Item> THORN_PENDANT = register("thorn_pendant", builder -> builder
             .equipable()
+            .durability(Artifacts.CONFIG.items.thornPendant.durability)
             .component(ModDataComponents.RETALIATION_EFFECTS.get(), new RetaliationEffects(
                     Optional.of(new ThornsEffect(
-                            Artifacts.CONFIG.items.thornPendant.strikeChance,
-                            Artifacts.CONFIG.items.thornPendant.cooldown,
+                            new RetaliationEffect.ActivationParams(
+                                    Artifacts.CONFIG.items.thornPendant.strikeChance,
+                                    Artifacts.CONFIG.items.thornPendant.cooldown,
+                                    Artifacts.CONFIG.items.thornPendant.durability.damagePerActivation
+                            ),
                             Artifacts.CONFIG.items.thornPendant.minDamage,
                             Artifacts.CONFIG.items.thornPendant.maxDamage
                     )),

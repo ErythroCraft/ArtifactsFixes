@@ -36,6 +36,9 @@ public class ModTags {
 
     public static final TagKey<Item> REPAIRS_ETERNAL_STEAK = create("repairs_eternal_steak");
     public static final TagKey<Item> REPAIRS_EVERLASTING_BEEF = create("repairs_everlasting_beef");
+    public static final TagKey<Item> REPAIRS_FLAME_PENDANT = create("repairs_flame_pendant");
+    public static final TagKey<Item> REPAIRS_SHOCK_PENDANT = create("repairs_shock_pendant");
+    public static final TagKey<Item> REPAIRS_THORN_PENDANT = create("repairs_thorn_pendant");
     public static final TagKey<Item> REPAIRS_UMBRELLA = create("repairs_umbrella");
 
     private static TagKey<Item> create(String name) {

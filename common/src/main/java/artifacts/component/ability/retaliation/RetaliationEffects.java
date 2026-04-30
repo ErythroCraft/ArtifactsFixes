@@ -1,6 +1,7 @@
 package artifacts.component.ability.retaliation;
 
 import artifacts.component.ability.EquipmentAbility;
+import artifacts.equipment.EquipmentSlotAccess;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -8,7 +9,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
@@ -30,10 +30,10 @@ public record RetaliationEffects(Optional<ThornsEffect> thorns, Optional<FireEff
             RetaliationEffects::new
     );
 
-    public void onLivingHurt(LivingEntity entity, ItemStack stack, DamageSource damageSource) {
-        thorns.ifPresent(effect -> effect.onLivingHurt(entity, stack, damageSource));
-        fire.ifPresent(effect -> effect.onLivingHurt(entity, stack, damageSource));
-        lightning.ifPresent(effect -> effect.onLivingHurt(entity, stack, damageSource));
+    public void onLivingHurt(LivingEntity entity, EquipmentSlotAccess slotAccess, DamageSource damageSource) {
+        thorns.ifPresent(effect -> effect.onLivingHurt(entity, slotAccess, damageSource));
+        fire.ifPresent(effect -> effect.onLivingHurt(entity, slotAccess, damageSource));
+        lightning.ifPresent(effect -> effect.onLivingHurt(entity, slotAccess, damageSource));
     }
 
     @Override

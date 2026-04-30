@@ -1,7 +1,10 @@
-// 26.1.2	2026-04-28T18:53:17.3847595	Tags for minecraft:item mod id artifacts
+// 26.1.2	2026-04-30T12:34:33.7686366	Tags for minecraft:item mod id artifacts
 8dd1563f299da374a09d42f0e3b2b918d201d735 data/artifacts/tags/item/artifacts.json
 6ddb26f62487e2f1691999b5c3549e4a5bf5e8fb data/artifacts/tags/item/repairs_eternal_steak.json
 d14710b6121edb04c184b88cb21ce8d106aafd32 data/artifacts/tags/item/repairs_everlasting_beef.json
+fdab8ddd5529ae14b26bc1853b004131135318a4 data/artifacts/tags/item/repairs_flame_pendant.json
+fdab8ddd5529ae14b26bc1853b004131135318a4 data/artifacts/tags/item/repairs_shock_pendant.json
+fdab8ddd5529ae14b26bc1853b004131135318a4 data/artifacts/tags/item/repairs_thorn_pendant.json
 b5c5ab6cad21b086dba5078c0040d697f5d41b41 data/artifacts/tags/item/repairs_umbrella.json
 2465e2164941a4a1d92ea3320f702f0c092e64c6 data/artifacts/tags/item/slot/all.json
 45ebe6fc31c7b20af72d8dc2fe73cb72dca208ed data/artifacts/tags/item/slot/belt.json

@@ -34,6 +34,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         return TagKey.create(Registries.ITEM, Artifacts.id(name));
     }
 
+    @SuppressWarnings("deprecation")
     public ItemTags(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(packOutput, Registries.ITEM, lookupProvider, (item) -> item.builtInRegistryHolder().key(), Artifacts.MOD_ID);
     }
@@ -125,6 +126,9 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
 
         tag(ModTags.REPAIRS_ETERNAL_STEAK).add(Items.COOKED_BEEF);
         tag(ModTags.REPAIRS_EVERLASTING_BEEF).add(Items.BEEF);
+        tag(ModTags.REPAIRS_FLAME_PENDANT).add(Items.DIAMOND);
+        tag(ModTags.REPAIRS_SHOCK_PENDANT).add(Items.DIAMOND);
+        tag(ModTags.REPAIRS_THORN_PENDANT).add(Items.DIAMOND);
         tag(ModTags.REPAIRS_UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
     }
 }

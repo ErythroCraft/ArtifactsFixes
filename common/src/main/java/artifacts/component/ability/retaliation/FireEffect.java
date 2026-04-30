@@ -12,18 +12,15 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class FireEffect extends RetaliationEffect {
 
-    public static final Codec<FireEffect> CODEC = RecordCodecBuilder.create(
-            instance -> codecStart(instance)
-                    .and(ValueTypes.DURATION.codec().fieldOf("duration").forGetter(FireEffect::fireDuration))
-                    .and(ValueTypes.BOOLEAN.codec().optionalFieldOf("grant_fire_resistance", Value.of(true)).forGetter(FireEffect::grantsFireResistance))
-                    .apply(instance, FireEffect::new)
-    );
+    public static final Codec<FireEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ActivationParams.CODEC.forGetter(FireEffect::activationParams),
+            ValueTypes.DURATION.codec().fieldOf("duration").forGetter(FireEffect::fireDuration),
+            ValueTypes.BOOLEAN.codec().optionalFieldOf("grant_fire_resistance", Value.of(true)).forGetter(FireEffect::grantsFireResistance)
+    ).apply(instance, FireEffect::new));
 
     public static final StreamCodec<ByteBuf, FireEffect> STREAM_CODEC = StreamCodec.composite(
-            ValueTypes.FRACTION.streamCodec(),
-            FireEffect::strikeChance,
-            ValueTypes.DURATION.streamCodec(),
-            FireEffect::cooldown,
+            ActivationParams.STREAM_CODEC,
+            FireEffect::activationParams,
             ValueTypes.DURATION.streamCodec(),
             FireEffect::fireDuration,
             ValueTypes.BOOLEAN.streamCodec(),
@@ -34,8 +31,8 @@ public class FireEffect extends RetaliationEffect {
     private final Value<Integer> fireDuration;
     private final Value<Boolean> grantsFireResistance;
 
-    public FireEffect(Value<Double> strikeChance, Value<Integer> cooldown, Value<Integer> fireDuration, Value<Boolean> grantsFireResistance) {
-        super("fire", strikeChance, cooldown);
+    public FireEffect(ActivationParams activationParams, Value<Integer> fireDuration, Value<Boolean> grantsFireResistance) {
+        super("fire", activationParams);
         this.fireDuration = fireDuration;
         this.grantsFireResistance = grantsFireResistance;
     }
@@ -54,13 +51,15 @@ public class FireEffect extends RetaliationEffect {
     }
 
     @Override
-    protected void applyEffect(LivingEntity target, LivingEntity attacker) {
+    protected boolean applyEffect(LivingEntity target, LivingEntity attacker) {
         if (!attacker.fireImmune() && attacker.attackable() && fireDuration().get() > 0) {
             if (grantsFireResistance().get()) {
                 target.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, fireDuration().get() * 20, 0, false, false, true));
             }
             attacker.igniteForSeconds(fireDuration().get());
+            return true;
         }
+        return false;
     }
 
     @Override

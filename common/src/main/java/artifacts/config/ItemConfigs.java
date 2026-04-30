@@ -381,8 +381,21 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration in seconds the Flame Pendant goes on cooldown for after setting an entity on fire")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private FlamePendant() {
             super(ModItems.FLAME_PENDANT);
+        }
+
+        public final class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .tooltipLine("The amount of durability lost every time the Flame Pendant activates")
+                    .build();
+
+            private Durability() {
+                super(120, ModTags.REPAIRS_FLAME_PENDANT);
+            }
         }
     }
 
@@ -614,8 +627,21 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The amount of time in seconds the Shock Pendant goes on cooldown for after striking an attacker with lightning")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private ShockPendant() {
             super(ModItems.SHOCK_PENDANT);
+        }
+
+        public final class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .tooltipLine("The amount of durability lost every time the Shock Pendant activates")
+                    .build();
+
+            private Durability() {
+                super(50, ModTags.REPAIRS_SHOCK_PENDANT);
+            }
         }
     }
 
@@ -709,8 +735,21 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration in seconds the Thorn Pendant goes on cooldown for after activating")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private ThornPendant() {
             super(ModItems.THORN_PENDANT);
+        }
+
+        public class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .tooltipLine("The amount of durability lost every time the Thorn Pendant activates")
+                    .build();
+
+            private Durability() {
+                super(150, ModTags.REPAIRS_THORN_PENDANT);
+            }
         }
     }
 
