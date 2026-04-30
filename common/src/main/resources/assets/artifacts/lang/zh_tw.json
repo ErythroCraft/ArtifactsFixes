@@ -251,7 +251,7 @@
   "artifacts.tooltip.ability.cure_effects": "大幅縮短負面效果的持續時間",
   "artifacts.tooltip.ability.damage_absorption.chance": "穿戴者的近戰攻擊有機會吸收生命值",
   "artifacts.tooltip.ability.damage_absorption.constant": "使穿戴者的近戰攻擊吸收生命值",
-  "artifacts.tooltip.ability.damage_immunity.is_hot_floor": "賦予對岩漿塊傷害的保護",
+  "artifacts.tooltip.ability.damage_immunity.burn_from_stepping": "賦予對岩漿塊傷害的保護",
   "artifacts.tooltip.ability.damage_immunity.is_lightning": "賦予對閃電的保護",
   "artifacts.tooltip.ability.double_jump": "允許穿戴者進行二段跳",
   "artifacts.tooltip.ability.enchantment_level_modifiers.fortune.multiple_levels": "對開採的方塊額外應用 %s 級幸運",

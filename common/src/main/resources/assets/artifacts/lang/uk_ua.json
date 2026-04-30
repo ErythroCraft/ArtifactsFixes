@@ -273,7 +273,7 @@
   "artifacts.tooltip.ability.cure_effects": "Суттєво скорочує тривалість негативних ефектів",
   "artifacts.tooltip.ability.damage_absorption.chance": "Ближні атаки носія мають %s%% шанс поглинути здоров'я",
   "artifacts.tooltip.ability.damage_absorption.constant": "Ближні атаки носія поглинають здоров'я",
-  "artifacts.tooltip.ability.damage_immunity.is_hot_floor": "Захищає від шкоди гарячої підлоги",
+  "artifacts.tooltip.ability.damage_immunity.burn_from_stepping": "Захищає від шкоди гарячої підлоги",
   "artifacts.tooltip.ability.damage_immunity.is_lightning": "Надає захист від блискавки",
   "artifacts.tooltip.ability.double_jump": "Дозволяє робити подвійний стрибок",
   "artifacts.tooltip.ability.enchantment_level_modifiers.fortune.multiple_levels": "Додає %s рівнів удачі до видобутих блоків",

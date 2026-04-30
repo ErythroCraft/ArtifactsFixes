@@ -293,7 +293,7 @@
   "artifacts.tooltip.ability.cure_effects": "Reduz drasticamente a duração de efeitos negativos",
   "artifacts.tooltip.ability.damage_absorption.chance": "Os ataques corpo a corpo do usuário têm %s%% de chance de absorver vida",
   "artifacts.tooltip.ability.damage_absorption.constant": "Faz com que os ataques corpo a corpo do usuário absorvam vida",
-  "artifacts.tooltip.ability.damage_immunity.is_hot_floor": "Concede proteção contra dano de piso quente",
+  "artifacts.tooltip.ability.damage_immunity.burn_from_stepping": "Concede proteção contra dano de piso quente",
   "artifacts.tooltip.ability.damage_immunity.is_lightning": "Concede proteção contra raios",
   "artifacts.tooltip.ability.double_jump": "Permite ao usuário dar pulo duplo",
   "artifacts.tooltip.ability.enchantment_level_modifiers.fortune.multiple_levels": "Aplica %s níveis extras de fortuna a blocos minerados",

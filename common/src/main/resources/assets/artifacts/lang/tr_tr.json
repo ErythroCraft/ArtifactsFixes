@@ -273,7 +273,7 @@
   "artifacts.tooltip.ability.cure_effects": "Negatif etkilerin süresini büyük ölçüde azaltır",
   "artifacts.tooltip.ability.damage_absorption.chance": "Kullanıcının yakın dövüş saldırılarının %s%% şansı sağlığı emmektir",
   "artifacts.tooltip.ability.damage_absorption.constant": "Kullanıcının yakın dövüş saldırılarının sağlığı emmesine neden olur",
-  "artifacts.tooltip.ability.damage_immunity.is_hot_floor": "Sıcak zemin hasarına karşı koruma sağlar",
+  "artifacts.tooltip.ability.damage_immunity.burn_from_stepping": "Sıcak zemin hasarına karşı koruma sağlar",
   "artifacts.tooltip.ability.damage_immunity.is_lightning": "Yıldırım çarpmalarına karşı koruma sağlar",
   "artifacts.tooltip.ability.double_jump": "Kullanıcının çift zıplamasına izin verir",
   "artifacts.tooltip.ability.enchantment_level_modifiers.fortune.multiple_levels": "Kazılan bloklara %s ekstra servet seviyesi uygular",

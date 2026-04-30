@@ -248,7 +248,7 @@
   "artifacts.tooltip.ability.creeper_repellent": "Криперы избегают владельца",
   "artifacts.tooltip.ability.cure_effects": "Сильно сокращает продолжительность негативных эффектов",
   "artifacts.tooltip.ability.damage_absorption.constant": "Заставляет ближние атаки владельца поглощать здоровье",
-  "artifacts.tooltip.ability.damage_immunity.is_hot_floor": "Обеспечивают защиту от горячего пола",
+  "artifacts.tooltip.ability.damage_immunity.burn_from_stepping": "Обеспечивают защиту от горячего пола",
   "artifacts.tooltip.ability.damage_immunity.is_lightning": "Обеспечивает защиту от ударов молнии",
   "artifacts.tooltip.ability.double_jump": "Позволяет владельцу совершать двойной прыжок",
   "artifacts.tooltip.ability.enchantment_level_modifiers.fortune.multiple_levels": "Добавляет %s дополнительных уровней удачи к добытым блокам",

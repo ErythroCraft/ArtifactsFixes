@@ -315,7 +315,7 @@
   "artifacts.tooltip.ability.cure_effects": "Greatly reduces the duration of negative effects",
   "artifacts.tooltip.ability.damage_absorption.chance": "The wearer's melee attacks have a %s%% chance to absorb health",
   "artifacts.tooltip.ability.damage_absorption.constant": "Causes the wearer's melee attacks to absorb health",
-  "artifacts.tooltip.ability.damage_immunity.is_hot_floor": "Grants protection against hot floor damage",
+  "artifacts.tooltip.ability.damage_immunity.burn_from_stepping": "Grants protection against hot floor damage",
   "artifacts.tooltip.ability.damage_immunity.is_lightning": "Grants protection against lightning strikes",
   "artifacts.tooltip.ability.double_jump": "Allows the wearer to double jump",
   "artifacts.tooltip.ability.enchantment_level_modifiers.fortune.multiple_levels": "Applies %s extra levels of fortune to mined blocks",
