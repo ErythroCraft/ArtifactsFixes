@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 public record ConfigValueCondition(ConfigValue<Boolean> value) implements ResourceCondition {
 
-    public static final MapCodec<ConfigValueCondition> CODEC = Artifacts.CONFIG.general.slots.codec()
+    public static final MapCodec<ConfigValueCondition> CODEC = Artifacts.CONFIG.general.codec()
             .xmap(ConfigValueCondition::new, ConfigValueCondition::value).fieldOf("value");
 
     public static final ResourceConditionType<ConfigValueCondition> TYPE = ResourceConditionType.create(Artifacts.id("config_value"), CODEC);

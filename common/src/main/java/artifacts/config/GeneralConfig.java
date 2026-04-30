@@ -1,5 +1,6 @@
 package artifacts.config;
 
+import artifacts.config.display.SharedNames;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.ValueTypes;
 import com.mojang.serialization.Codec;
@@ -28,10 +29,23 @@ public final class GeneralConfig extends ConfigManager {
             .build();
 
     public final Campsite campsite = new Campsite();
+    public final Durability durability = new Durability();
     public final Slots slots = new Slots();
 
     GeneralConfig() {
         super("general");
+    }
+
+    @SuppressWarnings("unchecked")
+    public Codec<ConfigValue<Boolean>> codec() {
+        return StringRepresentable.fromValues(() -> new ConfigValue[]{
+                slots.enableAccessoriesCompat,
+                slots.enableCuriosCompat,
+                slots.enableTrinketsCompat,
+                slots.addFaceSlot,
+                slots.removeSlotRestrictions,
+                durability.allowDurabilityEnchantments
+        });
     }
 
     public final class Campsite extends SubCategory {
@@ -85,7 +99,21 @@ public final class GeneralConfig extends ConfigManager {
         }
     }
 
-    // FIXME: Data pack overlays don't work in dev
+    public final class Durability extends SubCategory {
+
+        public final ConfigValue<Boolean> allowDurabilityEnchantments
+                = define("allowDurabilityEnchantments", false)
+                .tooltipLine("Allows artifacts to be enchanted with mending and unbreaking when they have durability enabled")
+                .tooltipLine("For more fine-grained control, the vanilla '#enchantable/durability' item tag should be used")
+                .requiresRestart()
+                .build();
+
+        private Durability() {
+            super("durability");
+            setTitle(SharedNames.Titles.DURABILITY);
+        }
+    }
+
     public final class Slots extends SubCategory {
 
         public final ConfigValue<Boolean> enableAccessoriesCompat
@@ -121,17 +149,6 @@ public final class GeneralConfig extends ConfigManager {
         private Slots() {
             super("slots");
             setTitle("Slots");
-        }
-
-        @SuppressWarnings("unchecked")
-        public Codec<ConfigValue<Boolean>> codec() {
-            return StringRepresentable.fromValues(() -> new ConfigValue[]{
-                    enableAccessoriesCompat,
-                    enableCuriosCompat,
-                    enableTrinketsCompat,
-                    addFaceSlot,
-                    removeSlotRestrictions
-            });
         }
     }
 }

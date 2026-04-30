@@ -69,6 +69,17 @@
             }
           }
         ]
+      },
+      {
+        "directory": "overlay_allow_durability_enchantments",
+        "min_format": 82,
+        "max_format": 2147483647,
+        "neoforge:conditions": [
+          {
+            "type": "artifacts:config_value",
+            "value": "general.durability.allowDurabilityEnchantments"
+          }
+        ]
       }
     ]
   }

@@ -49,6 +49,13 @@
             "value": "general.slots.enableTrinketsCompat"
           }
         }
+      },
+      {
+        "directory": "overlay_allow_durability_enchantments",
+        "condition": {
+          "condition": "artifacts:config_value",
+          "value": "general.durability.allowDurabilityEnchantments"
+        }
       }
     ]
   }
