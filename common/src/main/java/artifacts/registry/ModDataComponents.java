@@ -45,6 +45,7 @@ public class ModDataComponents {
     /** Adds the *Cosmetic* tooltip when the item has no (enabled) abilities */
     public static final Supplier<DataComponentType<Unit>> COSMETIC_TOOLTIP =
             registerSynced("cosmetic_tooltip", Unit.CODEC, Unit.STREAM_CODEC);
+    // TODO: probably should rename this to `equippable` to match vanilla
     /** Allows the item to be equipped from use */
     public static final Supplier<DataComponentType<Equipable>> EQUIPABLE =
             registerSynced("equipable", Equipable.CODEC, Equipable.STREAM_CODEC);
@@ -107,6 +108,7 @@ public class ModDataComponents {
             registerSynced("fluid_collision", FluidCollision.CODEC, FluidCollision.STREAM_CODEC);
     public static final Supplier<DataComponentType<SwimInAir>> SWIM_IN_AIR =
             registerSynced("swim_in_air", SwimInAir.CODEC, SwimInAir.STREAM_CODEC);
+    // TODO: probably should rename this to `equippable_totem` to match vanilla
     public static final Supplier<DataComponentType<EquipableTotem>> EQUIPABLE_TOTEM =
             registerSynced("equipable_totem", EquipableTotem.CODEC, EquipableTotem.STREAM_CODEC);
     public static final Supplier<DataComponentType<RetaliationEffects>> RETALIATION_EFFECTS =

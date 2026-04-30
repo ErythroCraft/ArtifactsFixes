@@ -192,13 +192,14 @@ public class Language extends LanguageProvider {
 
     private void addTags() {
         add(ItemTags.ARTIFACTS, "Artifacts");
-        add(ItemTags.ALL, "Any Slot Equipable Artifacts");
-        add(ItemTags.BELT, "Belt Slot Equipable Artifacts");
-        add(ItemTags.FACE, "Face Slot Equipable Artifacts");
-        add(ItemTags.FEET, "Feet Slot Equipable Artifacts");
-        add(ItemTags.HANDS, "Hands Slot Equipable Artifacts");
-        add(ItemTags.HEAD, "Head Slot Equipable Artifacts");
-        add(ItemTags.NECKLACE, "Necklace Slot Equipable Artifacts");
+        add(ItemTags.EQUIPPABLE, "Equippable Artifacts");
+        add(ItemTags.ALL_EQUIPPABLE, "Any Slot Equippable Artifacts");
+        add(ItemTags.BELT_EQUIPPABLE, "Belt Slot Equippable Artifacts");
+        add(ItemTags.FACE_EQUIPPABLE, "Face Slot Equippable Artifacts");
+        add(ItemTags.FEET_EQUIPPABLE, "Feet Slot Equippable Artifacts");
+        add(ItemTags.HANDS_EQUIPPABLE, "Hands Slot Equippable Artifacts");
+        add(ItemTags.HEAD_EQUIPPABLE, "Head Slot Equippable Artifacts");
+        add(ItemTags.NECKLACE_EQUIPPABLE, "Necklace Slot Equippable Artifacts");
 
         add(ModTags.ANTIDOTE_VESSEL_CANCELLABLE, "Antidote Vessel Cancellable");
         add(ModTags.CAMPSITE_CHESTS, "Campsite Chests");

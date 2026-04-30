@@ -17,16 +17,18 @@ import java.util.concurrent.CompletableFuture;
 
 public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
 
-    public static final TagKey<Item>
-            ARTIFACTS = createTag("artifacts"),
-            HEAD = createTag("slot/head"),
-            FACE = createTag("slot/face"),
-            NECKLACE = createTag("slot/necklace"),
-            HANDS = createTag("slot/hands"),
-            BELT = createTag("slot/belt"),
-            FEET = createTag("slot/feet"),
-            ALL = createTag("slot/all");
+    public static final TagKey<Item> ARTIFACTS = createTag("artifacts");
+    public static final TagKey<Item> EQUIPPABLE = createTag("equippable");
+    // TODO: consider renaming to `equippable:slot_name`
+    public static final TagKey<Item> HEAD_EQUIPPABLE = createTag("slot/head");
+    public static final TagKey<Item> FACE_EQUIPPABLE = createTag("slot/face");
+    public static final TagKey<Item> NECKLACE_EQUIPPABLE = createTag("slot/necklace");
+    public static final TagKey<Item> HANDS_EQUIPPABLE = createTag("slot/hands");
+    public static final TagKey<Item> BELT_EQUIPPABLE = createTag("slot/belt");
+    public static final TagKey<Item> FEET_EQUIPPABLE = createTag("slot/feet");
+    public static final TagKey<Item> ALL_EQUIPPABLE = createTag("slot/all");
 
+    // Probably not needed anymore, but kept for compatibility with origins-legacy
     public static final TagKey<Item> ORIGINS_MEAT = TagKey.create(Registries.ITEM, ModCompat.ORIGINS.id("meat"));
     public static final TagKey<Item> ORIGINS_SHIELDS = TagKey.create(Registries.ITEM, ModCompat.ORIGINS.id("shields"));
 
@@ -45,73 +47,12 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
                 .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(Artifacts.MOD_ID))
                 .filter(item -> item != ModItems.MIMIC_SPAWN_EGG.value()).toList().toArray(new Item[]{})
         );
-        tag(HEAD).add(
-                ModItems.PLASTIC_DRINKING_HAT.value(),
-                ModItems.NOVELTY_DRINKING_HAT.value(),
-                ModItems.VILLAGER_HAT.value(),
-                ModItems.SUPERSTITIOUS_HAT.value(),
-                ModItems.COWBOY_HAT.value(),
-                ModItems.ANGLERS_HAT.value()
-        );
-        tag(FACE).add(
-                ModItems.SNORKEL.value(),
-                ModItems.NIGHT_VISION_GOGGLES.value()
-        );
-        tag(NECKLACE).add(
-                ModItems.LUCKY_SCARF.value(),
-                ModItems.SCARF_OF_INVISIBILITY.value(),
-                ModItems.CROSS_NECKLACE.value(),
-                ModItems.PANIC_NECKLACE.value(),
-                ModItems.SHOCK_PENDANT.value(),
-                ModItems.FLAME_PENDANT.value(),
-                ModItems.THORN_PENDANT.value(),
-                ModItems.CHARM_OF_SINKING.value(),
-                ModItems.CHARM_OF_SHRINKING.value()
-        );
-        tag(HANDS).add(
-                ModItems.DIGGING_CLAWS.value(),
-                ModItems.FERAL_CLAWS.value(),
-                ModItems.POWER_GLOVE.value(),
-                ModItems.FIRE_GAUNTLET.value(),
-                ModItems.POCKET_PISTON.value(),
-                ModItems.VAMPIRIC_GLOVE.value(),
-                ModItems.GOLDEN_HOOK.value(),
-                ModItems.ONION_RING.value(),
-                ModItems.PICKAXE_HEATER.value(),
-                ModItems.WITHERED_BRACELET.value()
-        );
-        tag(BELT).add(
-                ModItems.CLOUD_IN_A_BOTTLE.value(),
-                ModItems.OBSIDIAN_SKULL.value(),
-                ModItems.ANTIDOTE_VESSEL.value(),
-                ModItems.UNIVERSAL_ATTRACTOR.value(),
-                ModItems.CRYSTAL_HEART.value(),
-                ModItems.HELIUM_FLAMINGO.value(),
-                ModItems.CHORUS_TOTEM.value(),
-                ModItems.WARP_DRIVE.value()
-        );
-        tag(FEET).add(
-                ModItems.AQUA_DASHERS.value(),
-                ModItems.BUNNY_HOPPERS.value(),
-                ModItems.KITTY_SLIPPERS.value(),
-                ModItems.RUNNING_SHOES.value(),
-                ModItems.SNOWSHOES.value(),
-                ModItems.STEADFAST_SPIKES.value(),
-                ModItems.FLIPPERS.value(),
-                ModItems.ROOTED_BOOTS.value(),
-                ModItems.STRIDER_SHOES.value()
-        );
-        tag(ALL).add(
-                ModItems.WHOOPEE_CUSHION.value()
-        );
+        addSlotTags();
+        addRepairMaterialTags();
+        addOriginsTags();
 
-        tag(ORIGINS_MEAT).add(
-                ModItems.EVERLASTING_BEEF.value(),
-                ModItems.ETERNAL_STEAK.value()
-        );
-        tag(ORIGINS_SHIELDS).add(
-                ModItems.UMBRELLA.value()
-        );
+        tag(net.minecraft.tags.ItemTags.EQUIPPABLE_ENCHANTABLE).addTag(EQUIPPABLE);
+        tag(net.minecraft.tags.ItemTags.VANISHING_ENCHANTABLE).addTag(EQUIPPABLE);
 
         tag(net.minecraft.tags.ItemTags.PIGLIN_LOVED).add(
                 ModItems.GOLDEN_HOOK.value(),
@@ -123,12 +64,96 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         tag(net.minecraft.tags.ItemTags.SPEARS).add(
                 ModItems.UMBRELLA.value()
         );
+    }
 
+    @SuppressWarnings("unchecked")
+    private void addSlotTags() {
+        tag(EQUIPPABLE).addTags(
+                HEAD_EQUIPPABLE,
+                FACE_EQUIPPABLE,
+                NECKLACE_EQUIPPABLE,
+                HANDS_EQUIPPABLE,
+                BELT_EQUIPPABLE,
+                FEET_EQUIPPABLE,
+                ALL_EQUIPPABLE
+        );
+        tag(HEAD_EQUIPPABLE).add(
+                ModItems.PLASTIC_DRINKING_HAT.value(),
+                ModItems.NOVELTY_DRINKING_HAT.value(),
+                ModItems.VILLAGER_HAT.value(),
+                ModItems.SUPERSTITIOUS_HAT.value(),
+                ModItems.COWBOY_HAT.value(),
+                ModItems.ANGLERS_HAT.value()
+        );
+        tag(FACE_EQUIPPABLE).add(
+                ModItems.SNORKEL.value(),
+                ModItems.NIGHT_VISION_GOGGLES.value()
+        );
+        tag(NECKLACE_EQUIPPABLE).add(
+                ModItems.LUCKY_SCARF.value(),
+                ModItems.SCARF_OF_INVISIBILITY.value(),
+                ModItems.CROSS_NECKLACE.value(),
+                ModItems.PANIC_NECKLACE.value(),
+                ModItems.SHOCK_PENDANT.value(),
+                ModItems.FLAME_PENDANT.value(),
+                ModItems.THORN_PENDANT.value(),
+                ModItems.CHARM_OF_SINKING.value(),
+                ModItems.CHARM_OF_SHRINKING.value()
+        );
+        tag(HANDS_EQUIPPABLE).add(
+                ModItems.DIGGING_CLAWS.value(),
+                ModItems.FERAL_CLAWS.value(),
+                ModItems.POWER_GLOVE.value(),
+                ModItems.FIRE_GAUNTLET.value(),
+                ModItems.POCKET_PISTON.value(),
+                ModItems.VAMPIRIC_GLOVE.value(),
+                ModItems.GOLDEN_HOOK.value(),
+                ModItems.ONION_RING.value(),
+                ModItems.PICKAXE_HEATER.value(),
+                ModItems.WITHERED_BRACELET.value()
+        );
+        tag(BELT_EQUIPPABLE).add(
+                ModItems.CLOUD_IN_A_BOTTLE.value(),
+                ModItems.OBSIDIAN_SKULL.value(),
+                ModItems.ANTIDOTE_VESSEL.value(),
+                ModItems.UNIVERSAL_ATTRACTOR.value(),
+                ModItems.CRYSTAL_HEART.value(),
+                ModItems.HELIUM_FLAMINGO.value(),
+                ModItems.CHORUS_TOTEM.value(),
+                ModItems.WARP_DRIVE.value()
+        );
+        tag(FEET_EQUIPPABLE).add(
+                ModItems.AQUA_DASHERS.value(),
+                ModItems.BUNNY_HOPPERS.value(),
+                ModItems.KITTY_SLIPPERS.value(),
+                ModItems.RUNNING_SHOES.value(),
+                ModItems.SNOWSHOES.value(),
+                ModItems.STEADFAST_SPIKES.value(),
+                ModItems.FLIPPERS.value(),
+                ModItems.ROOTED_BOOTS.value(),
+                ModItems.STRIDER_SHOES.value()
+        );
+        tag(ALL_EQUIPPABLE).add(
+                ModItems.WHOOPEE_CUSHION.value()
+        );
+    }
+
+    private void addRepairMaterialTags() {
         tag(ModTags.REPAIRS_ETERNAL_STEAK).add(Items.COOKED_BEEF);
         tag(ModTags.REPAIRS_EVERLASTING_BEEF).add(Items.BEEF);
         tag(ModTags.REPAIRS_FLAME_PENDANT).add(Items.DIAMOND);
         tag(ModTags.REPAIRS_SHOCK_PENDANT).add(Items.DIAMOND);
         tag(ModTags.REPAIRS_THORN_PENDANT).add(Items.DIAMOND);
         tag(ModTags.REPAIRS_UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
+    }
+
+    private void addOriginsTags() {
+        tag(ORIGINS_MEAT).add(
+                ModItems.EVERLASTING_BEEF.value(),
+                ModItems.ETERNAL_STEAK.value()
+        );
+        tag(ORIGINS_SHIELDS).add(
+                ModItems.UMBRELLA.value()
+        );
     }
 }

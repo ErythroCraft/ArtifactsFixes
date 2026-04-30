@@ -1,5 +1,6 @@
-// 26.1.2	2026-04-30T12:34:33.7686366	Tags for minecraft:item mod id artifacts
+// 26.1.2	2026-04-30T13:02:45.9762894	Tags for minecraft:item mod id artifacts
 8dd1563f299da374a09d42f0e3b2b918d201d735 data/artifacts/tags/item/artifacts.json
+dc0986fc0d086d461ba46c06cd791e5d97f79112 data/artifacts/tags/item/equippable.json
 6ddb26f62487e2f1691999b5c3549e4a5bf5e8fb data/artifacts/tags/item/repairs_eternal_steak.json
 d14710b6121edb04c184b88cb21ce8d106aafd32 data/artifacts/tags/item/repairs_everlasting_beef.json
 fdab8ddd5529ae14b26bc1853b004131135318a4 data/artifacts/tags/item/repairs_flame_pendant.json
@@ -13,6 +14,8 @@ f423ab6d12dec9a61a60ad89a9fbc93759d6e420 data/artifacts/tags/item/slot/face.json
 71feaab41b2dc1a78f24cb9aa9f3b7bd345d9a9d data/artifacts/tags/item/slot/hands.json
 f1aef65b784cd28af5f6ef7497de40a3c70c4a49 data/artifacts/tags/item/slot/head.json
 7738bbecafe9c111036ed682937ea34045f20568 data/artifacts/tags/item/slot/necklace.json
+89ba77cc285470f168816515836ac893ab5bc4c5 data/minecraft/tags/item/enchantable/equippable.json
+89ba77cc285470f168816515836ac893ab5bc4c5 data/minecraft/tags/item/enchantable/vanishing.json
 075455bc6de3ca435f51f07b2f405073c0783921 data/minecraft/tags/item/piglin_loved.json
 159e2d82f9583dca9566cf0a02f01f3485a2f3eb data/minecraft/tags/item/spears.json
 67ac1f7771168c71238c74d91631b361e0a3934c data/origins/tags/item/meat.json
