@@ -26,4 +26,8 @@ public class ValueTypes {
     public static MapCodec<Value<Integer>> cooldownField() {
         return DURATION.codec().optionalFieldOf("cooldown", Value.of(0));
     }
+
+    public static MapCodec<Value<Integer>> itemDamageField() {
+        return NON_NEGATIVE_INT.codec().optionalFieldOf("item_damage", Value.of(0));
+    }
 }

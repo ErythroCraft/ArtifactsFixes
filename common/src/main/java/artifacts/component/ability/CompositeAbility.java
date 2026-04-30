@@ -1,5 +1,6 @@
 package artifacts.component.ability;
 
+import artifacts.equipment.EquipmentSlotAccess;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -16,6 +17,11 @@ public record CompositeAbility<ENTRY extends EquipmentAbility>(List<ENTRY> entri
 
     public static <ENTRY extends EquipmentAbility, B extends ByteBuf> StreamCodec<B, CompositeAbility<ENTRY>> streamCodec(StreamCodec<B, ENTRY> entryCodec) {
         return ByteBufCodecs.<B, ENTRY>list().apply(entryCodec).map(CompositeAbility::new, CompositeAbility::entries);
+    }
+
+    @SafeVarargs
+    public static <ENTRY extends EquipmentAbility> CompositeAbility<ENTRY> of(ENTRY... entries) {
+        return new CompositeAbility<>(List.of(entries));
     }
 
     @Override
@@ -41,9 +47,9 @@ public record CompositeAbility<ENTRY extends EquipmentAbility>(List<ENTRY> entri
             implements AbilityTicker<CompositeAbility<ENTRY>> {
 
         @Override
-        public void wornTick(CompositeAbility<ENTRY> ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        public void wornTick(CompositeAbility<ENTRY> ability, EquipmentSlotAccess slotAccess, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
             for (ENTRY entry : ability.entries) {
-                entryTicker.wornTick(entry, entity, isOnCooldown, isDisabled);
+                entryTicker.wornTick(entry, slotAccess, entity, isOnCooldown, isDisabled);
             }
         }
 

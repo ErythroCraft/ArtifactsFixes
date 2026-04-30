@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+// TODO: max damage default values
 public final class ItemConfigs extends ConfigManager {
 
     private final Map<ResourceKey<Item>, ItemSubCategory> itemCategories = new HashMap<>();
@@ -101,8 +102,22 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The maximum duration in seconds negative mob effects can last when wearing the Antidote Vessel")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private AntidoteVessel() {
             super(ModItems.ANTIDOTE_VESSEL);
+        }
+
+        public final class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
+                    .tooltipLine("The amount of durability lost every time Antidote Vessel reduces an effect's duration")
+                    .build();
+
+            private Durability() {
+                super(100, ModTags.REPAIRS_ANTIDOTE_VESSEL);
+            }
         }
     }
 
@@ -238,7 +253,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The amount of extra ticks the player stays invincible for after taking damage while wearing the Cross Necklace")
                 .syncToClients().build();
 
-        public final ConfigValue<Integer> cooldown = defineCooldown(0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(2)
                 .tooltipLine("The duration in seconds the Cross Necklace goes on cooldown for after activating")
                 .syncToClients().build();
 
@@ -377,7 +392,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("Whether the Flame Pendant grants Fire Resistance after igniting an entity")
                 .syncToClients().build();
 
-        public final ConfigValue<Integer> cooldown = defineCooldown(0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(2)
                 .tooltipLine("The duration in seconds the Flame Pendant goes on cooldown for after setting an entity on fire")
                 .syncToClients().build();
 
@@ -390,8 +405,9 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends DurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
                     .tooltipLine("The amount of durability lost every time the Flame Pendant activates")
-                    .build();
+                    .syncToClients().build();
 
             private Durability() {
                 super(120, ModTags.REPAIRS_FLAME_PENDANT);
@@ -491,8 +507,22 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The amount of time in seconds the Obsidian Skull goes on cooldown for after taking fire damage")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private ObsidianSkull() {
             super(ModItems.OBSIDIAN_SKULL);
+        }
+
+        public final class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
+                    .tooltipLine("The amount of durability lost every time the Obsidian Skull activates")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(60, ModTags.REPAIRS_OBSIDIAN_SKULL);
+            }
         }
     }
 
@@ -506,8 +536,22 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The level of the haste effect that is applied by the Onion Ring")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private OnionRing() {
             super(ModItems.ONION_RING);
+        }
+
+        public final class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
+                    .tooltipLine("The amount of durability lost after eating an item")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(640, ModTags.REPAIRS_ONION_RING);
+            }
         }
     }
 
@@ -521,12 +565,26 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration in seconds of the speed effect that is applied when taking damage while wearing the Panic Necklace")
                 .syncToClients().build();
 
-        public final ConfigValue<Integer> cooldown = defineCooldown(0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(2)
                 .tooltipLine("The duration in seconds the Panic Necklace goes on cooldown for after taking damage")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private PanicNecklace() {
             super(ModItems.PANIC_NECKLACE);
+        }
+
+        public final class Durability extends DurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
+                    .tooltipLine("The amount of durability lost every time the Panic Necklace activates")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(500, ModTags.REPAIRS_PANIC_NECKLACE);
+            }
         }
     }
 
@@ -623,7 +681,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("Whether the Shock Pendant cancels damage from lightning")
                 .syncToClients().build();
 
-        public final ConfigValue<Integer> cooldown = defineCooldown(0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(2)
                 .tooltipLine("The amount of time in seconds the Shock Pendant goes on cooldown for after striking an attacker with lightning")
                 .syncToClients().build();
 
@@ -636,8 +694,9 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends DurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
                     .tooltipLine("The amount of durability lost every time the Shock Pendant activates")
-                    .build();
+                    .syncToClients().build();
 
             private Durability() {
                 super(50, ModTags.REPAIRS_SHOCK_PENDANT);
@@ -731,7 +790,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The minimum amount of damage that is dealt when the Thorn Pendant activates")
                 .syncToClients().build();
 
-        public final ConfigValue<Integer> cooldown = defineCooldown(0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(2)
                 .tooltipLine("The duration in seconds the Thorn Pendant goes on cooldown for after activating")
                 .syncToClients().build();
 
@@ -741,11 +800,12 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.THORN_PENDANT);
         }
 
-        public class Durability extends DurabilityCategory {
+        public final class Durability extends DurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
                     .tooltipLine("The amount of durability lost every time the Thorn Pendant activates")
-                    .build();
+                    .syncToClients().build();
 
             private Durability() {
                 super(150, ModTags.REPAIRS_THORN_PENDANT);
@@ -888,7 +948,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The level of the wither effect that is inflicted by the Withered Bracelet")
                 .syncToClients().build();
 
-        public final ConfigValue<Integer> cooldown = defineCooldown(0)
+        public final ConfigValue<Integer> cooldown = defineCooldown(2)
                 .tooltipLine("The duration the Withered Bracelet goes on cooldown for after inflicting wither on an entity")
                 .syncToClients().build();
 

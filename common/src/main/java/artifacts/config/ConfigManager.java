@@ -177,6 +177,7 @@ public abstract class ConfigManager {
     }
 
     public void onConfigChanged() {
+        // TODO: Synced values aren't re-read when changed from main menu
         readValuesFromConfig(Artifacts.getCurrentServer() != null);
         if (Artifacts.getCurrentServer() != null) {
             Artifacts.LOGGER.info("Sending updated {} config values to connected clients", getName());

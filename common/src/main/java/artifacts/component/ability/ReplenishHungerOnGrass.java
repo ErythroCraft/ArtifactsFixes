@@ -3,6 +3,7 @@ package artifacts.component.ability;
 import artifacts.component.ability.mobeffect.PostEatingEffect;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.network.payload.PlaySoundAtPlayerPacket;
 import artifacts.registry.ModTags;
 import com.mojang.serialization.Codec;
@@ -36,7 +37,7 @@ public record ReplenishHungerOnGrass(Value<Boolean> enabled, Value<Integer> repl
     public record Ticker() implements AbilityTicker<ReplenishHungerOnGrass> {
 
         @Override
-        public void wornTick(ReplenishHungerOnGrass ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        public void wornTick(ReplenishHungerOnGrass ability, EquipmentSlotAccess slotAccess, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
             if (!isDisabled && !isOnCooldown && ability.isNonCosmetic() && entity instanceof ServerPlayer player
                     && player.onGround()
                     && player.getFoodData().needsFood()
@@ -47,7 +48,6 @@ public record ReplenishHungerOnGrass(Value<Boolean> enabled, Value<Integer> repl
                 PostEatingEffect.applyEffects(entity, 1);
                 PlaySoundAtPlayerPacket.sendSound(player, SoundEvents.GENERIC_EAT, 0.5F, 0.8F + entity.getRandom().nextFloat() * 0.4F);
             }
-
         }
     }
 }

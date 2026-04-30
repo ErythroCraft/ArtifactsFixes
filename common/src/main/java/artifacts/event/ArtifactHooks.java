@@ -125,7 +125,7 @@ public class ArtifactHooks {
     ) {
         EquipmentHelper.iterateAbilities(entry.type().get(), entity, false, false, (ability, slotAccess) -> {
             boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(slotAccess.get());
-            entry.ticker().wornTick(ability, entity, isOnCooldown, slotAccess.get().has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
+            entry.ticker().wornTick(ability, slotAccess, entity, isOnCooldown, slotAccess.get().has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
         });
 
     }

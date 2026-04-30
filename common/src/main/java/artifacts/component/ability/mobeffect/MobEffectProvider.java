@@ -17,12 +17,12 @@ import net.minecraft.world.entity.LivingEntity;
 
 public record MobEffectProvider(Holder<MobEffect> mobEffect, Value<Integer> level, Value<Integer> duration, Value<Boolean> spawnParticles, Value<Boolean> showIcon, EntityCondition condition) {
 
-    public static Codec<MobEffectProvider> codec(boolean showParticles) {
+    public static Codec<MobEffectProvider> codec(boolean showParticlesByDefault) {
         return RecordCodecBuilder.create(instance -> instance.group(
                 BuiltInRegistries.MOB_EFFECT.holderByNameCodec().fieldOf("id").forGetter(MobEffectProvider::mobEffect),
                 ValueTypes.MOB_EFFECT_LEVEL.codec().optionalFieldOf("level", Value.of(1)).forGetter(MobEffectProvider::level),
                 ValueTypes.DURATION.codec().optionalFieldOf("duration", Value.of(10)).forGetter(MobEffectProvider::duration),
-                ValueTypes.BOOLEAN.codec().optionalFieldOf("spawn_particles", Value.of(showParticles)).forGetter(MobEffectProvider::spawnParticles),
+                ValueTypes.BOOLEAN.codec().optionalFieldOf("spawn_particles", Value.of(showParticlesByDefault)).forGetter(MobEffectProvider::spawnParticles),
                 ValueTypes.BOOLEAN.codec().optionalFieldOf("show_icon", Value.of(false)).forGetter(MobEffectProvider::showIcon),
                 EntityCondition.CODEC.optionalFieldOf("condition", EntityCondition.ALWAYS).forGetter(MobEffectProvider::condition)
         ).apply(instance, MobEffectProvider::new));

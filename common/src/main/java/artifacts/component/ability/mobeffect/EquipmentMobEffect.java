@@ -4,6 +4,7 @@ import artifacts.component.ability.AbilityTicker;
 import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModMobEffects;
 import com.mojang.serialization.Codec;
@@ -77,7 +78,7 @@ public record EquipmentMobEffect(MobEffectProvider provider) implements Equipmen
         }
 
         @Override
-        public void wornTick(EquipmentMobEffect ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        public void wornTick(EquipmentMobEffect ability, EquipmentSlotAccess slotAccess, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
             MobEffectProvider provider = ability.provider;
             if (!isDisabled && !isOnCooldown) {
                 if (provider.canApply(entity)) {

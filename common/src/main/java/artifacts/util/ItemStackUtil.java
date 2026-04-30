@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class ItemStackUtil {
 
     public static void hurtAndBreak(EquipmentSlotAccess slotAccess, int damage, LivingEntity entity) {
-        if (entity.level() instanceof ServerLevel level) {
+        if (damage > 0 && entity.level() instanceof ServerLevel level) {
             ServerPlayer player = null;
             if (entity instanceof ServerPlayer) {
                 player = (ServerPlayer) entity;

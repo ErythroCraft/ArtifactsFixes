@@ -2,6 +2,7 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.registry.ModAttributes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -123,7 +124,7 @@ public record EquipmentAttributeModifier(
         }
 
         @Override
-        public void wornTick(EquipmentAttributeModifier ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        public void wornTick(EquipmentAttributeModifier ability, EquipmentSlotAccess slotAccess, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
             AttributeInstance attributeInstance = entity.getAttribute(ability.attribute());
             if (attributeInstance == null) {
                 return;

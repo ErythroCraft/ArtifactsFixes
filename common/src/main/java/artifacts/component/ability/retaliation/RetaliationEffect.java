@@ -39,8 +39,8 @@ public abstract class RetaliationEffect implements EquipmentAbility {
                 if (entity instanceof Player player && activationParams.cooldown.get() > 0) {
                     player.getCooldowns().addCooldown(slotAccess.get(), activationParams.cooldown.get() * 20);
                 }
-                if (activationParams.durabilityCost.get() > 0) {
-                    ItemStackUtil.hurtAndBreak(slotAccess, activationParams.durabilityCost.get(), entity);
+                if (activationParams.itemDamage.get() > 0) {
+                    ItemStackUtil.hurtAndBreak(slotAccess, activationParams.itemDamage.get(), entity);
                 }
             }
         }
@@ -78,13 +78,13 @@ public abstract class RetaliationEffect implements EquipmentAbility {
     public record ActivationParams(
             Value<Double> strikeChance,
             Value<Integer> cooldown,
-            Value<Integer> durabilityCost
+            Value<Integer> itemDamage
     ) {
 
         public static final MapCodec<ActivationParams> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ValueTypes.FRACTION.codec().fieldOf("chance").forGetter(ActivationParams::strikeChance),
                 ValueTypes.cooldownField().forGetter(ActivationParams::cooldown),
-                ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("damage_per_activation").forGetter(ActivationParams::durabilityCost)
+                ValueTypes.itemDamageField().forGetter(ActivationParams::itemDamage)
         ).apply(instance, ActivationParams::new));
 
         public static final StreamCodec<ByteBuf, ActivationParams> STREAM_CODEC = StreamCodec.composite(
@@ -93,7 +93,7 @@ public abstract class RetaliationEffect implements EquipmentAbility {
                 ValueTypes.DURATION.streamCodec(),
                 ActivationParams::cooldown,
                 ValueTypes.NON_NEGATIVE_INT.streamCodec(),
-                ActivationParams::durabilityCost,
+                ActivationParams::itemDamage,
                 ActivationParams::new
         );
     }

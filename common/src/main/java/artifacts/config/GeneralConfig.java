@@ -104,7 +104,7 @@ public final class GeneralConfig extends ConfigManager {
         public final ConfigValue<Boolean> allowDurabilityEnchantments
                 = define("allowDurabilityEnchantments", false)
                 .tooltipLine("Allows artifacts to be enchanted with mending and unbreaking when they have durability enabled")
-                .tooltipLine("For more fine-grained control, the vanilla '#enchantable/durability' item tag should be used")
+                .tooltipLine("For more fine-grained control, the vanilla minecraft:enchantable/durability item tag should be used")
                 .requiresRestart()
                 .build();
 

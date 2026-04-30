@@ -2,7 +2,9 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.registry.ModTags;
+import artifacts.util.ItemStackUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -11,15 +13,17 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDuration) implements EquipmentAbility {
+public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDuration, Value<Integer> itemDamage) implements EquipmentAbility {
 
     public static final Codec<CureEffects> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(CureEffects::enabled),
-            ValueTypes.DURATION.codec().fieldOf("duration").forGetter(CureEffects::maxEffectDuration)
+            ValueTypes.DURATION.codec().fieldOf("duration").forGetter(CureEffects::maxEffectDuration),
+            ValueTypes.itemDamageField().forGetter(CureEffects::itemDamage)
     ).apply(instance, CureEffects::new));
 
     public static final StreamCodec<ByteBuf, CureEffects> STREAM_CODEC = StreamCodec.composite(
@@ -27,6 +31,8 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
             CureEffects::enabled,
             ValueTypes.DURATION.streamCodec(),
             CureEffects::maxEffectDuration,
+            ValueTypes.NON_NEGATIVE_INT.streamCodec(),
+            CureEffects::itemDamage,
             CureEffects::new
     );
 
@@ -38,8 +44,8 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
     public record Ticker() implements AbilityTicker<CureEffects> {
 
         @Override
-        public void wornTick(CureEffects ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
-            if (isDisabled || !ability.isNonCosmetic()) {
+        public void wornTick(CureEffects ability, EquipmentSlotAccess slotAccess, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+            if (isDisabled || isOnCooldown || !ability.isNonCosmetic()) {
                 return;
             }
             Map<Holder<MobEffect>, MobEffectInstance> effects = new HashMap<>();
@@ -57,6 +63,13 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
                     entity.addEffect(new MobEffectInstance(effect, maxEffectDuration, instance.getAmplifier(), instance.isAmbient(), instance.isVisible(), instance.showIcon()));
                 }
             });
+
+            if (!effects.isEmpty()) {
+                ItemStackUtil.hurtAndBreak(slotAccess, ability.itemDamage.get(), entity);
+                if (entity instanceof Player player) {
+                    player.getCooldowns().addCooldown(slotAccess.get(), 2 * 20);
+                }
+            }
         }
     }
 }

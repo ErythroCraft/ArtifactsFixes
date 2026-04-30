@@ -13,6 +13,7 @@ public class SharedNames {
         public static final LangEntry CAN_BE_REPAIRED = title("durability.canBeRepaired", "Can Be Repaired");
         public static final LangEntry MAX_DAMAGE = title("durability.maxDamage", "Max Damage");
         public static final LangEntry DAMAGE_WHEN_CONSUMED = title("durability.damageWhenConsumed", "Damage When Consumed");
+        public static final LangEntry DAMAGE_PER_ACTIVATION = title("durability.damagePerActivation", "Damage per Activation");
     }
 
     public static class Descriptions {
@@ -23,7 +24,7 @@ public class SharedNames {
                 "Whether this item has a limited number of uses"
         );
         public static final LangEntry CAN_BE_REPAIRED = description("durability.canBeRepaired",
-                "Whether this item can be repaired using items in the '#%s' item tag"
+                "Whether this item can be repaired using items in the %s item tag"
         );
         public static final LangEntry MAX_DAMAGE = description("durability.maxDamage",
                 "The maximum amount of damage that this item can take before breaking"

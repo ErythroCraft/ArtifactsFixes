@@ -2,9 +2,13 @@ package artifacts.component.ability.mobeffect;
 
 import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.EquipmentAbility;
+import artifacts.config.value.Value;
+import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
+import artifacts.util.ItemStackUtil;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.effect.MobEffects;
@@ -12,12 +16,20 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 
-public record PostEatingEffect(MobEffectProvider provider) implements EquipmentAbility {
+public record PostEatingEffect(MobEffectProvider provider, Value<Integer> itemDamage) implements EquipmentAbility {
 
-    public static final Codec<PostEatingEffect> CODEC =
-            MobEffectProvider.codec(false).xmap(PostEatingEffect::new, PostEatingEffect::provider);
-    public static final StreamCodec<RegistryFriendlyByteBuf, PostEatingEffect> STREAM_CODEC =
-            MobEffectProvider.STREAM_CODEC.map(PostEatingEffect::new, PostEatingEffect::provider);
+    public static final Codec<PostEatingEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            MobEffectProvider.codec(false).fieldOf("effect").forGetter(PostEatingEffect::provider),
+            ValueTypes.itemDamageField().forGetter(PostEatingEffect::itemDamage)
+    ).apply(instance, PostEatingEffect::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, PostEatingEffect> STREAM_CODEC = StreamCodec.composite(
+            MobEffectProvider.STREAM_CODEC,
+            PostEatingEffect::provider,
+            ValueTypes.NON_NEGATIVE_INT.streamCodec(),
+            PostEatingEffect::itemDamage,
+            PostEatingEffect::new
+    );
 
     public static void applyEffects(LivingEntity entity, FoodProperties properties) {
         int foodPointsMissing = entity instanceof Player player ? 20 - player.getFoodData().getFoodLevel() : 20;
@@ -27,9 +39,12 @@ public record PostEatingEffect(MobEffectProvider provider) implements EquipmentA
 
     public static void applyEffects(LivingEntity entity, int foodPointsRestored) {
         if (foodPointsRestored > 0) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.POST_EATING_EFFECTS.get(), entity, true, true, (ability, stack) -> {
+            EquipmentHelper.iterateAbilities(ModDataComponents.POST_EATING_EFFECTS.get(), entity, true, true, (ability, slotAccess) -> {
                 for (PostEatingEffect entry : ability.entries()) {
-                    entity.addEffect(entry.provider().createEffect(foodPointsRestored));
+                    if (entry.provider().canApply(entity)) {
+                        entity.addEffect(entry.provider().createEffect(foodPointsRestored));
+                        ItemStackUtil.hurtAndBreak(slotAccess, entry.itemDamage.get(), entity);
+                    }
                 }
             });
         }

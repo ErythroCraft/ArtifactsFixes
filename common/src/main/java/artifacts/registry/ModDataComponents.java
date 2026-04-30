@@ -139,7 +139,8 @@ public class ModDataComponents {
                 POST_DAMAGE_COOLDOWN,
                 RETALIATION_EFFECTS,
                 SWIM_IN_AIR,
-                ATTACK_EFFECTS
+                ATTACK_EFFECTS,
+                CURE_EFFECTS
         ));
     }
 

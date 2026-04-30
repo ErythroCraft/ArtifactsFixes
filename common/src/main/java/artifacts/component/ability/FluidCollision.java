@@ -2,6 +2,7 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -56,9 +57,10 @@ public record FluidCollision(Value<Boolean> enabled, Optional<TagKey<Fluid>> tag
     public record Ticker() implements AbilityTicker<FluidCollision> {
 
         @Override
-        public void wornTick(FluidCollision ability, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        public void wornTick(FluidCollision ability, EquipmentSlotAccess slotAccess, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
             FluidState fluidState = entity.getBlockStateOn().getFluidState();
             if (fluidState.is(FluidTags.LAVA) && !entity.fireImmune() && ability.condition.test(entity)) {
+                // TODO: deprecated method call
                 entity.hurt(entity.damageSources().hotFloor(), 1);
             }
         }
