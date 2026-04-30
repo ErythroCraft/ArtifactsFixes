@@ -64,6 +64,9 @@ public class ModDataComponents {
     /** Hides the item's model when the entity wearing it is invisible */
     public static final Supplier<DataComponentType<Value<Boolean>>> HIDE_WHEN_INVISIBLE =
             registerSynced("hide_when_invisible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
+    /** Prevents the item from being destroyed when durability reaches 0 */
+    public static final Supplier<DataComponentType<Value<Boolean>>> INDESTRUCTIBLE =
+            registerSynced("indestructible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
 
     // abilities
     public static final Supplier<DataComponentType<PostDamageCooldown>> POST_DAMAGE_COOLDOWN =

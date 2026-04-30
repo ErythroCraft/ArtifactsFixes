@@ -89,6 +89,7 @@ public final class ArtifactProperties {
         // Vanilla also sets max stack size to 1, but we already do this by default in ArtifactProperties#build()
         delayedComponent(DataComponents.DAMAGE, durability::canBeDamaged, _ -> 0);
         delayedComponent(DataComponents.MAX_DAMAGE, durability::canBeDamaged, _ -> durability.getMaxDamage());
+        delayedComponent(ModDataComponents.INDESTRUCTIBLE.get(), durability::canBeDamaged, _ -> durability.indestructible());
         delayedComponent(DataComponents.REPAIRABLE, () -> durability.canBeDamaged() && durability.canBeRepaired(), registries -> new Repairable(
                 registries.getOrThrow(durability.getRepairMaterials())
         ));

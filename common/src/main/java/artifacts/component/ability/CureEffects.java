@@ -4,7 +4,7 @@ import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.registry.ModTags;
-import artifacts.util.ItemStackUtil;
+import artifacts.util.ItemDamageUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -65,7 +65,7 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
             });
 
             if (!effects.isEmpty()) {
-                ItemStackUtil.hurtAndBreak(slotAccess, ability.itemDamage.get(), entity);
+                ItemDamageUtil.hurtAndBreak(slotAccess, ability.itemDamage.get(), entity);
                 if (entity instanceof Player player) {
                     player.getCooldowns().addCooldown(slotAccess.get(), 2 * 20);
                 }

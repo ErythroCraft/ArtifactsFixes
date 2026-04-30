@@ -1,6 +1,8 @@
 package artifacts.mixin.item;
 
+import artifacts.util.ItemDamageUtil;
 import artifacts.util.TooltipHelper;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -17,6 +19,11 @@ import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
+
+    @ModifyReturnValue(method = "processDurabilityChange", at = @At(value = "RETURN"))
+    private int processDurabilityChange(int original) {
+        return ItemDamageUtil.processDurabilityChange((ItemStack) (Object) this, original);
+    }
 
     @Inject(method = "addDetailsToTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/item/component/TooltipDisplay;Ljava/util/function/Consumer;Lnet/minecraft/world/item/TooltipFlag;)V"))
     private void getTooltipLines(Item.TooltipContext context, TooltipDisplay display, @Nullable Player player, TooltipFlag tooltipFlag, Consumer<Component> builder, CallbackInfo ci) {

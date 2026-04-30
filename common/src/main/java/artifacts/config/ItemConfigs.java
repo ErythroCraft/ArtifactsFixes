@@ -108,7 +108,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.ANTIDOTE_VESSEL);
         }
 
-        public final class Durability extends DurabilityCategory {
+        public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
@@ -402,7 +402,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.FLAME_PENDANT);
         }
 
-        public final class Durability extends DurabilityCategory {
+        public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
@@ -513,7 +513,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.OBSIDIAN_SKULL);
         }
 
-        public final class Durability extends DurabilityCategory {
+        public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
@@ -542,7 +542,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.ONION_RING);
         }
 
-        public final class Durability extends DurabilityCategory {
+        public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
@@ -575,7 +575,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.PANIC_NECKLACE);
         }
 
-        public final class Durability extends DurabilityCategory {
+        public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
@@ -691,7 +691,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.SHOCK_PENDANT);
         }
 
-        public final class Durability extends DurabilityCategory {
+        public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
@@ -800,7 +800,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.THORN_PENDANT);
         }
 
-        public final class Durability extends DurabilityCategory {
+        public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
@@ -1034,6 +1034,11 @@ public final class ItemConfigs extends ConfigManager {
             }
 
             @Override
+            public Value<Boolean> indestructible() {
+                return Value.of(false);
+            }
+
+            @Override
             public int getMaxDamage() {
                 return maxDamage.get();
             }
@@ -1041,6 +1046,24 @@ public final class ItemConfigs extends ConfigManager {
             @Override
             public TagKey<Item> getRepairMaterials() {
                 return repairMaterials;
+            }
+        }
+
+        protected abstract class EquippableDurabilityCategory extends DurabilityCategory {
+
+            public ConfigValue<Boolean> indestructible = define("indestructible", true)
+                    .title(SharedNames.Titles.INDESTRUCTIBLE)
+                    .tooltipLine(SharedNames.Descriptions.INDESTRUCTIBLE)
+                    .syncToClients()
+                    .build();
+
+            private EquippableDurabilityCategory(int maxDamage, TagKey<Item> repairMaterials) {
+                super(maxDamage, repairMaterials);
+            }
+
+            @Override
+            public Value<Boolean> indestructible() {
+                return indestructible;
             }
         }
     }

@@ -3,6 +3,7 @@ package artifacts.equipment;
 import artifacts.component.ability.EnchantmentLevelModifier;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.registry.ModDataComponents;
+import artifacts.util.ItemDamageUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
@@ -15,6 +16,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.*;
 
 public class EquipmentHelper {
+
+    public static boolean isDisabledOrBroken(ItemStack stack) {
+        if (stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get())) {
+            return true;
+        }
+        return ItemDamageUtil.needsRepair(stack);
+    }
 
     public static boolean hasComponent(DataComponentType<?> type, @Nullable LivingEntity entity) {
         return reduceComponents(type, entity, false, (_, _, _) -> true);
@@ -79,7 +87,7 @@ public class EquipmentHelper {
             ABILITY ability = slotAccess.get().get(type);
             if (ability != null) {
                 boolean checkCooldown = !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(slotAccess.get());
-                boolean checkDisabled = !skipDisabledItems || !slotAccess.get().has(ModDataComponents.DISABLED_BY_TOGGLE.get());
+                boolean checkDisabled = !skipDisabledItems || !isDisabledOrBroken(slotAccess.get());
                 boolean checkCosmetic = !skipDisabledItems || ability.isNonCosmetic();
                 if (checkCooldown && checkDisabled && checkCosmetic) {
                     init_ = f.accumulate(ability, slotAccess, init_);

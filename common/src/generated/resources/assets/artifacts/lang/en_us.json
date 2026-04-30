@@ -28,6 +28,8 @@
   "artifacts.config.durability.damagePerActivation.title": "Damage per Activation",
   "artifacts.config.durability.damageWhenConsumed.description": "The amount of durability that is lost when this item is consumed",
   "artifacts.config.durability.damageWhenConsumed.title": "Damage When Consumed",
+  "artifacts.config.durability.indestructible.description": "Whether this item should remain intact and stop working when its durability reaches 1",
+  "artifacts.config.durability.indestructible.title": "Indestructible",
   "artifacts.config.durability.maxDamage.description": "The maximum amount of damage that this item can take before breaking",
   "artifacts.config.durability.maxDamage.title": "Max Damage",
   "artifacts.config.durability.title": "Durability",

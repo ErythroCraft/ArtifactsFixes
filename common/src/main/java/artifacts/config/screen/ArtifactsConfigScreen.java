@@ -20,6 +20,7 @@ import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
+// FIXME: number fields in nested subcategories can't be clicked for some reason
 public class ArtifactsConfigScreen {
 
     private final ConfigBuilder builder;

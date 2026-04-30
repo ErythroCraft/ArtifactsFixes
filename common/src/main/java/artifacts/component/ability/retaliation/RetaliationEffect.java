@@ -3,10 +3,10 @@ package artifacts.component.ability.retaliation;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
+import artifacts.equipment.EquipmentHelper;
 import artifacts.equipment.EquipmentSlotAccess;
-import artifacts.registry.ModDataComponents;
 import artifacts.util.DamageSourceHelper;
-import artifacts.util.ItemStackUtil;
+import artifacts.util.ItemDamageUtil;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -34,13 +34,13 @@ public abstract class RetaliationEffect implements EquipmentAbility {
 
     public void onLivingHurt(LivingEntity entity, EquipmentSlotAccess slotAccess, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (attacker != null && !slotAccess.get().has(ModDataComponents.DISABLED_BY_TOGGLE.get()) && entity.getRandom().nextDouble() < activationParams.strikeChance.get()) {
+        if (attacker != null && !EquipmentHelper.isDisabledOrBroken(slotAccess.get()) && entity.getRandom().nextDouble() < activationParams.strikeChance.get()) {
             if (applyEffect(entity, attacker)) {
                 if (entity instanceof Player player && activationParams.cooldown.get() > 0) {
                     player.getCooldowns().addCooldown(slotAccess.get(), activationParams.cooldown.get() * 20);
                 }
                 if (activationParams.itemDamage.get() > 0) {
-                    ItemStackUtil.hurtAndBreak(slotAccess, activationParams.itemDamage.get(), entity);
+                    ItemDamageUtil.hurtAndBreak(slotAccess, activationParams.itemDamage.get(), entity);
                 }
             }
         }

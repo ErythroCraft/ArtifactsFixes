@@ -71,8 +71,8 @@ public class ArtifactHooks {
             return;
         }
 
-        boolean wasToggledOff = !oldStack.has(ModDataComponents.DISABLED_BY_TOGGLE.get())
-                && newStack.has(ModDataComponents.DISABLED_BY_TOGGLE.get());
+        boolean wasToggledOff = !EquipmentHelper.isDisabledOrBroken(oldStack)
+                && EquipmentHelper.isDisabledOrBroken(newStack);
         for (var entry : ModDataComponents.TICKING_ABILITIES) {
             handleUnequip(entry, entity, oldStack, newStack, wasToggledOff);
         }
@@ -125,9 +125,8 @@ public class ArtifactHooks {
     ) {
         EquipmentHelper.iterateAbilities(entry.type().get(), entity, false, false, (ability, slotAccess) -> {
             boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(slotAccess.get());
-            entry.ticker().wornTick(ability, slotAccess, entity, isOnCooldown, slotAccess.get().has(ModDataComponents.DISABLED_BY_TOGGLE.get()));
+            entry.ticker().wornTick(ability, slotAccess, entity, isOnCooldown, EquipmentHelper.isDisabledOrBroken(slotAccess.get()));
         });
-
     }
 
     public static void onAttackBurningLivingHurt(LivingEntity entity, DamageSource damageSource) {
