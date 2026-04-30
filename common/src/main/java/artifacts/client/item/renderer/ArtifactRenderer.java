@@ -81,11 +81,30 @@ public abstract class ArtifactRenderer {
         return Artifacts.id(path.toString());
     }
 
-    protected static <S> void renderModelWithFoil(Model<S> model, S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Identifier texture, int packedLight, boolean hasFoil) {
+    protected static <S extends HumanoidRenderState> void renderModelWithFoil(Model<S> model, S renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Identifier texture, int packedLight, boolean hasFoil) {
         RenderType renderType = model.renderType(texture);
-        submitNodeCollector.order(0).submitModel(model, renderState, poseStack, renderType, packedLight, OverlayTexture.NO_OVERLAY, 0, null);
+        submitNodeCollector.order(0).submitModel(
+                model,
+                renderState,
+                poseStack,
+                renderType,
+                packedLight,
+                OverlayTexture.NO_OVERLAY,
+                renderState.outlineColor,
+                null
+        );
+        // TODO: enchantment glint rendering with the armorEntityGlint render type doesn't work for some reason
         if (hasFoil) {
-            submitNodeCollector.order(1).submitModel(model, renderState, poseStack, RenderTypes.armorEntityGlint(), packedLight, OverlayTexture.NO_OVERLAY, 0, null);
+            submitNodeCollector.order(1).submitModel(
+                    model,
+                    renderState,
+                    poseStack,
+                    RenderTypes.armorEntityGlint(),
+                    packedLight,
+                    OverlayTexture.NO_OVERLAY,
+                    renderState.outlineColor,
+                    null
+            );
         }
     }
 
