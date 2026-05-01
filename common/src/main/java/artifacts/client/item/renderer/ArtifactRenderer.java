@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,7 +55,7 @@ public abstract class ArtifactRenderer {
     ) {
         poseStack.pushPose();
         Value<Boolean> hideWhenInvisible = stack.get(ModDataComponents.HIDE_WHEN_INVISIBLE.get());
-        if (hideWhenInvisible != null && hideWhenInvisible.get() && renderState.isInvisible) {
+        if (hideWhenInvisible != null && hideWhenInvisible.get() && renderState.isInvisible && renderState.entityType == EntityType.PLAYER) {
             return;
         }
 
