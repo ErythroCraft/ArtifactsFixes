@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-01T13:23:55.0952167	Model Definitions - artifacts
+// 26.1.2	2026-05-01T18:51:25.0275256	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
@@ -8,7 +8,7 @@ aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.
 0aedf391e8e4b0cae798a22bc44a028e5a906c03 assets/artifacts/items/chorus_totem.json
 7ef3b4c9e1967e29e19bacc5627998ac4f782f1e assets/artifacts/items/cloud_in_a_bottle.json
 908ae6424ee6362febe089f62f6c6f14aa238a61 assets/artifacts/items/cowboy_hat.json
-e0693d2cb79d32302b2443f19d41734be3930c45 assets/artifacts/items/cross_necklace.json
+4b83f87ba62969312a32dd74803937c99c56c762 assets/artifacts/items/cross_necklace.json
 8c19f0dc44edbdd944bb699108b564d45612f82e assets/artifacts/items/crystal_heart.json
 112064101188a747b8b85a4030adaa5c8263ff15 assets/artifacts/items/digging_claws.json
 5566c52b92fe86303fab84ba5425214d4ba198bb assets/artifacts/items/eternal_steak.json
@@ -37,7 +37,7 @@ d2dbab922958dc30dbe44116ce056c9cdbcef6b2 assets/artifacts/items/rooted_boots.jso
 4de5f30faf23ac23521ff5db3ecb7442ba601d76 assets/artifacts/items/shock_pendant.json
 649e4394231e473a08e54703f1717edb8360177d assets/artifacts/items/snorkel.json
 c9396a804f10ebf8c97dc2177ccf8c90726f7bef assets/artifacts/items/snowshoes.json
-c0f67baeb8a8d08567cc046c15dab685b6e01e1a assets/artifacts/items/steadfast_spikes.json
+50fd0050766ee28de4a6c3fee7f79bc3645ca0ac assets/artifacts/items/steadfast_spikes.json
 2219528efc3021150be27b23feae89d0ace8a812 assets/artifacts/items/strider_shoes.json
 b512100a83ad68ae4c2553532f36e7090f15411e assets/artifacts/items/superstitious_hat.json
 a0224f4260a346eb53796479846cee53361ae8a6 assets/artifacts/items/thorn_pendant.json
@@ -59,6 +59,7 @@ b98f8fd8c0021ca2799b347394ef70672c1c3a3b assets/artifacts/models/item/bunny_hopp
 26cc8155a77c96bb61c4d6b9f02d9c62f7c4068b assets/artifacts/models/item/cloud_in_a_bottle.json
 d9739baff08bdc98b399a74f9dd02d186a74b3b8 assets/artifacts/models/item/cowboy_hat.json
 03aaddf5bf065ee6c01c894791295b7b286bac3f assets/artifacts/models/item/cross_necklace.json
+0160d3fed61cbb23fec9eeb059036fe58e9515db assets/artifacts/models/item/cross_necklace_broken.json
 0ee934fa9d29ac2dc3204b6ea12a0ce808a490f2 assets/artifacts/models/item/crystal_heart.json
 729540b6e9ec8bc3d33d12da09f71d0bd7b8f2f5 assets/artifacts/models/item/digging_claws.json
 94e735e25cb7c532ddf2cedb8c7b0525914c7a62 assets/artifacts/models/item/eternal_steak.json
@@ -92,6 +93,7 @@ fffc2f23c032ed974a640c53d35faa86eb31241d assets/artifacts/models/item/running_sh
 01e3d47c4e953dc4d52f818b42920ab6b8d18846 assets/artifacts/models/item/snorkel.json
 eab00a7799bf26d1cc5a17144fd6a5252d798852 assets/artifacts/models/item/snowshoes.json
 9790d5504751cba1d96dd14a429c574bd4dcb104 assets/artifacts/models/item/steadfast_spikes.json
+a7fb500ff2104e3e795cc220914c18fc3e27ec34 assets/artifacts/models/item/steadfast_spikes_broken.json
 709fad1976f57c9ace9fbaff6e45acf4ecd5ab35 assets/artifacts/models/item/strider_shoes.json
 cd2c3aa105d7d53091b42f0cf3e2da822939f584 assets/artifacts/models/item/superstitious_hat.json
 8ea2cd608815107191a446c558f3ef6d03790d24 assets/artifacts/models/item/thorn_pendant.json

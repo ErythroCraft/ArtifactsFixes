@@ -1,5 +1,6 @@
 package artifacts.registry;
 
+import artifacts.component.DamageOnHurt;
 import artifacts.component.Equipable;
 import artifacts.component.HurtSound;
 import artifacts.component.ToggleIdentifier;
@@ -67,6 +68,9 @@ public class ModDataComponents {
     /** Prevents the item from being destroyed when durability reaches 0 */
     public static final Supplier<DataComponentType<Value<Boolean>>> INDESTRUCTIBLE =
             registerSynced("indestructible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
+    /** Damage applied to the item when hurt, while worn and not on cooldown */
+    public static final Supplier<DataComponentType<DamageOnHurt>> DAMAGE_ON_HURT =
+            registerSynced("damage_on_hurt", DamageOnHurt.CODEC, DamageOnHurt.STREAM_CODEC);
 
     // abilities
     public static final Supplier<DataComponentType<PostDamageCooldown>> POST_DAMAGE_COOLDOWN =

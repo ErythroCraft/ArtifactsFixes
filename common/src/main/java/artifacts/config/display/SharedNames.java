@@ -36,6 +36,9 @@ public class SharedNames {
         public static final LangEntry DAMAGE_WHEN_CONSUMED = description("durability.damageWhenConsumed",
                 "The amount of durability that is lost when this item is consumed"
         );
+        public static final LangEntry DAMAGE_PER_ACTIVATION = description("durability.damagePerActivation",
+                "The amount durability lost every time this item's ability is triggered"
+        );
     }
 
     private static LangEntry title(String key, String english) {

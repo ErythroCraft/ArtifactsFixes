@@ -1,6 +1,7 @@
 package artifacts.event;
 
 import artifacts.attribute.DynamicAttributeModifier;
+import artifacts.component.DamageOnHurt;
 import artifacts.component.SwimData;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.component.ability.PostDamageCooldown;
@@ -62,8 +63,12 @@ public class ArtifactHooks {
     }
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource source, float amount) {
+        // abilities & effects
         absorbDamage(entity, source, amount);
         PostDamageEffect.onLivingDamaged(entity, source);
+        // item damage
+        DamageOnHurt.onLivingDamaged(entity, source);
+        // cooldowns
         PostDamageCooldown.onLivingDamaged(entity, source);
     }
 

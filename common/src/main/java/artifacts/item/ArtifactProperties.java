@@ -1,6 +1,7 @@
 package artifacts.item;
 
 import artifacts.Artifacts;
+import artifacts.component.DamageOnHurt;
 import artifacts.component.Equipable;
 import artifacts.component.ability.*;
 import artifacts.component.ability.mobeffect.EquipmentMobEffect;
@@ -8,6 +9,7 @@ import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
 import artifacts.registry.ModDataComponents;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentInitializers;
 import net.minecraft.core.component.DataComponentType;
@@ -16,7 +18,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Unit;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -26,10 +30,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Repairable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -37,7 +38,7 @@ public final class ArtifactProperties {
 
     private final String itemName;
     private final Item.Properties properties;
-    private final Map<Supplier<Boolean>, EquipmentAttributeModifier> attributes;
+    private final List<Pair<Supplier<Boolean>, EquipmentAttributeModifier>> attributes;
     private final List<EnchantmentLevelModifier> enchantments;
 
     private boolean isEquipable = false;
@@ -45,7 +46,7 @@ public final class ArtifactProperties {
     public ArtifactProperties(String itemName) {
         this.itemName = itemName;
         this.properties = new Item.Properties();
-        this.attributes = new HashMap<>();
+        this.attributes = new ArrayList<>();
         this.enchantments = new ArrayList<>();
     }
 
@@ -63,14 +64,26 @@ public final class ArtifactProperties {
         return this;
     }
 
+    public ArtifactProperties increasesAttribute(Holder<Attribute> attribute, Value<Double> amount) {
+        return addAttributeModifier(attribute, amount, AttributeModifier.Operation.ADD_VALUE);
+    }
+
+    public ArtifactProperties modifiesAttributeBase(Holder<Attribute> attribute, Value<Double> amount) {
+        return addAttributeModifier(attribute, amount, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+    }
+
+    public ArtifactProperties modifiesAttributeTotal(Holder<Attribute> attribute, Value<Double> amount) {
+        return addAttributeModifier(attribute, amount, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    }
+
     public ArtifactProperties addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation) {
         return addAttributeModifier(attribute, amount, operation, () -> true, true);
     }
 
     public ArtifactProperties addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, Supplier<Boolean> condition, boolean ignoreCooldown) {
-        attributes.put(condition, new EquipmentAttributeModifier(attribute, amount, operation,
+        attributes.add(Pair.of(condition, new EquipmentAttributeModifier(attribute, amount, operation,
                 Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().identifier().getPath()), ignoreCooldown)
-        );
+        ));
         return this;
     }
 
@@ -96,12 +109,33 @@ public final class ArtifactProperties {
         return this;
     }
 
+    public ArtifactProperties cooldownOnHurt(Value<Integer> cooldown) {
+        return component(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), new PostDamageCooldown(cooldown, Optional.empty()));
+    }
+
+    public ArtifactProperties cooldownOnHurt(Value<Integer> cooldown, TagKey<DamageType> filter) {
+        return component(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), new PostDamageCooldown(cooldown, Optional.of(filter)));
+    }
+
+    public ArtifactProperties damageOnHurt(Value<Integer> itemDamage) {
+        return component(ModDataComponents.DAMAGE_ON_HURT.get(), new DamageOnHurt(itemDamage, Optional.empty()));
+    }
+
+    public ArtifactProperties damageOnHurt(Value<Integer> itemDamage, TagKey<DamageType> filter) {
+        return component(ModDataComponents.DAMAGE_ON_HURT.get(), new DamageOnHurt(itemDamage, Optional.of(filter)));
+    }
+
     public ArtifactProperties component(DataComponentType<Unit> type) {
         return component(type, Unit.INSTANCE);
     }
 
     public ArtifactProperties component(DataComponentType<SimpleAbility> type, Value<Boolean> enabled) {
         return component(type, new SimpleAbility(enabled));
+    }
+
+    @SafeVarargs
+    public final <ENTRY extends EquipmentAbility> ArtifactProperties component(DataComponentType<CompositeAbility<ENTRY>> type, ENTRY... entries) {
+        return component(type, CompositeAbility.of(entries));
     }
 
     public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
@@ -136,10 +170,10 @@ public final class ArtifactProperties {
         if (!attributes.isEmpty()) {
             properties.delayedComponent(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), _ -> {
                 List<EquipmentAttributeModifier> result = new ArrayList<>();
-                for (Map.Entry<Supplier<Boolean>, EquipmentAttributeModifier> entry : attributes.entrySet()) {
-                    assertRequiresWorldRestart(entry.getKey());
-                    if (entry.getKey().get()) {
-                        result.add(entry.getValue());
+                for (Pair<Supplier<Boolean>, EquipmentAttributeModifier> entry : attributes) {
+                    assertRequiresWorldRestart(entry.getFirst());
+                    if (entry.getFirst().get()) {
+                        result.add(entry.getSecond());
                     }
                 }
                 return new CompositeAbility<>(List.copyOf(result));
