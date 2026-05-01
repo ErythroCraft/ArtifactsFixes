@@ -6,7 +6,6 @@ import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.ItemDamageUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -43,7 +42,7 @@ public record PostEatingEffect(MobEffectProvider provider, Value<Integer> itemDa
                 for (PostEatingEffect entry : ability.entries()) {
                     if (entry.provider().canApply(entity)) {
                         entity.addEffect(entry.provider().createEffect(foodPointsRestored));
-                        ItemDamageUtil.hurtAndBreak(slotAccess, entry.itemDamage.get(), entity);
+                        slotAccess.hurtAndBreak(entity, entry.itemDamage.get());
                     }
                 }
             });

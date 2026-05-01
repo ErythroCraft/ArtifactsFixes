@@ -4,7 +4,6 @@ import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.registry.ModTags;
-import artifacts.util.ItemDamageUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -13,7 +12,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,10 +63,8 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
             });
 
             if (!effects.isEmpty()) {
-                ItemDamageUtil.hurtAndBreak(slotAccess, ability.itemDamage.get(), entity);
-                if (entity instanceof Player player) {
-                    player.getCooldowns().addCooldown(slotAccess.get(), 2 * 20);
-                }
+                slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
+                slotAccess.addCooldown(entity, 2 * 20);
             }
         }
     }

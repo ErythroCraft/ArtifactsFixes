@@ -8,7 +8,6 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.jetbrains.annotations.Nullable;
@@ -16,13 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.*;
 
 public class EquipmentHelper {
-
-    public static boolean isDisabledOrBroken(ItemStack stack) {
-        if (stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get())) {
-            return true;
-        }
-        return ItemDamageUtil.needsRepair(stack);
-    }
 
     public static boolean hasComponent(DataComponentType<?> type, @Nullable LivingEntity entity) {
         return reduceComponents(type, entity, false, (_, _, _) -> true);
@@ -86,8 +78,8 @@ public class EquipmentHelper {
         return reduceEquipment(entity, init, (slotAccess, init_) -> {
             ABILITY ability = slotAccess.get().get(type);
             if (ability != null) {
-                boolean checkCooldown = !skipItemsOnCooldown || !(entity instanceof Player player) || !player.getCooldowns().isOnCooldown(slotAccess.get());
-                boolean checkDisabled = !skipDisabledItems || !isDisabledOrBroken(slotAccess.get());
+                boolean checkCooldown = !skipItemsOnCooldown || !slotAccess.isOnCooldown(entity);
+                boolean checkDisabled = !skipDisabledItems || !slotAccess.isDisabledOrBroken();
                 boolean checkCosmetic = !skipDisabledItems || ability.isNonCosmetic();
                 if (checkCooldown && checkDisabled && checkCosmetic) {
                     init_ = f.accumulate(ability, slotAccess, init_);

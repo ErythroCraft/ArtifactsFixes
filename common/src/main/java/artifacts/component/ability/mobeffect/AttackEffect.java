@@ -17,7 +17,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.Objects;
 import java.util.Set;
@@ -51,9 +50,7 @@ public record AttackEffect(MobEffectProvider provider, Value<Double> chance, Val
                 for (AttackEffect effect : ability.entries()) {
                     if (effect.chance().get() > entity.getRandom().nextDouble()) {
                         entity.addEffect(effect.provider().createEffect(), attacker);
-                        if (attacker instanceof Player player) {
-                            player.getCooldowns().addCooldown(slotAccess.get(), effect.cooldown().get() * 20);
-                        }
+                        slotAccess.addCooldown(entity, effect.cooldown.get() * 20);
                     }
                 }
             });

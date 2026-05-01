@@ -15,6 +15,7 @@ import artifacts.registry.ModAttributes;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import artifacts.util.DamageSourceHelper;
+import artifacts.util.ItemDamageUtil;
 import be.florens.expandability.api.EventResult;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -71,8 +72,8 @@ public class ArtifactHooks {
             return;
         }
 
-        boolean wasToggledOff = !EquipmentHelper.isDisabledOrBroken(oldStack)
-                && EquipmentHelper.isDisabledOrBroken(newStack);
+        boolean wasToggledOff = !ItemDamageUtil.isDisabledOrBroken(oldStack)
+                && ItemDamageUtil.isDisabledOrBroken(newStack);
         for (var entry : ModDataComponents.TICKING_ABILITIES) {
             handleUnequip(entry, entity, oldStack, newStack, wasToggledOff);
         }
@@ -123,10 +124,9 @@ public class ArtifactHooks {
             ModDataComponents.TickingAbility<T> entry,
             LivingEntity entity
     ) {
-        EquipmentHelper.iterateAbilities(entry.type().get(), entity, false, false, (ability, slotAccess) -> {
-            boolean isOnCooldown = entity instanceof Player player && player.getCooldowns().isOnCooldown(slotAccess.get());
-            entry.ticker().wornTick(ability, slotAccess, entity, isOnCooldown, EquipmentHelper.isDisabledOrBroken(slotAccess.get()));
-        });
+        EquipmentHelper.iterateAbilities(entry.type().get(), entity, false, false, (ability, slotAccess) ->
+                entry.ticker().wornTick(ability, slotAccess, entity, slotAccess.isOnCooldown(entity), slotAccess.isDisabledOrBroken())
+        );
     }
 
     public static void onAttackBurningLivingHurt(LivingEntity entity, DamageSource damageSource) {

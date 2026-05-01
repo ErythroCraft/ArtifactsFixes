@@ -5,7 +5,6 @@ import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.ItemDamageUtil;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -58,7 +57,7 @@ public record PostDamageEffect(
                         for (PostDamageEffect entry : ability.entries()) {
                             if (entry.shouldApply(damageSource, entity)) {
                                 entity.addEffect(entry.provider.createEffect());
-                                ItemDamageUtil.hurtAndBreak(slotAccess, entry.itemDamage.get(), entity);
+                                slotAccess.hurtAndBreak(entity, entry.itemDamage.get());
                             }
                         }
                     }

@@ -6,7 +6,6 @@ import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentHelper;
 import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.util.DamageSourceHelper;
-import artifacts.util.ItemDamageUtil;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -14,7 +13,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.Objects;
 
@@ -34,14 +32,10 @@ public abstract class RetaliationEffect implements EquipmentAbility {
 
     public void onLivingHurt(LivingEntity entity, EquipmentSlotAccess slotAccess, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (attacker != null && !EquipmentHelper.isDisabledOrBroken(slotAccess.get()) && entity.getRandom().nextDouble() < activationParams.strikeChance.get()) {
+        if (attacker != null && !slotAccess.isDisabledOrBroken() && entity.getRandom().nextDouble() < activationParams.strikeChance.get()) {
             if (applyEffect(entity, attacker)) {
-                if (entity instanceof Player player && activationParams.cooldown.get() > 0) {
-                    player.getCooldowns().addCooldown(slotAccess.get(), activationParams.cooldown.get() * 20);
-                }
-                if (activationParams.itemDamage.get() > 0) {
-                    ItemDamageUtil.hurtAndBreak(slotAccess, activationParams.itemDamage.get(), entity);
-                }
+                slotAccess.addCooldown(entity, activationParams.cooldown.get() * 20);
+                slotAccess.hurtAndBreak(entity, activationParams.itemDamage.get());
             }
         }
     }

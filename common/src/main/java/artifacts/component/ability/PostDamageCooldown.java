@@ -15,7 +15,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
@@ -35,13 +34,10 @@ public record PostDamageCooldown(Value<Integer> cooldown, Optional<TagKey<Damage
     );
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
-        if (entity instanceof Player player && !player.level().isClientSide()) {
+        if (entity.level().isClientSide()) {
             EquipmentHelper.iterateAbilities(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), entity, true, true, (ability, slotAccess) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
-                    int c = ability.cooldown().get() * 20;
-                    if (c > 0) {
-                        player.getCooldowns().addCooldown(slotAccess.get(), c);
-                    }
+                    slotAccess.addCooldown(entity, ability.cooldown().get() * 20);
                 }
             });
         }

@@ -87,7 +87,7 @@ public class SwimData {
                 EquipmentHelper.iterateAbilities(
                         ModDataComponents.SWIM_IN_AIR.get(), player, true, true,
                         (ability, slotAccess) ->
-                                player.getCooldowns().addCooldown(slotAccess.get(), Math.max(5, ability.cooldown().get() * 20))
+                                slotAccess.addCooldown(player, Math.max(5, ability.cooldown().get() * 20))
                 );
             }
         }

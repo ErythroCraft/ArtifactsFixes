@@ -1,11 +1,7 @@
 package artifacts.util;
 
 import artifacts.config.value.Value;
-import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.registry.ModDataComponents;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemDamageUtil {
@@ -17,6 +13,13 @@ public class ItemDamageUtil {
 
     public static boolean needsRepair(ItemStack stack) {
         return isIndestructible(stack) && stack.nextDamageWillBreak();
+    }
+
+    public static boolean isDisabledOrBroken(ItemStack stack) {
+        if (stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get())) {
+            return true;
+        }
+        return ItemDamageUtil.needsRepair(stack);
     }
 
     // called from ItemStack#processdurabilityChange
@@ -33,15 +36,5 @@ public class ItemDamageUtil {
         // leave indestructible items at 1 durability (= getMaxDamage - 1)
         int durabilityRemaining = Math.max(0, stack.getMaxDamage() - 1 - stack.getDamageValue());
         return Math.min(original, durabilityRemaining);
-    }
-
-    public static void hurtAndBreak(EquipmentSlotAccess slotAccess, int damage, LivingEntity entity) {
-        if (damage > 0 && entity.level() instanceof ServerLevel level) {
-            ServerPlayer player = null;
-            if (entity instanceof ServerPlayer) {
-                player = (ServerPlayer) entity;
-            }
-            slotAccess.get().hurtAndBreak(damage, level, player, _ -> slotAccess.broadcastBreakEvent(entity));
-        }
     }
 }
