@@ -61,6 +61,10 @@ public class TooltipHelper {
             tooltip.accept(Component.translatable("%s.tooltip.cosmetic".formatted(Artifacts.MOD_ID))
                     .withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY)
             );
+        } else if (ItemDamageUtil.needsRepair(stack)) {
+            tooltip.accept(Component.translatable("%s.tooltip.broken".formatted(Artifacts.MOD_ID))
+                    .withStyle(ChatFormatting.RED)
+            );
         }
 
         // Description that shows even when the item is cosmetic (used by Novelty Drinking Hat)

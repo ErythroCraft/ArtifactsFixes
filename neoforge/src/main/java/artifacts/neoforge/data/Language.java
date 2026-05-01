@@ -213,6 +213,7 @@ public class Language extends LanguageProvider {
         tooltip("attacks_inflict", "Attacks inflict:");
         tooltip("cooldown", "+Cooldown (%s)");
         tooltip("cosmetic", "Cosmetic");
+        tooltip("broken", "Broken");
         tooltip("item.novelty_drinking_hat", "'Hey! I'm #1, and I let gravity do my drinking!'");
         tooltip("missing_dependency", "Install Curios, Trinkets Updated, or Accessories to use this item");
         tooltip("per_food_point_restored", "For every food point restored:");

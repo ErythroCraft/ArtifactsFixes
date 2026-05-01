@@ -26,7 +26,7 @@ public class ModTags {
     public static final TagKey<MobEffect> ANTIDOTE_VESSEL_CANCELLABLE = create(Registries.MOB_EFFECT, "antidote_vessel_cancellable");
     /** Mobs that flee from the kitty slippers */
     public static final TagKey<EntityType<?>> CREEPERS = create(Registries.ENTITY_TYPE, "creepers");
-    /** Damage Types used by the vampiric glove, fire gauntlet & withered bracelet */
+    /** Damage Types used by the vampiric glove, fire gauntlet and withered bracelet */
     public static final TagKey<DamageType> IS_MELEE = create(Registries.DAMAGE_TYPE, "is_melee");
 
     /** Blocks that are affected by the pickaxe heater */

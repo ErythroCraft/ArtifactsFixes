@@ -28,6 +28,7 @@ public class ArtifactsNeoForgeClient {
         modBus.addListener(this::registerLayerDefinitions);
         modBus.addListener(this::registerEntityRenderers);
         modBus.addListener((RegisterKeyMappingsEvent event) -> ModKeyMappings.register(event::register));
+        modBus.addListener(this::registerConditionalItemModelProperties);
 
         if (ModCompat.CURIOS.isLoaded() || ModCompat.TRINKETS.isLoaded()) {
             ArmRenderHandler.setup();
@@ -60,6 +61,10 @@ public class ArtifactsNeoForgeClient {
 
     private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.MIMIC.get(), MimicRenderer::new);
+    }
+
+    private void registerConditionalItemModelProperties(RegisterConditionalItemModelPropertyEvent event) {
+        ArtifactsClient.registerConditionalItemModelProperties(event::register);
     }
 
     private void onPlayerLoggingOut(ClientPlayerNetworkEvent.LoggingOut ignored) {

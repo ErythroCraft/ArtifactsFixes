@@ -366,6 +366,7 @@
   "artifacts.tooltip.ability.tool_tier_upgrade": "Increases the wearer's base mining level to %s",
   "artifacts.tooltip.ability.walk_on_powder_snow": "Allows the wearer to walk on Powder Snow",
   "artifacts.tooltip.attacks_inflict": "Attacks inflict:",
+  "artifacts.tooltip.broken": "Broken",
   "artifacts.tooltip.cooldown": "+Cooldown (%s)",
   "artifacts.tooltip.cosmetic": "Cosmetic",
   "artifacts.tooltip.item.novelty_drinking_hat": "'Hey! I'm #1, and I let gravity do my drinking!'",
