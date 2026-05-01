@@ -21,7 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.Objects;
 import java.util.Set;
 
-public record AttackEffect(MobEffectProvider provider, Value<Double> chance, Value<Integer> cooldown) implements EquipmentAbility {
+public record AttackEffect(MobEffectProvider provider, Value<Double> chance, Value<Integer> cooldown, Value<Integer> itemDamage) implements EquipmentAbility {
 
     private static final Set<Holder<MobEffect>> CUSTOM_TOOLTIP_MOB_EFFECTS = Set.of(
             MobEffects.WITHER
@@ -30,7 +30,8 @@ public record AttackEffect(MobEffectProvider provider, Value<Double> chance, Val
     public static final Codec<AttackEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             MobEffectProvider.codec(true).fieldOf("effect").forGetter(AttackEffect::provider),
             ValueTypes.FRACTION.codec().optionalFieldOf("chance", Value.of(1D)).forGetter(AttackEffect::chance),
-            ValueTypes.DURATION.codec().optionalFieldOf("cooldown", Value.of(0)).forGetter(AttackEffect::cooldown)
+            ValueTypes.DURATION.codec().optionalFieldOf("cooldown", Value.of(0)).forGetter(AttackEffect::cooldown),
+            ValueTypes.itemDamageField().forGetter(AttackEffect::itemDamage)
     ).apply(instance, AttackEffect::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AttackEffect> STREAM_CODEC = StreamCodec.composite(
@@ -40,17 +41,20 @@ public record AttackEffect(MobEffectProvider provider, Value<Double> chance, Val
             AttackEffect::chance,
             ValueTypes.DURATION.streamCodec(),
             AttackEffect::cooldown,
+            ValueTypes.NON_NEGATIVE_INT.streamCodec(),
+            AttackEffect::itemDamage,
             AttackEffect::new
     );
 
-    public static void onLivingHurt(LivingEntity entity, DamageSource damageSource) {
+    public static void onLivingHurt(LivingEntity target, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !entity.level().isClientSide()) {
+        if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !attacker.level().isClientSide()) {
             EquipmentHelper.iterateAbilities(ModDataComponents.ATTACK_EFFECTS.get(), attacker, true, true, (ability, slotAccess) -> {
                 for (AttackEffect effect : ability.entries()) {
-                    if (effect.chance().get() > entity.getRandom().nextDouble()) {
-                        entity.addEffect(effect.provider().createEffect(), attacker);
-                        slotAccess.addCooldown(entity, effect.cooldown.get() * 20);
+                    if (effect.chance().get() > attacker.getRandom().nextDouble()) {
+                        target.addEffect(effect.provider().createEffect(), attacker);
+                        slotAccess.addCooldown(attacker, effect.cooldown.get() * 20);
+                        slotAccess.hurtAndBreak(attacker, effect.itemDamage.get());
                     }
                 }
             });

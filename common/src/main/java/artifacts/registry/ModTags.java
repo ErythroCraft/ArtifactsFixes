@@ -34,26 +34,6 @@ public class ModTags {
     /** Items that are affected by the pickaxe heater */
     public static final TagKey<Item> RAW_MATERIALS = conventionTag(Registries.ITEM, "raw_materials");
 
-    public static final TagKey<Item> REPAIRS_ANTIDOTE_VESSEL = create("repairs_antidote_vessel");
-    public static final TagKey<Item> REPAIRS_CLOUD_IN_A_BOTTLE = create("repairs_cloud_in_a_bottle");
-    public static final TagKey<Item> REPAIRS_CROSS_NECKLACE = create("repairs_cross_necklace");
-    public static final TagKey<Item> REPAIRS_ETERNAL_STEAK = create("repairs_eternal_steak");
-    public static final TagKey<Item> REPAIRS_EVERLASTING_BEEF = create("repairs_everlasting_beef");
-    public static final TagKey<Item> REPAIRS_FLAME_PENDANT = create("repairs_flame_pendant");
-    public static final TagKey<Item> REPAIRS_OBSIDIAN_SKULL = create("repairs_obsidian_skull");
-    public static final TagKey<Item> REPAIRS_ONION_RING = create("repairs_onion_ring");
-    public static final TagKey<Item> REPAIRS_PANIC_NECKLACE = create("repairs_panic_necklace");
-    public static final TagKey<Item> REPAIRS_SHOCK_PENDANT = create("repairs_shock_pendant");
-    public static final TagKey<Item> REPAIRS_STEADFAST_SPIKES = create("repairs_steadfast_spikes");
-    public static final TagKey<Item> REPAIRS_THORN_PENDANT = create("repairs_thorn_pendant");
-    public static final TagKey<Item> REPAIRS_UMBRELLA = create("repairs_umbrella");
-    public static final TagKey<Item> REPAIRS_WARP_DRIVE = create("repairs_warp_drive");
-    public static final TagKey<Item> REPAIRS_WHOOPEE_CUSHION = create("repairs_whoopee_cushion");
-
-    private static TagKey<Item> create(String name) {
-        return create(Registries.ITEM, name);
-    }
-
     private static <T> TagKey<T> create(ResourceKey<Registry<T>> registry, String name) {
         return TagKey.create(registry, Artifacts.id(name));
     }

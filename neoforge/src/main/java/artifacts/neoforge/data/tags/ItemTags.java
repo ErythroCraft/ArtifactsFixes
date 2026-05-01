@@ -3,12 +3,13 @@ package artifacts.neoforge.data.tags;
 import artifacts.Artifacts;
 import artifacts.integration.ModCompat;
 import artifacts.registry.ModItems;
-import artifacts.registry.ModTags;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.data.tags.TagAppender;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -139,21 +140,23 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
     }
 
     private void addRepairMaterialTags() {
-        tag(ModTags.REPAIRS_ANTIDOTE_VESSEL).add(Items.GOLD_INGOT);
-        tag(ModTags.REPAIRS_CLOUD_IN_A_BOTTLE).add(Items.PHANTOM_MEMBRANE);
-        tag(ModTags.REPAIRS_CROSS_NECKLACE).add(Items.GOLD_INGOT);
-        tag(ModTags.REPAIRS_ETERNAL_STEAK).add(Items.COOKED_BEEF);
-        tag(ModTags.REPAIRS_EVERLASTING_BEEF).add(Items.BEEF);
-        tag(ModTags.REPAIRS_FLAME_PENDANT).add(Items.DIAMOND);
-        tag(ModTags.REPAIRS_OBSIDIAN_SKULL).add(Items.OBSIDIAN);
-        tag(ModTags.REPAIRS_ONION_RING).add(Items.GOLD_INGOT);
-        tag(ModTags.REPAIRS_PANIC_NECKLACE).add(Items.DIAMOND);
-        tag(ModTags.REPAIRS_SHOCK_PENDANT).add(Items.DIAMOND);
-        tag(ModTags.REPAIRS_STEADFAST_SPIKES).add(Items.LEATHER);
-        tag(ModTags.REPAIRS_THORN_PENDANT).add(Items.DIAMOND);
-        tag(ModTags.REPAIRS_UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
-        tag(ModTags.REPAIRS_WARP_DRIVE).add(Items.ENDER_PEARL);
-        tag(ModTags.REPAIRS_WHOOPEE_CUSHION).add(Items.LEATHER);
+        repairMaterials(ModItems.ANTIDOTE_VESSEL).add(Items.GOLD_INGOT);
+        repairMaterials(ModItems.CLOUD_IN_A_BOTTLE).add(Items.PHANTOM_MEMBRANE);
+        repairMaterials(ModItems.CROSS_NECKLACE).add(Items.GOLD_INGOT);
+        repairMaterials(ModItems.ETERNAL_STEAK).add(Items.COOKED_BEEF);
+        repairMaterials(ModItems.EVERLASTING_BEEF).add(Items.BEEF);
+        repairMaterials(ModItems.FLAME_PENDANT).add(Items.DIAMOND);
+        repairMaterials(ModItems.OBSIDIAN_SKULL).add(Items.OBSIDIAN);
+        repairMaterials(ModItems.ONION_RING).add(Items.GOLD_INGOT);
+        repairMaterials(ModItems.PANIC_NECKLACE).add(Items.DIAMOND);
+        repairMaterials(ModItems.SHOCK_PENDANT).add(Items.DIAMOND);
+        repairMaterials(ModItems.STEADFAST_SPIKES).add(Items.LEATHER);
+        repairMaterials(ModItems.THORN_PENDANT).add(Items.DIAMOND);
+        repairMaterials(ModItems.UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
+        repairMaterials(ModItems.VAMPIRIC_GLOVE).add(Items.LEATHER);
+        repairMaterials(ModItems.WARP_DRIVE).add(Items.ENDER_PEARL);
+        repairMaterials(ModItems.WHOOPEE_CUSHION).add(Items.LEATHER);
+        repairMaterials(ModItems.WITHERED_BRACELET).add(Items.BONE);
     }
 
     private void addOriginsTags() {
@@ -164,5 +167,9 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         tag(ORIGINS_SHIELDS).add(
                 ModItems.UMBRELLA.value()
         );
+    }
+
+    private TagAppender<Item, Item> repairMaterials(Holder<Item> holder) {
+        return tag(TagKey.create(Registries.ITEM, holder.unwrapKey().orElseThrow().identifier().withPrefix("repairs_")));
     }
 }

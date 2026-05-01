@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-01T22:12:34.6992582	Tags for minecraft:item mod id artifacts
+// 26.1.2	2026-05-01T23:40:30.7628951	Tags for minecraft:item mod id artifacts
 8dd1563f299da374a09d42f0e3b2b918d201d735 data/artifacts/tags/item/artifacts.json
 dc0986fc0d086d461ba46c06cd791e5d97f79112 data/artifacts/tags/item/equippable.json
 f2aa87f54e7951ea0cf81ac252c2abe279b0c936 data/artifacts/tags/item/repairs_antidote_vessel.json
@@ -14,8 +14,10 @@ fdab8ddd5529ae14b26bc1853b004131135318a4 data/artifacts/tags/item/repairs_shock_
 64a5131137472b111eb62466b0b98a6cf19cd19c data/artifacts/tags/item/repairs_steadfast_spikes.json
 fdab8ddd5529ae14b26bc1853b004131135318a4 data/artifacts/tags/item/repairs_thorn_pendant.json
 b5c5ab6cad21b086dba5078c0040d697f5d41b41 data/artifacts/tags/item/repairs_umbrella.json
+64a5131137472b111eb62466b0b98a6cf19cd19c data/artifacts/tags/item/repairs_vampiric_glove.json
 8c4603792263de771b44aee19f8f9239b6210fdb data/artifacts/tags/item/repairs_warp_drive.json
 64a5131137472b111eb62466b0b98a6cf19cd19c data/artifacts/tags/item/repairs_whoopee_cushion.json
+243f2dab6ef46a493d12775f6f28baf7b72922cf data/artifacts/tags/item/repairs_withered_bracelet.json
 2465e2164941a4a1d92ea3320f702f0c092e64c6 data/artifacts/tags/item/slot/all.json
 45ebe6fc31c7b20af72d8dc2fe73cb72dca208ed data/artifacts/tags/item/slot/belt.json
 f423ab6d12dec9a61a60ad89a9fbc93759d6e420 data/artifacts/tags/item/slot/face.json

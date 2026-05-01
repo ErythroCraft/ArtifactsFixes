@@ -476,13 +476,18 @@ public class ModItems {
             .equipable(SoundEvents.PISTON_EXTEND)
             .increasesAttribute(Attributes.ATTACK_KNOCKBACK, config.attackKnockbackBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> VAMPIRIC_GLOVE
             = register("vampiric_glove", () -> Artifacts.CONFIG.items.vampiricGlove, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
             .component(
                     ModDataComponents.DAMAGE_ABSORPTION.get(),
-                    new DamageAbsorption(config.absorptionRatio, config.absorptionChance, config.maxHealingPerHit)
+                    new DamageAbsorption(
+                            config.absorptionRatio,
+                            config.absorptionChance,
+                            config.maxHealingPerHit,
+                            config.durability.damagePerActivation
+                    )
             )
     );
     // TODO: add durability config options
@@ -519,10 +524,10 @@ public class ModItems {
             .equipable(SoundEvents.ARMOR_EQUIP_IRON)
             .component(ModDataComponents.AUTO_SMELT.get(), config.enabled)
     );
-    // TODO: add durability config options
     public static final Holder<Item> WITHERED_BRACELET
             = register("withered_bracelet", () -> Artifacts.CONFIG.items.witheredBracelet, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
             .component(
                     ModDataComponents.ATTACK_EFFECTS.get(),
                     new AttackEffect(
@@ -535,7 +540,8 @@ public class ModItems {
                                     EntityCondition.ALWAYS
                             ),
                             config.witherChance,
-                            config.cooldown
+                            config.cooldown,
+                            config.durability.damagePerActivation
                     )
             )
     );

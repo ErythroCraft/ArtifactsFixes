@@ -232,17 +232,23 @@ public class ArtifactHooks {
     public static void absorbDamage(LivingEntity entity, DamageSource damageSource, float amount) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.DAMAGE_ABSORPTION.get(), attacker, true, true, (ability, _) -> {
-                double absorptionRatio = ability.absorptionRatio().get();
-                double maxHealthAbsorbed = ability.maxDamageAbsorbed().get();
+            EquipmentHelper.iterateAbilities(
+                    ModDataComponents.DAMAGE_ABSORPTION.get(),
+                    attacker,
+                    true, true,
+                    (ability, slotAccess) -> {
+                        double absorptionRatio = ability.absorptionRatio().get();
+                        double maxHealthAbsorbed = ability.maxDamageAbsorbed().get();
 
-                float damageDealt = Math.min(amount, entity.getHealth());
-                float damageAbsorbed = (float) Math.min(maxHealthAbsorbed, absorptionRatio * damageDealt);
+                        float damageDealt = Math.min(amount, entity.getHealth());
+                        float damageAbsorbed = (float) Math.min(maxHealthAbsorbed, absorptionRatio * damageDealt);
 
-                if (damageAbsorbed > 0 && ability.absorptionChance().get() > entity.getRandom().nextDouble()) {
-                    attacker.heal(damageAbsorbed);
-                }
-            });
+                        if (damageAbsorbed > 0 && ability.absorptionChance().get() > entity.getRandom().nextDouble()) {
+                            attacker.heal(damageAbsorbed);
+                            slotAccess.hurtAndBreak(entity, ability.itemDamage().get());
+                        }
+                    }
+            );
         }
     }
 

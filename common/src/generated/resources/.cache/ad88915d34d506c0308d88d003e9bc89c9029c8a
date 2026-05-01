@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-01T22:12:34.6977559	Model Definitions - artifacts
+// 26.1.2	2026-05-01T23:40:30.7608681	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
@@ -43,11 +43,11 @@ b512100a83ad68ae4c2553532f36e7090f15411e assets/artifacts/items/superstitious_ha
 a0224f4260a346eb53796479846cee53361ae8a6 assets/artifacts/items/thorn_pendant.json
 f43cbf99edd8bc069a53553e6a2ae06a1c366948 assets/artifacts/items/umbrella.json
 67c07982f65db36d712d15017949ab46d5321972 assets/artifacts/items/universal_attractor.json
-90cae4c2af124627b53eaa0399ae1e5b33729d2e assets/artifacts/items/vampiric_glove.json
+8709df574fba8906f7117ada78a7de3d5995ec9b assets/artifacts/items/vampiric_glove.json
 0ae9a03547d84de8ebc759ebd1042905545456ea assets/artifacts/items/villager_hat.json
 0def08fcc2be8213e8ad392653cfda67f00d0f72 assets/artifacts/items/warp_drive.json
 b3bfa70d5fb6de54b8d4f7fb91d7484f615cedea assets/artifacts/items/whoopee_cushion.json
-77130923a8dfdadf27d645b06b6d97e6c0d1510f assets/artifacts/items/withered_bracelet.json
+9fac38117f68f378a993cc95d3d87b8d0c9ea4f4 assets/artifacts/items/withered_bracelet.json
 e78ea7a2e3909a584453c885749c9e809ec4bff5 assets/artifacts/models/item/anglers_hat.json
 6857b5e2e0cc4e6ce94cda70b101fb3b4881fa68 assets/artifacts/models/item/antidote_vessel.json
 a563a77efaec4540f18d9b12802ae7928a78c20c assets/artifacts/models/item/antidote_vessel_broken.json
@@ -102,9 +102,11 @@ cd2c3aa105d7d53091b42f0cf3e2da822939f584 assets/artifacts/models/item/superstiti
 21be884f84eebf6c5b9e47f842ca568b8d807190 assets/artifacts/models/item/umbrella.json
 a9b754c78878aec03a96e994ad1aeb675ce654c4 assets/artifacts/models/item/universal_attractor.json
 ca2954c77cbaef4a1e886000f8fb65554e413b47 assets/artifacts/models/item/vampiric_glove.json
+7485df65f447b4247cf0eff42771a818e917e52a assets/artifacts/models/item/vampiric_glove_broken.json
 4c71ad32a9f5273cd0e41dbae162b3cd69767fc3 assets/artifacts/models/item/villager_hat.json
 d4307977b955fb679f644160568e208204c86861 assets/artifacts/models/item/warp_drive.json
 73c9313160544b93ae6a28273a34fe4e96061b4b assets/artifacts/models/item/warp_drive_broken.json
 6684d8b2a799c2683099053262a86dd8fb6e611f assets/artifacts/models/item/whoopee_cushion.json
 126a155a7d7f5e8e71927509ac34a9ca537b6dff assets/artifacts/models/item/whoopee_cushion_broken.json
 087edcd9de37802613c73ddd3510fd6a6746f5ef assets/artifacts/models/item/withered_bracelet.json
+2eb01dd9afd8c2f7ac53c307d887cedeb3549a85 assets/artifacts/models/item/withered_bracelet_broken.json

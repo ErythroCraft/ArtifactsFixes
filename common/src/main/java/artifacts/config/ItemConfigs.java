@@ -1,5 +1,6 @@
 package artifacts.config;
 
+import artifacts.Artifacts;
 import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.component.ability.retaliation.RetaliationEffect;
 import artifacts.config.display.SharedNames;
@@ -9,9 +10,9 @@ import artifacts.config.value.ValueTypes;
 import artifacts.datagen.LangEntry;
 import artifacts.item.ItemDamageProperties;
 import artifacts.registry.ModItems;
-import artifacts.registry.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -103,8 +104,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The maximum duration in seconds negative mob effects can last when wearing the Antidote Vessel")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(100, ModTags.REPAIRS_ANTIDOTE_VESSEL);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(100);
 
         private AntidoteVessel() {
             super(ModItems.ANTIDOTE_VESSEL);
@@ -235,7 +235,7 @@ public final class ItemConfigs extends ConfigManager {
                     .syncToClients().build();
 
             private Durability() {
-                super(120, ModTags.REPAIRS_CLOUD_IN_A_BOTTLE);
+                super(120);
             }
         }
     }
@@ -261,8 +261,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration in seconds the Cross Necklace goes on cooldown for after activating")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(500, ModTags.REPAIRS_CROSS_NECKLACE);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(500);
 
         private CrossNecklace() {
             super(ModItems.CROSS_NECKLACE);
@@ -319,7 +318,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final Durability durability;
 
-        public EverlastingFood(Holder<Item> holder, String itemName, TagKey<Item> repairMaterials) {
+        public EverlastingFood(Holder<Item> holder, String itemName) {
             super(holder);
             enabled = defineEnabled(true)
                     .tooltipLine("Whether the %s can be eaten".formatted(itemName))
@@ -329,7 +328,7 @@ public final class ItemConfigs extends ConfigManager {
                     .tooltipLine("The duration in seconds the %s goes on cooldown for after being eaten".formatted(itemName))
                     .syncToClients()
                     .requiresRestart().build();
-            durability = new Durability(repairMaterials);
+            durability = new Durability();
         }
 
         public final class Durability extends DurabilityCategory {
@@ -340,8 +339,8 @@ public final class ItemConfigs extends ConfigManager {
                     .tooltipLine(SharedNames.Descriptions.DAMAGE_WHEN_CONSUMED)
                     .syncToClients().build();
 
-            private Durability(TagKey<Item> repairMaterials) {
-                super(64 * 5, repairMaterials);
+            private Durability() {
+                super(64 * 5);
             }
         }
     }
@@ -349,7 +348,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class EternalSteak extends EverlastingFood {
 
         private EternalSteak() {
-            super(ModItems.ETERNAL_STEAK, "Eternal Steak", ModTags.REPAIRS_ETERNAL_STEAK);
+            super(ModItems.ETERNAL_STEAK, "Eternal Steak");
         }
     }
 
@@ -359,7 +358,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The probability that Everlasting Beef drops when a cow or mooshroom is killed by a player").build();
 
         private EverlastingBeef() {
-            super(ModItems.EVERLASTING_BEEF, "Everlasting Beef", ModTags.REPAIRS_EVERLASTING_BEEF);
+            super(ModItems.EVERLASTING_BEEF, "Everlasting Beef");
         }
     }
 
@@ -403,8 +402,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration in seconds the Flame Pendant goes on cooldown for after setting an entity on fire")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(120, ModTags.REPAIRS_FLAME_PENDANT);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(120);
 
         private FlamePendant() {
             super(ModItems.FLAME_PENDANT);
@@ -507,8 +505,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The amount of time in seconds the Obsidian Skull goes on cooldown for after taking fire damage")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(60, ModTags.REPAIRS_OBSIDIAN_SKULL);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(60);
 
         private ObsidianSkull() {
             super(ModItems.OBSIDIAN_SKULL);
@@ -525,8 +522,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The level of the haste effect that is applied by the Onion Ring")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(640, ModTags.REPAIRS_ONION_RING);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(640);
 
         private OnionRing() {
             super(ModItems.ONION_RING);
@@ -547,8 +543,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration in seconds the Panic Necklace goes on cooldown for after taking damage")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(500, ModTags.REPAIRS_PANIC_NECKLACE);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(500);
 
         private PanicNecklace() {
             super(ModItems.PANIC_NECKLACE);
@@ -652,8 +647,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The amount of time in seconds the Shock Pendant goes on cooldown for after striking an attacker with lightning")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(50, ModTags.REPAIRS_SHOCK_PENDANT);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(50);
 
         private ShockPendant() {
             super(ModItems.SHOCK_PENDANT);
@@ -720,7 +714,7 @@ public final class ItemConfigs extends ConfigManager {
                     .build();
 
             private Durability() {
-                super(800, ModTags.REPAIRS_STEADFAST_SPIKES);
+                super(800);
             }
         }
     }
@@ -769,8 +763,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration in seconds the Thorn Pendant goes on cooldown for after activating")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(150, ModTags.REPAIRS_THORN_PENDANT);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(150);
 
         private ThornPendant() {
             super(ModItems.THORN_PENDANT);
@@ -822,7 +815,7 @@ public final class ItemConfigs extends ConfigManager {
 
             private Durability() {
                 // default max damage is twice that of a normal shield
-                super(336 * 2, ModTags.REPAIRS_UMBRELLA);
+                super(336 * 2);
             }
         }
     }
@@ -851,6 +844,8 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Integer> maxHealingPerHit = define("maxHealingPerHit", ValueTypes.NON_NEGATIVE_INT, 6)
                 .tooltipLine("The maximum amount of healing that can be absorbed in a single hit when attacking an entity while wearing the Vampiric Glove")
                 .syncToClients().build();
+
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(120);
 
         private VampiricGlove() {
             super(ModItems.VAMPIRIC_GLOVE);
@@ -886,8 +881,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration Ender Pearls go on cooldown for after being thrown using the Warp Drive")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(128, ModTags.REPAIRS_WARP_DRIVE);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(128);
 
         private WarpDrive() {
             super(ModItems.WARP_DRIVE);
@@ -900,8 +894,7 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The probability that a fart sound plays when sneaking or double jumping while wearing the Whoopee Cushion")
                 .syncToClients().build();
 
-        public final TriggerBasedDurabilityCategory durability
-                = new TriggerBasedDurabilityCategory(250, ModTags.REPAIRS_WHOOPEE_CUSHION);
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(250);
 
         private WhoopeeCushion() {
             super(ModItems.WHOOPEE_CUSHION);
@@ -925,6 +918,8 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Integer> cooldown = defineCooldown(2)
                 .tooltipLine("The duration the Withered Bracelet goes on cooldown for after inflicting wither on an entity")
                 .syncToClients().build();
+
+        public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(450);
 
         private WitheredBracelet() {
             super(ModItems.WITHERED_BRACELET);
@@ -978,9 +973,12 @@ public final class ItemConfigs extends ConfigManager {
             private final ConfigValue<Boolean> canBeRepaired;
             private final ConfigValue<Integer> maxDamage;
 
-            private DurabilityCategory(int maxDamage, TagKey<Item> repairMaterials) {
+            private DurabilityCategory(int maxDamage) {
                 super(ItemSubCategory.this, "durability");
-                this.repairMaterials = repairMaterials;
+                this.repairMaterials = TagKey.create(
+                        Registries.ITEM,
+                        Artifacts.id("repairs_%s".formatted(ItemSubCategory.this.getKey().path().getLast()))
+                );
                 setTitle(SharedNames.Titles.DURABILITY);
                 this.canBeDamaged = define("canBeDamaged", false)
                         .title(SharedNames.Titles.CAN_BE_DAMAGED)
@@ -1036,8 +1034,8 @@ public final class ItemConfigs extends ConfigManager {
                     .syncToClients()
                     .build();
 
-            private EquippableDurabilityCategory(int maxDamage, TagKey<Item> repairMaterials) {
-                super(maxDamage, repairMaterials);
+            private EquippableDurabilityCategory(int maxDamage) {
+                super(maxDamage);
             }
 
             @Override
@@ -1050,12 +1048,12 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerActivation;
 
-            private TriggerBasedDurabilityCategory(int maxDamage, TagKey<Item> repairMaterials) {
-                this(maxDamage, 1, repairMaterials);
+            private TriggerBasedDurabilityCategory(int maxDamage) {
+                this(maxDamage, 1);
             }
 
-            private TriggerBasedDurabilityCategory(int maxDamage, int damagePerActivation, TagKey<Item> repairMaterials) {
-                super(maxDamage, repairMaterials);
+            private TriggerBasedDurabilityCategory(int maxDamage, int damagePerActivation) {
+                super(maxDamage);
                 this.damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, damagePerActivation)
                         .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
                         .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ACTIVATION)
