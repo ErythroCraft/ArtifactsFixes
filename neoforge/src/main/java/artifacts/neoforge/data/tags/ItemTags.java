@@ -140,6 +140,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
 
     private void addRepairMaterialTags() {
         tag(ModTags.REPAIRS_ANTIDOTE_VESSEL).add(Items.GOLD_INGOT);
+        tag(ModTags.REPAIRS_CLOUD_IN_A_BOTTLE).add(Items.PHANTOM_MEMBRANE);
         tag(ModTags.REPAIRS_CROSS_NECKLACE).add(Items.GOLD_INGOT);
         tag(ModTags.REPAIRS_ETERNAL_STEAK).add(Items.COOKED_BEEF);
         tag(ModTags.REPAIRS_EVERLASTING_BEEF).add(Items.BEEF);
@@ -151,6 +152,8 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         tag(ModTags.REPAIRS_STEADFAST_SPIKES).add(Items.LEATHER);
         tag(ModTags.REPAIRS_THORN_PENDANT).add(Items.DIAMOND);
         tag(ModTags.REPAIRS_UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
+        tag(ModTags.REPAIRS_WARP_DRIVE).add(Items.ENDER_PEARL);
+        tag(ModTags.REPAIRS_WHOOPEE_CUSHION).add(Items.LEATHER);
     }
 
     private void addOriginsTags() {

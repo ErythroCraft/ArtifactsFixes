@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Optional;
 
 // TODO: max damage default values
-@SuppressWarnings("unused")
 public final class ItemConfigs extends ConfigManager {
 
     private final Map<ResourceKey<Item>, ItemSubCategory> itemCategories = new HashMap<>();
@@ -222,8 +221,22 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("How much fall damage is dealt when double jumping with the Cloud in a Bottle")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private CloudInABottle() {
             super(ModItems.CLOUD_IN_A_BOTTLE);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerDoubleJump
+                    = define("damagePerDoubleJump", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .tooltipLine("The amount of durability lost for every double jump")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(120, ModTags.REPAIRS_CLOUD_IN_A_BOTTLE);
+            }
         }
     }
 
@@ -873,6 +886,9 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The duration Ender Pearls go on cooldown for after being thrown using the Warp Drive")
                 .syncToClients().build();
 
+        public final TriggerBasedDurabilityCategory durability
+                = new TriggerBasedDurabilityCategory(128, ModTags.REPAIRS_WARP_DRIVE);
+
         private WarpDrive() {
             super(ModItems.WARP_DRIVE);
         }
@@ -883,6 +899,9 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Double> fartChance = define("fartChance", ValueTypes.ATTRIBUTE_MODIFIER, 0.12)
                 .tooltipLine("The probability that a fart sound plays when sneaking or double jumping while wearing the Whoopee Cushion")
                 .syncToClients().build();
+
+        public final TriggerBasedDurabilityCategory durability
+                = new TriggerBasedDurabilityCategory(250, ModTags.REPAIRS_WHOOPEE_CUSHION);
 
         private WhoopeeCushion() {
             super(ModItems.WHOOPEE_CUSHION);

@@ -1,9 +1,6 @@
 package artifacts.mixin.attribute.flatulence;
 
-import artifacts.registry.ModAttributes;
-import artifacts.registry.ModGameEvents;
-import artifacts.registry.ModSoundEvents;
-import net.minecraft.sounds.SoundSource;
+import artifacts.event.ArtifactHooks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,12 +18,8 @@ public abstract class EntityMixin {
     @Inject(method = "setShiftKeyDown", at = @At("HEAD"))
     private void setShiftKeyDown(boolean shiftKeyDown, CallbackInfo ci) {
         Entity self = (Entity) (Object) this;
-        if (shiftKeyDown && !isShiftKeyDown() && self instanceof LivingEntity livingEntity && !self.level().isClientSide()) {
-            double chance = livingEntity.getAttributeValue(ModAttributes.FLATULENCE);
-            if (self.getRandom().nextFloat() < chance) {
-                self.gameEvent(ModGameEvents.FART);
-                self.level().playSound(null, livingEntity, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + self.getRandom().nextFloat() * 0.2F);
-            }
+        if (shiftKeyDown && !isShiftKeyDown() && self instanceof LivingEntity livingEntity) {
+            ArtifactHooks.fart(livingEntity);
         }
     }
 }

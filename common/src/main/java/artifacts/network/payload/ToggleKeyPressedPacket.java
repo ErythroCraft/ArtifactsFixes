@@ -20,7 +20,7 @@ public record ToggleKeyPressedPacket(ToggleIdentifier identifier) implements Cus
 
     public void apply(NetworkHandler.PayloadContext context) {
         Player player = context.player();
-        context.queue(() -> EquipmentHelper.iterateEquipment(player, stack -> {
+        context.queue(() -> EquipmentHelper.iterateEquipment(player, false, false, stack -> {
             if (stack.get(ModDataComponents.TOGGLE_KEY.get()) instanceof ToggleIdentifier id && id == identifier) {
                 if (stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get())) {
                     stack.remove(ModDataComponents.DISABLED_BY_TOGGLE.get());

@@ -3,10 +3,8 @@ package artifacts.component.ability;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import artifacts.equipment.EquipmentHelper;
-import artifacts.registry.ModAttributes;
+import artifacts.event.ArtifactHooks;
 import artifacts.registry.ModDataComponents;
-import artifacts.registry.ModGameEvents;
-import artifacts.registry.ModSoundEvents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -19,14 +17,20 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultiplier, Value<Double> sprintHorizontalVelocity, Value<Double> sprintVerticalVelocity)
-        implements EquipmentAbility {
+public record DoubleJump(
+        Value<Boolean> enabled,
+        Value<Double> fallDamageMultiplier,
+        Value<Double> sprintHorizontalVelocity,
+        Value<Double> sprintVerticalVelocity,
+        Value<Integer> itemDamage
+) implements EquipmentAbility {
 
     public static final Codec<DoubleJump> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(DoubleJump::enabled),
             ValueTypes.FRACTION.codec().optionalFieldOf("fall_damage_multiplier", Value.of(0D)).forGetter(DoubleJump::fallDamageMultiplier),
             ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_horizontal_velocity", Value.of(0D)).forGetter(DoubleJump::sprintHorizontalVelocity),
-            ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_vertical_velocity", Value.of(0D)).forGetter(DoubleJump::sprintVerticalVelocity)
+            ValueTypes.NON_NEGATIVE_DOUBLE.codec().optionalFieldOf("sprint_jump_vertical_velocity", Value.of(0D)).forGetter(DoubleJump::sprintVerticalVelocity),
+            ValueTypes.itemDamageField().forGetter(DoubleJump::itemDamage)
     ).apply(instance, DoubleJump::new));
 
     public static final StreamCodec<ByteBuf, DoubleJump> STREAM_CODEC = StreamCodec.composite(
@@ -38,6 +42,8 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultipl
             DoubleJump::sprintHorizontalVelocity,
             ValueTypes.NON_NEGATIVE_DOUBLE.streamCodec(),
             DoubleJump::sprintVerticalVelocity,
+            ValueTypes.NON_NEGATIVE_INT.streamCodec(),
+            DoubleJump::itemDamage,
             DoubleJump::new
     );
 
@@ -87,14 +93,15 @@ public record DoubleJump(Value<Boolean> enabled, Value<Double> fallDamageMultipl
             } else {
                 player.causeFoodExhaustion(0.05F);
             }
-        }
 
-        if (!player.level().isClientSide()) {
-            double chance = player.getAttributeValue(ModAttributes.FLATULENCE);
-            if (player.getRandom().nextFloat() < chance) {
-                player.gameEvent(ModGameEvents.FART);
-                player.level().playSound(null, player, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + player.getRandom().nextFloat() * 0.2F);
-            } else {
+            EquipmentHelper.iterateAbilities(
+                    ModDataComponents.DOUBLE_JUMP.get(),
+                    player,
+                    true, true,
+                    (ability, slotAccess) -> slotAccess.hurtAndBreak(player, ability.itemDamage.get())
+            );
+
+            if (!ArtifactHooks.fart(player)) {
                 player.level().playSound(null, player, SoundEvents.WOOL_FALL, SoundSource.PLAYERS, 1, 0.9F + player.getRandom().nextFloat() * 0.2F);
             }
         }

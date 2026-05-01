@@ -3,7 +3,6 @@ package artifacts.equipment;
 import artifacts.component.ability.EnchantmentLevelModifier;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.registry.ModDataComponents;
-import artifacts.util.ItemDamageUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
@@ -17,7 +16,7 @@ import java.util.function.*;
 public class EquipmentHelper {
 
     public static boolean hasComponent(DataComponentType<?> type, @Nullable LivingEntity entity) {
-        return reduceComponents(type, entity, false, (_, _, _) -> true);
+        return reduceComponents(type, entity, false, false, false, (_, _, _) -> true);
     }
 
     public static boolean hasAbilityActive(DataComponentType<? extends EquipmentAbility> type, @Nullable LivingEntity entity) {
@@ -75,29 +74,24 @@ public class EquipmentHelper {
     }
 
     public static <ABILITY extends EquipmentAbility, ACC> ACC reduceAbilities(DataComponentType<ABILITY> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, ACC init, ComponentAccumulator<ABILITY, ACC> f) {
-        return reduceEquipment(entity, init, (slotAccess, init_) -> {
+        return reduceEquipment(entity, skipItemsOnCooldown, skipDisabledItems, init, (slotAccess, init_) -> {
             ABILITY ability = slotAccess.get().get(type);
-            if (ability != null) {
-                boolean checkCooldown = !skipItemsOnCooldown || !slotAccess.isOnCooldown(entity);
-                boolean checkDisabled = !skipDisabledItems || !slotAccess.isDisabledOrBroken();
-                boolean checkCosmetic = !skipDisabledItems || ability.isNonCosmetic();
-                if (checkCooldown && checkDisabled && checkCosmetic) {
-                    init_ = f.accumulate(ability, slotAccess, init_);
-                }
+            if (ability != null && (!skipDisabledItems || ability.isNonCosmetic())) {
+                init_ = f.accumulate(ability, slotAccess, init_);
             }
             return init_;
         });
     }
 
-    public static <C> void iterateComponents(DataComponentType<C> type, LivingEntity entity, ComponentVisitor<C> visitor) {
-        reduceComponents(type, entity, Unit.INSTANCE, (component, stack, _) -> {
+    public static <C> void iterateComponents(DataComponentType<C> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, ComponentVisitor<C> visitor) {
+        reduceComponents(type, entity, skipItemsOnCooldown, skipDisabledItems, Unit.INSTANCE, (component, stack, _) -> {
             visitor.visit(component, stack);
             return Unit.INSTANCE;
         });
     }
 
-    public static <C, ACC> ACC reduceComponents(DataComponentType<C> type, LivingEntity entity, ACC init, ComponentAccumulator<C, ACC> visitor) {
-        return reduceEquipment(entity, init, (slotAccess, acc) -> {
+    public static <C, ACC> ACC reduceComponents(DataComponentType<C> type, LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, ACC init, ComponentAccumulator<C, ACC> visitor) {
+        return reduceEquipment(entity, skipItemsOnCooldown, skipDisabledItems, init, (slotAccess, acc) -> {
             C component = slotAccess.get().get(type);
             if (component != null) {
                 acc = visitor.accumulate(component, slotAccess, acc);
@@ -106,15 +100,22 @@ public class EquipmentHelper {
         });
     }
 
-    public static void iterateEquipment(LivingEntity entity, Consumer<ItemStack> consumer) {
-        reduceEquipment(entity, Unit.INSTANCE, (slotAccess, unit) -> {
+    public static void iterateEquipment(LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, Consumer<ItemStack> consumer) {
+        reduceEquipment(entity, skipItemsOnCooldown, skipDisabledItems, Unit.INSTANCE, (slotAccess, unit) -> {
             consumer.accept(slotAccess.get());
             return unit;
         });
     }
 
-    public static <ACC> ACC reduceEquipment(LivingEntity entity, ACC init, BiFunction<EquipmentSlotAccess, ACC, ACC> f) {
-        return EquipmentSlotManager.reduceEquipment(entity, init, f);
+    public static <ACC> ACC reduceEquipment(LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, ACC init, BiFunction<EquipmentSlotAccess, ACC, ACC> f) {
+        return EquipmentSlotManager.reduceEquipment(entity, init, ((slotAccess, acc) -> {
+            boolean checkCooldown = !skipItemsOnCooldown || !slotAccess.isOnCooldown(entity);
+            boolean checkDisabled = !skipDisabledItems || !slotAccess.isDisabledOrBroken();
+            if (checkCooldown && checkDisabled) {
+                return f.apply(slotAccess, acc);
+            }
+            return acc;
+        }));
     }
 
     @FunctionalInterface

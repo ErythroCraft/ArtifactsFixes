@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-01T18:51:25.0275256	Model Definitions - artifacts
+// 26.1.2	2026-05-01T22:12:34.6977559	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
@@ -6,7 +6,7 @@ aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.
 0d9435eb574bff8102ac31b0ca5c852e7997cf56 assets/artifacts/items/charm_of_shrinking.json
 6ac907b295b65614dc46a83ca676233719111b8b assets/artifacts/items/charm_of_sinking.json
 0aedf391e8e4b0cae798a22bc44a028e5a906c03 assets/artifacts/items/chorus_totem.json
-7ef3b4c9e1967e29e19bacc5627998ac4f782f1e assets/artifacts/items/cloud_in_a_bottle.json
+c91ed6234cb403eb346feb1bc35f2394377ae325 assets/artifacts/items/cloud_in_a_bottle.json
 908ae6424ee6362febe089f62f6c6f14aa238a61 assets/artifacts/items/cowboy_hat.json
 4b83f87ba62969312a32dd74803937c99c56c762 assets/artifacts/items/cross_necklace.json
 8c19f0dc44edbdd944bb699108b564d45612f82e assets/artifacts/items/crystal_heart.json
@@ -45,8 +45,8 @@ f43cbf99edd8bc069a53553e6a2ae06a1c366948 assets/artifacts/items/umbrella.json
 67c07982f65db36d712d15017949ab46d5321972 assets/artifacts/items/universal_attractor.json
 90cae4c2af124627b53eaa0399ae1e5b33729d2e assets/artifacts/items/vampiric_glove.json
 0ae9a03547d84de8ebc759ebd1042905545456ea assets/artifacts/items/villager_hat.json
-a5c06532c215a5b035f7e97393590f03eb4502e3 assets/artifacts/items/warp_drive.json
-c95e8b921e2a165f0be2ba9a37bb1d463690e883 assets/artifacts/items/whoopee_cushion.json
+0def08fcc2be8213e8ad392653cfda67f00d0f72 assets/artifacts/items/warp_drive.json
+b3bfa70d5fb6de54b8d4f7fb91d7484f615cedea assets/artifacts/items/whoopee_cushion.json
 77130923a8dfdadf27d645b06b6d97e6c0d1510f assets/artifacts/items/withered_bracelet.json
 e78ea7a2e3909a584453c885749c9e809ec4bff5 assets/artifacts/models/item/anglers_hat.json
 6857b5e2e0cc4e6ce94cda70b101fb3b4881fa68 assets/artifacts/models/item/antidote_vessel.json
@@ -57,6 +57,7 @@ b98f8fd8c0021ca2799b347394ef70672c1c3a3b assets/artifacts/models/item/bunny_hopp
 83e68768d176eb764c9000076af4b30710c63ede assets/artifacts/models/item/charm_of_sinking.json
 068977b258e5f6a28e63452cccc805df8c8486b3 assets/artifacts/models/item/chorus_totem.json
 26cc8155a77c96bb61c4d6b9f02d9c62f7c4068b assets/artifacts/models/item/cloud_in_a_bottle.json
+f1bec640a2432dbd656355e064242e5f03c9433a assets/artifacts/models/item/cloud_in_a_bottle_broken.json
 d9739baff08bdc98b399a74f9dd02d186a74b3b8 assets/artifacts/models/item/cowboy_hat.json
 03aaddf5bf065ee6c01c894791295b7b286bac3f assets/artifacts/models/item/cross_necklace.json
 0160d3fed61cbb23fec9eeb059036fe58e9515db assets/artifacts/models/item/cross_necklace_broken.json
@@ -103,5 +104,7 @@ a9b754c78878aec03a96e994ad1aeb675ce654c4 assets/artifacts/models/item/universal_
 ca2954c77cbaef4a1e886000f8fb65554e413b47 assets/artifacts/models/item/vampiric_glove.json
 4c71ad32a9f5273cd0e41dbae162b3cd69767fc3 assets/artifacts/models/item/villager_hat.json
 d4307977b955fb679f644160568e208204c86861 assets/artifacts/models/item/warp_drive.json
+73c9313160544b93ae6a28273a34fe4e96061b4b assets/artifacts/models/item/warp_drive_broken.json
 6684d8b2a799c2683099053262a86dd8fb6e611f assets/artifacts/models/item/whoopee_cushion.json
+126a155a7d7f5e8e71927509ac34a9ca537b6dff assets/artifacts/models/item/whoopee_cushion_broken.json
 087edcd9de37802613c73ddd3510fd6a6746f5ef assets/artifacts/models/item/withered_bracelet.json

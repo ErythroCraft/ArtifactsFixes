@@ -112,6 +112,8 @@
   "artifacts.config.items.chorus_totem.enabled.description": "Whether the Chorus Totem prevents the wearer's death",
   "artifacts.config.items.chorus_totem.healthRestored.description": "The amount of health points that are restored after the Chorus Totem activates",
   "artifacts.config.items.chorus_totem.healthRestored.title": "Health Restored",
+  "artifacts.config.items.cloud_in_a_bottle.durability.damagePerDoubleJump.description": "The amount of durability lost for every double jump",
+  "artifacts.config.items.cloud_in_a_bottle.durability.damagePerDoubleJump.title": "Damage per Double Jump",
   "artifacts.config.items.cloud_in_a_bottle.enabled.description": "Whether the Cloud in a Bottle allows the wearer to double jump",
   "artifacts.config.items.cloud_in_a_bottle.fallDamageMultiplier.description": "How much fall damage is dealt when double jumping with the Cloud in a Bottle",
   "artifacts.config.items.cloud_in_a_bottle.fallDamageMultiplier.title": "Fall Damage Multiplier",

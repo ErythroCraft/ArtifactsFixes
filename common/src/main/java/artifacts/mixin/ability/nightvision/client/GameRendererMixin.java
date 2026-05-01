@@ -20,7 +20,12 @@ public class GameRendererMixin {
         if (effect == null || !effect.endsWithin(12 * 20)) {
             return original;
         }
-        double scale = EquipmentHelper.reduceComponents(ModDataComponents.REDUCED_NIGHT_VISION.get(), camera, 0D,
+        double scale = EquipmentHelper.reduceComponents(
+                ModDataComponents.REDUCED_NIGHT_VISION.get(),
+                camera,
+                false,
+                false,
+                0D,
                 (component, _, prefix) -> Math.max(component.get(), prefix)
         );
         if (scale == 0) {

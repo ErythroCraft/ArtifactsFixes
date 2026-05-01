@@ -12,13 +12,12 @@ import artifacts.extensions.ability.LivingEntityExtensions;
 import artifacts.item.UmbrellaHelper;
 import artifacts.mixin.accessors.MobAccessor;
 import artifacts.platform.PlatformServices;
-import artifacts.registry.ModAttributes;
-import artifacts.registry.ModDataComponents;
-import artifacts.registry.ModTags;
+import artifacts.registry.*;
 import artifacts.util.DamageSourceHelper;
 import artifacts.util.ItemDamageUtil;
 import be.florens.expandability.api.EventResult;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -102,7 +101,7 @@ public class ArtifactHooks {
     }
 
     public static void updateHasTickingAbilities(LivingEntity entity) {
-        boolean shouldTick = EquipmentHelper.reduceEquipment(entity, false, (slotAccess, hasTickingAbilities) -> {
+        boolean shouldTick = EquipmentHelper.reduceEquipment(entity, false, false, false, (slotAccess, hasTickingAbilities) -> {
             for (var entry : ModDataComponents.TICKING_ABILITIES) {
                 // abilities are tracked as ticking even when they're cosmetic,
                 // since updating the config does not trigger onItemChanged
@@ -164,11 +163,16 @@ public class ArtifactHooks {
     }
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
-        EquipmentHelper.iterateComponents(ModDataComponents.HURT_SOUND.get(), entity, (ability, _) -> {
-            if (ability.enabled().get()) {
-                entity.playSound(ability.soundEvent().value(), volume, pitch);
-            }
-        });
+        EquipmentHelper.iterateComponents(
+                ModDataComponents.HURT_SOUND.get(),
+                entity,
+                false, false,
+                (component, _) -> {
+                    if (component.enabled().get()) {
+                        entity.playSound(component.soundEvent().value(), volume, pitch);
+                    }
+                }
+        );
     }
 
     public static ItemStack applySmeltOresAbility(ItemStack original, @Nullable Entity entity, @Nullable BlockState state, Consumer<Integer> experienceConsumer) {
@@ -282,5 +286,21 @@ public class ArtifactHooks {
         return EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION.get(), entity, true, ability ->
                 ability.matchesFluid(fluidState) && ability.condition().test(entity)
         );
+    }
+
+    public static boolean fart(LivingEntity entity) {
+        double chance = entity.getAttributeValue(ModAttributes.FLATULENCE);
+        if (!entity.level().isClientSide() && entity.getRandom().nextFloat() < chance) {
+            entity.gameEvent(ModGameEvents.FART);
+            entity.level().playSound(null, entity, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + entity.getRandom().nextFloat() * 0.2F);
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.DAMAGE_ON_FART.get(),
+                    entity,
+                    true, true,
+                    (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
+            );
+            return true;
+        }
+        return false;
     }
 }

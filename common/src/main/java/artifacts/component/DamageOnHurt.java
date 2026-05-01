@@ -19,9 +19,6 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
-// This doesn't implement EquipmentAbility since it shouldn't prevent items from being marked as 'cosmetic',
-// but this also means the item will still be damaged when all abilities are disabled.
-// It's not a major issue since this won't occur with sensible config settings.
 public record DamageOnHurt(Value<Integer> itemDamage, Optional<TagKey<DamageType>> tag) {
 
     public static final Codec<DamageOnHurt> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -39,13 +36,16 @@ public record DamageOnHurt(Value<Integer> itemDamage, Optional<TagKey<DamageType
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (entity instanceof Player player && !player.level().isClientSide()) {
-            EquipmentHelper.iterateComponents(ModDataComponents.DAMAGE_ON_HURT.get(), entity, (ability, slotAccess) -> {
-                if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
-                    if (!slotAccess.isDisabledOrBroken() && !slotAccess.isOnCooldown(entity)) {
-                        slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.DAMAGE_ON_HURT.get(),
+                    entity,
+                    true, true,
+                    (ability, slotAccess) -> {
+                        if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
+                            slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
+                        }
                     }
-                }
-            });
+            );
         }
     }
 }

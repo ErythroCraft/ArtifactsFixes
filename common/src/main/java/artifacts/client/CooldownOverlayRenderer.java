@@ -30,7 +30,7 @@ public class CooldownOverlayRenderer {
 
         MutableInt k = new MutableInt(0);
 
-        EquipmentHelper.iterateEquipment(player, stack -> {
+        EquipmentHelper.iterateEquipment(player, false, false, stack -> {
             if (!stack.isEmpty()
                     && ModDataComponents.hasAbilityWithCooldown(stack)
                     && player.getCooldowns().isOnCooldown(stack)
