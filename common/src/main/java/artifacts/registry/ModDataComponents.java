@@ -68,12 +68,16 @@ public class ModDataComponents {
     /** Prevents the item from being destroyed when durability reaches 0 */
     public static final Supplier<DataComponentType<Value<Boolean>>> INDESTRUCTIBLE =
             registerSynced("indestructible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
+    // TODO: consider merging these into a single component
     /** Damage applied to the item when hurt, while worn and not on cooldown */
     public static final Supplier<DataComponentType<DamageOnHurt>> DAMAGE_ON_HURT =
             registerSynced("damage_on_hurt", DamageOnHurt.CODEC, DamageOnHurt.STREAM_CODEC);
     /** Damage applied to the item when farting, while worn and not on cooldown */
     public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_FART =
             registerSynced("damage_on_fart", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
+    /** Damage applied to the item after mining an ore block, while worn and not on cooldown */
+    public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_ORE_MINED =
+            registerSynced("damage_on_ore_mined", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
 
     // abilities
     public static final Supplier<DataComponentType<PostDamageCooldown>> POST_DAMAGE_COOLDOWN =

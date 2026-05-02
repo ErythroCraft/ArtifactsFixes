@@ -27,6 +27,8 @@
   "artifacts.config.durability.canBeRepaired.title": "Can Be Repaired",
   "artifacts.config.durability.damagePerActivation.description": "The amount durability lost every time this item's ability is triggered",
   "artifacts.config.durability.damagePerActivation.title": "Damage per Activation",
+  "artifacts.config.durability.damagePerOreMined.description": "The amount of durability lost for every ore block mined",
+  "artifacts.config.durability.damagePerOreMined.title": "Damage per Ore Mined",
   "artifacts.config.durability.damageWhenConsumed.description": "The amount of durability that is lost when this item is consumed",
   "artifacts.config.durability.damageWhenConsumed.title": "Damage When Consumed",
   "artifacts.config.durability.indestructible.description": "Whether this item should remain intact and stop working when its durability reaches 1",

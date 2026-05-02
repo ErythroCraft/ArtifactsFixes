@@ -207,6 +207,18 @@ public class ArtifactHooks {
         return amount;
     }
 
+    public static void onBreakBlock(LivingEntity entity, BlockState blockState) {
+        if (blockState.is(ModTags.ORES)) {
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.DAMAGE_ON_ORE_MINED.get(),
+                    entity,
+                    true, true,
+                    (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
+            );
+        }
+
+    }
+
     public static int modifyUseDuration(int originalDuration, ItemStack item, LivingEntity entity) {
         if (originalDuration <= 0) {
             return originalDuration;

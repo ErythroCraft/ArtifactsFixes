@@ -26,6 +26,7 @@ import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.apache.commons.lang3.mutable.MutableInt;
 
@@ -48,6 +49,7 @@ public class ArtifactHooksNeoForge {
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onBlockDrops);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::addAttributeTooltips);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onRightClickItem);
+        NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, ArtifactHooksNeoForge::onBreakBlock);
     }
 
     private static void onEntityAdded(EntityJoinLevelEvent event) {
@@ -107,6 +109,12 @@ public class ArtifactHooksNeoForge {
                 experience::add
         )));
         event.setDroppedExperience(event.getDroppedExperience() + experience.get().intValue());
+    }
+
+    private static void onBreakBlock(BlockEvent.BreakEvent event) {
+        if (!event.isCanceled()) {
+            ArtifactHooks.onBreakBlock(event.getPlayer(), event.getState());
+        }
     }
 
     private static void addAttributeTooltips(AddAttributeTooltipsEvent event) {

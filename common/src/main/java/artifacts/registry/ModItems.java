@@ -218,11 +218,12 @@ public class ModItems {
     );
 
     // necklace
-    // TODO: add durability config options
     public static final Holder<Item> LUCKY_SCARF
             = register("lucky_scarf", () -> Artifacts.CONFIG.items.luckyScarf, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
             .increasesEnchantment(Enchantments.FORTUNE, config.fortuneLevelBonus)
+            .component(ModDataComponents.DAMAGE_ON_ORE_MINED.get(), config.durability.damagePerOreMined)
     );
     // TODO: add durability config options
     public static final Holder<Item> SCARF_OF_INVISIBILITY
@@ -518,11 +519,12 @@ public class ModItems {
                     )
             )
     );
-    // TODO: add durability config options
     public static final Holder<Item> PICKAXE_HEATER
             = register("pickaxe_heater", () -> Artifacts.CONFIG.items.pickaxeHeater, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_IRON)
+            .durability(config.durability)
             .component(ModDataComponents.AUTO_SMELT.get(), config.enabled)
+            .component(ModDataComponents.DAMAGE_ON_ORE_MINED.get(), config.durability.damagePerOreMined)
     );
     public static final Holder<Item> WITHERED_BRACELET
             = register("withered_bracelet", () -> Artifacts.CONFIG.items.witheredBracelet, (builder, config) -> builder

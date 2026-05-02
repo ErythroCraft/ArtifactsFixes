@@ -479,8 +479,22 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The amount of extra levels of fortune that are granted by the Lucky Scarf")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private LuckyScarf() {
             super(ModItems.LUCKY_SCARF);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ORE_MINED)
+                    .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ORE_MINED)
+                    .syncToClients().build();
+
+            private Durability() {
+                super(256);
+            }
         }
     }
 
@@ -556,8 +570,22 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("Whether the Pickaxe Heater smelts mined ores")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private PickaxeHeater() {
             super(ModItems.PICKAXE_HEATER);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ORE_MINED)
+                    .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ORE_MINED)
+                    .syncToClients().build();
+
+            private Durability() {
+                super(256);
+            }
         }
     }
 

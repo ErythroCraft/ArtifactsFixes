@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-01T23:40:30.7608681	Model Definitions - artifacts
+// 26.1.2	2026-05-02T12:50:24.1497487	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
@@ -20,14 +20,14 @@ af240068a96d0f1068f55fb57ddcdc4795898bc7 assets/artifacts/items/feral_claws.json
 bdd82736d65124020cca14c11a73104c8794bd3e assets/artifacts/items/golden_hook.json
 ec2b39a10bb130700b54b3838db0ae662e419e32 assets/artifacts/items/helium_flamingo.json
 37d7b17e076d1c48ac4859cf5e1f596d1b2a0678 assets/artifacts/items/kitty_slippers.json
-9b58bfc938f05d8f8bea59db1f1f5539b9e295e7 assets/artifacts/items/lucky_scarf.json
+2a221362447f69146e5e077201a6769e26683680 assets/artifacts/items/lucky_scarf.json
 8e5996b6600d846ab8f3383359fb4a6337950fe7 assets/artifacts/items/mimic_spawn_egg.json
 4972de5731e4f30392e3550545db28ebe66edf3d assets/artifacts/items/night_vision_goggles.json
 dddc89369c2fede3994c2061f06da70c626ff7c4 assets/artifacts/items/novelty_drinking_hat.json
 9cd6e83aca53824121ff43799b9deeda88c568c2 assets/artifacts/items/obsidian_skull.json
 0c4811af22ae2142bcc1930d6f856d9362d52508 assets/artifacts/items/onion_ring.json
 6c2e3358f1046ea929c2a8f14dd459c5df369bd2 assets/artifacts/items/panic_necklace.json
-1cb0eb08c213a8de3a73ea5d9b70b2384bd0c1c7 assets/artifacts/items/pickaxe_heater.json
+e6b97fe1e54787f046d9209eb79f381d459c3ec8 assets/artifacts/items/pickaxe_heater.json
 7b3588582ef3ae4a6fcb38529cd28abb9d0ac19a assets/artifacts/items/plastic_drinking_hat.json
 da5bda43b52561e643c1ceb9a02e7e058efa5c62 assets/artifacts/items/pocket_piston.json
 d08471de65be5394847ea5bee8e9975e3646aaba assets/artifacts/items/power_glove.json
@@ -74,6 +74,7 @@ ea76f5e79e43da7fa1772a557da8096f090403a6 assets/artifacts/models/item/golden_hoo
 17a475e4b144773d373590396d5d2ec0668097c1 assets/artifacts/models/item/helium_flamingo.json
 976cb2c788f732a668e994c0a3e9bdd9dc1cb493 assets/artifacts/models/item/kitty_slippers.json
 ab8427a60b9cf3cf6e2e3edfda61434708f2d798 assets/artifacts/models/item/lucky_scarf.json
+9b95171a73190ecbf9e108c4b79375b9a16f3ea7 assets/artifacts/models/item/lucky_scarf_broken.json
 e3e2895942abbe6799c0e48c3d26aa5ac7898208 assets/artifacts/models/item/night_vision_goggles.json
 58a42bb75cb86c1b6674d85a599d47444091beac assets/artifacts/models/item/novelty_drinking_hat.json
 b84256306f2bbaaf5b8254a246e9566c9bea6dcf assets/artifacts/models/item/obsidian_skull.json
@@ -83,6 +84,7 @@ b49e975fb34efa161453db489e69cf39a240f477 assets/artifacts/models/item/onion_ring
 7ad734b1c06f1f65cdd050d0e53da050d1c7920e assets/artifacts/models/item/panic_necklace.json
 ad453a0f0fd345158d876ca32b0a90e27f6511fd assets/artifacts/models/item/panic_necklace_broken.json
 4921b789aa6016f86ea489078f006d6defd29a27 assets/artifacts/models/item/pickaxe_heater.json
+e373d9484371d5ec7c9d02f69306026d6b306800 assets/artifacts/models/item/pickaxe_heater_broken.json
 7cecd8b4b341331e497ef21e4674c138226eadf5 assets/artifacts/models/item/plastic_drinking_hat.json
 53f2a0e20c731c3094e7750bdfa198852a60375e assets/artifacts/models/item/pocket_piston.json
 72e9d3ee478f28ac4f90802a6f86903b1fe903ef assets/artifacts/models/item/power_glove.json
