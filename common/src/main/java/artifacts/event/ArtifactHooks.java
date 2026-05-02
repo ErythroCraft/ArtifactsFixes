@@ -67,6 +67,7 @@ public class ArtifactHooks {
         PostDamageEffect.onLivingDamaged(entity, source);
         // item damage
         DamageOnHurt.onLivingDamaged(entity, source);
+        damageItemsWhenAttacking(source);
         // cooldowns
         PostDamageCooldown.onLivingDamaged(entity, source);
     }
@@ -260,6 +261,18 @@ public class ArtifactHooks {
                             slotAccess.hurtAndBreak(entity, ability.itemDamage().get());
                         }
                     }
+            );
+        }
+    }
+
+    public static void damageItemsWhenAttacking(DamageSource damageSource) {
+        LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
+        if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.DAMAGE_ON_ATTACK.get(),
+                    attacker,
+                    true, true,
+                    (component, slotAccess) -> slotAccess.hurtAndBreak(attacker, component.get())
             );
         }
     }

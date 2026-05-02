@@ -11,9 +11,7 @@ import artifacts.component.ability.mobeffect.PostEatingEffect;
 import artifacts.component.ability.retaliation.*;
 import artifacts.config.value.Value;
 import artifacts.item.ArtifactProperties;
-import artifacts.item.consumeeffects.DamageItemConsumeEffect;
 import artifacts.item.consumeeffects.HealConsumeEffect;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -56,8 +54,10 @@ public class ModItems {
     // handheld
     public static final Holder<Item> UMBRELLA
             = register("umbrella", () -> Artifacts.CONFIG.items.umbrella, (builder, config) -> builder
-            .component(ModDataComponents.HANDHELD_GLIDER.get(), config.isGlider)
             .component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.OFFHAND).setSwappable(false).build())
+            .durability(config.durability)
+            .breakSound(SoundEvents.SHIELD_BREAK)
+            .component(ModDataComponents.HANDHELD_GLIDER.get(), config.isGlider)
             .component(ModDataComponents.BLOCKS_ATTACKS.get(), config.isShield)
             .delayedComponent(DataComponents.BLOCKS_ATTACKS, config.isShield,
                     context -> new BlocksAttacks(
@@ -90,8 +90,6 @@ public class ModItems {
                     new AttackRange(0, 3.5F, 0, 5.5F, 0.25F, 0.5F))
             .component(DataComponents.MINIMUM_ATTACK_CHARGE, 1F)
             .delayedComponent(DataComponents.WEAPON, _ -> new Weapon(config.durability.damagePerAttack.get()))
-            .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
-            .durability(config.durability)
             .properties(p -> p.attributes(
                     ItemAttributeModifiers.builder()
                             .add(
@@ -117,39 +115,17 @@ public class ModItems {
     public static final Holder<Item> EVERLASTING_BEEF
             = register("everlasting_beef", () -> Artifacts.CONFIG.items.everlastingBeef, (builder, config) -> builder
             .durability(config.durability)
+            .damageWhenConsumed(config.enabled, config.durability.damageWhenConsumed)
+            .useCooldown(config.cooldown)
             .delayedComponent(DataComponents.FOOD, config.enabled, _ -> Foods.BEEF)
-            .delayedComponent(
-                    DataComponents.CONSUMABLE,
-                    config.enabled,
-                    _ -> Consumables.defaultFood().onConsume(
-                            new DamageItemConsumeEffect(
-                                    config.durability.damageWhenConsumed
-                            )
-                    ).build()
-            )
-            .delayedComponent(
-                    DataComponents.USE_COOLDOWN,
-                    config.enabled,
-                    _ -> new UseCooldown(config.cooldown.get())
-            )
             .component(ModDataComponents.INFINITE_CONSUMABLE.get(), config.enabled)
     );
     public static final Holder<Item> ETERNAL_STEAK
             = register("eternal_steak", () -> Artifacts.CONFIG.items.eternalSteak, (builder, config) -> builder
             .durability(config.durability)
+            .damageWhenConsumed(config.enabled, config.durability.damageWhenConsumed)
+            .useCooldown(config.cooldown)
             .delayedComponent(DataComponents.FOOD, config.enabled, _ -> Foods.COOKED_BEEF)
-            .delayedComponent(
-                    DataComponents.CONSUMABLE,
-                    config.enabled,
-                    _ -> Consumables.defaultFood().onConsume(
-                            new DamageItemConsumeEffect(config.durability.damageWhenConsumed)
-                    ).build()
-            )
-            .delayedComponent(
-                    DataComponents.USE_COOLDOWN,
-                    config.enabled,
-                    _ -> new UseCooldown(config.cooldown.get())
-            )
             .component(ModDataComponents.INFINITE_CONSUMABLE.get(), config.enabled)
     );
 
@@ -165,10 +141,7 @@ public class ModItems {
     public static final Holder<Item> NOVELTY_DRINKING_HAT
             = register("novelty_drinking_hat", () -> Artifacts.CONFIG.items.noveltyDrinkingHat, (builder, config) -> builder
             .equipable(SoundEvents.BOTTLE_FILL)
-            .component(
-                    ModDataComponents.ABILITY_LORE.get(),
-                    new ItemLore(List.of(Component.translatable("artifacts.tooltip.item.novelty_drinking_hat").withStyle(ChatFormatting.GRAY)))
-            )
+            .abilityLore(Component.translatable("artifacts.tooltip.item.novelty_drinking_hat"))
             .modifiesAttributeBase(ModAttributes.DRINKING_SPEED, config.drinkingSpeedBonus)
             .modifiesAttributeBase(ModAttributes.EATING_SPEED, config.eatingSpeedBonus)
     );
@@ -187,9 +160,9 @@ public class ModItems {
     public static final Holder<Item> NIGHT_VISION_GOGGLES
             = register("night_vision_goggles", () -> Artifacts.CONFIG.items.nightVisionGoggles, (builder, config) -> builder
             .equipable()
+            .toggleKey(ToggleIdentifier.NIGHT_VISION_GOGGLES)
             .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), () -> EntityCondition.ALWAYS)
             .component(ModDataComponents.REDUCED_NIGHT_VISION.get(), config.strength)
-            .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.NIGHT_VISION_GOGGLES)
     );
     // TODO: add durability config options
     public static final Holder<Item> VILLAGER_HAT
@@ -222,29 +195,29 @@ public class ModItems {
             = register("lucky_scarf", () -> Artifacts.CONFIG.items.luckyScarf, (builder, config) -> builder
             .equipable()
             .durability(config.durability)
+            .damageOnOreMined(config.durability.damagePerOreMined)
             .increasesEnchantment(Enchantments.FORTUNE, config.fortuneLevelBonus)
-            .component(ModDataComponents.DAMAGE_ON_ORE_MINED.get(), config.durability.damagePerOreMined)
     );
     // TODO: add durability config options
     public static final Holder<Item> SCARF_OF_INVISIBILITY
             = register("scarf_of_invisibility", () -> Artifacts.CONFIG.items.scarfOfInvisibility, (builder, config) -> builder
             .equipable()
+            .toggleKey(ToggleIdentifier.SCARF_OF_INVISIBILITY)
             .mobEffect(
                     MobEffects.INVISIBILITY,
                     Value.of(1),
                     Value.of(10),
                     () -> config.enabled.get() ? EntityCondition.ALWAYS : EntityCondition.NEVER
             )
-            .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.SCARF_OF_INVISIBILITY)
             .component(ModDataComponents.HIDE_WHEN_INVISIBLE.get(), config.hideWhenInvisible)
     );
     public static final Holder<Item> CROSS_NECKLACE
             = register("cross_necklace", () -> Artifacts.CONFIG.items.crossNecklace, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
+            .piglinLoved()
             .durability(config.durability)
-            .component(ModDataComponents.PIGLIN_LOVED.get())
-            .cooldownOnHurt(config.cooldown)
             .damageOnHurt(config.durability.damagePerActivation)
+            .cooldownOnHurt(config.cooldown)
             .addAttributeModifier(
                     ModAttributes.INVINCIBILITY_TICKS,
                     config.bonusInvincibilityTicks,
@@ -256,6 +229,8 @@ public class ModItems {
             = register("panic_necklace", () -> Artifacts.CONFIG.items.panicNecklace, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .durability(config.durability)
+            .damageOnHurt(config.durability.damagePerActivation)
+            .cooldownOnHurt(config.cooldown)
             .component(
                     ModDataComponents.POST_DAMAGE_EFFECTS.get(),
                     new PostDamageEffect(
@@ -270,8 +245,6 @@ public class ModItems {
                             Optional.empty()
                     )
             )
-            .cooldownOnHurt(config.cooldown)
-            .damageOnHurt(config.durability.damagePerActivation)
     );
     public static final Holder<Item> SHOCK_PENDANT
             = register("shock_pendant", () -> Artifacts.CONFIG.items.shockPendant, (builder, config) -> builder
@@ -323,6 +296,7 @@ public class ModItems {
     public static final Holder<Item> CHARM_OF_SINKING
             = register("charm_of_sinking", () -> Artifacts.CONFIG.items.charmOfSinking, (builder, config) -> builder
             .equipable()
+            .toggleKey(ToggleIdentifier.CHARM_OF_SINKING)
             .component(ModDataComponents.SINKING.get(), config.enabled)
             .delayedComponent(ModDataComponents.DAMAGE_IMMUNITY.get(), _ -> new DamageImmunity(
                     config.enabled,
@@ -336,14 +310,13 @@ public class ModItems {
                     config.enabled,
                     true
             )
-            .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SINKING)
     );
     // TODO: add durability config options
     public static final Holder<Item> CHARM_OF_SHRINKING
             = register("charm_of_shrinking", () -> Artifacts.CONFIG.items.charmOfShrinking, (builder, config) -> builder
             .equipable()
+            .toggleKey(ToggleIdentifier.CHARM_OF_SHRINKING)
             .modifiesAttributeTotal(Attributes.SCALE, config.scaleModifier)
-            .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.CHARM_OF_SHRINKING)
     );
 
     // belt
@@ -364,6 +337,8 @@ public class ModItems {
             = register("obsidian_skull", () -> Artifacts.CONFIG.items.obsidianSkull, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_IRON)
             .durability(config.durability)
+            .damageOnHurt(config.durability.damagePerActivation, DamageTypeTags.IS_FIRE)
+            .cooldownOnHurt(config.cooldown, DamageTypeTags.IS_FIRE)
             .component(
                     ModDataComponents.POST_DAMAGE_EFFECTS.get(),
                     new PostDamageEffect(
@@ -378,14 +353,12 @@ public class ModItems {
                             Optional.of(DamageTypeTags.IS_FIRE)
                     )
             )
-            .cooldownOnHurt(config.cooldown, DamageTypeTags.IS_FIRE)
-            .damageOnHurt(config.durability.damagePerActivation, DamageTypeTags.IS_FIRE)
     );
     public static final Holder<Item> ANTIDOTE_VESSEL
             = register("antidote_vessel", () -> Artifacts.CONFIG.items.antidoteVessel, (builder, config) -> builder
             .equipable(SoundEvents.BOTTLE_FILL)
+            .piglinLoved()
             .durability(config.durability)
-            .component(ModDataComponents.PIGLIN_LOVED.get())
             .component(ModDataComponents.CURE_EFFECTS.get(), new CureEffects(
                     config.enabled,
                     config.maxEffectDuration,
@@ -396,9 +369,9 @@ public class ModItems {
     public static final Holder<Item> UNIVERSAL_ATTRACTOR
             = register("universal_attractor", () -> Artifacts.CONFIG.items.universalAttractor, (builder, config) -> builder
             .equipable()
-            .component(ModDataComponents.PIGLIN_LOVED.get())
+            .piglinLoved()
+            .toggleKey(ToggleIdentifier.UNIVERSAL_ATTRACTOR)
             .mobEffect(ModMobEffects.MAGNETISM, config.magnetismLevel, Value.of(10), () -> EntityCondition.ALWAYS)
-            .component(ModDataComponents.TOGGLE_KEY.get(), ToggleIdentifier.UNIVERSAL_ATTRACTOR)
     );
     // TODO: add durability config options
     public static final Holder<Item> CRYSTAL_HEART
@@ -459,22 +432,25 @@ public class ModItems {
             .equipable(SoundEvents.ARMOR_EQUIP_NETHERITE)
             .modifiesAttributeBase(Attributes.ATTACK_SPEED, config.attackSpeedBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> POWER_GLOVE
             = register("power_glove", () -> Artifacts.CONFIG.items.powerGlove, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOnAttack(config.durability.damagePerAttack)
             .increasesAttribute(Attributes.ATTACK_DAMAGE, config.attackDamageBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> FIRE_GAUNTLET
             = register("fire_gauntlet", () -> Artifacts.CONFIG.items.fireGauntlet, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_IRON)
+            .durability(config.durability)
+            .damageOnAttack(config.durability.damagePerAttack)
             .increasesAttribute(ModAttributes.ATTACK_BURNING_DURATION, config.fireDuration)
     );
-    // TODO: add durability config options
     public static final Holder<Item> POCKET_PISTON
             = register("pocket_piston", () -> Artifacts.CONFIG.items.pocketPiston, (builder, config) -> builder
             .equipable(SoundEvents.PISTON_EXTEND)
+            .durability(config.durability)
+            .damageOnAttack(config.durability.damagePerAttack)
             .increasesAttribute(Attributes.ATTACK_KNOCKBACK, config.attackKnockbackBonus)
     );
     public static final Holder<Item> VAMPIRIC_GLOVE
@@ -495,8 +471,8 @@ public class ModItems {
     public static final Holder<Item> GOLDEN_HOOK
             = register("golden_hook", () -> Artifacts.CONFIG.items.goldenHook, (builder, config) -> builder
             .equipable()
+            .piglinLoved()
             .modifiesAttributeBase(ModAttributes.ENTITY_EXPERIENCE, config.entityExperienceBonus)
-            .component(ModDataComponents.PIGLIN_LOVED.get())
     );
     // TODO: fix not being able to eat
     public static final Holder<Item> ONION_RING
@@ -523,8 +499,8 @@ public class ModItems {
             = register("pickaxe_heater", () -> Artifacts.CONFIG.items.pickaxeHeater, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_IRON)
             .durability(config.durability)
+            .damageOnOreMined(config.durability.damagePerOreMined)
             .component(ModDataComponents.AUTO_SMELT.get(), config.enabled)
-            .component(ModDataComponents.DAMAGE_ON_ORE_MINED.get(), config.durability.damagePerOreMined)
     );
     public static final Holder<Item> WITHERED_BRACELET
             = register("withered_bracelet", () -> Artifacts.CONFIG.items.witheredBracelet, (builder, config) -> builder
@@ -615,13 +591,17 @@ public class ModItems {
             .equipable()
             .modifiesAttributeBase(ModAttributes.SWIM_SPEED, config.swimSpeedBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> ROOTED_BOOTS
             = register("rooted_boots", () -> Artifacts.CONFIG.items.rootedBoots, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_LEATHER)
+            .durability(config.durability)
             .component(
                     ModDataComponents.REPLENISH_HUNGER_ON_GRASS.get(),
-                    new ReplenishHungerOnGrass(config.enabled, config.hungerReplenishingDuration)
+                    new ReplenishHungerOnGrass(
+                            config.enabled,
+                            config.hungerReplenishingDuration,
+                            config.durability.damagePerFoodPoint
+                    )
             )
             .component(ModDataComponents.POST_EATING_PLANT_GROWTH.get(), config.growPlantsAfterEating)
     );
@@ -643,8 +623,8 @@ public class ModItems {
             = register("whoopee_cushion", () -> Artifacts.CONFIG.items.whoopeeCushion, (builder, config) -> builder
             .equipable(ModSoundEvents.FART)
             .durability(config.durability)
-            .increasesAttribute(ModAttributes.FLATULENCE, config.fartChance)
             .component(ModDataComponents.DAMAGE_ON_FART.get(), config.durability.damagePerActivation)
+            .increasesAttribute(ModAttributes.FLATULENCE, config.fartChance)
     );
 
     private static <CONFIG> Holder<Item> register(

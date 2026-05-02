@@ -39,6 +39,7 @@ public record ToolTierUpgrade(Value<Tier> tier) implements EquipmentAbility {
         return false;
     }
 
+    // TODO: fix with incorrect_for_<tier>_tool tags
     public static boolean isCorrectTierForDrops(Tier tier, BlockState state) {
         if (!state.requiresCorrectToolForDrops()) {
             return true;

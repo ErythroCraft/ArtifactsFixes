@@ -3,6 +3,7 @@ package artifacts.neoforge.data.tags;
 import artifacts.Artifacts;
 import artifacts.integration.ModCompat;
 import artifacts.registry.ModItems;
+import artifacts.registry.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -145,19 +146,23 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.CROSS_NECKLACE).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.ETERNAL_STEAK).add(Items.COOKED_BEEF);
         repairMaterials(ModItems.EVERLASTING_BEEF).add(Items.BEEF);
+        repairMaterials(ModItems.FIRE_GAUNTLET).add(Items.FIRE_CHARGE);
         repairMaterials(ModItems.FLAME_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.LUCKY_SCARF).addTag(net.minecraft.tags.ItemTags.WOOL);
         repairMaterials(ModItems.OBSIDIAN_SKULL).add(Items.OBSIDIAN);
         repairMaterials(ModItems.ONION_RING).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.PANIC_NECKLACE).add(Items.DIAMOND);
         repairMaterials(ModItems.PICKAXE_HEATER).add(Items.FIRE_CHARGE);
+        repairMaterials(ModItems.POCKET_PISTON).add(Items.PISTON);
+        repairMaterials(ModItems.POWER_GLOVE).add(Items.RESIN_CLUMP);
+        repairMaterials(ModItems.ROOTED_BOOTS).addTag(ModTags.LEATHERS);
         repairMaterials(ModItems.SHOCK_PENDANT).add(Items.DIAMOND);
-        repairMaterials(ModItems.STEADFAST_SPIKES).add(Items.LEATHER);
+        repairMaterials(ModItems.STEADFAST_SPIKES).addTag(ModTags.LEATHERS);
         repairMaterials(ModItems.THORN_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
-        repairMaterials(ModItems.VAMPIRIC_GLOVE).add(Items.LEATHER);
+        repairMaterials(ModItems.VAMPIRIC_GLOVE).addTag(ModTags.LEATHERS);
         repairMaterials(ModItems.WARP_DRIVE).add(Items.ENDER_PEARL);
-        repairMaterials(ModItems.WHOOPEE_CUSHION).add(Items.LEATHER);
+        repairMaterials(ModItems.WHOOPEE_CUSHION).addTag(ModTags.LEATHERS);
         repairMaterials(ModItems.WITHERED_BRACELET).add(Items.BONE);
     }
 

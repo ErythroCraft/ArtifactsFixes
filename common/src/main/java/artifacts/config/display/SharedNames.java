@@ -16,6 +16,7 @@ public class SharedNames {
         public static final LangEntry DAMAGE_WHEN_CONSUMED = title("durability.damageWhenConsumed", "Damage When Consumed");
         public static final LangEntry DAMAGE_PER_ACTIVATION = title("durability.damagePerActivation", "Damage per Activation");
         public static final LangEntry DAMAGE_PER_ORE_MINED = title("durability.damagePerOreMined", "Damage per Ore Mined");
+        public static final LangEntry DAMAGE_PER_ATTACK = title("durability.damagePerAttack", "Damage per Attack");
     }
 
     public static class Descriptions {
@@ -42,6 +43,9 @@ public class SharedNames {
         );
         public static final LangEntry DAMAGE_PER_ORE_MINED = description("durability.damagePerOreMined",
                 "The amount of durability lost for every ore block mined"
+        );
+        public static final LangEntry DAMAGE_PER_ATTACK = description("durability.damagePerAttack",
+                "The amount of durability lost for every melee attack performed while wearing this item"
         );
     }
 

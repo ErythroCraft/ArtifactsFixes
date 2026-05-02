@@ -14,11 +14,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 
-public record ReplenishHungerOnGrass(Value<Boolean> enabled, Value<Integer> replenishingDuration) implements EquipmentAbility {
+public record ReplenishHungerOnGrass(
+        Value<Boolean> enabled,
+        Value<Integer> replenishingDuration,
+        Value<Integer> itemDamage
+) implements EquipmentAbility {
 
     public static final Codec<ReplenishHungerOnGrass> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ValueTypes.enabledField().forGetter(ReplenishHungerOnGrass::enabled),
-            ValueTypes.DURATION.codec().fieldOf("duration").forGetter(ReplenishHungerOnGrass::replenishingDuration)
+            ValueTypes.DURATION.codec().fieldOf("duration").forGetter(ReplenishHungerOnGrass::replenishingDuration),
+            ValueTypes.itemDamageField().forGetter(ReplenishHungerOnGrass::itemDamage)
     ).apply(instance, ReplenishHungerOnGrass::new));
 
     public static final StreamCodec<ByteBuf, ReplenishHungerOnGrass> STREAM_CODEC = StreamCodec.composite(
@@ -26,6 +31,8 @@ public record ReplenishHungerOnGrass(Value<Boolean> enabled, Value<Integer> repl
             ReplenishHungerOnGrass::enabled,
             ValueTypes.DURATION.streamCodec(),
             ReplenishHungerOnGrass::replenishingDuration,
+            ValueTypes.NON_NEGATIVE_INT.streamCodec(),
+            ReplenishHungerOnGrass::itemDamage,
             ReplenishHungerOnGrass::new
     );
 
@@ -47,6 +54,7 @@ public record ReplenishHungerOnGrass(Value<Boolean> enabled, Value<Integer> repl
                 player.getFoodData().eat(1, 0.5F);
                 PostEatingEffect.applyEffects(entity, 1);
                 PlaySoundAtPlayerPacket.sendSound(player, SoundEvents.GENERIC_EAT, 0.5F, 0.8F + entity.getRandom().nextFloat() * 0.4F);
+                slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
             }
         }
     }

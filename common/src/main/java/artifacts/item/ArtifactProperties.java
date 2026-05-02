@@ -3,18 +3,22 @@ package artifacts.item;
 import artifacts.Artifacts;
 import artifacts.component.DamageOnHurt;
 import artifacts.component.Equipable;
+import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
 import artifacts.component.ability.mobeffect.EquipmentMobEffect;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
+import artifacts.item.consumeeffects.DamageItemConsumeEffect;
 import artifacts.registry.ModDataComponents;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentInitializers;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -26,6 +30,9 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.Consumables;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.component.UseCooldown;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Repairable;
 import org.jetbrains.annotations.Nullable;
@@ -50,6 +57,13 @@ public final class ArtifactProperties {
         this.enchantments = new ArrayList<>();
     }
 
+    public ArtifactProperties abilityLore(MutableComponent component) {
+        return component(
+                ModDataComponents.ABILITY_LORE.get(),
+                new ItemLore(List.of(component.withStyle(ChatFormatting.GRAY)))
+        );
+    }
+
     public ArtifactProperties equipable() {
         return equipable(SoundEvents.ARMOR_EQUIP_GENERIC);
     }
@@ -62,6 +76,14 @@ public final class ArtifactProperties {
         this.isEquipable = true;
         component(ModDataComponents.EQUIPABLE.get(), new Equipable(equipSound, true));
         return this;
+    }
+
+    public ArtifactProperties toggleKey(ToggleIdentifier identifier) {
+        return component(ModDataComponents.TOGGLE_KEY.get(), identifier);
+    }
+
+    public ArtifactProperties piglinLoved() {
+        return component(ModDataComponents.PIGLIN_LOVED.get());
     }
 
     public ArtifactProperties increasesAttribute(Holder<Attribute> attribute, Value<Double> amount) {
@@ -98,6 +120,18 @@ public final class ArtifactProperties {
         return this;
     }
 
+    public ArtifactProperties useCooldown(Value<Integer> cooldown) {
+        return delayedComponent(DataComponents.USE_COOLDOWN, _ -> new UseCooldown(cooldown.get()));
+    }
+
+    public ArtifactProperties cooldownOnHurt(Value<Integer> cooldown) {
+        return component(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), new PostDamageCooldown(cooldown, Optional.empty()));
+    }
+
+    public ArtifactProperties cooldownOnHurt(Value<Integer> cooldown, TagKey<DamageType> filter) {
+        return component(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), new PostDamageCooldown(cooldown, Optional.of(filter)));
+    }
+
     public ArtifactProperties durability(ItemDamageProperties durability) {
         // Vanilla also sets max stack size to 1, but we already do this by default in ArtifactProperties#build()
         delayedComponent(DataComponents.DAMAGE, durability::canBeDamaged, _ -> 0);
@@ -109,12 +143,16 @@ public final class ArtifactProperties {
         return this;
     }
 
-    public ArtifactProperties cooldownOnHurt(Value<Integer> cooldown) {
-        return component(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), new PostDamageCooldown(cooldown, Optional.empty()));
+    public ArtifactProperties breakSound(Holder<SoundEvent> breakSound) {
+        return component(DataComponents.BREAK_SOUND, breakSound);
     }
 
-    public ArtifactProperties cooldownOnHurt(Value<Integer> cooldown, TagKey<DamageType> filter) {
-        return component(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), new PostDamageCooldown(cooldown, Optional.of(filter)));
+    public ArtifactProperties damageWhenConsumed(Value<Boolean> enabled, Value<Integer> itemDamage) {
+        return delayedComponent(
+                DataComponents.CONSUMABLE,
+                enabled,
+                _ -> Consumables.defaultFood().onConsume(new DamageItemConsumeEffect(itemDamage)).build()
+        );
     }
 
     public ArtifactProperties damageOnHurt(Value<Integer> itemDamage) {
@@ -123,6 +161,14 @@ public final class ArtifactProperties {
 
     public ArtifactProperties damageOnHurt(Value<Integer> itemDamage, TagKey<DamageType> filter) {
         return component(ModDataComponents.DAMAGE_ON_HURT.get(), new DamageOnHurt(itemDamage, Optional.of(filter)));
+    }
+
+    public ArtifactProperties damageOnAttack(Value<Integer> itemDamage) {
+        return component(ModDataComponents.DAMAGE_ON_ATTACK.get(), itemDamage);
+    }
+
+    public ArtifactProperties damageOnOreMined(Value<Integer> itemDamage) {
+        return component(ModDataComponents.DAMAGE_ON_ORE_MINED.get(), itemDamage);
     }
 
     public ArtifactProperties component(DataComponentType<Unit> type) {

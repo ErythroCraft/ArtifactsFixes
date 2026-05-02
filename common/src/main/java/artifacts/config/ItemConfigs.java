@@ -379,6 +379,8 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("How long an entity is set on fire for after being attacked by an entity wearing the Fire Gauntlet")
                 .syncToClients().build();
 
+        public final AttackBasedDurabilityCategory durability = new AttackBasedDurabilityCategory(1500);
+
         private FireGauntlet() {
             super(ModItems.FIRE_GAUNTLET);
         }
@@ -595,6 +597,8 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The amount of extra knockback that is granted by the Pocket Piston")
                 .syncToClients().build();
 
+        public final AttackBasedDurabilityCategory durability = new AttackBasedDurabilityCategory(1500);
+
         private PocketPiston() {
             super(ModItems.POCKET_PISTON);
         }
@@ -605,6 +609,8 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Double> attackDamageBonus = define("attackDamageBonus", ValueTypes.ATTRIBUTE_MODIFIER, 4D)
                 .tooltipLine("The amount of extra damage that is dealt by melee attacks from players wearing the Power Glove")
                 .syncToClients().build();
+
+        public final AttackBasedDurabilityCategory durability = new AttackBasedDurabilityCategory(1500);
 
         private PowerGlove() {
             super(ModItems.POWER_GLOVE);
@@ -625,8 +631,21 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("Whether the Rooted Boots apply a bone meal effect after eating food")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private RootedBoots() {
             super(ModItems.ROOTED_BOOTS);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerFoodPoint = define("damagePerFoodPoint", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .tooltipLine("The amount of durability lost every time the Rooted Boots restore a food point")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(20 * 20);
+            }
         }
     }
 
@@ -1085,7 +1104,24 @@ public final class ItemConfigs extends ConfigManager {
                 this.damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, damagePerActivation)
                         .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
                         .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ACTIVATION)
-                        .build();
+                        .syncToClients().build();
+            }
+        }
+
+        public class AttackBasedDurabilityCategory extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerAttack;
+
+            private AttackBasedDurabilityCategory(int maxDamage) {
+                this(maxDamage, 1);
+            }
+
+            private AttackBasedDurabilityCategory(int maxDamage, int damagePerAttack) {
+                super(maxDamage);
+                this.damagePerAttack = define("damagePerAttack", ValueTypes.NON_NEGATIVE_INT, damagePerAttack)
+                        .title(SharedNames.Titles.DAMAGE_PER_ATTACK)
+                        .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ATTACK)
+                        .syncToClients().build();
             }
         }
     }

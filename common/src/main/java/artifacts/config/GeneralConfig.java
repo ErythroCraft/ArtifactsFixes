@@ -99,6 +99,8 @@ public final class GeneralConfig extends ConfigManager {
         }
     }
 
+    // TODO: Add config options to spawn items in a damaged state from chests/mimics/etc.
+    // TODO: Add config options to spawn items with curse of vanishing & curse of binding
     public final class Durability extends SubCategory {
 
         public final ConfigValue<Boolean> allowDurabilityEnchantments

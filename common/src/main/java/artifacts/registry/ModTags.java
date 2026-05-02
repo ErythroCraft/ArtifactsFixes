@@ -33,6 +33,8 @@ public class ModTags {
     public static final TagKey<Block> ORES = conventionTag(Registries.BLOCK, "ores");
     /** Items that are affected by the pickaxe heater */
     public static final TagKey<Item> RAW_MATERIALS = conventionTag(Registries.ITEM, "raw_materials");
+    /** Repair material for various artifacts */
+    public static final TagKey<Item> LEATHERS = conventionTag(Registries.ITEM, "leathers");
 
     private static <T> TagKey<T> create(ResourceKey<Registry<T>> registry, String name) {
         return TagKey.create(registry, Artifacts.id(name));

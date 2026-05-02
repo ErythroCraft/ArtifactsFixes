@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-02T12:50:24.1497487	Model Definitions - artifacts
+// 26.1.2	2026-05-02T18:19:19.7740973	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
@@ -14,7 +14,7 @@ c91ed6234cb403eb346feb1bc35f2394377ae325 assets/artifacts/items/cloud_in_a_bottl
 5566c52b92fe86303fab84ba5425214d4ba198bb assets/artifacts/items/eternal_steak.json
 489a34fa4a36aafa79c06311fa2d84bcb67dd6af assets/artifacts/items/everlasting_beef.json
 af240068a96d0f1068f55fb57ddcdc4795898bc7 assets/artifacts/items/feral_claws.json
-86042bbc48e5bb7c6d5b23a3e037800910f59e80 assets/artifacts/items/fire_gauntlet.json
+525d7c010a2cf9a00a49f140629254e7d4554236 assets/artifacts/items/fire_gauntlet.json
 1c7baac68a894c537ac8423f5d18c568d35f5fd4 assets/artifacts/items/flame_pendant.json
 4d6d9c36a2530bf3927d087ca03cd17996390fd8 assets/artifacts/items/flippers.json
 bdd82736d65124020cca14c11a73104c8794bd3e assets/artifacts/items/golden_hook.json
@@ -29,9 +29,9 @@ dddc89369c2fede3994c2061f06da70c626ff7c4 assets/artifacts/items/novelty_drinking
 6c2e3358f1046ea929c2a8f14dd459c5df369bd2 assets/artifacts/items/panic_necklace.json
 e6b97fe1e54787f046d9209eb79f381d459c3ec8 assets/artifacts/items/pickaxe_heater.json
 7b3588582ef3ae4a6fcb38529cd28abb9d0ac19a assets/artifacts/items/plastic_drinking_hat.json
-da5bda43b52561e643c1ceb9a02e7e058efa5c62 assets/artifacts/items/pocket_piston.json
-d08471de65be5394847ea5bee8e9975e3646aaba assets/artifacts/items/power_glove.json
-d2dbab922958dc30dbe44116ce056c9cdbcef6b2 assets/artifacts/items/rooted_boots.json
+205cf77563287f8f446bf8d14c8e3740493a21c3 assets/artifacts/items/pocket_piston.json
+1a5be69c99bf1aa98d1b9953e4e3dadb3fd9be27 assets/artifacts/items/power_glove.json
+10af93e13e0c871ab7a45777526af43fe5508332 assets/artifacts/items/rooted_boots.json
 6e74eb5f04cddb6df3e4d1f734709cda47f01c10 assets/artifacts/items/running_shoes.json
 59eb8ddeb8dfd02419e68058d5e29fa88556f5c4 assets/artifacts/items/scarf_of_invisibility.json
 4de5f30faf23ac23521ff5db3ecb7442ba601d76 assets/artifacts/items/shock_pendant.json
@@ -67,6 +67,7 @@ d9739baff08bdc98b399a74f9dd02d186a74b3b8 assets/artifacts/models/item/cowboy_hat
 5de7e1374647af67ef9cec0c0d2275385237879c assets/artifacts/models/item/everlasting_beef.json
 67c9719e2564bc89460fee1ab0bb31add1ad45bc assets/artifacts/models/item/feral_claws.json
 b33c2226b7661ebd8378d72d7ce03bd309d403cb assets/artifacts/models/item/fire_gauntlet.json
+88d779a569588e15c5d15f171b18058e7c4ceca1 assets/artifacts/models/item/fire_gauntlet_broken.json
 6933807e48f28d084337ae0973056cf7bec76d75 assets/artifacts/models/item/flame_pendant.json
 72309c39724130a2fe79116f382947759440bdd1 assets/artifacts/models/item/flame_pendant_broken.json
 95a774ea113e17519b159222e534a3c8124abc2b assets/artifacts/models/item/flippers.json
@@ -87,8 +88,11 @@ ad453a0f0fd345158d876ca32b0a90e27f6511fd assets/artifacts/models/item/panic_neck
 e373d9484371d5ec7c9d02f69306026d6b306800 assets/artifacts/models/item/pickaxe_heater_broken.json
 7cecd8b4b341331e497ef21e4674c138226eadf5 assets/artifacts/models/item/plastic_drinking_hat.json
 53f2a0e20c731c3094e7750bdfa198852a60375e assets/artifacts/models/item/pocket_piston.json
+5d827c2474558f500f39cb003518a12064f0cd75 assets/artifacts/models/item/pocket_piston_broken.json
 72e9d3ee478f28ac4f90802a6f86903b1fe903ef assets/artifacts/models/item/power_glove.json
+30332cf5c3c14aac324029da77830bdea74dd324 assets/artifacts/models/item/power_glove_broken.json
 bead0e994b79a548a8bb12badbf4139d57ca7ec2 assets/artifacts/models/item/rooted_boots.json
+f18fd78ca911e9e794670f8d2e46407429cfc2a5 assets/artifacts/models/item/rooted_boots_broken.json
 fffc2f23c032ed974a640c53d35faa86eb31241d assets/artifacts/models/item/running_shoes.json
 9431f591e171bd0b92bbe48882623c9bca38c658 assets/artifacts/models/item/scarf_of_invisibility.json
 11020427bf239049950bad9c1b69f9f7824e6698 assets/artifacts/models/item/shock_pendant.json
