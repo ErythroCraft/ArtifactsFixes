@@ -82,6 +82,9 @@ public class ModDataComponents {
     /** Damage applied to the item after mining an ore block, while worn and not on cooldown */
     public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_ORE_MINED =
             registerSynced("damage_on_ore_mined", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
+    public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_TRADE =
+            registerSynced("damage_on_trade", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
+
 
     // Abilities (= components that prevent the 'cosmetic' tooltip from showing up when EquipmentAbility#isNonCosmetic returns true)
     /** Cooldown applied to the item after receiving damage, possibly filtered by damage type tag */

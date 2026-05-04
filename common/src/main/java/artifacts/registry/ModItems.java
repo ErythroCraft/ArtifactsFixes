@@ -164,10 +164,11 @@ public class ModItems {
             .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), () -> EntityCondition.ALWAYS)
             .component(ModDataComponents.REDUCED_NIGHT_VISION.get(), config.strength)
     );
-    // TODO: add durability config options
     public static final Holder<Item> VILLAGER_HAT
             = register("villager_hat", () -> Artifacts.CONFIG.items.villagerHat, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .component(ModDataComponents.DAMAGE_ON_TRADE.get(), config.durability.damagePerTrade)
             .increasesAttribute(ModAttributes.VILLAGER_REPUTATION, config.reputationBonus)
     );
     // TODO: add durability config options

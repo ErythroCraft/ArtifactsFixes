@@ -28,6 +28,7 @@
     "attribute.PlayerMixin",
     "attribute.flatulence.EntityMixin",
     "attribute.invincibilityticks.LivingEntityMixin",
+    "attribute.villagerreputation.AbstractVillagerMixin",
     "attribute.villagerreputation.VillagerMixin",
     "compat.apoli.condition.type.entity.ExposedToSunEntityConditionTypeMixin",
     "debug.TagLoaderMixin",

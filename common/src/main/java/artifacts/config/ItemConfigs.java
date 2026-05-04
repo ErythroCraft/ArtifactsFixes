@@ -905,8 +905,22 @@ public final class ItemConfigs extends ConfigManager {
                 .tooltipLine("The amount of extra reputation that is granted by the Villager Hat when trading with villagers")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private VillagerHat() {
             super(ModItems.VILLAGER_HAT);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerTrade
+                    = define("damagePerTrade", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .tooltipLine("The amount of durability lost per trade completed with the Villager Hat")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(240);
+            }
         }
     }
 

@@ -263,6 +263,8 @@
   "artifacts.config.items.vampiric_glove.absorptionRatio.title": "Absorption Ratio",
   "artifacts.config.items.vampiric_glove.maxHealingPerHit.description": "The maximum amount of healing that can be absorbed in a single hit when attacking an entity while wearing the Vampiric Glove",
   "artifacts.config.items.vampiric_glove.maxHealingPerHit.title": "Max Healing per Hit",
+  "artifacts.config.items.villager_hat.durability.damagePerTrade.description": "The amount of durability lost per trade completed with the Villager Hat",
+  "artifacts.config.items.villager_hat.durability.damagePerTrade.title": "Damage per Trade",
   "artifacts.config.items.villager_hat.reputationBonus.description": "The amount of extra reputation that is granted by the Villager Hat when trading with villagers",
   "artifacts.config.items.villager_hat.reputationBonus.title": "Reputation Bonus",
   "artifacts.config.items.warp_drive.cooldown.description": "The duration Ender Pearls go on cooldown for after being thrown using the Warp Drive",

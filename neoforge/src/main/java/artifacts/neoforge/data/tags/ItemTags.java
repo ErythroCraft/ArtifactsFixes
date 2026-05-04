@@ -161,6 +161,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.THORN_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
         repairMaterials(ModItems.VAMPIRIC_GLOVE).addTag(ModTags.LEATHERS);
+        repairMaterials(ModItems.VILLAGER_HAT).add(Items.HAY_BLOCK);
         repairMaterials(ModItems.WARP_DRIVE).add(Items.ENDER_PEARL);
         repairMaterials(ModItems.WHOOPEE_CUSHION).addTag(ModTags.LEATHERS);
         repairMaterials(ModItems.WITHERED_BRACELET).add(Items.BONE);
