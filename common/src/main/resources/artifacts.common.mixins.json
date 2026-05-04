@@ -26,6 +26,7 @@
     "accessors.MobAccessor",
     "attribute.LivingEntityMixin",
     "attribute.PlayerMixin",
+    "attribute.eatingspeed.ConsumableMixin",
     "attribute.flatulence.EntityMixin",
     "attribute.invincibilityticks.LivingEntityMixin",
     "attribute.villagerreputation.AbstractVillagerMixin",

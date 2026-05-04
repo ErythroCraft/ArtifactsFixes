@@ -299,6 +299,8 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Double> drinkingSpeedBonus;
         public final ConfigValue<Double> eatingSpeedBonus;
 
+        public final Durability durability = new Durability();
+
         private DrinkingHat(Holder<Item> item, String itemName) {
             super(item);
             this.drinkingSpeedBonus = define("drinkingSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 1.50)
@@ -307,6 +309,25 @@ public final class ItemConfigs extends ConfigManager {
             this.eatingSpeedBonus = define("eatingSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.50)
                     .tooltipLine("How much the %s increases the wearer's eating speed".formatted(itemName))
                     .syncToClients().build();
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerItemDrunk
+                    = define("damagePerItemDrunk", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ITEM_DRUNK)
+                    .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ITEM_DRUNK)
+                    .syncToClients().build();
+
+            public final ConfigValue<Integer> damagePerItemEaten
+                    = define("damagePerItemEaten", ValueTypes.NON_NEGATIVE_INT, 1)
+                    .title(SharedNames.Titles.DAMAGE_PER_ITEM_EATEN)
+                    .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ITEM_EATEN)
+                    .syncToClients().build();
+
+            private Durability() {
+                super(64 * 4);
+            }
         }
     }
 

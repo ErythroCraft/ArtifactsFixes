@@ -130,17 +130,19 @@ public class ModItems {
     );
 
     // head
-    // TODO: add durability config options
     public static final Holder<Item> PLASTIC_DRINKING_HAT
             = register("plastic_drinking_hat", () -> Artifacts.CONFIG.items.plasticDrinkingHat, (builder, config) -> builder
             .equipable(SoundEvents.BOTTLE_FILL)
+            .durability(config.durability)
+            .damageOnItemConsumed(config.durability.damagePerItemEaten, config.durability.damagePerItemDrunk)
             .modifiesAttributeBase(ModAttributes.DRINKING_SPEED, config.drinkingSpeedBonus)
             .modifiesAttributeBase(ModAttributes.EATING_SPEED, config.eatingSpeedBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> NOVELTY_DRINKING_HAT
             = register("novelty_drinking_hat", () -> Artifacts.CONFIG.items.noveltyDrinkingHat, (builder, config) -> builder
             .equipable(SoundEvents.BOTTLE_FILL)
+            .durability(config.durability)
+            .damageOnItemConsumed(config.durability.damagePerItemEaten, config.durability.damagePerItemDrunk)
             .abilityLore(Component.translatable("artifacts.tooltip.item.novelty_drinking_hat"))
             .modifiesAttributeBase(ModAttributes.DRINKING_SPEED, config.drinkingSpeedBonus)
             .modifiesAttributeBase(ModAttributes.EATING_SPEED, config.eatingSpeedBonus)

@@ -1,9 +1,6 @@
 package artifacts.registry;
 
-import artifacts.component.DamageOnHurt;
-import artifacts.component.Equipable;
-import artifacts.component.HurtSound;
-import artifacts.component.ToggleIdentifier;
+import artifacts.component.*;
 import artifacts.component.ability.*;
 import artifacts.component.ability.mobeffect.AttackEffect;
 import artifacts.component.ability.mobeffect.EquipmentMobEffect;
@@ -82,9 +79,12 @@ public class ModDataComponents {
     /** Damage applied to the item after mining an ore block, while worn and not on cooldown */
     public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_ORE_MINED =
             registerSynced("damage_on_ore_mined", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
+    /** Damage applied to the item after completing a trade with a villager, while worn and not on cooldown */
     public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_TRADE =
             registerSynced("damage_on_trade", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
-
+    /** Damage applied to the item after consuming an item, while worn and not on cooldown */
+    public static final Supplier<DataComponentType<DamageOnItemConsumed>> DAMAGE_ON_ITEM_CONSUMED =
+            registerSynced("damage_on_item_consumed", DamageOnItemConsumed.CODEC, DamageOnItemConsumed.STREAM_CODEC);
 
     // Abilities (= components that prevent the 'cosmetic' tooltip from showing up when EquipmentAbility#isNonCosmetic returns true)
     /** Cooldown applied to the item after receiving damage, possibly filtered by damage type tag */

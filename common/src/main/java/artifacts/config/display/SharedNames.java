@@ -17,6 +17,8 @@ public class SharedNames {
         public static final LangEntry DAMAGE_PER_ACTIVATION = title("durability.damagePerActivation", "Damage per Activation");
         public static final LangEntry DAMAGE_PER_ORE_MINED = title("durability.damagePerOreMined", "Damage per Ore Mined");
         public static final LangEntry DAMAGE_PER_ATTACK = title("durability.damagePerAttack", "Damage per Attack");
+        public static final LangEntry DAMAGE_PER_ITEM_DRUNK = title("durability.damagePerItemDrunk", "Damage per Item Drunk");
+        public static final LangEntry DAMAGE_PER_ITEM_EATEN = title("durability.damagePerItemEaten", "Damage per Item Eaten");
     }
 
     public static class Descriptions {
@@ -46,6 +48,12 @@ public class SharedNames {
         );
         public static final LangEntry DAMAGE_PER_ATTACK = description("durability.damagePerAttack",
                 "The amount of durability lost for every melee attack performed while wearing this item"
+        );
+        public static final LangEntry DAMAGE_PER_ITEM_DRUNK = description("durability.damagePerItemDrunk",
+                "The amount of durability lost every time an item is drunk"
+        );
+        public static final LangEntry DAMAGE_PER_ITEM_EATEN = description("durability.damagePerItemEaten",
+                "The amount of durability lost every time an item is eaten"
         );
     }
 

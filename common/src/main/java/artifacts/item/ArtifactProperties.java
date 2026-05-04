@@ -2,6 +2,7 @@ package artifacts.item;
 
 import artifacts.Artifacts;
 import artifacts.component.DamageOnHurt;
+import artifacts.component.DamageOnItemConsumed;
 import artifacts.component.Equipable;
 import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
@@ -169,6 +170,10 @@ public final class ArtifactProperties {
 
     public ArtifactProperties damageOnOreMined(Value<Integer> itemDamage) {
         return component(ModDataComponents.DAMAGE_ON_ORE_MINED.get(), itemDamage);
+    }
+
+    public ArtifactProperties damageOnItemConsumed(Value<Integer> damageOnEat, Value<Integer> damageOnDrink) {
+        return component(ModDataComponents.DAMAGE_ON_ITEM_CONSUMED.get(), new DamageOnItemConsumed(damageOnEat, damageOnDrink));
     }
 
     public ArtifactProperties component(DataComponentType<Unit> type) {

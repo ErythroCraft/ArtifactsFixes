@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-04T18:19:05.0305274	Tags for minecraft:item mod id artifacts
+// 26.1.2	2026-05-05T01:00:05.3461226	Tags for minecraft:item mod id artifacts
 8dd1563f299da374a09d42f0e3b2b918d201d735 data/artifacts/tags/item/artifacts.json
 dc0986fc0d086d461ba46c06cd791e5d97f79112 data/artifacts/tags/item/equippable.json
 f2aa87f54e7951ea0cf81ac252c2abe279b0c936 data/artifacts/tags/item/repairs_antidote_vessel.json
@@ -9,10 +9,12 @@ d14710b6121edb04c184b88cb21ce8d106aafd32 data/artifacts/tags/item/repairs_everla
 e11ed0b6a7871924f38af8fc5dd6c9cb70d4e018 data/artifacts/tags/item/repairs_fire_gauntlet.json
 fdab8ddd5529ae14b26bc1853b004131135318a4 data/artifacts/tags/item/repairs_flame_pendant.json
 c95c455fe4e6a7c8c1a280e27f6957acdeb9e2f3 data/artifacts/tags/item/repairs_lucky_scarf.json
+168f825eb904049ccc882fb6ec63141997a678d3 data/artifacts/tags/item/repairs_novelty_drinking_hat.json
 26d89c4e3cfa827f5d2a7ef1ef43ec4c8c63cd6e data/artifacts/tags/item/repairs_obsidian_skull.json
 f2aa87f54e7951ea0cf81ac252c2abe279b0c936 data/artifacts/tags/item/repairs_onion_ring.json
 fdab8ddd5529ae14b26bc1853b004131135318a4 data/artifacts/tags/item/repairs_panic_necklace.json
 e11ed0b6a7871924f38af8fc5dd6c9cb70d4e018 data/artifacts/tags/item/repairs_pickaxe_heater.json
+168f825eb904049ccc882fb6ec63141997a678d3 data/artifacts/tags/item/repairs_plastic_drinking_hat.json
 41559d893c77f1aa26520ff2f1ec73d9c726c8f4 data/artifacts/tags/item/repairs_pocket_piston.json
 168f825eb904049ccc882fb6ec63141997a678d3 data/artifacts/tags/item/repairs_power_glove.json
 68c33d7c2aa4010f0c167c55715648b67fc2fe9f data/artifacts/tags/item/repairs_rooted_boots.json

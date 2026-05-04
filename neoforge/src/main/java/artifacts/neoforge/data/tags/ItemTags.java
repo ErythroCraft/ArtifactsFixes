@@ -149,10 +149,12 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.FIRE_GAUNTLET).add(Items.FIRE_CHARGE);
         repairMaterials(ModItems.FLAME_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.LUCKY_SCARF).addTag(net.minecraft.tags.ItemTags.WOOL);
+        repairMaterials(ModItems.NOVELTY_DRINKING_HAT).add(Items.RESIN_CLUMP);
         repairMaterials(ModItems.OBSIDIAN_SKULL).add(Items.OBSIDIAN);
         repairMaterials(ModItems.ONION_RING).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.PANIC_NECKLACE).add(Items.DIAMOND);
         repairMaterials(ModItems.PICKAXE_HEATER).add(Items.FIRE_CHARGE);
+        repairMaterials(ModItems.PLASTIC_DRINKING_HAT).add(Items.RESIN_CLUMP);
         repairMaterials(ModItems.POCKET_PISTON).add(Items.PISTON);
         repairMaterials(ModItems.POWER_GLOVE).add(Items.RESIN_CLUMP);
         repairMaterials(ModItems.ROOTED_BOOTS).addTag(ModTags.LEATHERS);

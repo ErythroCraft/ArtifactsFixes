@@ -21,7 +21,7 @@ public abstract class AbstractVillagerMixin {
             EquipmentHelper.iterateComponents(
                     ModDataComponents.DAMAGE_ON_TRADE.get(),
                     villager.getTradingPlayer(),
-                    false, false,
+                    true, true,
                     (component, slotAccess) ->
                             slotAccess.hurtAndBreak(villager.getTradingPlayer(), component.get())
             );
