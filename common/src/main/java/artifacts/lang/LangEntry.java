@@ -1,4 +1,4 @@
-package artifacts.datagen;
+package artifacts.lang;
 
 import net.minecraft.network.chat.Component;
 

@@ -2,6 +2,7 @@ package artifacts.event;
 
 import artifacts.attribute.DynamicAttributeModifier;
 import artifacts.component.DamageOnHurt;
+import artifacts.component.DamageOverTime;
 import artifacts.component.SwimData;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.component.ability.PostDamageCooldown;
@@ -59,6 +60,7 @@ public class ArtifactHooks {
         if (!entity.onGround()) {
             UmbrellaHelper.onLivingUpdate(entity);
         }
+        DamageOverTime.onLivingUpdate(entity);
     }
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource source, float amount) {

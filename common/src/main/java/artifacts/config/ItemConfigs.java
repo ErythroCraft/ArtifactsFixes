@@ -3,11 +3,11 @@ package artifacts.config;
 import artifacts.Artifacts;
 import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.component.ability.retaliation.RetaliationEffect;
-import artifacts.config.display.SharedNames;
+import artifacts.config.display.SharedConfigLang;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.datagen.LangEntry;
+import artifacts.lang.LangEntry;
 import artifacts.item.ItemDamageProperties;
 import artifacts.registry.ModItems;
 import net.minecraft.core.Holder;
@@ -82,11 +82,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class AnglersHat extends ItemSubCategory {
 
         public final ConfigValue<Integer> luckOfTheSeaLevelBonus = define("luckOfTheSeaLevelBonus", ValueTypes.ENCHANTMENT_LEVEL, 1)
-                .tooltipLine("The amount of extra levels of luck of the sea that are granted by the Angler's Hat")
+                .descriptionLine("The amount of extra levels of luck of the sea that are granted by the Angler's Hat")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> lureLevelBonus = define("lureLevelBonus", ValueTypes.ENCHANTMENT_LEVEL, 1)
-                .tooltipLine("The amount of extra levels of lure that are granted by the Angler's Hat")
+                .descriptionLine("The amount of extra levels of lure that are granted by the Angler's Hat")
                 .syncToClients().build();
 
         private AnglersHat() {
@@ -97,11 +97,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class AntidoteVessel extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Antidote Vessel reduces the duration of negative effects")
+                .descriptionLine("Whether the Antidote Vessel reduces the duration of negative effects")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> maxEffectDuration = define("maxEffectDuration", ValueTypes.DURATION, 5)
-                .tooltipLine("The maximum duration in seconds negative mob effects can last when wearing the Antidote Vessel")
+                .descriptionLine("The maximum duration in seconds negative mob effects can last when wearing the Antidote Vessel")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(100);
@@ -114,7 +114,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class AquaDashers extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Aqua-Dashers allow the wearer to sprint on water")
+                .descriptionLine("Whether the Aqua-Dashers allow the wearer to sprint on water")
                 .syncToClients().build();
 
         private AquaDashers() {
@@ -125,21 +125,21 @@ public final class ItemConfigs extends ConfigManager {
     public final class BunnyHoppers extends ItemSubCategory {
 
         public final ConfigValue<Boolean> modifyHurtSounds = define("modifyHurtSounds", true)
-                .tooltipLine("Whether the Bunny Hoppers change the player's hurt sounds")
+                .descriptionLine("Whether the Bunny Hoppers change the player's hurt sounds")
                 .syncToClients().build();
 
         public final ConfigValue<Double> fallDamageMultiplier = define("fallDamageMultiplier", ValueTypes.ATTRIBUTE_MODIFIER, 0D)
-                .tooltipLine("How much the Bunny Hoppers reduce or increase fall damage")
-                .tooltipLine("Values between -1 and 0 reduce fall damage")
-                .tooltipLine("Values above 0 increase fall damage")
+                .descriptionLine("How much the Bunny Hoppers reduce or increase fall damage")
+                .descriptionLine("Values between -1 and 0 reduce fall damage")
+                .descriptionLine("Values above 0 increase fall damage")
                 .syncToClients().build();
 
         public final ConfigValue<Double> jumpStrengthBonus = define("jumpStrengthBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.40)
-                .tooltipLine("The amount of extra jump strength the Bunny Hoppers apply to players")
+                .descriptionLine("The amount of extra jump strength the Bunny Hoppers apply to players")
                 .syncToClients().build();
 
         public final ConfigValue<Double> safeFallDistanceBonus = define("safeFallDistanceBonus", ValueTypes.ATTRIBUTE_MODIFIER, 10D)
-                .tooltipLine("The amount of extra safe fall distance in blocks that is granted by the Bunny Hoppers")
+                .descriptionLine("The amount of extra safe fall distance in blocks that is granted by the Bunny Hoppers")
                 .syncToClients().build();
 
         private BunnyHoppers() {
@@ -150,9 +150,9 @@ public final class ItemConfigs extends ConfigManager {
     public final class CharmOfShrinking extends ItemSubCategory {
 
         public final ConfigValue<Double> scaleModifier = define("scaleModifier", ValueTypes.ATTRIBUTE_MODIFIER, -0.50)
-                .tooltipLine("How much the Charm of Shrinking decreases or increases the player's Scale")
-                .tooltipLine("Values between -1 and 0 reduce the player's scale")
-                .tooltipLine("Values above 0 increase the player's scale")
+                .descriptionLine("How much the Charm of Shrinking decreases or increases the player's Scale")
+                .descriptionLine("Values between -1 and 0 reduce the player's scale")
+                .descriptionLine("Values above 0 increase the player's scale")
                 .syncToClients().build();
 
         private CharmOfShrinking() {
@@ -163,17 +163,17 @@ public final class ItemConfigs extends ConfigManager {
     public final class CharmOfSinking extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Charm of Sinking removes the wearer's collision with water")
+                .descriptionLine("Whether the Charm of Sinking removes the wearer's collision with water")
                 .syncToClients()
                 .requiresRestart().build();
 
         public final ConfigValue<Boolean> underwaterFallDamage = define("underwaterFallDamage", false)
-                .tooltipLine("Whether it is possible to take fall damage underwater when wearing the Charm of Sinking")
+                .descriptionLine("Whether it is possible to take fall damage underwater when wearing the Charm of Sinking")
                 .syncToClients()
                 .requiresRestart().build();
 
         public final ConfigValue<Double> oxygenBonus = define("oxygenBonus", ValueTypes.ATTRIBUTE_MODIFIER, 1.5)
-                .tooltipLine("How much longer players wearing the Charm of Sinking can stay underwater")
+                .descriptionLine("How much longer players wearing the Charm of Sinking can stay underwater")
                 .syncToClients().build();
 
         private CharmOfSinking() {
@@ -184,12 +184,12 @@ public final class ItemConfigs extends ConfigManager {
     public final class ChorusTotem extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Chorus Totem prevents the wearer's death")
+                .descriptionLine("Whether the Chorus Totem prevents the wearer's death")
                 .syncToClients()
                 .requiresRestart().build();
 
         public final ConfigValue<Integer> healthRestored = define("healthRestored", ValueTypes.NON_NEGATIVE_INT, 9)
-                .tooltipLine("The amount of health points that are restored after the Chorus Totem activates")
+                .descriptionLine("The amount of health points that are restored after the Chorus Totem activates")
                 .syncToClients().build();
 
         private ChorusTotem() {
@@ -200,25 +200,25 @@ public final class ItemConfigs extends ConfigManager {
     public final class CloudInABottle extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Cloud in a Bottle allows the wearer to double jump")
+                .descriptionLine("Whether the Cloud in a Bottle allows the wearer to double jump")
                 .syncToClients().build();
 
         public final ConfigValue<Double> sprintJumpVerticalVelocity
                 = define("sprintJumpVerticalVelocity", ValueTypes.NON_NEGATIVE_DOUBLE, 0.25)
-                .tooltipLine("The amount of extra vertical velocity that is applied to players that double jump while sprinting using the Cloud in a Bottle")
+                .descriptionLine("The amount of extra vertical velocity that is applied to players that double jump while sprinting using the Cloud in a Bottle")
                 .syncToClients().build();
 
         public final ConfigValue<Double> sprintJumpHorizontalVelocity
                 = define("sprintJumpHorizontalVelocity", ValueTypes.NON_NEGATIVE_DOUBLE, 0.25)
-                .tooltipLine("The amount of extra horizontal velocity that is applied to players that double jump while sprinting using the Cloud in a Bottle")
+                .descriptionLine("The amount of extra horizontal velocity that is applied to players that double jump while sprinting using the Cloud in a Bottle")
                 .syncToClients().build();
 
         public final ConfigValue<Double> safeFallDistanceBonus = define("safeFallDistanceBonus", ValueTypes.ATTRIBUTE_MODIFIER, 3D)
-                .tooltipLine("The amount of extra safe fall distance in blocks that is granted by the Cloud in a Bottle")
+                .descriptionLine("The amount of extra safe fall distance in blocks that is granted by the Cloud in a Bottle")
                 .syncToClients().build();
 
         public final ConfigValue<Double> fallDamageMultiplier = define("fallDamageMultiplier", ValueTypes.FRACTION, 0D)
-                .tooltipLine("How much fall damage is dealt when double jumping with the Cloud in a Bottle")
+                .descriptionLine("How much fall damage is dealt when double jumping with the Cloud in a Bottle")
                 .syncToClients().build();
 
         public final Durability durability = new Durability();
@@ -231,7 +231,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerDoubleJump
                     = define("damagePerDoubleJump", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .tooltipLine("The amount of durability lost for every double jump")
+                    .descriptionLine("The amount of durability lost for every double jump")
                     .syncToClients().build();
 
             private Durability() {
@@ -243,7 +243,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class CowboyHat extends ItemSubCategory {
 
         public final ConfigValue<Double> mountSpeedBonus = define("mountSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.40)
-                .tooltipLine("How much the Cowboy Hat increases the speed of ridden mounts")
+                .descriptionLine("How much the Cowboy Hat increases the speed of ridden mounts")
                 .syncToClients().build();
 
         private CowboyHat() {
@@ -254,11 +254,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class CrossNecklace extends ItemSubCategory {
 
         public final ConfigValue<Double> bonusInvincibilityTicks = define("bonusInvincibilityTicks", ValueTypes.ATTRIBUTE_MODIFIER, 20D)
-                .tooltipLine("The amount of extra ticks the player stays invincible for after taking damage while wearing the Cross Necklace")
+                .descriptionLine("The amount of extra ticks the player stays invincible for after taking damage while wearing the Cross Necklace")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(2)
-                .tooltipLine("The duration in seconds the Cross Necklace goes on cooldown for after activating")
+                .descriptionLine("The duration in seconds the Cross Necklace goes on cooldown for after activating")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(500);
@@ -271,7 +271,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class CrystalHeart extends ItemSubCategory {
 
         public final ConfigValue<Double> healthBonus = define("healthBonus", ValueTypes.ATTRIBUTE_MODIFIER, 10D)
-                .tooltipLine("The amount of extra health points that are granted by the Crystal Heart")
+                .descriptionLine("The amount of extra health points that are granted by the Crystal Heart")
                 .syncToClients().build();
 
         private CrystalHeart() {
@@ -282,11 +282,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class DiggingClaws extends ItemSubCategory {
 
         public final ConfigValue<Double> blockBreakSpeedBonus = define("blockBreakSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.30)
-                .tooltipLine("How much the Digging Claws increase the wearer's mining speed")
+                .descriptionLine("How much the Digging Claws increase the wearer's mining speed")
                 .syncToClients().build();
 
         public final ConfigValue<ToolTierUpgrade.Tier> toolTier = define("toolTier", ValueTypes.TOOL_TIER, ToolTierUpgrade.Tier.STONE)
-                .tooltipLine("The tool tier that the Digging Claws increase the wearer's mining level to")
+                .descriptionLine("The tool tier that the Digging Claws increase the wearer's mining level to")
                 .syncToClients().build();
 
         private DiggingClaws() {
@@ -304,10 +304,10 @@ public final class ItemConfigs extends ConfigManager {
         private DrinkingHat(Holder<Item> item, String itemName) {
             super(item);
             this.drinkingSpeedBonus = define("drinkingSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 1.50)
-                    .tooltipLine("How much the %s increases the wearer's drinking speed".formatted(itemName))
+                    .descriptionLine("How much the %s increases the wearer's drinking speed".formatted(itemName))
                     .syncToClients().build();
             this.eatingSpeedBonus = define("eatingSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.50)
-                    .tooltipLine("How much the %s increases the wearer's eating speed".formatted(itemName))
+                    .descriptionLine("How much the %s increases the wearer's eating speed".formatted(itemName))
                     .syncToClients().build();
         }
 
@@ -315,14 +315,12 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerItemDrunk
                     = define("damagePerItemDrunk", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .title(SharedNames.Titles.DAMAGE_PER_ITEM_DRUNK)
-                    .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ITEM_DRUNK)
+                    .titleAndDescription(SharedConfigLang.DAMAGE_PER_ITEM_DRUNK)
                     .syncToClients().build();
 
             public final ConfigValue<Integer> damagePerItemEaten
                     = define("damagePerItemEaten", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .title(SharedNames.Titles.DAMAGE_PER_ITEM_EATEN)
-                    .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ITEM_EATEN)
+                    .titleAndDescription(SharedConfigLang.DAMAGE_PER_ITEM_EATEN)
                     .syncToClients().build();
 
             private Durability() {
@@ -342,11 +340,11 @@ public final class ItemConfigs extends ConfigManager {
         public EverlastingFood(Holder<Item> holder, String itemName) {
             super(holder);
             enabled = defineEnabled(true)
-                    .tooltipLine("Whether the %s can be eaten".formatted(itemName))
+                    .descriptionLine("Whether the %s can be eaten".formatted(itemName))
                     .syncToClients()
                     .requiresRestart().build();
             cooldown = defineCooldown(15)
-                    .tooltipLine("The duration in seconds the %s goes on cooldown for after being eaten".formatted(itemName))
+                    .descriptionLine("The duration in seconds the %s goes on cooldown for after being eaten".formatted(itemName))
                     .syncToClients()
                     .requiresRestart().build();
             durability = new Durability();
@@ -356,8 +354,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damageWhenConsumed
                     = define("damageWhenConsumed", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .title(SharedNames.Titles.DAMAGE_WHEN_CONSUMED)
-                    .tooltipLine(SharedNames.Descriptions.DAMAGE_WHEN_CONSUMED)
+                    .titleAndDescription(SharedConfigLang.DAMAGE_WHEN_CONSUMED)
                     .syncToClients().build();
 
             private Durability() {
@@ -376,7 +373,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class EverlastingBeef extends EverlastingFood {
 
         public final ConfigValue<Double> dropRate = define("dropRate", ValueTypes.FRACTION, 1 / 500D)
-                .tooltipLine("The probability that Everlasting Beef drops when a cow or mooshroom is killed by a player").build();
+                .descriptionLine("The probability that Everlasting Beef drops when a cow or mooshroom is killed by a player").build();
 
         private EverlastingBeef() {
             super(ModItems.EVERLASTING_BEEF, "Everlasting Beef");
@@ -386,7 +383,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class FeralClaws extends ItemSubCategory {
 
         public final ConfigValue<Double> attackSpeedBonus = define("attackSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.30)
-                .tooltipLine("How much the Feral Claws increase the wearer's attack speed")
+                .descriptionLine("How much the Feral Claws increase the wearer's attack speed")
                 .syncToClients().build();
 
         private FeralClaws() {
@@ -397,7 +394,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class FireGauntlet extends ItemSubCategory {
 
         public final ConfigValue<Double> fireDuration = define("fireDuration", ValueTypes.ATTRIBUTE_MODIFIER, 8D)
-                .tooltipLine("How long an entity is set on fire for after being attacked by an entity wearing the Fire Gauntlet")
+                .descriptionLine("How long an entity is set on fire for after being attacked by an entity wearing the Fire Gauntlet")
                 .syncToClients().build();
 
         public final AttackBasedDurabilityCategory durability = new AttackBasedDurabilityCategory(1500);
@@ -410,19 +407,19 @@ public final class ItemConfigs extends ConfigManager {
     public final class FlamePendant extends ItemSubCategory {
 
         public final ConfigValue<Double> strikeChance = define("strikeChance", ValueTypes.FRACTION, 0.40)
-                .tooltipLine("The probability that the Flame Pendant lights an attacker on fire")
+                .descriptionLine("The probability that the Flame Pendant lights an attacker on fire")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> fireDuration = define("fireDuration", ValueTypes.DURATION, 10)
-                .tooltipLine("How long an attacking entity is set on fire for when the Flame Pendant activates")
+                .descriptionLine("How long an attacking entity is set on fire for when the Flame Pendant activates")
                 .syncToClients().build();
 
         public final ConfigValue<Boolean> grantFireResistance = define("grantFireResistance", true)
-                .tooltipLine("Whether the Flame Pendant grants Fire Resistance after igniting an entity")
+                .descriptionLine("Whether the Flame Pendant grants Fire Resistance after igniting an entity")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(2)
-                .tooltipLine("The duration in seconds the Flame Pendant goes on cooldown for after setting an entity on fire")
+                .descriptionLine("The duration in seconds the Flame Pendant goes on cooldown for after setting an entity on fire")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(120);
@@ -439,7 +436,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class Flippers extends ItemSubCategory {
 
         public final ConfigValue<Double> swimSpeedBonus = define("swimSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.70)
-                .tooltipLine("How much the Flippers increase the wearer's swim speed")
+                .descriptionLine("How much the Flippers increase the wearer's swim speed")
                 .syncToClients().build();
 
         private Flippers() {
@@ -450,7 +447,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class GoldenHook extends ItemSubCategory {
 
         public final ConfigValue<Double> entityExperienceBonus = define("entityExperienceBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.50)
-                .tooltipLine("The amount of extra experience dropped by entities that are killed by players wearing the Golden Hook")
+                .descriptionLine("The amount of extra experience dropped by entities that are killed by players wearing the Golden Hook")
                 .syncToClients().build();
 
         private GoldenHook() {
@@ -461,15 +458,15 @@ public final class ItemConfigs extends ConfigManager {
     public final class HeliumFlamingo extends ItemSubCategory {
 
         public final ConfigValue<Integer> flightDuration = define("flightDuration", ValueTypes.DURATION, 8)
-                .tooltipLine("The amount of time in seconds a player can fly with the Helium Flamingo before needing to recharge")
+                .descriptionLine("The amount of time in seconds a player can fly with the Helium Flamingo before needing to recharge")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> rechargeDuration = define("rechargeDuration", ValueTypes.DURATION, 15)
-                .tooltipLine("The amount of time in seconds it takes for the Helium Flamingo to recharge")
+                .descriptionLine("The amount of time in seconds it takes for the Helium Flamingo to recharge")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(3)
-                .tooltipLine("The duration in seconds the Helium Flamingo goes on cooldown for when stopping flight")
+                .descriptionLine("The duration in seconds the Helium Flamingo goes on cooldown for when stopping flight")
                 .syncToClients().build();
 
         private HeliumFlamingo() {
@@ -480,15 +477,15 @@ public final class ItemConfigs extends ConfigManager {
     public final class KittySlippers extends ItemSubCategory {
 
         public final ConfigValue<Boolean> modifyHurtSounds = define("modifyHurtSounds", true)
-                .tooltipLine("Whether the Kitty Slippers change the player's hurt sounds")
+                .descriptionLine("Whether the Kitty Slippers change the player's hurt sounds")
                 .syncToClients().build();
 
         public final ConfigValue<Boolean> repelCreepers = define("repelCreepers", true)
-                .tooltipLine("Whether the Kitty Slippers scare nearby creepers")
+                .descriptionLine("Whether the Kitty Slippers scare nearby creepers")
                 .syncToClients().build();
 
         public final ConfigValue<Boolean> repelPhantoms = define("repelPhantoms", true)
-                .tooltipLine("Whether the Kitty Slippers hiss at nearby phantoms")
+                .descriptionLine("Whether the Kitty Slippers hiss at nearby phantoms")
                 .syncToClients().build();
 
         private KittySlippers() {
@@ -499,7 +496,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class LuckyScarf extends ItemSubCategory {
 
         public final ConfigValue<Integer> fortuneLevelBonus = define("fortuneLevelBonus", ValueTypes.ENCHANTMENT_LEVEL, 1)
-                .tooltipLine("The amount of extra levels of fortune that are granted by the Lucky Scarf")
+                .descriptionLine("The amount of extra levels of fortune that are granted by the Lucky Scarf")
                 .syncToClients().build();
 
         public final Durability durability = new Durability();
@@ -511,8 +508,7 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .title(SharedNames.Titles.DAMAGE_PER_ORE_MINED)
-                    .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ORE_MINED)
+                    .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
                     .syncToClients().build();
 
             private Durability() {
@@ -524,7 +520,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class NightVisionGoggles extends ItemSubCategory {
 
         public final ConfigValue<Double> strength = define("strength", ValueTypes.FRACTION, 0.15)
-                .tooltipLine("The strength of the night vision effect applied by the Night Vision Goggles")
+                .descriptionLine("The strength of the night vision effect applied by the Night Vision Goggles")
                 .syncToClients().build();
 
         private NightVisionGoggles() {
@@ -535,11 +531,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class ObsidianSkull extends ItemSubCategory {
 
         public final ConfigValue<Integer> fireResistanceDuration = define("fireResistanceDuration", ValueTypes.DURATION, 30)
-                .tooltipLine("The duration of the fire resistance effect that is applied when taking fire damage while wearing the Obsidian Skull")
+                .descriptionLine("The duration of the fire resistance effect that is applied when taking fire damage while wearing the Obsidian Skull")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(60)
-                .tooltipLine("The amount of time in seconds the Obsidian Skull goes on cooldown for after taking fire damage")
+                .descriptionLine("The amount of time in seconds the Obsidian Skull goes on cooldown for after taking fire damage")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(60);
@@ -552,11 +548,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class OnionRing extends ItemSubCategory {
 
         public final ConfigValue<Integer> hasteDurationPerFoodPoint = define("hasteDurationPerFoodPoint", ValueTypes.DURATION, 6)
-                .tooltipLine("The duration of haste that is applied per food point eaten while wearing the Onion Ring")
+                .descriptionLine("The duration of haste that is applied per food point eaten while wearing the Onion Ring")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> hasteLevel = define("hasteLevel", ValueTypes.MOB_EFFECT_LEVEL, 2)
-                .tooltipLine("The level of the haste effect that is applied by the Onion Ring")
+                .descriptionLine("The level of the haste effect that is applied by the Onion Ring")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(640);
@@ -569,15 +565,15 @@ public final class ItemConfigs extends ConfigManager {
     public final class PanicNecklace extends ItemSubCategory {
 
         public final ConfigValue<Integer> speedLevel = define("speedLevel", ValueTypes.MOB_EFFECT_LEVEL, 1)
-                .tooltipLine("The level of the speed effect that is applied by the Panic Necklace")
+                .descriptionLine("The level of the speed effect that is applied by the Panic Necklace")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> speedDuration = define("speedDuration", ValueTypes.DURATION, 8)
-                .tooltipLine("The duration in seconds of the speed effect that is applied when taking damage while wearing the Panic Necklace")
+                .descriptionLine("The duration in seconds of the speed effect that is applied when taking damage while wearing the Panic Necklace")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(2)
-                .tooltipLine("The duration in seconds the Panic Necklace goes on cooldown for after taking damage")
+                .descriptionLine("The duration in seconds the Panic Necklace goes on cooldown for after taking damage")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(500);
@@ -590,7 +586,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class PickaxeHeater extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Pickaxe Heater smelts mined ores")
+                .descriptionLine("Whether the Pickaxe Heater smelts mined ores")
                 .syncToClients().build();
 
         public final Durability durability = new Durability();
@@ -602,8 +598,7 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .title(SharedNames.Titles.DAMAGE_PER_ORE_MINED)
-                    .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ORE_MINED)
+                    .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
                     .syncToClients().build();
 
             private Durability() {
@@ -615,7 +610,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class PocketPiston extends ItemSubCategory {
 
         public final ConfigValue<Double> attackKnockbackBonus = define("attackKnockbackBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.75)
-                .tooltipLine("The amount of extra knockback that is granted by the Pocket Piston")
+                .descriptionLine("The amount of extra knockback that is granted by the Pocket Piston")
                 .syncToClients().build();
 
         public final AttackBasedDurabilityCategory durability = new AttackBasedDurabilityCategory(1500);
@@ -628,7 +623,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class PowerGlove extends ItemSubCategory {
 
         public final ConfigValue<Double> attackDamageBonus = define("attackDamageBonus", ValueTypes.ATTRIBUTE_MODIFIER, 4D)
-                .tooltipLine("The amount of extra damage that is dealt by melee attacks from players wearing the Power Glove")
+                .descriptionLine("The amount of extra damage that is dealt by melee attacks from players wearing the Power Glove")
                 .syncToClients().build();
 
         public final AttackBasedDurabilityCategory durability = new AttackBasedDurabilityCategory(1500);
@@ -641,15 +636,15 @@ public final class ItemConfigs extends ConfigManager {
     public final class RootedBoots extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Rooted Boots replenish hunger when standing on grass")
+                .descriptionLine("Whether the Rooted Boots replenish hunger when standing on grass")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> hungerReplenishingDuration = define("hungerReplenishingDuration", ValueTypes.DURATION, 10)
-                .tooltipLine("The amount of time in seconds it takes to replenish a single point of hunger while wearing the Rooted Boots")
+                .descriptionLine("The amount of time in seconds it takes to replenish a single point of hunger while wearing the Rooted Boots")
                 .syncToClients().build();
 
         public final ConfigValue<Boolean> growPlantsAfterEating = define("growPlantsAfterEating", true)
-                .tooltipLine("Whether the Rooted Boots apply a bone meal effect after eating food")
+                .descriptionLine("Whether the Rooted Boots apply a bone meal effect after eating food")
                 .syncToClients().build();
 
         public final Durability durability = new Durability();
@@ -661,7 +656,7 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerFoodPoint = define("damagePerFoodPoint", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .tooltipLine("The amount of durability lost every time the Rooted Boots restore a food point")
+                    .descriptionLine("The amount of durability lost every time the Rooted Boots restore a food point")
                     .syncToClients().build();
 
             private Durability() {
@@ -673,11 +668,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class RunningShoes extends ItemSubCategory {
 
         public final ConfigValue<Double> sprintingSpeedBonus = define("sprintingSpeedBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.40)
-                .tooltipLine("How much the Running Shoes increase the wearer's sprinting speed")
+                .descriptionLine("How much the Running Shoes increase the wearer's sprinting speed")
                 .syncToClients().build();
 
         public final ConfigValue<Double> sprintingStepHeightBonus = define("sprintingStepHeightBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.5)
-                .tooltipLine("How much the Running Shoes increase the wearer's step height while sprinting")
+                .descriptionLine("How much the Running Shoes increase the wearer's step height while sprinting")
                 .syncToClients().build();
 
         private RunningShoes() {
@@ -688,12 +683,12 @@ public final class ItemConfigs extends ConfigManager {
     public final class ScarfOfInvisibility extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Scarf of Invisibility makes players invisible")
+                .descriptionLine("Whether the Scarf of Invisibility makes players invisible")
                 .syncToClients()
                 .requiresRestart().build();
 
         public final ConfigValue<Boolean> hideWhenInvisible = define("hideWhenInvisible", false)
-                .tooltipLine("Whether the Scarf of Invisibility is hidden when the wearer is invisible")
+                .descriptionLine("Whether the Scarf of Invisibility is hidden when the wearer is invisible")
                 .syncToClients().build();
 
         private ScarfOfInvisibility() {
@@ -704,15 +699,15 @@ public final class ItemConfigs extends ConfigManager {
     public final class ShockPendant extends ItemSubCategory {
 
         public final ConfigValue<Double> strikeChance = define("strikeChance", ValueTypes.FRACTION, 0.25)
-                .tooltipLine("The probability that the Shock Pendant strikes an attacking entity with lightning")
+                .descriptionLine("The probability that the Shock Pendant strikes an attacking entity with lightning")
                 .syncToClients().build();
 
         public final ConfigValue<Boolean> cancelLightningDamage = define("cancelLightningDamage", true)
-                .tooltipLine("Whether the Shock Pendant cancels damage from lightning")
+                .descriptionLine("Whether the Shock Pendant cancels damage from lightning")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(2)
-                .tooltipLine("The amount of time in seconds the Shock Pendant goes on cooldown for after striking an attacker with lightning")
+                .descriptionLine("The amount of time in seconds the Shock Pendant goes on cooldown for after striking an attacker with lightning")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(50);
@@ -729,12 +724,12 @@ public final class ItemConfigs extends ConfigManager {
     public final class Snorkel extends ItemSubCategory {
 
         public final ConfigValue<Boolean> isInfinite = define("isInfinite", false)
-                .tooltipLine("Whether the Snorkel's water breathing effect depletes when underwater")
+                .descriptionLine("Whether the Snorkel's water breathing effect depletes when underwater")
                 .syncToClients()
                 .requiresRestart().build();
 
         public final ConfigValue<Integer> waterBreathingDuration = define("waterBreathingDuration", ValueTypes.DURATION, 30)
-                .tooltipLine("The duration of the water breathing effect that is applied by the Snorkel")
+                .descriptionLine("The duration of the water breathing effect that is applied by the Snorkel")
                 .syncToClients().build();
 
         private Snorkel() {
@@ -745,11 +740,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class Snowshoes extends ItemSubCategory {
 
         public final ConfigValue<Boolean> allowWalkingOnPowderedSnow = define("allowWalkingOnPowderedSnow", true)
-                .tooltipLine("Whether the Snowshoes allow the wearer to walk on powdered snow")
+                .descriptionLine("Whether the Snowshoes allow the wearer to walk on powdered snow")
                 .syncToClients().build();
 
         public final ConfigValue<Double> movementSpeedOnSnowBonus = define("movementSpeedOnSnowBonus", ValueTypes.ATTRIBUTE_MODIFIER, 0.30)
-                .tooltipLine("How much the Snowshoes increase the wearer's movement speed on snow blocks")
+                .descriptionLine("How much the Snowshoes increase the wearer's movement speed on snow blocks")
                 .syncToClients().build();
 
         private Snowshoes() {
@@ -760,11 +755,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class SteadfastSpikes extends ItemSubCategory {
 
         public final ConfigValue<Double> knockbackResistance = define("knockbackResistance", ValueTypes.ATTRIBUTE_MODIFIER, 1.00)
-                .tooltipLine("How much knockback resistance is granted by the Steadfast Spikes")
+                .descriptionLine("How much knockback resistance is granted by the Steadfast Spikes")
                 .syncToClients().build();
 
         public final ConfigValue<Double> slipperinessReduction = define("slipperinessReduction", ValueTypes.ATTRIBUTE_MODIFIER, 1.00)
-                .tooltipLine("How much the Steadfast Spikes reduce the slipperiness of ice")
+                .descriptionLine("How much the Steadfast Spikes reduce the slipperiness of ice")
                 .syncToClients().build();
 
         public final Durability durability = new Durability();
@@ -777,7 +772,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damageWhenAttacked
                     = define("damageWhenAttacked", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .tooltipLine("The amount of durability lost when the wearer is attacked by an entity or player")
+                    .descriptionLine("The amount of durability lost when the wearer is attacked by an entity or player")
                     .syncToClients()
                     .build();
 
@@ -790,11 +785,11 @@ public final class ItemConfigs extends ConfigManager {
     public final class StriderShoes extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Strider Shoes allow sneaking on lava")
+                .descriptionLine("Whether the Strider Shoes allow sneaking on lava")
                 .syncToClients().build();
 
         public final ConfigValue<Boolean> cancelHotFloorDamage = define("cancelHotFloorDamage", true)
-                .tooltipLine("Whether the Strider Shoes make the wearer immune to hot floor damage")
+                .descriptionLine("Whether the Strider Shoes make the wearer immune to hot floor damage")
                 .syncToClients().build();
 
         private StriderShoes() {
@@ -805,7 +800,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class SuperstitiousHat extends ItemSubCategory {
 
         public final ConfigValue<Integer> lootingLevelBonus = define("lootingLevelBonus", ValueTypes.ENCHANTMENT_LEVEL, 1)
-                .tooltipLine("The amount of extra levels of Looting that are granted by the Superstitious Hat")
+                .descriptionLine("The amount of extra levels of Looting that are granted by the Superstitious Hat")
                 .syncToClients().build();
 
         private SuperstitiousHat() {
@@ -816,19 +811,19 @@ public final class ItemConfigs extends ConfigManager {
     public final class ThornPendant extends ItemSubCategory {
 
         public final ConfigValue<Double> strikeChance = define("strikeChance", ValueTypes.FRACTION, 0.50)
-                .tooltipLine("The probability that the Thorn Pendant damages an attacking entity")
+                .descriptionLine("The probability that the Thorn Pendant damages an attacking entity")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> maxDamage = define("maxDamage", ValueTypes.NON_NEGATIVE_INT, 6)
-                .tooltipLine("The maximum amount of damage that is dealt when the Thorn Pendant activates")
+                .descriptionLine("The maximum amount of damage that is dealt when the Thorn Pendant activates")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> minDamage = define("minDamage", ValueTypes.NON_NEGATIVE_INT, 2)
-                .tooltipLine("The minimum amount of damage that is dealt when the Thorn Pendant activates")
+                .descriptionLine("The minimum amount of damage that is dealt when the Thorn Pendant activates")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(2)
-                .tooltipLine("The duration in seconds the Thorn Pendant goes on cooldown for after activating")
+                .descriptionLine("The duration in seconds the Thorn Pendant goes on cooldown for after activating")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(150);
@@ -845,12 +840,12 @@ public final class ItemConfigs extends ConfigManager {
     public final class Umbrella extends ItemSubCategory {
 
         public final ConfigValue<Boolean> isShield = define("isShield", true)
-                .tooltipLine("Whether the Umbrella can be used as a shield")
+                .descriptionLine("Whether the Umbrella can be used as a shield")
                 .syncToClients()
                 .requiresRestart().build();
 
         public final ConfigValue<Boolean> isGlider = define("isGlider", true)
-                .tooltipLine("Whether the Umbrella slows the player's falling speed when held")
+                .descriptionLine("Whether the Umbrella slows the player's falling speed when held")
                 .syncToClients().build();
 
         public final Durability durability = new Durability();
@@ -863,21 +858,21 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerAttack
                     = define("damagePerAttack", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .tooltipLine("The amount of durability lost for each attack performed with the umbrella")
+                    .descriptionLine("The amount of durability lost for each attack performed with the umbrella")
                     .syncToClients()
                     .requiresRestart().build();
 
             public final ConfigValue<Integer> damagePerBlockedAttackBase
                     = define("damagePerBlockedAttackBase", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title("Damage per Blocked Attack (Base)")
-                    .tooltipLine("The constant amount of damage that should be applied to the umbrella when an attack is blocked")
+                    .descriptionLine("The constant amount of damage that should be applied to the umbrella when an attack is blocked")
                     .syncToClients()
                     .requiresRestart().build();
 
             public final ConfigValue<Double> damagePerBlockedAttackFactor
                     = define("damagePerBlockedAttackFactor", ValueTypes.NON_NEGATIVE_DOUBLE, 1D)
                     .title("Damage per Blocked Attack (Factor)")
-                    .tooltipLine("The fraction of the dealt damage that should be applied to the umbrella when an attack is blocked")
+                    .descriptionLine("The fraction of the dealt damage that should be applied to the umbrella when an attack is blocked")
                     .syncToClients()
                     .requiresRestart().build();
 
@@ -891,7 +886,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class UniversalAttractor extends ItemSubCategory {
 
         public final ConfigValue<Integer> magnetismLevel = define("magnetismLevel", ValueTypes.MOB_EFFECT_LEVEL, 5)
-                .tooltipLine("The level of the magnetism effect that is applied by the Universal Attractor")
+                .descriptionLine("The level of the magnetism effect that is applied by the Universal Attractor")
                 .syncToClients().build();
 
         private UniversalAttractor() {
@@ -902,15 +897,15 @@ public final class ItemConfigs extends ConfigManager {
     public final class VampiricGlove extends ItemSubCategory {
 
         public final ConfigValue<Double> absorptionRatio = define("absorptionRatio", ValueTypes.NON_NEGATIVE_DOUBLE, 0.20)
-                .tooltipLine("The proportion of melee damage dealt that is absorbed by the Vampiric Gloves")
+                .descriptionLine("The proportion of melee damage dealt that is absorbed by the Vampiric Gloves")
                 .syncToClients().build();
 
         public final ConfigValue<Double> absorptionChance = define("absorptionChance", ValueTypes.FRACTION, 1D)
-                .tooltipLine("The probability that damage is absorbed when attacking an entity with the Vampiric Gloves")
+                .descriptionLine("The probability that damage is absorbed when attacking an entity with the Vampiric Gloves")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> maxHealingPerHit = define("maxHealingPerHit", ValueTypes.NON_NEGATIVE_INT, 6)
-                .tooltipLine("The maximum amount of healing that can be absorbed in a single hit when attacking an entity while wearing the Vampiric Glove")
+                .descriptionLine("The maximum amount of healing that can be absorbed in a single hit when attacking an entity while wearing the Vampiric Glove")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(120);
@@ -923,7 +918,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class VillagerHat extends ItemSubCategory {
 
         public final ConfigValue<Double> reputationBonus = define("reputationBonus", ValueTypes.ATTRIBUTE_MODIFIER, 75D)
-                .tooltipLine("The amount of extra reputation that is granted by the Villager Hat when trading with villagers")
+                .descriptionLine("The amount of extra reputation that is granted by the Villager Hat when trading with villagers")
                 .syncToClients().build();
 
         public final Durability durability = new Durability();
@@ -936,7 +931,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerTrade
                     = define("damagePerTrade", ValueTypes.NON_NEGATIVE_INT, 1)
-                    .tooltipLine("The amount of durability lost per trade completed with the Villager Hat")
+                    .descriptionLine("The amount of durability lost per trade completed with the Villager Hat")
                     .syncToClients().build();
 
             private Durability() {
@@ -948,19 +943,19 @@ public final class ItemConfigs extends ConfigManager {
     public final class WarpDrive extends ItemSubCategory {
 
         public final ConfigValue<Boolean> enabled = defineEnabled(true)
-                .tooltipLine("Whether the Warp Drive causes ender pearls to not be consumed")
+                .descriptionLine("Whether the Warp Drive causes ender pearls to not be consumed")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> hungerCost = define("hungerCost", ValueTypes.NON_NEGATIVE_INT, 2)
-                .tooltipLine("How many hunger points it costs to throw an Ender Pearl using the Warp Drive")
+                .descriptionLine("How many hunger points it costs to throw an Ender Pearl using the Warp Drive")
                 .syncToClients().build();
 
         public final ConfigValue<Boolean> nullifyEnderPearlDamage = define("nullifyEnderPearlDamage", true)
-                .tooltipLine("Whether the Warp Drive causes Ender Pearls not to deal any damage")
+                .descriptionLine("Whether the Warp Drive causes Ender Pearls not to deal any damage")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(0)
-                .tooltipLine("The duration Ender Pearls go on cooldown for after being thrown using the Warp Drive")
+                .descriptionLine("The duration Ender Pearls go on cooldown for after being thrown using the Warp Drive")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(128);
@@ -973,7 +968,7 @@ public final class ItemConfigs extends ConfigManager {
     public final class WhoopeeCushion extends ItemSubCategory {
 
         public final ConfigValue<Double> fartChance = define("fartChance", ValueTypes.ATTRIBUTE_MODIFIER, 0.12)
-                .tooltipLine("The probability that a fart sound plays when sneaking or double jumping while wearing the Whoopee Cushion")
+                .descriptionLine("The probability that a fart sound plays when sneaking or double jumping while wearing the Whoopee Cushion")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(250);
@@ -986,19 +981,19 @@ public final class ItemConfigs extends ConfigManager {
     public final class WitheredBracelet extends ItemSubCategory {
 
         public final ConfigValue<Double> witherChance = define("witherChance", ValueTypes.FRACTION, 0.3)
-                .tooltipLine("The probability that the Withered Bracelet inflicts a wither effect")
+                .descriptionLine("The probability that the Withered Bracelet inflicts a wither effect")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> witherDuration = define("witherDuration", ValueTypes.DURATION, 8)
-                .tooltipLine("The duration of the wither effect applied by the Withered Bracelet")
+                .descriptionLine("The duration of the wither effect applied by the Withered Bracelet")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> witherLevel = define("witherLevel", ValueTypes.MOB_EFFECT_LEVEL, 2)
-                .tooltipLine("The level of the wither effect that is inflicted by the Withered Bracelet")
+                .descriptionLine("The level of the wither effect that is inflicted by the Withered Bracelet")
                 .syncToClients().build();
 
         public final ConfigValue<Integer> cooldown = defineCooldown(2)
-                .tooltipLine("The duration the Withered Bracelet goes on cooldown for after inflicting wither on an entity")
+                .descriptionLine("The duration the Withered Bracelet goes on cooldown for after inflicting wither on an entity")
                 .syncToClients().build();
 
         public final TriggerBasedDurabilityCategory durability = new TriggerBasedDurabilityCategory(450);
@@ -1024,8 +1019,7 @@ public final class ItemConfigs extends ConfigManager {
     private abstract class ItemSubCategory extends SubCategory {
 
         public final ConfigValue<Boolean> generateAsLoot = define("generateAsLoot", true)
-                .title(SharedNames.Titles.GENERATE_AS_LOOT)
-                .tooltipLine(SharedNames.Descriptions.GENERATE_AS_LOOT)
+                .titleAndDescription(SharedConfigLang.GENERATE_AS_LOOT)
                 .displayPriority(-2)
                 .build();
 
@@ -1039,12 +1033,12 @@ public final class ItemConfigs extends ConfigManager {
         protected ConfigValueBuilder<Boolean> defineEnabled(boolean defaultValue) {
             return define("enabled", defaultValue)
                     .displayPriority(-1)
-                    .title(SharedNames.Titles.ENABLED);
+                    .title(SharedConfigLang.ENABLED);
         }
 
         protected ConfigValueBuilder<Integer> defineCooldown(int defaultValue) {
             return define("cooldown", ValueTypes.DURATION, defaultValue)
-                    .title(SharedNames.Titles.COOLDOWN);
+                    .title(SharedConfigLang.COOLDOWN);
         }
 
         protected class DurabilityCategory extends SubCategory implements ItemDamageProperties {
@@ -1061,22 +1055,20 @@ public final class ItemConfigs extends ConfigManager {
                         Registries.ITEM,
                         Artifacts.id("repairs_%s".formatted(ItemSubCategory.this.getKey().path().getLast()))
                 );
-                setTitle(SharedNames.Titles.DURABILITY);
+                setTitle(SharedConfigLang.DURABILITY);
                 this.canBeDamaged = define("canBeDamaged", false)
-                        .title(SharedNames.Titles.CAN_BE_DAMAGED)
-                        .tooltipLine(SharedNames.Descriptions.CAN_BE_DAMAGED)
+                        .titleAndDescription(SharedConfigLang.CAN_BE_DAMAGED)
                         .syncToClients()
                         .requiresRestart()
                         .build();
                 this.canBeRepaired = define("canBeRepaired", false)
-                        .title(SharedNames.Titles.CAN_BE_REPAIRED)
-                        .tooltipLine(SharedNames.Descriptions.CAN_BE_REPAIRED.withArgs(repairMaterials.location().toString()))
+                        .title(SharedConfigLang.CAN_BE_REPAIRED.title())
+                        .descriptionLine(SharedConfigLang.CAN_BE_REPAIRED.description().withArgs(repairMaterials.location().toString()))
                         .syncToClients()
                         .requiresRestart()
                         .build();
                 this.maxDamage = define("maxDamage", ValueTypes.NON_NEGATIVE_INT, maxDamage)
-                        .title(SharedNames.Titles.MAX_DAMAGE)
-                        .tooltipLine(SharedNames.Descriptions.MAX_DAMAGE)
+                        .titleAndDescription(SharedConfigLang.MAX_DAMAGE)
                         .syncToClients()
                         .requiresRestart()
                         .build();
@@ -1111,8 +1103,7 @@ public final class ItemConfigs extends ConfigManager {
         protected abstract class EquippableDurabilityCategory extends DurabilityCategory {
 
             public ConfigValue<Boolean> indestructible = define("indestructible", true)
-                    .title(SharedNames.Titles.INDESTRUCTIBLE)
-                    .tooltipLine(SharedNames.Descriptions.INDESTRUCTIBLE)
+                    .titleAndDescription(SharedConfigLang.INDESTRUCTIBLE)
                     .syncToClients()
                     .build();
 
@@ -1137,8 +1128,7 @@ public final class ItemConfigs extends ConfigManager {
             private TriggerBasedDurabilityCategory(int maxDamage, int damagePerActivation) {
                 super(maxDamage);
                 this.damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, damagePerActivation)
-                        .title(SharedNames.Titles.DAMAGE_PER_ACTIVATION)
-                        .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ACTIVATION)
+                        .titleAndDescription(SharedConfigLang.DAMAGE_PER_ACTIVATION)
                         .syncToClients().build();
             }
         }
@@ -1154,8 +1144,7 @@ public final class ItemConfigs extends ConfigManager {
             private AttackBasedDurabilityCategory(int maxDamage, int damagePerAttack) {
                 super(maxDamage);
                 this.damagePerAttack = define("damagePerAttack", ValueTypes.NON_NEGATIVE_INT, damagePerAttack)
-                        .title(SharedNames.Titles.DAMAGE_PER_ATTACK)
-                        .tooltipLine(SharedNames.Descriptions.DAMAGE_PER_ATTACK)
+                        .titleAndDescription(SharedConfigLang.DAMAGE_PER_ATTACK)
                         .syncToClients().build();
             }
         }

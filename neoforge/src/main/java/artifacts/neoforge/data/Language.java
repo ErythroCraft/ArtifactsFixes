@@ -2,8 +2,8 @@ package artifacts.neoforge.data;
 
 import artifacts.Artifacts;
 import artifacts.config.ConfigManager;
-import artifacts.datagen.LangEntry;
-import artifacts.datagen.LangUtil;
+import artifacts.lang.LangEntry;
+import artifacts.lang.LangUtil;
 import artifacts.neoforge.data.tags.ItemTags;
 import artifacts.registry.*;
 import net.minecraft.core.Holder;

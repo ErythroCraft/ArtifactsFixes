@@ -1,10 +1,7 @@
 package artifacts.item;
 
 import artifacts.Artifacts;
-import artifacts.component.DamageOnHurt;
-import artifacts.component.DamageOnItemConsumed;
-import artifacts.component.Equipable;
-import artifacts.component.ToggleIdentifier;
+import artifacts.component.*;
 import artifacts.component.ability.*;
 import artifacts.component.ability.mobeffect.EquipmentMobEffect;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
@@ -146,6 +143,10 @@ public final class ArtifactProperties {
 
     public ArtifactProperties breakSound(Holder<SoundEvent> breakSound) {
         return component(DataComponents.BREAK_SOUND, breakSound);
+    }
+
+    public ArtifactProperties damageOverTime(Value<Integer> damagePerSecond, EntityCondition condition) {
+        return component(ModDataComponents.DAMAGE_OVER_TIME.get(), new DamageOverTime(damagePerSecond, condition));
     }
 
     public ArtifactProperties damageWhenConsumed(Value<Boolean> enabled, Value<Integer> itemDamage) {

@@ -1,6 +1,6 @@
 package artifacts.config.display;
 
-import artifacts.datagen.LangEntry;
+import artifacts.lang.LangEntry;
 
 import java.util.List;
 

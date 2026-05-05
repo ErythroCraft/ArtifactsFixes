@@ -155,7 +155,7 @@ public class ModItems {
                     MobEffects.WATER_BREATHING,
                     Value.of(1),
                     config.waterBreathingDuration,
-                    () -> config.isInfinite.get() ? EntityCondition.ALWAYS : EntityCondition.ABOVE_WATER
+                    () -> config.isInfinite.get() ? EntityCondition.ALWAYS : EntityCondition.REPLENISHING_AIR
             )
     );
     // TODO: add durability config options

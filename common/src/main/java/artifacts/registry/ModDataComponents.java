@@ -85,6 +85,9 @@ public class ModDataComponents {
     /** Damage applied to the item after consuming an item, while worn and not on cooldown */
     public static final Supplier<DataComponentType<DamageOnItemConsumed>> DAMAGE_ON_ITEM_CONSUMED =
             registerSynced("damage_on_item_consumed", DamageOnItemConsumed.CODEC, DamageOnItemConsumed.STREAM_CODEC);
+    /** Damage applied to the item every second, while worn and not on cooldown */
+    public static final Supplier<DataComponentType<DamageOverTime>> DAMAGE_OVER_TIME =
+            registerSynced("damage_over_time", DamageOverTime.CODEC, DamageOverTime.STREAM_CODEC);
 
     // Abilities (= components that prevent the 'cosmetic' tooltip from showing up when EquipmentAbility#isNonCosmetic returns true)
     /** Cooldown applied to the item after receiving damage, possibly filtered by damage type tag */

@@ -2,13 +2,14 @@ package artifacts.config;
 
 import artifacts.Artifacts;
 import artifacts.config.display.ConfigEntryDisplay;
+import artifacts.config.display.SharedConfigLang;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.ValueTypes;
 import artifacts.config.value.type.EnumValueType;
 import artifacts.config.value.type.NumberValueType;
 import artifacts.config.value.type.ValueType;
-import artifacts.datagen.LangEntry;
-import artifacts.datagen.LangUtil;
+import artifacts.lang.LangEntry;
+import artifacts.lang.LangUtil;
 import artifacts.network.NetworkHandler;
 import artifacts.network.payload.UpdateConfigValuePacket;
 import artifacts.platform.PlatformServices;
@@ -361,15 +362,19 @@ public abstract class ConfigManager {
             return this;
         }
 
-        public ConfigValueBuilder<T> tooltipLine(String line) {
-            return tooltipLine(new LangEntry(key.toString(), line)
+        public ConfigValueBuilder<T> titleAndDescription(SharedConfigLang.ConfigEntry entry) {
+            return title(entry.title()).descriptionLine(entry.description());
+        }
+
+        public ConfigValueBuilder<T> descriptionLine(String line) {
+            return descriptionLine(new LangEntry(key.toString(), line)
                     .withPrefix("artifacts.config")
                     .withSuffix("description")
                     .withSuffix(Integer.toString(customTooltipCount++))
             );
         }
 
-        public ConfigValueBuilder<T> tooltipLine(LangEntry line) {
+        public ConfigValueBuilder<T> descriptionLine(LangEntry line) {
             tooltip.add(line);
             return this;
         }

@@ -7,7 +7,6 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,8 +16,11 @@ import java.util.function.Predicate;
 public enum EntityCondition implements StringRepresentable {
     ALWAYS("always", _ -> true),
     NEVER("never", _ -> false),
-    ABOVE_WATER("above_water", entity -> !isSubmerged(entity)),
+    ABOVE_WATER("above_water", entity -> !entity.isUnderWater()),
     IN_WATER("in_water", Entity::isInWater),
+    UNDER_WATER("under_water", Entity::isUnderWater),
+    REPLENISHING_AIR("replenishing_air", EntityCondition::canBreathe),
+    LOSING_AIR("losing_air", entity -> !canBreathe(entity)),
     ON_GRASS("on_grass", entity -> entity.onGround() && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)),
     SNEAKING("while_sneaking", Entity::isCrouching),
     SPRINTING("while_sprinting", entity -> entity.isSprinting() && !entity.isUsingItem() && !entity.isCrouching());
@@ -48,8 +50,7 @@ public enum EntityCondition implements StringRepresentable {
         return name;
     }
 
-    private static boolean isSubmerged(LivingEntity entity) {
-        return entity.isEyeInFluid(FluidTags.WATER)
-                ^ (ModCompat.ORIGINS.isLoaded() && OriginsCompat.hasWaterBreathing(entity));
+    private static boolean canBreathe(LivingEntity entity) {
+        return entity.isUnderWater() == (ModCompat.ORIGINS.isLoaded() && OriginsCompat.hasWaterBreathing(entity));
     }
 }

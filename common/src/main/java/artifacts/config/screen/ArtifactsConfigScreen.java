@@ -5,7 +5,7 @@ import artifacts.config.ConfigEntryKey;
 import artifacts.config.ConfigManager;
 import artifacts.config.display.ConfigEntryDisplay;
 import artifacts.config.value.ConfigValue;
-import artifacts.datagen.LangEntry;
+import artifacts.lang.LangEntry;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
