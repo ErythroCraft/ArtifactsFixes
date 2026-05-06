@@ -1,6 +1,14 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "artifacts:item/universal_attractor"
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "artifacts:item/universal_attractor"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "artifacts:item/universal_attractor_broken"
+    },
+    "property": "artifacts:needs_repair"
   }
 }

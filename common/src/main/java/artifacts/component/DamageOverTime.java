@@ -11,15 +11,15 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 
-public record DamageOverTime(Value<Integer> damagePerSecond, EntityCondition condition) {
+public record DamageOverTime(Value<Double> damagePerSecond, EntityCondition condition) {
 
     public static final Codec<DamageOverTime> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("damage_per_second").forGetter(DamageOverTime::damagePerSecond),
+            ValueTypes.NON_NEGATIVE_DOUBLE.codec().fieldOf("damage_per_second").forGetter(DamageOverTime::damagePerSecond),
             EntityCondition.CODEC.optionalFieldOf("condition", EntityCondition.ALWAYS).forGetter(DamageOverTime::condition)
     ).apply(instance, DamageOverTime::new));
 
     public static final StreamCodec<ByteBuf, DamageOverTime> STREAM_CODEC = StreamCodec.composite(
-            ValueTypes.NON_NEGATIVE_INT.streamCodec(),
+            ValueTypes.NON_NEGATIVE_DOUBLE.streamCodec(),
             DamageOverTime::damagePerSecond,
             EntityCondition.STREAM_CODEC,
             DamageOverTime::condition,
@@ -27,17 +27,20 @@ public record DamageOverTime(Value<Integer> damagePerSecond, EntityCondition con
     );
 
     public static void onLivingUpdate(LivingEntity entity) {
-        if (entity.tickCount % 20 == 0) {
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_OVER_TIME.get(),
-                    entity,
-                    true, true,
-                    (component, slotAccess) -> {
-                        if (component.condition.test(entity)) {
-                            slotAccess.hurtAndBreak(entity, component.damagePerSecond.get());
+        EquipmentHelper.iterateComponents(
+                ModDataComponents.DAMAGE_OVER_TIME.get(),
+                entity,
+                true, true,
+                (component, slotAccess) -> {
+                    if (component.condition.test(entity)) {
+                        double damagePerTick = component.damagePerSecond.get() / 20;
+                        if (damagePerTick >= 1) {
+                            slotAccess.hurtAndBreak(entity, damagePerTick);
+                        } else if (entity.tickCount % (int) Math.round(1 / damagePerTick) == 0) {
+                            slotAccess.hurtAndBreak(entity, 1);
                         }
                     }
-            );
-        }
+                }
+        );
     }
 }

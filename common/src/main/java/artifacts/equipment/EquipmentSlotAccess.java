@@ -36,13 +36,16 @@ public interface EquipmentSlotAccess extends SlotAccess {
         }
     }
 
-    default void hurtAndBreak(LivingEntity entity, int damage) {
+    default void hurtAndBreak(LivingEntity entity, double damage) {
         if (damage > 0 && entity.level() instanceof ServerLevel level) {
             ServerPlayer player = null;
             if (entity instanceof ServerPlayer) {
                 player = (ServerPlayer) entity;
             }
-            get().hurtAndBreak(damage, level, player, _ -> broadcastBreakEvent(entity));
+            if (entity.getRandom().nextDouble() < damage % 1) {
+                damage += 1;
+            }
+            get().hurtAndBreak((int) damage, level, player, _ -> broadcastBreakEvent(entity));
         }
     }
 }

@@ -22,8 +22,10 @@ public enum EntityCondition implements StringRepresentable {
     REPLENISHING_AIR("replenishing_air", EntityCondition::canBreathe),
     LOSING_AIR("losing_air", entity -> !canBreathe(entity)),
     ON_GRASS("on_grass", entity -> entity.onGround() && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)),
-    SNEAKING("while_sneaking", Entity::isCrouching),
-    SPRINTING("while_sprinting", entity -> entity.isSprinting() && !entity.isUsingItem() && !entity.isCrouching());
+    SNEAKING("sneaking", Entity::isCrouching),
+    SPRINTING("sprinting", entity -> entity.isSprinting() && !entity.isUsingItem() && !entity.isCrouching()),
+    RIDING_MOUNT("riding_mount", entity -> entity.getControlledVehicle() instanceof LivingEntity),
+    SWIM_FLYING("swim_flying", entity -> entity.isSwimming() && !entity.isInWater());
 
     public static final Codec<EntityCondition> CODEC = StringRepresentable.fromValues(EntityCondition::values);
     public static final StreamCodec<ByteBuf, EntityCondition> STREAM_CODEC = ByteBufCodecs.idMapper(i -> EntityCondition.values()[i], EntityCondition::ordinal);

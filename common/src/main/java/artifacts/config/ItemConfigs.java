@@ -155,6 +155,9 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("Values above 0 increase the player's scale")
                 .syncToClients().build();
 
+        // 1800 at 0.1/s = 5 hours
+        public final ToggleBasedDurabilityCategory durability = new ToggleBasedDurabilityCategory(1800, 0.1);
+
         private CharmOfShrinking() {
             super(ModItems.CHARM_OF_SHRINKING);
         }
@@ -176,8 +179,25 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("How much longer players wearing the Charm of Sinking can stay underwater")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private CharmOfSinking() {
             super(ModItems.CHARM_OF_SINKING);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive
+                    = define("damagePerSecondActive", 0.1)
+                    .title(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.title())
+                    .descriptionLine("The amount of durability lost per second spent underwater")
+                    .syncToClients().build();
+
+
+            private Durability() {
+                // 900 at 0.1/s = 2.5 hours
+                super(900);
+            }
         }
     }
 
@@ -229,8 +249,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends EquippableDurabilityCategory {
 
-            public final ConfigValue<Integer> damagePerDoubleJump
-                    = define("damagePerDoubleJump", ValueTypes.NON_NEGATIVE_INT, 1)
+            public final ConfigValue<Integer> damagePerDoubleJump = define("damagePerDoubleJump", 1)
                     .descriptionLine("The amount of durability lost for every double jump")
                     .syncToClients().build();
 
@@ -246,8 +265,22 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("How much the Cowboy Hat increases the speed of ridden mounts")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private CowboyHat() {
             super(ModItems.COWBOY_HAT);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
+                    .descriptionLine("The amount of durability lost per second while controlling a mount")
+                    .syncToClients().build();
+
+            private Durability() {
+                // 900 at 0.1 = 2.5 hours
+                super(900);
+            }
         }
     }
 
@@ -469,8 +502,23 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("The duration in seconds the Helium Flamingo goes on cooldown for when stopping flight")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private HeliumFlamingo() {
             super(ModItems.HELIUM_FLAMINGO);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive = define("damagePerSecondActive", 1D)
+                    .title(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.title())
+                    .descriptionLine("The amount of durability lost per second while flying with the Helium Flamingo")
+                    .syncToClients().build();
+
+            private Durability() {
+                // 800 at 1/s & 8 seconds per flight = 100 flights
+                super(800);
+            }
         }
     }
 
@@ -507,7 +555,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends EquippableDurabilityCategory {
 
-            public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", ValueTypes.NON_NEGATIVE_INT, 1)
+            public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
                     .syncToClients().build();
 
@@ -522,6 +570,9 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Double> strength = define("strength", ValueTypes.FRACTION, 0.15)
                 .descriptionLine("The strength of the night vision effect applied by the Night Vision Goggles")
                 .syncToClients().build();
+
+        // 900 at 0.1/s = 2 hours
+        public final ToggleBasedDurabilityCategory durability = new ToggleBasedDurabilityCategory(900, 0.1);
 
         private NightVisionGoggles() {
             super(ModItems.NIGHT_VISION_GOGGLES);
@@ -597,7 +648,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends EquippableDurabilityCategory {
 
-            public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", ValueTypes.NON_NEGATIVE_INT, 1)
+            public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
                     .syncToClients().build();
 
@@ -655,7 +706,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends EquippableDurabilityCategory {
 
-            public final ConfigValue<Integer> damagePerFoodPoint = define("damagePerFoodPoint", ValueTypes.NON_NEGATIVE_INT, 1)
+            public final ConfigValue<Integer> damagePerFoodPoint = define("damagePerFoodPoint", 1)
                     .descriptionLine("The amount of durability lost every time the Rooted Boots restore a food point")
                     .syncToClients().build();
 
@@ -690,6 +741,9 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Boolean> hideWhenInvisible = define("hideWhenInvisible", false)
                 .descriptionLine("Whether the Scarf of Invisibility is hidden when the wearer is invisible")
                 .syncToClients().build();
+
+        // 1800 at 0.1/s = 5 hours
+        public final ToggleBasedDurabilityCategory durability = new ToggleBasedDurabilityCategory(1800, 0.1);
 
         private ScarfOfInvisibility() {
             super(ModItems.SCARF_OF_INVISIBILITY);
@@ -732,8 +786,22 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("The duration of the water breathing effect that is applied by the Snorkel")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private Snorkel() {
             super(ModItems.SNORKEL);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.2)
+                    .descriptionLine("The amount of durability lost per second while underwater")
+                    .syncToClients().build();
+
+            private Durability() {
+                // 900 at 0.2 = 1.25 hours
+                super(900);
+            }
         }
     }
 
@@ -856,8 +924,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends DurabilityCategory {
 
-            public final ConfigValue<Integer> damagePerAttack
-                    = define("damagePerAttack", ValueTypes.NON_NEGATIVE_INT, 1)
+            public final ConfigValue<Integer> damagePerAttack = define("damagePerAttack", 1)
                     .descriptionLine("The amount of durability lost for each attack performed with the umbrella")
                     .syncToClients()
                     .requiresRestart().build();
@@ -888,6 +955,9 @@ public final class ItemConfigs extends ConfigManager {
         public final ConfigValue<Integer> magnetismLevel = define("magnetismLevel", ValueTypes.MOB_EFFECT_LEVEL, 5)
                 .descriptionLine("The level of the magnetism effect that is applied by the Universal Attractor")
                 .syncToClients().build();
+
+        // 1800 at 0.1/s = 5 hours
+        public final ToggleBasedDurabilityCategory durability = new ToggleBasedDurabilityCategory(1800, 0.1);
 
         private UniversalAttractor() {
             super(ModItems.UNIVERSAL_ATTRACTOR);
@@ -929,8 +999,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends EquippableDurabilityCategory {
 
-            public final ConfigValue<Integer> damagePerTrade
-                    = define("damagePerTrade", ValueTypes.NON_NEGATIVE_INT, 1)
+            public final ConfigValue<Integer> damagePerTrade = define("damagePerTrade", 1)
                     .descriptionLine("The amount of durability lost per trade completed with the Villager Hat")
                     .syncToClients().build();
 
@@ -1074,6 +1143,19 @@ public final class ItemConfigs extends ConfigManager {
                         .build();
             }
 
+            protected ConfigValueBuilder<Integer> define(String key, int defaultValue) {
+                return define(key, ValueTypes.NON_NEGATIVE_INT, defaultValue);
+            }
+
+            protected ConfigValueBuilder<Double> damagePerSecondActive(double defaultValue) {
+                return define("damagePerSecondActive", defaultValue)
+                        .title(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.title());
+            }
+
+            protected ConfigValueBuilder<Double> define(String key, double defaultValue) {
+                return define(key, ValueTypes.NON_NEGATIVE_DOUBLE, defaultValue);
+            }
+
             @Override
             public boolean canBeDamaged() {
                 return canBeDamaged.get();
@@ -1145,6 +1227,18 @@ public final class ItemConfigs extends ConfigManager {
                 super(maxDamage);
                 this.damagePerAttack = define("damagePerAttack", ValueTypes.NON_NEGATIVE_INT, damagePerAttack)
                         .titleAndDescription(SharedConfigLang.DAMAGE_PER_ATTACK)
+                        .syncToClients().build();
+            }
+        }
+
+        public class ToggleBasedDurabilityCategory extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive;
+
+            private ToggleBasedDurabilityCategory(int maxDamage, double damagePerSecond) {
+                super(maxDamage);
+                damagePerSecondActive = define("damagePerSecondActive", damagePerSecond)
+                        .descriptionLine(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.description())
                         .syncToClients().build();
             }
         }

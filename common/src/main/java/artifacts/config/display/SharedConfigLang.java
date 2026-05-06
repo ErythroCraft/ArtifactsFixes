@@ -12,6 +12,7 @@ public class SharedConfigLang {
     );
 
     public static final LangEntry DURABILITY = title("durability");
+
     public static final ConfigEntry CAN_BE_DAMAGED = durabilityEntry("canBeDamaged",
             "Whether this item has a limited number of uses"
     );
@@ -24,23 +25,26 @@ public class SharedConfigLang {
     public static final ConfigEntry MAX_DAMAGE = durabilityEntry("maxDamage",
             "The maximum amount of damage that this item can take before breaking"
     );
-    public static final ConfigEntry DAMAGE_WHEN_CONSUMED = durabilityEntry("damageWhenConsumed",
-            "The amount of durability that is lost when this item is consumed"
-    );
     public static final ConfigEntry DAMAGE_PER_ACTIVATION = durabilityEntry("damagePerActivation",
             "The amount of durability lost every time this item's ability is triggered"
+    );
+    public static final ConfigEntry DAMAGE_PER_ATTACK = durabilityEntry("damagePerAttack",
+            "The amount of durability lost for every melee attack performed while wearing this item"
     );
     public static final ConfigEntry DAMAGE_PER_ORE_MINED = durabilityEntry("damagePerOreMined",
             "The amount of durability lost for every ore block mined"
     );
-    public static final ConfigEntry DAMAGE_PER_ATTACK = durabilityEntry("damagePerAttack",
-            "The amount of durability lost for every melee attack performed while wearing this item"
+    public static final ConfigEntry DAMAGE_PER_SECOND_ACTIVE = durabilityEntry("damagePerSecondActive",
+            "The amount of durability lost for every second this item is toggled on"
     );
     public static final ConfigEntry DAMAGE_PER_ITEM_DRUNK = durabilityEntry("damagePerItemDrunk",
             "The amount of durability lost every time an item is drunk"
     );
     public static final ConfigEntry DAMAGE_PER_ITEM_EATEN = durabilityEntry("damagePerItemEaten",
             "The amount of durability lost every time an item is eaten"
+    );
+    public static final ConfigEntry DAMAGE_WHEN_CONSUMED = durabilityEntry("damageWhenConsumed",
+            "The amount of durability that is lost when this item is consumed"
     );
 
     private static ConfigEntry durabilityEntry(String key, String description) {

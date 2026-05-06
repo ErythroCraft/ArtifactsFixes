@@ -145,7 +145,7 @@ public final class ArtifactProperties {
         return component(DataComponents.BREAK_SOUND, breakSound);
     }
 
-    public ArtifactProperties damageOverTime(Value<Integer> damagePerSecond, EntityCondition condition) {
+    public ArtifactProperties damageOverTime(Value<Double> damagePerSecond, EntityCondition condition) {
         return component(ModDataComponents.DAMAGE_OVER_TIME.get(), new DamageOverTime(damagePerSecond, condition));
     }
 

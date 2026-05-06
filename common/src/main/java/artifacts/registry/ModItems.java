@@ -147,10 +147,11 @@ public class ModItems {
             .modifiesAttributeBase(ModAttributes.DRINKING_SPEED, config.drinkingSpeedBonus)
             .modifiesAttributeBase(ModAttributes.EATING_SPEED, config.eatingSpeedBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> SNORKEL
             = register("snorkel", () -> Artifacts.CONFIG.items.snorkel, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.LOSING_AIR)
             .mobEffect(
                     MobEffects.WATER_BREATHING,
                     Value.of(1),
@@ -158,10 +159,11 @@ public class ModItems {
                     () -> config.isInfinite.get() ? EntityCondition.ALWAYS : EntityCondition.REPLENISHING_AIR
             )
     );
-    // TODO: add durability config options
     public static final Holder<Item> NIGHT_VISION_GOGGLES
             = register("night_vision_goggles", () -> Artifacts.CONFIG.items.nightVisionGoggles, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.ALWAYS)
             .toggleKey(ToggleIdentifier.NIGHT_VISION_GOGGLES)
             .mobEffect(MobEffects.NIGHT_VISION, Value.of(1), Value.of(10), () -> EntityCondition.ALWAYS)
             .component(ModDataComponents.REDUCED_NIGHT_VISION.get(), config.strength)
@@ -179,10 +181,11 @@ public class ModItems {
             .equipable()
             .increasesEnchantment(Enchantments.LOOTING, config.lootingLevelBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> COWBOY_HAT
             = register("cowboy_hat", () -> Artifacts.CONFIG.items.cowboyHat, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_LEATHER)
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.RIDING_MOUNT)
             .modifiesAttributeBase(ModAttributes.MOUNT_SPEED, config.mountSpeedBonus)
     );
     // TODO: add durability config options
@@ -201,10 +204,11 @@ public class ModItems {
             .damageOnOreMined(config.durability.damagePerOreMined)
             .increasesEnchantment(Enchantments.FORTUNE, config.fortuneLevelBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> SCARF_OF_INVISIBILITY
             = register("scarf_of_invisibility", () -> Artifacts.CONFIG.items.scarfOfInvisibility, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.ALWAYS)
             .toggleKey(ToggleIdentifier.SCARF_OF_INVISIBILITY)
             .mobEffect(
                     MobEffects.INVISIBILITY,
@@ -295,10 +299,11 @@ public class ModItems {
                     )
             )
     );
-    // TODO: add durability config options
     public static final Holder<Item> CHARM_OF_SINKING
             = register("charm_of_sinking", () -> Artifacts.CONFIG.items.charmOfSinking, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.UNDER_WATER)
             .toggleKey(ToggleIdentifier.CHARM_OF_SINKING)
             .component(ModDataComponents.SINKING.get(), config.enabled)
             .delayedComponent(ModDataComponents.DAMAGE_IMMUNITY.get(), _ -> new DamageImmunity(
@@ -314,10 +319,11 @@ public class ModItems {
                     true
             )
     );
-    // TODO: add durability config options
     public static final Holder<Item> CHARM_OF_SHRINKING
             = register("charm_of_shrinking", () -> Artifacts.CONFIG.items.charmOfShrinking, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.ALWAYS)
             .toggleKey(ToggleIdentifier.CHARM_OF_SHRINKING)
             .modifiesAttributeTotal(Attributes.SCALE, config.scaleModifier)
     );
@@ -368,11 +374,12 @@ public class ModItems {
                     config.durability.damagePerActivation
             ))
     );
-    // TODO: add durability config options
     public static final Holder<Item> UNIVERSAL_ATTRACTOR
             = register("universal_attractor", () -> Artifacts.CONFIG.items.universalAttractor, (builder, config) -> builder
             .equipable()
             .piglinLoved()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.ALWAYS)
             .toggleKey(ToggleIdentifier.UNIVERSAL_ATTRACTOR)
             .mobEffect(ModMobEffects.MAGNETISM, config.magnetismLevel, Value.of(10), () -> EntityCondition.ALWAYS)
     );
@@ -382,10 +389,11 @@ public class ModItems {
             .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
             .increasesAttribute(Attributes.MAX_HEALTH, config.healthBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> HELIUM_FLAMINGO
             = register("helium_flamingo", () -> Artifacts.CONFIG.items.heliumFlamingo, (builder, config) -> builder
             .equipable(ModSoundEvents.POP)
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.SWIM_FLYING)
             .component(ModDataComponents.SWIM_IN_AIR.get(), new SwimInAir(
                     config.flightDuration,
                     config.rechargeDuration,

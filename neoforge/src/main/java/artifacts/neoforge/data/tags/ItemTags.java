@@ -3,7 +3,6 @@ package artifacts.neoforge.data.tags;
 import artifacts.Artifacts;
 import artifacts.integration.ModCompat;
 import artifacts.registry.ModItems;
-import artifacts.registry.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -11,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.TagAppender;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -29,6 +29,9 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
     public static final TagKey<Item> BELT_EQUIPPABLE = createTag("slot/belt");
     public static final TagKey<Item> FEET_EQUIPPABLE = createTag("slot/feet");
     public static final TagKey<Item> ALL_EQUIPPABLE = createTag("slot/all");
+
+    public static final TagKey<Item> LEATHERS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "leathers"));
+    public static final TagKey<Item> GLASS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "glass_blocks/cheap"));
 
     // Probably not needed anymore, but kept for compatibility with origins-legacy
     public static final TagKey<Item> ORIGINS_MEAT = TagKey.create(Registries.ITEM, ModCompat.ORIGINS.id("meat"));
@@ -142,13 +145,18 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
 
     private void addRepairMaterialTags() {
         repairMaterials(ModItems.ANTIDOTE_VESSEL).add(Items.GOLD_INGOT);
+        repairMaterials(ModItems.CHARM_OF_SHRINKING).add(Items.DIAMOND);
+        repairMaterials(ModItems.CHARM_OF_SINKING).add(Items.DIAMOND);
         repairMaterials(ModItems.CLOUD_IN_A_BOTTLE).add(Items.PHANTOM_MEMBRANE);
+        repairMaterials(ModItems.COWBOY_HAT).addTag(LEATHERS);
         repairMaterials(ModItems.CROSS_NECKLACE).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.ETERNAL_STEAK).add(Items.COOKED_BEEF);
         repairMaterials(ModItems.EVERLASTING_BEEF).add(Items.BEEF);
         repairMaterials(ModItems.FIRE_GAUNTLET).add(Items.FIRE_CHARGE);
         repairMaterials(ModItems.FLAME_PENDANT).add(Items.DIAMOND);
+        repairMaterials(ModItems.HELIUM_FLAMINGO).add(Items.RESIN_CLUMP);
         repairMaterials(ModItems.LUCKY_SCARF).addTag(net.minecraft.tags.ItemTags.WOOL);
+        repairMaterials(ModItems.NIGHT_VISION_GOGGLES).add(Items.GOLDEN_CARROT);
         repairMaterials(ModItems.NOVELTY_DRINKING_HAT).add(Items.RESIN_CLUMP);
         repairMaterials(ModItems.OBSIDIAN_SKULL).add(Items.OBSIDIAN);
         repairMaterials(ModItems.ONION_RING).add(Items.GOLD_INGOT);
@@ -157,15 +165,18 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.PLASTIC_DRINKING_HAT).add(Items.RESIN_CLUMP);
         repairMaterials(ModItems.POCKET_PISTON).add(Items.PISTON);
         repairMaterials(ModItems.POWER_GLOVE).add(Items.RESIN_CLUMP);
-        repairMaterials(ModItems.ROOTED_BOOTS).addTag(ModTags.LEATHERS);
+        repairMaterials(ModItems.ROOTED_BOOTS).addTag(LEATHERS);
+        repairMaterials(ModItems.SCARF_OF_INVISIBILITY).addTag(net.minecraft.tags.ItemTags.WOOL);
         repairMaterials(ModItems.SHOCK_PENDANT).add(Items.DIAMOND);
-        repairMaterials(ModItems.STEADFAST_SPIKES).addTag(ModTags.LEATHERS);
+        repairMaterials(ModItems.SNORKEL).addTag(GLASS);
+        repairMaterials(ModItems.STEADFAST_SPIKES).addTag(LEATHERS);
         repairMaterials(ModItems.THORN_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
-        repairMaterials(ModItems.VAMPIRIC_GLOVE).addTag(ModTags.LEATHERS);
+        repairMaterials(ModItems.UNIVERSAL_ATTRACTOR).add(Items.GOLD_INGOT);
+        repairMaterials(ModItems.VAMPIRIC_GLOVE).addTag(LEATHERS);
         repairMaterials(ModItems.VILLAGER_HAT).add(Items.HAY_BLOCK);
         repairMaterials(ModItems.WARP_DRIVE).add(Items.ENDER_PEARL);
-        repairMaterials(ModItems.WHOOPEE_CUSHION).addTag(ModTags.LEATHERS);
+        repairMaterials(ModItems.WHOOPEE_CUSHION).addTag(LEATHERS);
         repairMaterials(ModItems.WITHERED_BRACELET).add(Items.BONE);
     }
 

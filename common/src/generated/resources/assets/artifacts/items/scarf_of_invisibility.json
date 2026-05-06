@@ -1,6 +1,14 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "artifacts:item/scarf_of_invisibility"
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "artifacts:item/scarf_of_invisibility"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "artifacts:item/scarf_of_invisibility_broken"
+    },
+    "property": "artifacts:needs_repair"
   }
 }
