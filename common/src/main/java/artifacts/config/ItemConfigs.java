@@ -419,6 +419,8 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("How much the Feral Claws increase the wearer's attack speed")
                 .syncToClients().build();
 
+        public final AttackBasedDurabilityCategory durability = new AttackBasedDurabilityCategory(1500);
+
         private FeralClaws() {
             super(ModItems.FERAL_CLAWS);
         }

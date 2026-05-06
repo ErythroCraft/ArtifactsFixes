@@ -437,10 +437,11 @@ public class ModItems {
             .modifiesAttributeBase(Attributes.BLOCK_BREAK_SPEED, config.blockBreakSpeedBonus)
             .component(ModDataComponents.TOOL_TIER_UPGRADE.get(), new ToolTierUpgrade(config.toolTier))
     );
-    // TODO: add durability config options
     public static final Holder<Item> FERAL_CLAWS
             = register("feral_claws", () -> Artifacts.CONFIG.items.feralClaws, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_NETHERITE)
+            .durability(config.durability)
+            .damageOnAttack(config.durability.damagePerAttack)
             .modifiesAttributeBase(Attributes.ATTACK_SPEED, config.attackSpeedBonus)
     );
     public static final Holder<Item> POWER_GLOVE
