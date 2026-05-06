@@ -164,6 +164,7 @@
   "artifacts.config.items.flame_pendant.grantFireResistance.title": "Grant Fire Resistance",
   "artifacts.config.items.flame_pendant.strikeChance.description": "The probability that the Flame Pendant lights an attacker on fire",
   "artifacts.config.items.flame_pendant.strikeChance.title": "Strike Chance",
+  "artifacts.config.items.flippers.durability.damagePerSecondActive.description": "The amount of durability lost per second when swimming",
   "artifacts.config.items.flippers.swimSpeedBonus.description": "How much the Flippers increase the wearer's swim speed",
   "artifacts.config.items.flippers.swimSpeedBonus.title": "Swim Speed Bonus",
   "artifacts.config.items.golden_hook.entityExperienceBonus.description": "The amount of extra experience dropped by entities that are killed by players wearing the Golden Hook",

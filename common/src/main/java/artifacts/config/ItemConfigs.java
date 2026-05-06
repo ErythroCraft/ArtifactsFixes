@@ -472,8 +472,24 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("How much the Flippers increase the wearer's swim speed")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private Flippers() {
             super(ModItems.FLIPPERS);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive
+                    = define("damagePerSecondActive", ValueTypes.NON_NEGATIVE_DOUBLE, 0.1)
+                    .title(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.title())
+                    .descriptionLine("The amount of durability lost per second when swimming")
+                    .syncToClients().build();
+
+            private Durability() {
+                // 900 at 0.1/s = 2 hours
+                super(900);
+            }
         }
     }
 

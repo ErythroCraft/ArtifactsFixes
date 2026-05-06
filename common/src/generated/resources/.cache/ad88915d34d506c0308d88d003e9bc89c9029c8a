@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-05T16:50:31.3820235	Model Definitions - artifacts
+// 26.1.2	2026-05-06T22:09:44.5738561	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
@@ -16,7 +16,7 @@ c91ed6234cb403eb346feb1bc35f2394377ae325 assets/artifacts/items/cloud_in_a_bottl
 af240068a96d0f1068f55fb57ddcdc4795898bc7 assets/artifacts/items/feral_claws.json
 525d7c010a2cf9a00a49f140629254e7d4554236 assets/artifacts/items/fire_gauntlet.json
 1c7baac68a894c537ac8423f5d18c568d35f5fd4 assets/artifacts/items/flame_pendant.json
-4d6d9c36a2530bf3927d087ca03cd17996390fd8 assets/artifacts/items/flippers.json
+233d95d5726f5f8078759fcf27614ba757be3d26 assets/artifacts/items/flippers.json
 bdd82736d65124020cca14c11a73104c8794bd3e assets/artifacts/items/golden_hook.json
 f9b15515586359aaddac62d8fb04da3c94284fa0 assets/artifacts/items/helium_flamingo.json
 37d7b17e076d1c48ac4859cf5e1f596d1b2a0678 assets/artifacts/items/kitty_slippers.json
@@ -74,6 +74,7 @@ b33c2226b7661ebd8378d72d7ce03bd309d403cb assets/artifacts/models/item/fire_gaunt
 6933807e48f28d084337ae0973056cf7bec76d75 assets/artifacts/models/item/flame_pendant.json
 72309c39724130a2fe79116f382947759440bdd1 assets/artifacts/models/item/flame_pendant_broken.json
 95a774ea113e17519b159222e534a3c8124abc2b assets/artifacts/models/item/flippers.json
+0357e03581e87c2b5a327767a56f09207969666c assets/artifacts/models/item/flippers_broken.json
 ea76f5e79e43da7fa1772a557da8096f090403a6 assets/artifacts/models/item/golden_hook.json
 17a475e4b144773d373590396d5d2ec0668097c1 assets/artifacts/models/item/helium_flamingo.json
 d07153c63d0d899cceb26a675ad35832d94cde21 assets/artifacts/models/item/helium_flamingo_broken.json

@@ -596,10 +596,11 @@ public class ModItems {
             .increasesAttribute(ModAttributes.SLIP_RESISTANCE, config.slipperinessReduction)
             .damageOnHurt(config.durability.damageWhenAttacked, ModTags.IS_MELEE)
     );
-    // TODO: add durability config options
     public static final Holder<Item> FLIPPERS
             = register("flippers", () -> Artifacts.CONFIG.items.flippers, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.SWIMMING)
             .modifiesAttributeBase(ModAttributes.SWIM_SPEED, config.swimSpeedBonus)
     );
     public static final Holder<Item> ROOTED_BOOTS
