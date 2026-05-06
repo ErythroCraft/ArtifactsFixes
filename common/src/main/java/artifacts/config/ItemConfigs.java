@@ -307,8 +307,21 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("The amount of extra health points that are granted by the Crystal Heart")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private CrystalHeart() {
             super(ModItems.CRYSTAL_HEART);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damageWhenHurt = define("damageWhenHurt", 1)
+                    .descriptionLine("The amount of durability lost every time the wearer takes damage")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(600);
+            }
         }
     }
 
@@ -347,12 +360,12 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerItemDrunk
-                    = define("damagePerItemDrunk", ValueTypes.NON_NEGATIVE_INT, 1)
+                    = define("damagePerItemDrunk", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ITEM_DRUNK)
                     .syncToClients().build();
 
             public final ConfigValue<Integer> damagePerItemEaten
-                    = define("damagePerItemEaten", ValueTypes.NON_NEGATIVE_INT, 1)
+                    = define("damagePerItemEaten", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ITEM_EATEN)
                     .syncToClients().build();
 
@@ -386,7 +399,7 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends DurabilityCategory {
 
             public final ConfigValue<Integer> damageWhenConsumed
-                    = define("damageWhenConsumed", ValueTypes.NON_NEGATIVE_INT, 1)
+                    = define("damageWhenConsumed", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_WHEN_CONSUMED)
                     .syncToClients().build();
 
@@ -483,7 +496,7 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive
-                    = define("damagePerSecondActive", ValueTypes.NON_NEGATIVE_DOUBLE, 0.1)
+                    = define("damagePerSecondActive", 0.1)
                     .title(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.title())
                     .descriptionLine("The amount of durability lost per second when swimming")
                     .syncToClients().build();
@@ -857,7 +870,7 @@ public final class ItemConfigs extends ConfigManager {
         public final class Durability extends EquippableDurabilityCategory {
 
             public final ConfigValue<Integer> damageWhenAttacked
-                    = define("damageWhenAttacked", ValueTypes.NON_NEGATIVE_INT, 1)
+                    = define("damageWhenAttacked", 1)
                     .descriptionLine("The amount of durability lost when the wearer is attacked by an entity or player")
                     .syncToClients()
                     .build();
@@ -1227,7 +1240,7 @@ public final class ItemConfigs extends ConfigManager {
 
             private TriggerBasedDurabilityCategory(int maxDamage, int damagePerActivation) {
                 super(maxDamage);
-                this.damagePerActivation = define("damagePerActivation", ValueTypes.NON_NEGATIVE_INT, damagePerActivation)
+                this.damagePerActivation = define("damagePerActivation", damagePerActivation)
                         .titleAndDescription(SharedConfigLang.DAMAGE_PER_ACTIVATION)
                         .syncToClients().build();
             }
@@ -1243,7 +1256,7 @@ public final class ItemConfigs extends ConfigManager {
 
             private AttackBasedDurabilityCategory(int maxDamage, int damagePerAttack) {
                 super(maxDamage);
-                this.damagePerAttack = define("damagePerAttack", ValueTypes.NON_NEGATIVE_INT, damagePerAttack)
+                this.damagePerAttack = define("damagePerAttack", damagePerAttack)
                         .titleAndDescription(SharedConfigLang.DAMAGE_PER_ATTACK)
                         .syncToClients().build();
             }

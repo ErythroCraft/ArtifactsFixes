@@ -141,6 +141,8 @@
   "artifacts.config.items.cross_necklace.bonusInvincibilityTicks.description": "The amount of extra ticks the player stays invincible for after taking damage while wearing the Cross Necklace",
   "artifacts.config.items.cross_necklace.bonusInvincibilityTicks.title": "Bonus Invincibility Ticks",
   "artifacts.config.items.cross_necklace.cooldown.description": "The duration in seconds the Cross Necklace goes on cooldown for after activating",
+  "artifacts.config.items.crystal_heart.durability.damageWhenHurt.description": "The amount of durability lost every time the wearer takes damage",
+  "artifacts.config.items.crystal_heart.durability.damageWhenHurt.title": "Damage when Hurt",
   "artifacts.config.items.crystal_heart.healthBonus.description": "The amount of extra health points that are granted by the Crystal Heart",
   "artifacts.config.items.crystal_heart.healthBonus.title": "Health Bonus",
   "artifacts.config.items.digging_claws.blockBreakSpeedBonus.description": "How much the Digging Claws increase the wearer's mining speed",

@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-06T22:30:33.7228502	Model Definitions - artifacts
+// 26.1.2	2026-05-06T23:12:50.6836997	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
@@ -9,7 +9,7 @@ cd3e96ec7108989c8020d61e760a2e5434ff765d assets/artifacts/items/charm_of_sinking
 c91ed6234cb403eb346feb1bc35f2394377ae325 assets/artifacts/items/cloud_in_a_bottle.json
 715a33548b4f46df4232bf6688bd9b7daaf417d4 assets/artifacts/items/cowboy_hat.json
 4b83f87ba62969312a32dd74803937c99c56c762 assets/artifacts/items/cross_necklace.json
-8c19f0dc44edbdd944bb699108b564d45612f82e assets/artifacts/items/crystal_heart.json
+19453cdef2cc3d9ef802a630a526b0320d8b4d8e assets/artifacts/items/crystal_heart.json
 112064101188a747b8b85a4030adaa5c8263ff15 assets/artifacts/items/digging_claws.json
 5566c52b92fe86303fab84ba5425214d4ba198bb assets/artifacts/items/eternal_steak.json
 489a34fa4a36aafa79c06311fa2d84bcb67dd6af assets/artifacts/items/everlasting_beef.json
@@ -65,6 +65,7 @@ d9739baff08bdc98b399a74f9dd02d186a74b3b8 assets/artifacts/models/item/cowboy_hat
 03aaddf5bf065ee6c01c894791295b7b286bac3f assets/artifacts/models/item/cross_necklace.json
 0160d3fed61cbb23fec9eeb059036fe58e9515db assets/artifacts/models/item/cross_necklace_broken.json
 0ee934fa9d29ac2dc3204b6ea12a0ce808a490f2 assets/artifacts/models/item/crystal_heart.json
+a22a2125e7452b05c89cc2b762e2c61237e0d8c1 assets/artifacts/models/item/crystal_heart_broken.json
 729540b6e9ec8bc3d33d12da09f71d0bd7b8f2f5 assets/artifacts/models/item/digging_claws.json
 94e735e25cb7c532ddf2cedb8c7b0525914c7a62 assets/artifacts/models/item/eternal_steak.json
 5de7e1374647af67ef9cec0c0d2275385237879c assets/artifacts/models/item/everlasting_beef.json

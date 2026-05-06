@@ -383,10 +383,11 @@ public class ModItems {
             .toggleKey(ToggleIdentifier.UNIVERSAL_ATTRACTOR)
             .mobEffect(ModMobEffects.MAGNETISM, config.magnetismLevel, Value.of(10), () -> EntityCondition.ALWAYS)
     );
-    // TODO: add durability config options
     public static final Holder<Item> CRYSTAL_HEART
             = register("crystal_heart", () -> Artifacts.CONFIG.items.crystalHeart, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_DIAMOND)
+            .durability(config.durability)
+            .damageOnHurt(config.durability.damageWhenHurt)
             .increasesAttribute(Attributes.MAX_HEALTH, config.healthBonus)
     );
     public static final Holder<Item> HELIUM_FLAMINGO
