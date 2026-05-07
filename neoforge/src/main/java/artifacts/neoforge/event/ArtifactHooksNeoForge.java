@@ -20,7 +20,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddAttributeTooltipsEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -39,7 +38,6 @@ public class ArtifactHooksNeoForge {
             NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onPlayerSwim);
             NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onAquaDashersFluidCollision);
         }
-        NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, ArtifactHooksNeoForge::onLivingDamage);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onEntityAdded);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onLivingUpdate);
         NeoForge.EVENT_BUS.addListener(ArtifactHooksNeoForge::onDrinkingHatItemUse);
@@ -54,10 +52,6 @@ public class ArtifactHooksNeoForge {
 
     private static void onEntityAdded(EntityJoinLevelEvent event) {
         ArtifactHooks.onEntityAdded(event.getEntity());
-    }
-
-    private static void onLivingDamage(LivingDamageEvent.Pre event) {
-        ArtifactHooks.onLivingDamaged(event.getEntity(), event.getSource(), event.getNewDamage());
     }
 
     private static void onLivingUpdate(EntityTickEvent.Post event) {

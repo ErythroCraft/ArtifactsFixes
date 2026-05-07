@@ -28,6 +28,10 @@ public class ValueTypes {
     }
 
     public static MapCodec<Value<Integer>> itemDamageField() {
-        return NON_NEGATIVE_INT.codec().optionalFieldOf("item_damage", Value.of(0));
+        return itemDamageField(0);
+    }
+
+    public static MapCodec<Value<Integer>> itemDamageField(int defaultValue) {
+        return NON_NEGATIVE_INT.codec().optionalFieldOf("item_damage", Value.of(defaultValue));
     }
 }

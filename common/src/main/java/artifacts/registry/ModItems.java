@@ -175,10 +175,11 @@ public class ModItems {
             .component(ModDataComponents.DAMAGE_ON_TRADE.get(), config.durability.damagePerTrade)
             .increasesAttribute(ModAttributes.VILLAGER_REPUTATION, config.reputationBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> SUPERSTITIOUS_HAT
             = register("superstitious_hat", () -> Artifacts.CONFIG.items.superstitiousHat, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOnKill(config.durability.damagePerKill)
             .increasesEnchantment(Enchantments.LOOTING, config.lootingLevelBonus)
     );
     public static final Holder<Item> COWBOY_HAT
@@ -444,28 +445,28 @@ public class ModItems {
             = register("feral_claws", () -> Artifacts.CONFIG.items.feralClaws, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_NETHERITE)
             .durability(config.durability)
-            .damageOnAttack(config.durability.damagePerAttack)
+            .damageOnMeleeAttack(config.durability.damagePerAttack)
             .modifiesAttributeBase(Attributes.ATTACK_SPEED, config.attackSpeedBonus)
     );
     public static final Holder<Item> POWER_GLOVE
             = register("power_glove", () -> Artifacts.CONFIG.items.powerGlove, (builder, config) -> builder
             .equipable()
             .durability(config.durability)
-            .damageOnAttack(config.durability.damagePerAttack)
+            .damageOnMeleeAttack(config.durability.damagePerAttack)
             .increasesAttribute(Attributes.ATTACK_DAMAGE, config.attackDamageBonus)
     );
     public static final Holder<Item> FIRE_GAUNTLET
             = register("fire_gauntlet", () -> Artifacts.CONFIG.items.fireGauntlet, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_IRON)
             .durability(config.durability)
-            .damageOnAttack(config.durability.damagePerAttack)
+            .damageOnMeleeAttack(config.durability.damagePerAttack)
             .increasesAttribute(ModAttributes.ATTACK_BURNING_DURATION, config.fireDuration)
     );
     public static final Holder<Item> POCKET_PISTON
             = register("pocket_piston", () -> Artifacts.CONFIG.items.pocketPiston, (builder, config) -> builder
             .equipable(SoundEvents.PISTON_EXTEND)
             .durability(config.durability)
-            .damageOnAttack(config.durability.damagePerAttack)
+            .damageOnMeleeAttack(config.durability.damagePerAttack)
             .increasesAttribute(Attributes.ATTACK_KNOCKBACK, config.attackKnockbackBonus)
     );
     public static final Holder<Item> VAMPIRIC_GLOVE
@@ -482,10 +483,11 @@ public class ModItems {
                     )
             )
     );
-    // TODO: add durability config options
     public static final Holder<Item> GOLDEN_HOOK
             = register("golden_hook", () -> Artifacts.CONFIG.items.goldenHook, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOnKill(config.durability.damagePerKill)
             .piglinLoved()
             .modifiesAttributeBase(ModAttributes.ENTITY_EXPERIENCE, config.entityExperienceBonus)
     );

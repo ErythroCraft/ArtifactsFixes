@@ -144,6 +144,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
     }
 
     private void addRepairMaterialTags() {
+        // TODO: localize these tags
         repairMaterials(ModItems.ANTIDOTE_VESSEL).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.CHARM_OF_SHRINKING).add(Items.DIAMOND);
         repairMaterials(ModItems.CHARM_OF_SINKING).add(Items.DIAMOND);
@@ -158,6 +159,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.FIRE_GAUNTLET).add(Items.FIRE_CHARGE);
         repairMaterials(ModItems.FLAME_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.FLIPPERS).add(Items.DRIED_KELP);
+        repairMaterials(ModItems.GOLDEN_HOOK).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.HELIUM_FLAMINGO).add(Items.RESIN_CLUMP);
         repairMaterials(ModItems.LUCKY_SCARF).addTag(net.minecraft.tags.ItemTags.WOOL);
         repairMaterials(ModItems.NIGHT_VISION_GOGGLES).add(Items.GOLDEN_CARROT);
@@ -174,6 +176,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.SHOCK_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.SNORKEL).addTag(GLASS);
         repairMaterials(ModItems.STEADFAST_SPIKES).addTag(LEATHERS);
+        repairMaterials(ModItems.SUPERSTITIOUS_HAT).addTag(LEATHERS);
         repairMaterials(ModItems.THORN_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
         repairMaterials(ModItems.UNIVERSAL_ATTRACTOR).add(Items.GOLD_INGOT);

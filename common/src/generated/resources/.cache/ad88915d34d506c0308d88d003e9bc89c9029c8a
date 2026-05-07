@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-07T14:40:53.1935824	Model Definitions - artifacts
+// 26.1.2	2026-05-07T16:37:58.0929265	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
@@ -17,7 +17,7 @@ d77860cc844f922007ec30ac198e233aedef88a9 assets/artifacts/items/feral_claws.json
 525d7c010a2cf9a00a49f140629254e7d4554236 assets/artifacts/items/fire_gauntlet.json
 1c7baac68a894c537ac8423f5d18c568d35f5fd4 assets/artifacts/items/flame_pendant.json
 233d95d5726f5f8078759fcf27614ba757be3d26 assets/artifacts/items/flippers.json
-bdd82736d65124020cca14c11a73104c8794bd3e assets/artifacts/items/golden_hook.json
+081dd1ea5e38ba75581100ae2ee36da30b7d4752 assets/artifacts/items/golden_hook.json
 f9b15515586359aaddac62d8fb04da3c94284fa0 assets/artifacts/items/helium_flamingo.json
 37d7b17e076d1c48ac4859cf5e1f596d1b2a0678 assets/artifacts/items/kitty_slippers.json
 2a221362447f69146e5e077201a6769e26683680 assets/artifacts/items/lucky_scarf.json
@@ -39,7 +39,7 @@ e6b97fe1e54787f046d9209eb79f381d459c3ec8 assets/artifacts/items/pickaxe_heater.j
 c9396a804f10ebf8c97dc2177ccf8c90726f7bef assets/artifacts/items/snowshoes.json
 50fd0050766ee28de4a6c3fee7f79bc3645ca0ac assets/artifacts/items/steadfast_spikes.json
 2219528efc3021150be27b23feae89d0ace8a812 assets/artifacts/items/strider_shoes.json
-b512100a83ad68ae4c2553532f36e7090f15411e assets/artifacts/items/superstitious_hat.json
+789be110fda07e633f17194d8bc19d84a308449e assets/artifacts/items/superstitious_hat.json
 a0224f4260a346eb53796479846cee53361ae8a6 assets/artifacts/items/thorn_pendant.json
 f43cbf99edd8bc069a53553e6a2ae06a1c366948 assets/artifacts/items/umbrella.json
 facd3cd3396a706f30bb2b1ee2c40ec7cc286775 assets/artifacts/items/universal_attractor.json
@@ -79,6 +79,7 @@ b33c2226b7661ebd8378d72d7ce03bd309d403cb assets/artifacts/models/item/fire_gaunt
 95a774ea113e17519b159222e534a3c8124abc2b assets/artifacts/models/item/flippers.json
 0357e03581e87c2b5a327767a56f09207969666c assets/artifacts/models/item/flippers_broken.json
 ea76f5e79e43da7fa1772a557da8096f090403a6 assets/artifacts/models/item/golden_hook.json
+9f03c3c44d83198f35d923b9e0200b1ac10f57a0 assets/artifacts/models/item/golden_hook_broken.json
 17a475e4b144773d373590396d5d2ec0668097c1 assets/artifacts/models/item/helium_flamingo.json
 d07153c63d0d899cceb26a675ad35832d94cde21 assets/artifacts/models/item/helium_flamingo_broken.json
 976cb2c788f732a668e994c0a3e9bdd9dc1cb493 assets/artifacts/models/item/kitty_slippers.json
@@ -116,6 +117,7 @@ eab00a7799bf26d1cc5a17144fd6a5252d798852 assets/artifacts/models/item/snowshoes.
 a7fb500ff2104e3e795cc220914c18fc3e27ec34 assets/artifacts/models/item/steadfast_spikes_broken.json
 709fad1976f57c9ace9fbaff6e45acf4ecd5ab35 assets/artifacts/models/item/strider_shoes.json
 cd2c3aa105d7d53091b42f0cf3e2da822939f584 assets/artifacts/models/item/superstitious_hat.json
+74397b4b286988df96df83cfa3ae3c7ac11a199d assets/artifacts/models/item/superstitious_hat_broken.json
 8ea2cd608815107191a446c558f3ef6d03790d24 assets/artifacts/models/item/thorn_pendant.json
 3b2cd8e9ba77d3d6ba4aac175dd7d0653a0dc113 assets/artifacts/models/item/thorn_pendant_broken.json
 21be884f84eebf6c5b9e47f842ca568b8d807190 assets/artifacts/models/item/umbrella.json

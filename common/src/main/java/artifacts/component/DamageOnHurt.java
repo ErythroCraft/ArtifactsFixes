@@ -22,7 +22,7 @@ import java.util.Optional;
 public record DamageOnHurt(Value<Integer> itemDamage, Optional<TagKey<DamageType>> tag) {
 
     public static final Codec<DamageOnHurt> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("item_damage").forGetter(DamageOnHurt::itemDamage),
+            ValueTypes.itemDamageField(1).forGetter(DamageOnHurt::itemDamage),
             TagKey.codec(Registries.DAMAGE_TYPE).optionalFieldOf("tag").forGetter(DamageOnHurt::tag)
     ).apply(instance, DamageOnHurt::new));
 

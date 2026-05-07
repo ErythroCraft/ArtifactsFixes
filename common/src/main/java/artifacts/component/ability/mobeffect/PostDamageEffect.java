@@ -43,7 +43,7 @@ public record PostDamageEffect(
                     ModDataComponents.POST_DAMAGE_EFFECTS.get(), entity,
                     true,
                     true,
-                    (ability, slotAccess) -> {
+                    (ability, _) -> {
                         for (PostDamageEffect entry : ability.entries()) {
                             if (entry.shouldApply(damageSource, entity)) {
                                 entity.addEffect(entry.provider.createEffect());

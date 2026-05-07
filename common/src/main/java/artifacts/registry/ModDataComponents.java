@@ -70,9 +70,9 @@ public class ModDataComponents {
     /** Damage applied to the item when hurt, while worn and not on cooldown */
     public static final Supplier<DataComponentType<DamageOnHurt>> DAMAGE_ON_HURT =
             registerSynced("damage_on_hurt", DamageOnHurt.CODEC, DamageOnHurt.STREAM_CODEC);
-    /** Damage applied to the item when melee attacking an entity, while worn and not on cooldown */
-    public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_ATTACK =
-            registerSynced("damage_on_attack", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
+    /** Damage applied to the item when attacking an entity, while worn and not on cooldown */
+    public static final Supplier<DataComponentType<DamageOnAttack>> DAMAGE_ON_ATTACK =
+            registerSynced("damage_on_attack", DamageOnAttack.CODEC, DamageOnAttack.STREAM_CODEC);
     /** Damage applied to the item when farting, while worn and not on cooldown */
     public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_FART =
             registerSynced("damage_on_fart", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());

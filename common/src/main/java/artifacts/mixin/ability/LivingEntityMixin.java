@@ -2,6 +2,9 @@ package artifacts.mixin.ability;
 
 import artifacts.event.ArtifactHooks;
 import artifacts.extensions.ability.LivingEntityExtensions;
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -58,5 +61,13 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
 
             ArtifactHooks.onItemChanged((LivingEntity) (Object) this, oldStack, newStack);
         }
+    }
+
+    // Using ModifyReceiver here to reliably capture the final damage value applied to the entity,
+    // after armor and effects. The entity being damaged remains the same.
+    @ModifyReceiver(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"))
+    private LivingEntity onEntityDamaged(LivingEntity instance, float health, ServerLevel level, DamageSource source) {
+        ArtifactHooks.beforeLivingDamaged((LivingEntity) (Object) this, source, health);
+        return instance;
     }
 }

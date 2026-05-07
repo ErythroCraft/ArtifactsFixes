@@ -31,6 +31,9 @@ public class SharedConfigLang {
     public static final ConfigEntry DAMAGE_PER_ATTACK = durabilityEntry("damagePerAttack",
             "The amount of durability lost for every melee attack performed while wearing this item"
     );
+    public static final ConfigEntry DAMAGE_PER_KILL = durabilityEntry("damagePerKill",
+            "The amount of durability lost for every entity killed while wearing this item"
+    );
     public static final ConfigEntry DAMAGE_PER_ORE_MINED = durabilityEntry("damagePerOreMined",
             "The amount of durability lost for every ore block mined"
     );

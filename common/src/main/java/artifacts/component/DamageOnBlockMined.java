@@ -21,7 +21,7 @@ import java.util.Optional;
 public record DamageOnBlockMined(Value<Integer> itemDamage, Optional<TagKey<Block>> tag) {
 
     public static final Codec<DamageOnBlockMined> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.NON_NEGATIVE_INT.codec().fieldOf("item_damage").forGetter(DamageOnBlockMined::itemDamage),
+            ValueTypes.itemDamageField(1).forGetter(DamageOnBlockMined::itemDamage),
             TagKey.codec(Registries.BLOCK).optionalFieldOf("tag").forGetter(DamageOnBlockMined::tag)
     ).apply(instance, DamageOnBlockMined::new));
 

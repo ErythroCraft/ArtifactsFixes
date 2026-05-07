@@ -65,13 +65,18 @@ public class ArtifactHooks {
         DamageOverTime.onLivingUpdate(entity);
     }
 
-    public static void onLivingDamaged(LivingEntity entity, DamageSource source, float amount) {
+    // Called just before the entity's health is modified
+    public static void beforeLivingDamaged(LivingEntity entity, DamageSource source, float newHealth) {
+        // clamp the entity's new health in case the damage dealt exceeds the remaining hp
+        float damageDealt = entity.getHealth() - Math.max(0, newHealth);
+        boolean isKillingBlow = newHealth <= 0;
+
         // abilities & effects
-        absorbDamage(entity, source, amount);
+        absorbDamage(entity, source, damageDealt);
         PostDamageEffect.onLivingDamaged(entity, source);
         // item damage
         DamageOnHurt.onLivingDamaged(entity, source);
-        damageItemsWhenAttacking(source);
+        damageItemsWhenAttacking(source, isKillingBlow);
         // cooldowns
         PostDamageCooldown.onLivingDamaged(entity, source);
     }
@@ -262,16 +267,23 @@ public class ArtifactHooks {
         }
     }
 
-    public static void damageItemsWhenAttacking(DamageSource damageSource) {
+    public static void damageItemsWhenAttacking(DamageSource damageSource, boolean isKillingBlow) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_ATTACK.get(),
-                    attacker,
-                    true, true,
-                    (component, slotAccess) -> slotAccess.hurtAndBreak(attacker, component.get())
-            );
+        if (attacker == null) {
+            return;
         }
+        EquipmentHelper.iterateComponents(
+                ModDataComponents.DAMAGE_ON_ATTACK.get(),
+                attacker,
+                true, true,
+                (component, slotAccess) -> {
+                    boolean checkMelee = !component.requireMelee() || DamageSourceHelper.isMeleeAttack(damageSource);
+                    boolean checkKill = !component.requireKill() || isKillingBlow;
+                    if (checkMelee && checkKill) {
+                        slotAccess.hurtAndBreak(attacker, component.itemDamage().get());
+                    }
+                }
+        );
     }
 
     public static float getModifiedFriction(float friction, LivingEntity entity, Block block) {

@@ -166,8 +166,12 @@ public final class ArtifactProperties {
         return component(ModDataComponents.DAMAGE_ON_HURT.get(), new DamageOnHurt(itemDamage, Optional.of(filter)));
     }
 
-    public ArtifactProperties damageOnAttack(Value<Integer> itemDamage) {
-        return component(ModDataComponents.DAMAGE_ON_ATTACK.get(), itemDamage);
+    public ArtifactProperties damageOnMeleeAttack(Value<Integer> itemDamage) {
+        return component(ModDataComponents.DAMAGE_ON_ATTACK.get(), new DamageOnAttack(itemDamage, true, false));
+    }
+
+    public ArtifactProperties damageOnKill(Value<Integer> itemDamage) {
+        return component(ModDataComponents.DAMAGE_ON_ATTACK.get(), new DamageOnAttack(itemDamage, false, true));
     }
 
     public ArtifactProperties damageOnBlockMined(Value<Integer> itemDamage) {

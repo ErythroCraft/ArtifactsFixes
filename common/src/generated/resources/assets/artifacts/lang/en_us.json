@@ -33,6 +33,8 @@
   "artifacts.config.durability.damagePerItemDrunk.title": "Damage per Item Drunk",
   "artifacts.config.durability.damagePerItemEaten.description": "The amount of durability lost every time an item is eaten",
   "artifacts.config.durability.damagePerItemEaten.title": "Damage per Item Eaten",
+  "artifacts.config.durability.damagePerKill.description": "The amount of durability lost for every entity killed while wearing this item",
+  "artifacts.config.durability.damagePerKill.title": "Damage per Kill",
   "artifacts.config.durability.damagePerOreMined.description": "The amount of durability lost for every ore block mined",
   "artifacts.config.durability.damagePerOreMined.title": "Damage per Ore Mined",
   "artifacts.config.durability.damagePerSecondActive.description": "The amount of durability lost for every second this item is toggled on",

@@ -535,6 +535,8 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("The amount of extra experience dropped by entities that are killed by players wearing the Golden Hook")
                 .syncToClients().build();
 
+        public final KillBasedDurabilityCategory durability = new KillBasedDurabilityCategory(300);
+
         private GoldenHook() {
             super(ModItems.GOLDEN_HOOK);
         }
@@ -923,6 +925,8 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("The amount of extra levels of Looting that are granted by the Superstitious Hat")
                 .syncToClients().build();
 
+        public final KillBasedDurabilityCategory durability = new KillBasedDurabilityCategory(300);
+
         private SuperstitiousHat() {
             super(ModItems.SUPERSTITIOUS_HAT);
         }
@@ -1279,6 +1283,22 @@ public final class ItemConfigs extends ConfigManager {
                 super(maxDamage);
                 this.damagePerAttack = define("damagePerAttack", damagePerAttack)
                         .titleAndDescription(SharedConfigLang.DAMAGE_PER_ATTACK)
+                        .syncToClients().build();
+            }
+        }
+
+        public class KillBasedDurabilityCategory extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerKill;
+
+            private KillBasedDurabilityCategory(int maxDamage) {
+                this(maxDamage, 1);
+            }
+
+            private KillBasedDurabilityCategory(int maxDamage, int damagePerKill) {
+                super(maxDamage);
+                this.damagePerKill = define("damagePerKill", damagePerKill)
+                        .titleAndDescription(SharedConfigLang.DAMAGE_PER_KILL)
                         .syncToClients().build();
             }
         }
