@@ -11,6 +11,7 @@
     "ability.enchantment.ApplyBonusCountMixin",
     "ability.enchantment.EnchantedCountIncreaseFunctionMixin",
     "ability.enchantment.EnchantmentHelperMixin",
+    "ability.enchantment.FishingHookMixin",
     "ability.enchantment.LootItemRandomChanceWithEnchantedBonusConditionMixin",
     "ability.enderpearldamageimmunity.ThrownEnderPearlMixin",
     "ability.enderpearlhungercost.EnderPearlItemMixin",

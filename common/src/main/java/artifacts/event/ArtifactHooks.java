@@ -343,4 +343,13 @@ public class ArtifactHooks {
         }
         return false;
     }
+
+    public static void onItemFished(Player player) {
+        EquipmentHelper.iterateComponents(
+                ModDataComponents.DAMAGE_ON_ITEM_FISHED.get(),
+                player,
+                true, true,
+                (component, slotAccess) -> slotAccess.hurtAndBreak(player, component.get())
+        );
+    }
 }

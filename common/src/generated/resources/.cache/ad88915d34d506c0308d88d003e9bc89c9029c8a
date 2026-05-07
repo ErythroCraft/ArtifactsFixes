@@ -1,5 +1,5 @@
-// 26.1.2	2026-05-07T18:51:12.0611579	Model Definitions - artifacts
-e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
+// 26.1.2	2026-05-08T01:27:14.4466462	Model Definitions - artifacts
+53575fc91d842c1b17ac962a71b488ad0cea47ac assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 ed7709072df911479dc455bfae83dac2f52ba714 assets/artifacts/items/aqua_dashers.json
 0ea3de02d61bc0eed8359c247b7028fe86dd24b3 assets/artifacts/items/bunny_hoppers.json
@@ -49,6 +49,7 @@ facd3cd3396a706f30bb2b1ee2c40ec7cc286775 assets/artifacts/items/universal_attrac
 b3bfa70d5fb6de54b8d4f7fb91d7484f615cedea assets/artifacts/items/whoopee_cushion.json
 9fac38117f68f378a993cc95d3d87b8d0c9ea4f4 assets/artifacts/items/withered_bracelet.json
 e78ea7a2e3909a584453c885749c9e809ec4bff5 assets/artifacts/models/item/anglers_hat.json
+2fab0acda5bd6a355cee0fde5383c37870ce21e3 assets/artifacts/models/item/anglers_hat_broken.json
 6857b5e2e0cc4e6ce94cda70b101fb3b4881fa68 assets/artifacts/models/item/antidote_vessel.json
 a563a77efaec4540f18d9b12802ae7928a78c20c assets/artifacts/models/item/antidote_vessel_broken.json
 aab84990a6af764a8c1930badc4a9533a46604ac assets/artifacts/models/item/aqua_dashers.json

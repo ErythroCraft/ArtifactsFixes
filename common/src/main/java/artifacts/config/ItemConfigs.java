@@ -89,8 +89,21 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("The amount of extra levels of lure that are granted by the Angler's Hat")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private AnglersHat() {
             super(ModItems.ANGLERS_HAT);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerItemFished = define("damagePerItemFished", 1)
+                    .descriptionLine("The amount of durability lost every time the wearer fishes an item")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(320);
+            }
         }
     }
 

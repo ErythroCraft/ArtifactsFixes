@@ -145,6 +145,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
 
     private void addRepairMaterialTags() {
         // TODO: localize these tags
+        repairMaterials(ModItems.ANGLERS_HAT).addTag(LEATHERS);
         repairMaterials(ModItems.ANTIDOTE_VESSEL).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.AQUA_DASHERS).addTag(LEATHERS);
         repairMaterials(ModItems.CHARM_OF_SHRINKING).add(Items.DIAMOND);

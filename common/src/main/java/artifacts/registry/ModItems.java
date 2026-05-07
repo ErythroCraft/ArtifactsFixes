@@ -193,10 +193,11 @@ public class ModItems {
             .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.RIDING_MOUNT)
             .modifiesAttributeBase(ModAttributes.MOUNT_SPEED, config.mountSpeedBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> ANGLERS_HAT
             = register("anglers_hat", () -> Artifacts.CONFIG.items.anglersHat, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_LEATHER)
+            .durability(config.durability)
+            .component(ModDataComponents.DAMAGE_ON_ITEM_FISHED.get(), config.durability.damagePerItemFished)
             .increasesEnchantment(Enchantments.LUCK_OF_THE_SEA, config.luckOfTheSeaLevelBonus)
             .increasesEnchantment(Enchantments.LURE, config.lureLevelBonus)
     );
