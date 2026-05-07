@@ -47,6 +47,6 @@ public class ArtifactHooksFabric {
     }
 
     private static void onBreakBlock(Level level, Player player, BlockPos blockPos, BlockState blockState, @Nullable BlockEntity blockEntity) {
-        ArtifactHooks.onBreakBlock(player, blockState);
+        ArtifactHooks.onBlockBroken(player, blockState);
     }
 }

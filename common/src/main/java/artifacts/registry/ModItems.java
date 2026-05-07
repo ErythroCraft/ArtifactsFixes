@@ -431,12 +431,14 @@ public class ModItems {
     );
 
     // hands
-    // TODO: add durability config options
     public static final Holder<Item> DIGGING_CLAWS
             = register("digging_claws", () -> Artifacts.CONFIG.items.diggingClaws, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_NETHERITE)
+            .durability(config.durability)
+            .damageOnOreMined(config.durability.damagePerOreMined)
+            .damageOnBlockMined(config.durability.damagePerBlockMined)
             .modifiesAttributeBase(Attributes.BLOCK_BREAK_SPEED, config.blockBreakSpeedBonus)
-            .component(ModDataComponents.TOOL_TIER_UPGRADE.get(), new ToolTierUpgrade(config.toolTier))
+            .component(ModDataComponents.TOOL_TIER_UPGRADE.get(), new ToolTierUpgrade(config.toolTier, config.durability.damagePerBlockHarvested))
     );
     public static final Holder<Item> FERAL_CLAWS
             = register("feral_claws", () -> Artifacts.CONFIG.items.feralClaws, (builder, config) -> builder

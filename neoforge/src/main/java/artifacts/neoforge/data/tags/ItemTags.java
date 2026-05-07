@@ -151,6 +151,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.COWBOY_HAT).addTag(LEATHERS);
         repairMaterials(ModItems.CROSS_NECKLACE).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.CRYSTAL_HEART).add(Items.DIAMOND);
+        repairMaterials(ModItems.DIGGING_CLAWS).add(Items.IRON_INGOT);
         repairMaterials(ModItems.ETERNAL_STEAK).add(Items.COOKED_BEEF);
         repairMaterials(ModItems.EVERLASTING_BEEF).add(Items.BEEF);
         repairMaterials(ModItems.FERAL_CLAWS).add(Items.EMERALD);

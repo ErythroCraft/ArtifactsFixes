@@ -14,17 +14,21 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
-public record ToolTierUpgrade(Value<Tier> tier) implements EquipmentAbility {
+public record ToolTierUpgrade(Value<Tier> tier, Value<Integer> itemDamage) implements EquipmentAbility {
 
     public static final Codec<ToolTierUpgrade> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ValueTypes.TOOL_TIER.codec().fieldOf("tier").forGetter(ToolTierUpgrade::tier)
+            ValueTypes.TOOL_TIER.codec().fieldOf("tier").forGetter(ToolTierUpgrade::tier),
+            ValueTypes.itemDamageField().forGetter(ToolTierUpgrade::itemDamage)
     ).apply(instance, ToolTierUpgrade::new));
 
     public static final StreamCodec<ByteBuf, ToolTierUpgrade> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.TOOL_TIER.streamCodec(),
             ToolTierUpgrade::tier,
+            ValueTypes.NON_NEGATIVE_INT.streamCodec(),
+            ToolTierUpgrade::itemDamage,
             ToolTierUpgrade::new
     );
 
@@ -53,6 +57,24 @@ public record ToolTierUpgrade(Value<Tier> tier) implements EquipmentAbility {
             return i >= 2;
         } else {
             return i >= 1;
+        }
+    }
+
+    public static void onBlockBroken(LivingEntity entity, BlockState state) {
+        if (entity instanceof Player player
+                && state.requiresCorrectToolForDrops()
+                && !player.getInventory().getSelectedItem().isCorrectToolForDrops(state)
+        ) {
+            EquipmentHelper.iterateAbilities(
+                    ModDataComponents.TOOL_TIER_UPGRADE.get(),
+                    player,
+                    true, true,
+                    (ability, slotAccess) -> {
+                        if (isCorrectTierForDrops(ability.tier.get(), state)) {
+                            slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
+                        }
+                    }
+            );
         }
     }
 

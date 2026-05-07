@@ -9,6 +9,7 @@ import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
 import artifacts.item.consumeeffects.DamageItemConsumeEffect;
 import artifacts.registry.ModDataComponents;
+import artifacts.registry.ModTags;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -169,8 +170,12 @@ public final class ArtifactProperties {
         return component(ModDataComponents.DAMAGE_ON_ATTACK.get(), itemDamage);
     }
 
+    public ArtifactProperties damageOnBlockMined(Value<Integer> itemDamage) {
+        return component(ModDataComponents.DAMAGE_ON_BLOCK_MINED.get(), new DamageOnBlockMined(itemDamage, Optional.empty()));
+    }
+
     public ArtifactProperties damageOnOreMined(Value<Integer> itemDamage) {
-        return component(ModDataComponents.DAMAGE_ON_ORE_MINED.get(), itemDamage);
+        return component(ModDataComponents.DAMAGE_ON_BLOCK_MINED.get(), new DamageOnBlockMined(itemDamage, Optional.of(ModTags.ORES)));
     }
 
     public ArtifactProperties damageOnItemConsumed(Value<Integer> damageOnEat, Value<Integer> damageOnDrink) {

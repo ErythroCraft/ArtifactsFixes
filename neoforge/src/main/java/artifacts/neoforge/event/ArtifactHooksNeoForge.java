@@ -113,7 +113,7 @@ public class ArtifactHooksNeoForge {
 
     private static void onBreakBlock(BlockEvent.BreakEvent event) {
         if (!event.isCanceled()) {
-            ArtifactHooks.onBreakBlock(event.getPlayer(), event.getState());
+            ArtifactHooks.onBlockBroken(event.getPlayer(), event.getState());
         }
     }
 

@@ -335,8 +335,29 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("The tool tier that the Digging Claws increase the wearer's mining level to")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private DiggingClaws() {
             super(ModItems.DIGGING_CLAWS);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerBlockMined = define("damagePerBlockMined", 0)
+                    .descriptionLine("The amount of durability lost per block mined")
+                    .syncToClients().build();
+
+            public final ConfigValue<Integer> damagePerBlockHarvested = define("damagePerBlockHarvested", 1)
+                    .descriptionLine("The amount of durability lost per block mined that would not be harvestable without the digging claws")
+                    .syncToClients().build();
+
+            public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", 0)
+                    .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
+                    .syncToClients().build();
+
+            private Durability() {
+                super(500);
+            }
         }
     }
 

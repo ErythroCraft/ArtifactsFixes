@@ -76,9 +76,9 @@ public class ModDataComponents {
     /** Damage applied to the item when farting, while worn and not on cooldown */
     public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_FART =
             registerSynced("damage_on_fart", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
-    /** Damage applied to the item after mining an ore block, while worn and not on cooldown */
-    public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_ORE_MINED =
-            registerSynced("damage_on_ore_mined", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
+    /** Damage applied to the item after mining a block, while worn and not on cooldown */
+    public static final Supplier<DataComponentType<DamageOnBlockMined>> DAMAGE_ON_BLOCK_MINED =
+            registerSynced("damage_on_block_mined", DamageOnBlockMined.CODEC, DamageOnBlockMined.STREAM_CODEC);
     /** Damage applied to the item after completing a trade with a villager, while worn and not on cooldown */
     public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_TRADE =
             registerSynced("damage_on_trade", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
