@@ -173,6 +173,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.POCKET_PISTON).add(Items.PISTON);
         repairMaterials(ModItems.POWER_GLOVE).add(Items.RESIN_CLUMP);
         repairMaterials(ModItems.ROOTED_BOOTS).addTag(LEATHERS);
+        repairMaterials(ModItems.RUNNING_SHOES).addTag(LEATHERS);
         repairMaterials(ModItems.SCARF_OF_INVISIBILITY).addTag(net.minecraft.tags.ItemTags.WOOL);
         repairMaterials(ModItems.SHOCK_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.SNORKEL).addTag(GLASS);

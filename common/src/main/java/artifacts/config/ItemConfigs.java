@@ -7,8 +7,8 @@ import artifacts.config.display.SharedConfigLang;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.lang.LangEntry;
 import artifacts.item.ItemDamageProperties;
+import artifacts.lang.LangEntry;
 import artifacts.registry.ModItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -787,8 +787,22 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("How much the Running Shoes increase the wearer's step height while sprinting")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private RunningShoes() {
             super(ModItems.RUNNING_SHOES);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
+                    .descriptionLine("The amount of durability lost per second when sprinting")
+                    .syncToClients().build();
+
+            private Durability() {
+                // 900 at 0.1/s = 2.5 hours
+                super(900);
+            }
         }
     }
 
@@ -1205,17 +1219,20 @@ public final class ItemConfigs extends ConfigManager {
                         .titleAndDescription(SharedConfigLang.CAN_BE_DAMAGED)
                         .syncToClients()
                         .requiresRestart()
+                        .displayPriority(-4)
                         .build();
                 this.canBeRepaired = define("canBeRepaired", false)
                         .title(SharedConfigLang.CAN_BE_REPAIRED.title())
                         .descriptionLine(SharedConfigLang.CAN_BE_REPAIRED.description().withArgs(repairMaterials.location().toString()))
                         .syncToClients()
                         .requiresRestart()
+                        .displayPriority(-3)
                         .build();
                 this.maxDamage = define("maxDamage", ValueTypes.NON_NEGATIVE_INT, maxDamage)
                         .titleAndDescription(SharedConfigLang.MAX_DAMAGE)
                         .syncToClients()
                         .requiresRestart()
+                        .displayPriority(-1)
                         .build();
             }
 
@@ -1263,6 +1280,7 @@ public final class ItemConfigs extends ConfigManager {
             public ConfigValue<Boolean> indestructible = define("indestructible", true)
                     .titleAndDescription(SharedConfigLang.INDESTRUCTIBLE)
                     .syncToClients()
+                    .displayPriority(-2)
                     .build();
 
             private EquippableDurabilityCategory(int maxDamage) {

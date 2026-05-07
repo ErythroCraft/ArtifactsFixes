@@ -8,7 +8,10 @@ import artifacts.component.ability.mobeffect.AttackEffect;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.component.ability.mobeffect.PostDamageEffect;
 import artifacts.component.ability.mobeffect.PostEatingEffect;
-import artifacts.component.ability.retaliation.*;
+import artifacts.component.ability.retaliation.FireEffect;
+import artifacts.component.ability.retaliation.LightningEffect;
+import artifacts.component.ability.retaliation.RetaliationEffects;
+import artifacts.component.ability.retaliation.ThornsEffect;
 import artifacts.config.value.Value;
 import artifacts.item.ArtifactProperties;
 import artifacts.item.consumeeffects.HealConsumeEffect;
@@ -51,6 +54,7 @@ public class ModItems {
             () -> new Item.Properties().spawnEgg(ModEntityTypes.MIMIC.get())
     );
 
+    // TODO: add indestructible config option for umbrella & everlasting beef/steak
     // handheld
     public static final Holder<Item> UMBRELLA
             = register("umbrella", () -> Artifacts.CONFIG.items.umbrella, (builder, config) -> builder
@@ -581,10 +585,11 @@ public class ModItems {
                     )
             )
     );
-    // TODO: add durability config options
     public static final Holder<Item> RUNNING_SHOES
             = register("running_shoes", () -> Artifacts.CONFIG.items.runningShoes, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.SPRINTING)
             .modifiesAttributeBase(ModAttributes.SPRINTING_SPEED, config.sprintingSpeedBonus)
             .increasesAttribute(ModAttributes.SPRINTING_STEP_HEIGHT, config.sprintingStepHeightBonus)
     );

@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-07T17:50:58.30919	Model Definitions - artifacts
+// 26.1.2	2026-05-07T18:51:12.0611579	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 ed7709072df911479dc455bfae83dac2f52ba714 assets/artifacts/items/aqua_dashers.json
@@ -32,7 +32,7 @@ e6b97fe1e54787f046d9209eb79f381d459c3ec8 assets/artifacts/items/pickaxe_heater.j
 205cf77563287f8f446bf8d14c8e3740493a21c3 assets/artifacts/items/pocket_piston.json
 1a5be69c99bf1aa98d1b9953e4e3dadb3fd9be27 assets/artifacts/items/power_glove.json
 10af93e13e0c871ab7a45777526af43fe5508332 assets/artifacts/items/rooted_boots.json
-6e74eb5f04cddb6df3e4d1f734709cda47f01c10 assets/artifacts/items/running_shoes.json
+6ba0b82344f15a967f29dc1e332921e3f5c91336 assets/artifacts/items/running_shoes.json
 6f1ac3dc1d2869eadde6ff2ce5f0c331ccf3b381 assets/artifacts/items/scarf_of_invisibility.json
 4de5f30faf23ac23521ff5db3ecb7442ba601d76 assets/artifacts/items/shock_pendant.json
 1824ee707202b4fe3232692f36f8c6b46714a842 assets/artifacts/items/snorkel.json
@@ -107,6 +107,7 @@ e373d9484371d5ec7c9d02f69306026d6b306800 assets/artifacts/models/item/pickaxe_he
 bead0e994b79a548a8bb12badbf4139d57ca7ec2 assets/artifacts/models/item/rooted_boots.json
 f18fd78ca911e9e794670f8d2e46407429cfc2a5 assets/artifacts/models/item/rooted_boots_broken.json
 fffc2f23c032ed974a640c53d35faa86eb31241d assets/artifacts/models/item/running_shoes.json
+8d7e47c4441a85a28da5ab6a815ac3dca5774d4f assets/artifacts/models/item/running_shoes_broken.json
 9431f591e171bd0b92bbe48882623c9bca38c658 assets/artifacts/models/item/scarf_of_invisibility.json
 2d3c59d5e5d1d1973ffcfe3d917285ed417b3656 assets/artifacts/models/item/scarf_of_invisibility_broken.json
 11020427bf239049950bad9c1b69f9f7824e6698 assets/artifacts/models/item/shock_pendant.json

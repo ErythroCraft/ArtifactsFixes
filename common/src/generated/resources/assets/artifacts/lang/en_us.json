@@ -225,6 +225,7 @@
   "artifacts.config.items.rooted_boots.growPlantsAfterEating.title": "Grow Plants After Eating",
   "artifacts.config.items.rooted_boots.hungerReplenishingDuration.description": "The amount of time in seconds it takes to replenish a single point of hunger while wearing the Rooted Boots",
   "artifacts.config.items.rooted_boots.hungerReplenishingDuration.title": "Hunger Replenishing Duration",
+  "artifacts.config.items.running_shoes.durability.damagePerSecondActive.description": "The amount of durability lost per second when sprinting",
   "artifacts.config.items.running_shoes.sprintingSpeedBonus.description": "How much the Running Shoes increase the wearer's sprinting speed",
   "artifacts.config.items.running_shoes.sprintingSpeedBonus.title": "Sprinting Speed Bonus",
   "artifacts.config.items.running_shoes.sprintingStepHeightBonus.description": "How much the Running Shoes increase the wearer's step height while sprinting",
