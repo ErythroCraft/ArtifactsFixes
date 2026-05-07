@@ -1,7 +1,7 @@
-// 26.1.2	2026-05-07T16:37:58.0929265	Model Definitions - artifacts
+// 26.1.2	2026-05-07T17:50:58.30919	Model Definitions - artifacts
 e50073c8b5af7bbbe7b97a4a99f1ecd1381c3b40 assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
-70f690d714f43c5c700547dcbfe52536669112bb assets/artifacts/items/aqua_dashers.json
+ed7709072df911479dc455bfae83dac2f52ba714 assets/artifacts/items/aqua_dashers.json
 0ea3de02d61bc0eed8359c247b7028fe86dd24b3 assets/artifacts/items/bunny_hoppers.json
 cc21ddead2860fc5f877ce33c424c2b93fd98444 assets/artifacts/items/charm_of_shrinking.json
 cd3e96ec7108989c8020d61e760a2e5434ff765d assets/artifacts/items/charm_of_sinking.json
@@ -38,7 +38,7 @@ e6b97fe1e54787f046d9209eb79f381d459c3ec8 assets/artifacts/items/pickaxe_heater.j
 1824ee707202b4fe3232692f36f8c6b46714a842 assets/artifacts/items/snorkel.json
 c9396a804f10ebf8c97dc2177ccf8c90726f7bef assets/artifacts/items/snowshoes.json
 50fd0050766ee28de4a6c3fee7f79bc3645ca0ac assets/artifacts/items/steadfast_spikes.json
-2219528efc3021150be27b23feae89d0ace8a812 assets/artifacts/items/strider_shoes.json
+375600054e4a5c2ec20d4a643f1191c66c3661a7 assets/artifacts/items/strider_shoes.json
 789be110fda07e633f17194d8bc19d84a308449e assets/artifacts/items/superstitious_hat.json
 a0224f4260a346eb53796479846cee53361ae8a6 assets/artifacts/items/thorn_pendant.json
 f43cbf99edd8bc069a53553e6a2ae06a1c366948 assets/artifacts/items/umbrella.json
@@ -52,6 +52,7 @@ e78ea7a2e3909a584453c885749c9e809ec4bff5 assets/artifacts/models/item/anglers_ha
 6857b5e2e0cc4e6ce94cda70b101fb3b4881fa68 assets/artifacts/models/item/antidote_vessel.json
 a563a77efaec4540f18d9b12802ae7928a78c20c assets/artifacts/models/item/antidote_vessel_broken.json
 aab84990a6af764a8c1930badc4a9533a46604ac assets/artifacts/models/item/aqua_dashers.json
+c2bdd79aa995922bdb8663dbcbc6cbc78ea26184 assets/artifacts/models/item/aqua_dashers_broken.json
 b98f8fd8c0021ca2799b347394ef70672c1c3a3b assets/artifacts/models/item/bunny_hoppers.json
 2ce43543c82ac8384183482851b4f0acae72c1fb assets/artifacts/models/item/charm_of_shrinking.json
 c28b26cddc46c79c1115f0e7ef1caf215aff65a7 assets/artifacts/models/item/charm_of_shrinking_broken.json
@@ -116,6 +117,7 @@ eab00a7799bf26d1cc5a17144fd6a5252d798852 assets/artifacts/models/item/snowshoes.
 9790d5504751cba1d96dd14a429c574bd4dcb104 assets/artifacts/models/item/steadfast_spikes.json
 a7fb500ff2104e3e795cc220914c18fc3e27ec34 assets/artifacts/models/item/steadfast_spikes_broken.json
 709fad1976f57c9ace9fbaff6e45acf4ecd5ab35 assets/artifacts/models/item/strider_shoes.json
+1118817ad60d871de4689353e99cdaf94351c609 assets/artifacts/models/item/strider_shoes_broken.json
 cd2c3aa105d7d53091b42f0cf3e2da822939f584 assets/artifacts/models/item/superstitious_hat.json
 74397b4b286988df96df83cfa3ae3c7ac11a199d assets/artifacts/models/item/superstitious_hat_broken.json
 8ea2cd608815107191a446c558f3ef6d03790d24 assets/artifacts/models/item/thorn_pendant.json

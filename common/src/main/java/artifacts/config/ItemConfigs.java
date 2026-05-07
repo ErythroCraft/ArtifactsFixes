@@ -117,8 +117,21 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("Whether the Aqua-Dashers allow the wearer to sprint on water")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private AquaDashers() {
             super(ModItems.AQUA_DASHERS);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
+                    .descriptionLine("The amount of durability lost per second when walking on water")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(1800);
+            }
         }
     }
 
@@ -187,12 +200,9 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends EquippableDurabilityCategory {
 
-            public final ConfigValue<Double> damagePerSecondActive
-                    = define("damagePerSecondActive", 0.1)
-                    .title(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.title())
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second spent underwater")
                     .syncToClients().build();
-
 
             private Durability() {
                 // 900 at 0.1/s = 2.5 hours
@@ -516,9 +526,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends EquippableDurabilityCategory {
 
-            public final ConfigValue<Double> damagePerSecondActive
-                    = define("damagePerSecondActive", 0.1)
-                    .title(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.title())
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second when swimming")
                     .syncToClients().build();
 
@@ -564,8 +572,7 @@ public final class ItemConfigs extends ConfigManager {
 
         public final class Durability extends EquippableDurabilityCategory {
 
-            public final ConfigValue<Double> damagePerSecondActive = define("damagePerSecondActive", 1D)
-                    .title(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.title())
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
                     .descriptionLine("The amount of durability lost per second while flying with the Helium Flamingo")
                     .syncToClients().build();
 
@@ -914,8 +921,21 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("Whether the Strider Shoes make the wearer immune to hot floor damage")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private StriderShoes() {
             super(ModItems.STRIDER_SHOES);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
+                    .descriptionLine("The amount of durability lost per second when walking on lava")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(1800);
+            }
         }
     }
 
@@ -1309,7 +1329,7 @@ public final class ItemConfigs extends ConfigManager {
 
             private ToggleBasedDurabilityCategory(int maxDamage, double damagePerSecond) {
                 super(maxDamage);
-                damagePerSecondActive = define("damagePerSecondActive", damagePerSecond)
+                damagePerSecondActive = damagePerSecondActive(damagePerSecond)
                         .descriptionLine(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.description())
                         .syncToClients().build();
             }

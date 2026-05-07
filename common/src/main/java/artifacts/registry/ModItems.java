@@ -542,10 +542,11 @@ public class ModItems {
     );
 
     // feet
-    // TODO: add durability config options
     public static final Holder<Item> AQUA_DASHERS
             = register("aqua_dashers", () -> Artifacts.CONFIG.items.aquaDashers, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.ON_WATER)
             .component(
                     ModDataComponents.FLUID_COLLISION.get(),
                     new FluidCollision(config.enabled, Optional.empty(), EntityCondition.SPRINTING)
@@ -623,10 +624,11 @@ public class ModItems {
             )
             .component(ModDataComponents.POST_EATING_PLANT_GROWTH.get(), config.growPlantsAfterEating)
     );
-    // TODO: add durability config options
     public static final Holder<Item> STRIDER_SHOES
             = register("strider_shoes", () -> Artifacts.CONFIG.items.striderShoes, (builder, config) -> builder
             .equipable(SoundEvents.ARMOR_EQUIP_LEATHER)
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.ON_LAVA)
             .component(
                     ModDataComponents.FLUID_COLLISION.get(),
                     new FluidCollision(config.enabled, Optional.of(FluidTags.LAVA), EntityCondition.SNEAKING)

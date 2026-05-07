@@ -146,6 +146,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
     private void addRepairMaterialTags() {
         // TODO: localize these tags
         repairMaterials(ModItems.ANTIDOTE_VESSEL).add(Items.GOLD_INGOT);
+        repairMaterials(ModItems.AQUA_DASHERS).addTag(LEATHERS);
         repairMaterials(ModItems.CHARM_OF_SHRINKING).add(Items.DIAMOND);
         repairMaterials(ModItems.CHARM_OF_SINKING).add(Items.DIAMOND);
         repairMaterials(ModItems.CLOUD_IN_A_BOTTLE).add(Items.PHANTOM_MEMBRANE);
@@ -176,6 +177,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.SHOCK_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.SNORKEL).addTag(GLASS);
         repairMaterials(ModItems.STEADFAST_SPIKES).addTag(LEATHERS);
+        repairMaterials(ModItems.STRIDER_SHOES).add(Items.BASALT);
         repairMaterials(ModItems.SUPERSTITIOUS_HAT).addTag(LEATHERS);
         repairMaterials(ModItems.THORN_PENDANT).add(Items.DIAMOND);
         repairMaterials(ModItems.UMBRELLA).addTag(net.minecraft.tags.ItemTags.WOODEN_TOOL_MATERIALS);
