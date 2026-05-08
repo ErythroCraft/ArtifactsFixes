@@ -903,8 +903,21 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("How much the Snowshoes increase the wearer's movement speed on snow blocks")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private Snowshoes() {
             super(ModItems.SNOWSHOES);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
+                    .descriptionLine("The amount of durability lost per second when walking on snow")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(1800);
+            }
         }
     }
 

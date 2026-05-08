@@ -8,6 +8,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
@@ -29,6 +30,7 @@ public enum EntityCondition implements StringRepresentable {
     SWIMMING("swimming", Entity::isSwimming),
     SWIM_FLYING("swim_flying", entity -> entity.isSwimming() && !entity.isInWater()),
     ON_GRASS("on_grass", entity -> entity.onGround() && entity.getBlockStateOn().is(ModTags.ROOTED_BOOTS_GRASS)),
+    ON_SNOW("on_snow", EntityCondition::isOnSnow),
     ON_WATER("on_water", entity -> isOnFluid(entity, FluidTags.WATER)),
     ON_LAVA("on_lava", entity -> isOnFluid(entity, FluidTags.LAVA)),
     SNEAKING("sneaking", Entity::isCrouching),
@@ -74,5 +76,17 @@ public enum EntityCondition implements StringRepresentable {
         float fluidHeight = blockState.getFluidState().getHeight(entity.level(), pos);
         // Mth.equal is too precise, compensate for fudge factor added by expandability
         return Math.abs(entity.getY() % 1 - fluidHeight) < 1E-4F;
+    }
+
+    private static boolean isOnSnow(LivingEntity entity) {
+        if (!entity.onGround()) {
+            return false;
+        }
+        BlockState inState = entity.level().getBlockState(entity.getBlockPosBelowThatAffectsMyMovement().above());
+        if (!inState.isAir() && inState.is(ModTags.SNOW_LAYERS)) {
+            return true;
+        }
+        BlockState onState = entity.level().getBlockState(entity.getBlockPosBelowThatAffectsMyMovement());
+        return onState.is(BlockTags.SNOW);
     }
 }

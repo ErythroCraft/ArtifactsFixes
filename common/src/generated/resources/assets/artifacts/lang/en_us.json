@@ -247,6 +247,7 @@
   "artifacts.config.items.snorkel.waterBreathingDuration.title": "Water Breathing Duration",
   "artifacts.config.items.snowshoes.allowWalkingOnPowderedSnow.description": "Whether the Snowshoes allow the wearer to walk on powdered snow",
   "artifacts.config.items.snowshoes.allowWalkingOnPowderedSnow.title": "Allow Walking on Powdered Snow",
+  "artifacts.config.items.snowshoes.durability.damagePerSecondActive.description": "The amount of durability lost per second when walking on snow",
   "artifacts.config.items.snowshoes.movementSpeedOnSnowBonus.description": "How much the Snowshoes increase the wearer's movement speed on snow blocks",
   "artifacts.config.items.snowshoes.movementSpeedOnSnowBonus.title": "Movement Speed on Snow Bonus",
   "artifacts.config.items.steadfast_spikes.durability.damageWhenAttacked.description": "The amount of durability lost when the wearer is attacked by an entity or player",

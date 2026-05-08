@@ -24,7 +24,6 @@
     "ability.posteatingeffects.FoodPropertiesMixin",
     "ability.retaliation.EnchantmentHelperMixin",
     "ability.walkonpowdersnow.PowderSnowBlockMixin",
-    "accessors.EntityAccessor",
     "accessors.MobAccessor",
     "attribute.LivingEntityMixin",
     "attribute.PlayerMixin",

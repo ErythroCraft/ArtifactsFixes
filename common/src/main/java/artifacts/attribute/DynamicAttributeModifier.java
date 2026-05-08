@@ -1,13 +1,11 @@
 package artifacts.attribute;
 
 import artifacts.Artifacts;
+import artifacts.component.ability.EntityCondition;
 import artifacts.item.UmbrellaHelper;
-import artifacts.mixin.accessors.EntityAccessor;
 import artifacts.registry.ModAttributes;
-import artifacts.registry.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
@@ -17,7 +15,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 
@@ -94,16 +91,8 @@ public abstract class DynamicAttributeModifier {
     ) {
         @Override
         protected boolean shouldApply(LivingEntity entity) {
-            if (entity.onGround() && entity instanceof EntityAccessor entityAccessor) {
-                if (entity.getAttributeValue(ModAttributes.MOVEMENT_SPEED_ON_SNOW) != 1) {
-                    BlockState onState = entity.level().getBlockState(entityAccessor.callGetBlockPosBelowThatAffectsMyMovement());
-                    if (onState.is(BlockTags.SNOW)) {
-                        return true;
-                    } else {
-                        BlockState aboveState = entity.level().getBlockState(entityAccessor.callGetBlockPosBelowThatAffectsMyMovement().above());
-                        return !aboveState.isAir() && aboveState.is(ModTags.SNOW_LAYERS);
-                    }
-                }
+            if (entity.getAttributeValue(ModAttributes.MOVEMENT_SPEED_ON_SNOW) != 1) {
+                return EntityCondition.ON_SNOW.test(entity);
             }
             return false;
         }

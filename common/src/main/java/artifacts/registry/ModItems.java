@@ -594,10 +594,11 @@ public class ModItems {
             .modifiesAttributeBase(ModAttributes.SPRINTING_SPEED, config.sprintingSpeedBonus)
             .increasesAttribute(ModAttributes.SPRINTING_STEP_HEIGHT, config.sprintingStepHeightBonus)
     );
-    // TODO: add durability config options
     public static final Holder<Item> SNOWSHOES
             = register("snowshoes", () -> Artifacts.CONFIG.items.snowshoes, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .damageOverTime(config.durability.damagePerSecondActive, EntityCondition.ON_SNOW)
             .component(ModDataComponents.WALK_ON_POWDER_SNOW.get(), config.allowWalkingOnPowderedSnow)
             .modifiesAttributeBase(ModAttributes.MOVEMENT_SPEED_ON_SNOW, config.movementSpeedOnSnowBonus)
     );
