@@ -168,8 +168,25 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("The amount of extra safe fall distance in blocks that is granted by the Bunny Hoppers")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private BunnyHoppers() {
             super(ModItems.BUNNY_HOPPERS);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerJump = define("damagePerJump", 0)
+                    .descriptionLine("The amount of durability lost per jump")
+                    .syncToClients().build();
+
+            public final ConfigValue<Integer> damagePerFallSurvived = define("damagePerFallSurvived", 1)
+                    .descriptionLine("The amount of durability lost after falling for more than 3 blocks without taking damage")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(200);
+            }
         }
     }
 

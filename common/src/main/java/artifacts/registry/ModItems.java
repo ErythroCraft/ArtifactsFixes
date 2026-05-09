@@ -557,10 +557,12 @@ public class ModItems {
                     new FluidCollision(config.enabled, Optional.empty(), EntityCondition.SPRINTING)
             )
     );
-    // TODO: add durability config options
     public static final Holder<Item> BUNNY_HOPPERS
             = register("bunny_hoppers", () -> Artifacts.CONFIG.items.bunnyHoppers, (builder, config) -> builder
             .equipable()
+            .durability(config.durability)
+            .component(ModDataComponents.DAMAGE_ON_JUMP.get(), config.durability.damagePerJump)
+            .component(ModDataComponents.DAMAGE_ON_FALL.get(), config.durability.damagePerFallSurvived)
             .modifiesAttributeBase(Attributes.JUMP_STRENGTH, config.jumpStrengthBonus)
             .modifiesAttributeBase(Attributes.FALL_DAMAGE_MULTIPLIER, config.fallDamageMultiplier)
             .increasesAttribute(Attributes.SAFE_FALL_DISTANCE, config.safeFallDistanceBonus)

@@ -92,6 +92,12 @@ public class ModDataComponents {
     /** Damage applied to the item after fishing an item, while worn and not on cooldown */
     public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_ITEM_FISHED =
             registerSynced("damage_on_item_fished", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
+    /** Damage applied to the item after jumping, while worn and not on cooldown */
+    public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_JUMP =
+            registerSynced("damage_on_jump", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
+    /** Damage applied to the item after falling more than 3 blocks without taking damage, while worn and not on cooldown */
+    public static final Supplier<DataComponentType<Value<Integer>>> DAMAGE_ON_FALL =
+            registerSynced("damage_on_fall", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
 
     // Abilities (= components that prevent the 'cosmetic' tooltip from showing up when EquipmentAbility#isNonCosmetic returns true)
     /** Cooldown applied to the item after receiving damage, possibly filtered by damage type tag */

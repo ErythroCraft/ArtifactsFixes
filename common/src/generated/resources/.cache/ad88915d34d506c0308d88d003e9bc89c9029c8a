@@ -1,8 +1,8 @@
-// 26.1.2	2026-05-08T02:03:20.8731088	Model Definitions - artifacts
+// 26.1.2	2026-05-09T16:00:42.5525933	Model Definitions - artifacts
 53575fc91d842c1b17ac962a71b488ad0cea47ac assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 ed7709072df911479dc455bfae83dac2f52ba714 assets/artifacts/items/aqua_dashers.json
-0ea3de02d61bc0eed8359c247b7028fe86dd24b3 assets/artifacts/items/bunny_hoppers.json
+95453bf4de41a47a3275057bd8342bcb88a04666 assets/artifacts/items/bunny_hoppers.json
 cc21ddead2860fc5f877ce33c424c2b93fd98444 assets/artifacts/items/charm_of_shrinking.json
 cd3e96ec7108989c8020d61e760a2e5434ff765d assets/artifacts/items/charm_of_sinking.json
 0aedf391e8e4b0cae798a22bc44a028e5a906c03 assets/artifacts/items/chorus_totem.json
@@ -55,6 +55,7 @@ a563a77efaec4540f18d9b12802ae7928a78c20c assets/artifacts/models/item/antidote_v
 aab84990a6af764a8c1930badc4a9533a46604ac assets/artifacts/models/item/aqua_dashers.json
 c2bdd79aa995922bdb8663dbcbc6cbc78ea26184 assets/artifacts/models/item/aqua_dashers_broken.json
 b98f8fd8c0021ca2799b347394ef70672c1c3a3b assets/artifacts/models/item/bunny_hoppers.json
+983062fb86fbc1da7e7b1ab52efb1f96624a56fd assets/artifacts/models/item/bunny_hoppers_broken.json
 2ce43543c82ac8384183482851b4f0acae72c1fb assets/artifacts/models/item/charm_of_shrinking.json
 c28b26cddc46c79c1115f0e7ef1caf215aff65a7 assets/artifacts/models/item/charm_of_shrinking_broken.json
 83e68768d176eb764c9000076af4b30710c63ede assets/artifacts/models/item/charm_of_sinking.json

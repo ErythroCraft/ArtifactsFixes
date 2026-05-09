@@ -2,7 +2,10 @@ package artifacts.mixin.ability;
 
 import artifacts.event.ArtifactHooks;
 import artifacts.extensions.ability.LivingEntityExtensions;
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +21,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -30,6 +34,11 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
         throw new UnsupportedOperationException();
+    }
+
+    @Unique
+    private LivingEntity artifacts$self() {
+        return (LivingEntity) (Object) this;
     }
 
     @Unique
@@ -59,7 +68,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
             ItemStack oldStack = getLastEquipmentItems().getOrDefault(slot, ItemStack.EMPTY);
             ItemStack newStack = getItemBySlot(slot);
 
-            ArtifactHooks.onItemChanged((LivingEntity) (Object) this, oldStack, newStack);
+            ArtifactHooks.onItemChanged(artifacts$self(), oldStack, newStack);
         }
     }
 
@@ -67,7 +76,21 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     // after armor and effects. The entity being damaged remains the same.
     @ModifyReceiver(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"))
     private LivingEntity onEntityDamaged(LivingEntity instance, float health, ServerLevel level, DamageSource source) {
-        ArtifactHooks.beforeLivingDamaged((LivingEntity) (Object) this, source, health);
+        ArtifactHooks.beforeLivingDamaged(artifacts$self(), source, health);
         return instance;
+    }
+
+    @Definition(id = "calculateFallDamage", method = "Lnet/minecraft/world/entity/LivingEntity;calculateFallDamage(DF)I")
+    @Expression("? = ?.calculateFallDamage(?, ?)")
+    @Inject(method = "causeFallDamage", at = @At(value = "MIXINEXTRAS:EXPRESSION", shift = At.Shift.AFTER))
+    private void onFall(double fallDistance, float damageModifier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir,
+                        @Local(name = "dmg") int dmg, @Local(name = "effectiveFallDistance") double effectiveFallDistance
+    ) {
+        ArtifactHooks.onFall(artifacts$self(), dmg, effectiveFallDistance);
+    }
+
+    @Inject(method = "jumpFromGround", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setDeltaMovement(DDD)V"))
+    private void onJump(CallbackInfo ci) {
+        ArtifactHooks.onJump(artifacts$self());
     }
 }

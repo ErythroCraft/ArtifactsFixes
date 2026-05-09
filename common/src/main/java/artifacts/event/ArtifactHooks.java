@@ -22,6 +22,7 @@ import be.florens.expandability.api.EventResult;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -351,5 +352,25 @@ public class ArtifactHooks {
                 true, true,
                 (component, slotAccess) -> slotAccess.hurtAndBreak(player, component.get())
         );
+    }
+
+    public static void onJump(LivingEntity entity) {
+        EquipmentHelper.iterateComponents(
+                ModDataComponents.DAMAGE_ON_JUMP.get(),
+                entity,
+                true, true,
+                (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
+        );
+    }
+
+    public static void onFall(LivingEntity entity, int damage, double effectiveFallDistance) {
+        if (!entity.is(EntityTypeTags.FALL_DAMAGE_IMMUNE) && damage <= 0 && effectiveFallDistance > 3) {
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.DAMAGE_ON_FALL.get(),
+                    entity,
+                    true, true,
+                    (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
+            );
+        }
     }
 }
