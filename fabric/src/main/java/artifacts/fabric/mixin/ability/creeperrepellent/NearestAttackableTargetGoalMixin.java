@@ -1,6 +1,5 @@
 package artifacts.fabric.mixin.ability.creeperrepellent;
 
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +21,7 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> e
 
     @Unique
     private static final TargetingConditions.Selector NOT_WEARING_KITTY_SLIPPERS = (entity, _) ->
-            !EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT, entity);
+            !ModDataComponents.CREEPER_REPELLENT.on(entity).findAny();
 
     @Shadow
     @Final

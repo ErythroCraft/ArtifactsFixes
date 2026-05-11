@@ -25,7 +25,7 @@ public class CuriosSlotProvider implements EquipmentSlotProvider {
                 for (int slot = 0; slot < stacksHandler.getStacks().getSlots(); slot++) {
                     ItemStack item = stacksHandler.getStacks().getStackInSlot(slot);
                     if (!item.isEmpty()) {
-                        EquipmentSlotAccess slotAccess = new SlotAccess(item, stacksHandler, slot);
+                        EquipmentSlotAccess slotAccess = new SlotAccess(entity, item, stacksHandler, slot);
                         init = f.apply(slotAccess, init);
                     }
                 }
@@ -74,7 +74,7 @@ public class CuriosSlotProvider implements EquipmentSlotProvider {
         return stack;
     }
 
-    private record SlotAccess(ItemStack item, ICurioStacksHandler stacksHandler, int slot) implements EquipmentSlotAccess {
+    private record SlotAccess(LivingEntity entity, ItemStack item, ICurioStacksHandler stacksHandler, int slot) implements EquipmentSlotAccess {
 
         @Override
         public ItemStack get() {

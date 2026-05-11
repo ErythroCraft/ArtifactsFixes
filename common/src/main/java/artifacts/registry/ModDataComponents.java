@@ -7,6 +7,7 @@ import artifacts.component.ability.mobeffect.EquipmentMobEffect;
 import artifacts.component.ability.mobeffect.PostDamageEffect;
 import artifacts.component.ability.mobeffect.PostEatingEffect;
 import artifacts.component.ability.retaliation.RetaliationEffects;
+import artifacts.component.itemdamage.*;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
 import com.mojang.serialization.Codec;
@@ -31,6 +32,7 @@ public class ModDataComponents {
     public static final Set<TickingAbility<?, ?>> TICKING_ABILITIES = new LinkedHashSet<>();
     private static final Set<ComponentType<?, ?>> APPLIES_COOLDOWN = new LinkedHashSet<>();
 
+    // Miscellaneous components
     /** Allows the items abilities to be toggled on and off */
     public static final ComponentType.Singleton<ToggleIdentifier> TOGGLE_KEY =
             registerSynced("toggle_key", ToggleIdentifier.CODEC, ToggleIdentifier.STREAM_CODEC);
@@ -66,7 +68,8 @@ public class ModDataComponents {
     /** Prevents the item from being destroyed when durability reaches 0 */
     public static final ComponentType.Singleton<Value<Boolean>> INDESTRUCTIBLE =
             registerSynced("indestructible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
-    // TODO: consider merging these into a single component
+
+    // Equipment damage rules
     /** Damage applied to the item when hurt, while worn and not on cooldown */
     public static final ComponentType.Singleton<DamageOnHurt> DAMAGE_ON_HURT =
             registerSynced("damage_on_hurt", DamageOnHurt.CODEC, DamageOnHurt.STREAM_CODEC);
@@ -80,7 +83,7 @@ public class ModDataComponents {
     public static final ComponentType.Singleton<DamageOnBlockMined> DAMAGE_ON_BLOCK_MINED =
             registerSynced("damage_on_block_mined", DamageOnBlockMined.CODEC, DamageOnBlockMined.STREAM_CODEC);
     /** Damage applied to the item after completing a trade with a villager, while worn and not on cooldown */
-    public static final ComponentType.Singleton< Value<Integer>> DAMAGE_ON_TRADE =
+    public static final ComponentType.Singleton<Value<Integer>> DAMAGE_ON_TRADE =
             registerSynced("damage_on_trade", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());
     /** Damage applied to the item after consuming an item, while worn and not on cooldown */
     public static final ComponentType.Singleton<DamageOnItemConsumed> DAMAGE_ON_ITEM_CONSUMED =

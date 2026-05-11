@@ -1,9 +1,8 @@
-package artifacts.component;
+package artifacts.component.itemdamage;
 
 import artifacts.component.ability.EntityCondition;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -27,20 +26,15 @@ public record DamageOverTime(Value<Double> damagePerSecond, EntityCondition cond
     );
 
     public static void onLivingUpdate(LivingEntity entity) {
-        EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_OVER_TIME,
-                entity,
-                true, true,
-                (component, slotAccess) -> {
-                    if (component.condition.test(entity)) {
-                        double damagePerTick = component.damagePerSecond.get() / 20;
-                        if (damagePerTick >= 1) {
-                            slotAccess.hurtAndBreak(entity, damagePerTick);
-                        } else if (entity.tickCount % (int) Math.round(1 / damagePerTick) == 0) {
-                            slotAccess.hurtAndBreak(entity, 1);
-                        }
-                    }
+        ModDataComponents.DAMAGE_OVER_TIME.on(entity).iterate((component, slot) -> {
+            if (component.condition.test(entity)) {
+                double damagePerTick = component.damagePerSecond.get() / 20;
+                if (damagePerTick >= 1) {
+                    slot.hurtAndBreak(damagePerTick);
+                } else if (entity.tickCount % (int) Math.round(1 / damagePerTick) == 0) {
+                    slot.hurtAndBreak(1);
                 }
-        );
+            }
+        });
     }
 }

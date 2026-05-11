@@ -1,6 +1,5 @@
 package artifacts.fabric.mixin.ability.creeperrepellent;
 
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,7 +22,7 @@ public abstract class HurtByTargetGoalMixin extends TargetGoal {
     @Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
     private void cancelRevenge(CallbackInfoReturnable<Boolean> info) {
         LivingEntity attacker = mob.getLastHurtByMob();
-        if (mob.is(ModTags.CREEPERS) && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT, attacker)) {
+        if (mob.is(ModTags.CREEPERS) && ModDataComponents.CREEPER_REPELLENT.on(attacker).findAny()) {
             info.setReturnValue(false); // early return intended!
         }
     }

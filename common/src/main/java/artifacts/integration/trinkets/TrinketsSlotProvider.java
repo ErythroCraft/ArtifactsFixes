@@ -23,7 +23,7 @@ public class TrinketsSlotProvider implements EquipmentSlotProvider {
                 for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
                     ItemStack item = inventory.getItem(slot);
                     if (!item.isEmpty()) {
-                        EquipmentSlotAccess slotAccess = new SlotAccess(inventory.getOrCreateSlotAccess(slot));
+                        EquipmentSlotAccess slotAccess = new SlotAccess(entity, inventory.getOrCreateSlotAccess(slot));
                         init = f.apply(slotAccess, init);
                     }
                 }
@@ -55,7 +55,7 @@ public class TrinketsSlotProvider implements EquipmentSlotProvider {
         return stack;
     }
 
-    private record SlotAccess(TrinketSlotAccess slotAccess) implements EquipmentSlotAccess {
+    private record SlotAccess(LivingEntity entity, TrinketSlotAccess slotAccess) implements EquipmentSlotAccess {
 
         @Override
         public ItemStack get() {

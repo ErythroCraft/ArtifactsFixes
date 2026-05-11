@@ -1,10 +1,13 @@
 package artifacts.item;
 
 import artifacts.Artifacts;
-import artifacts.component.*;
+import artifacts.component.CompositeComponent;
+import artifacts.component.Equipable;
+import artifacts.component.ToggleIdentifier;
 import artifacts.component.ability.*;
 import artifacts.component.ability.mobeffect.EquipmentMobEffect;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
+import artifacts.component.itemdamage.*;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.Value;
 import artifacts.item.consumeeffects.DamageItemConsumeEffect;

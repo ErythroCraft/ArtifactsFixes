@@ -3,7 +3,6 @@ package artifacts.component.ability.retaliation;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.equipment.EquipmentSlotAccess;
 import artifacts.util.DamageSourceHelper;
 import com.mojang.serialization.MapCodec;
@@ -30,12 +29,12 @@ public abstract class RetaliationEffect implements EquipmentAbility {
         return activationParams;
     }
 
-    public void onLivingHurt(LivingEntity entity, EquipmentSlotAccess slotAccess, DamageSource damageSource) {
+    public void onLivingHurt(LivingEntity entity, EquipmentSlotAccess slot, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
-        if (attacker != null && !slotAccess.isDisabledOrBroken() && entity.getRandom().nextDouble() < activationParams.strikeChance.get()) {
+        if (attacker != null && !slot.isDisabledOrBroken() && entity.getRandom().nextDouble() < activationParams.strikeChance.get()) {
             if (applyEffect(entity, attacker)) {
-                slotAccess.addCooldown(entity, activationParams.cooldown.get() * 20);
-                slotAccess.hurtAndBreak(entity, activationParams.itemDamage.get());
+                slot.addCooldown(activationParams.cooldown.get() * 20);
+                slot.hurtAndBreak(activationParams.itemDamage.get());
             }
         }
     }

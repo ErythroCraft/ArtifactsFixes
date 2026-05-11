@@ -3,7 +3,6 @@ package artifacts.client;
 import artifacts.Artifacts;
 import artifacts.component.SwimData;
 import artifacts.component.ability.SwimInAir;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.mixin.accessors.client.GuiAccessor;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
@@ -38,7 +37,7 @@ public class HeliumFlamingoOverlay {
     // Largely identical to Gui::renderAirBubbles
     public boolean renderOverlay(GuiGraphicsExtractor guiGraphics, Player player, int height) {
         SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
-        if (!EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR, player, false) || swimData == null) {
+        if (!ModDataComponents.SWIM_IN_AIR.on(player).includeItemsOnCooldown().findAny() || swimData == null) {
             return false;
         }
 

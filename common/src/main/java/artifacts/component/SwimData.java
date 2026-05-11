@@ -1,7 +1,6 @@
 package artifacts.component;
 
 import artifacts.component.ability.SwimInAir;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.network.NetworkHandler;
 import artifacts.network.payload.UpdateSwimFlyingPacket;
 import artifacts.registry.ModDataComponents;
@@ -71,8 +70,7 @@ public class SwimData {
     }
 
     public boolean shouldDepleteSwimFlyingCharge(Player player) {
-        boolean hasSinkingAbility = EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING, player);
-        return isSwimFlying && (!player.isUnderWater() || hasSinkingAbility);
+        return isSwimFlying && (!player.isUnderWater() || ModDataComponents.SINKING.on(player).findAny());
     }
 
     public void toggleSwimFlying(Player player) {
@@ -84,11 +82,9 @@ public class SwimData {
                             ModSoundEvents.POP.value(), player.getSoundSource(), 1F, 1F
                     );
                 }
-                EquipmentHelper.iterateComponents(
-                        ModDataComponents.SWIM_IN_AIR, player, true, true,
-                        (ability, slotAccess) ->
-                                slotAccess.addCooldown(player, Math.max(5, ability.cooldown().get() * 20))
-                );
+                // Add minimum 0.25s cooldown to prevent player from immediately entering fly state again
+                ModDataComponents.SWIM_IN_AIR.on(player)
+                        .addCooldown(ability -> Math.max(5, ability.cooldown().get() * 20));
             }
         }
     }

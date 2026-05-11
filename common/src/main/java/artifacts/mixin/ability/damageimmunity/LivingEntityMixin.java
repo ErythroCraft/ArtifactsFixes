@@ -1,6 +1,5 @@
 package artifacts.mixin.ability.damageimmunity;
 
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.server.level.ServerLevel;
@@ -15,12 +14,8 @@ public class LivingEntityMixin {
     @ModifyReturnValue(method = "isInvulnerableTo", at = @At("RETURN"))
     public boolean isInvulnerableTo(boolean original, ServerLevel level, DamageSource source) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        if (!original && EquipmentHelper.hasAbilityActive(
-                ModDataComponents.DAMAGE_IMMUNITY, entity, true,
-                ability -> ability.condition().test(entity) && source.is(ability.tag())
-        )) {
-            return true;
-        }
-        return original;
+        return original || ModDataComponents.DAMAGE_IMMUNITY.on(entity)
+                .filter(ability -> ability.condition().test(entity) && source.is(ability.tag()))
+                .findAny();
     }
 }

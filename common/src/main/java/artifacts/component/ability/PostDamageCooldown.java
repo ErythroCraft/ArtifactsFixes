@@ -2,7 +2,6 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
@@ -35,11 +34,9 @@ public record PostDamageCooldown(Value<Integer> cooldown, Optional<TagKey<Damage
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (entity.level().isClientSide()) {
-            EquipmentHelper.iterateComponents(ModDataComponents.POST_DAMAGE_COOLDOWN, entity, true, true, (ability, slotAccess) -> {
-                if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
-                    slotAccess.addCooldown(entity, ability.cooldown().get() * 20);
-                }
-            });
+            ModDataComponents.POST_DAMAGE_COOLDOWN.on(entity)
+                    .filter(ability -> ability.tag().isEmpty() || damageSource.is(ability.tag().get()))
+                    .addCooldown(ability -> ability.cooldown.get() * 20);
         }
     }
 

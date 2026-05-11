@@ -1,7 +1,6 @@
 package artifacts.component.ability.mobeffect;
 
 import artifacts.component.ability.EquipmentAbility;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
@@ -39,16 +38,11 @@ public record PostDamageEffect(
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (!entity.level().isClientSide()) {
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.POST_DAMAGE_EFFECTS, entity,
-                    true,
-                    true,
-                    (entry, _) -> {
-                        if (entry.shouldApply(damageSource, entity)) {
-                            entity.addEffect(entry.provider.createEffect());
-                        }
-                    }
-            );
+            ModDataComponents.POST_DAMAGE_EFFECTS.on(entity).iterate((entry, _) -> {
+                if (entry.shouldApply(damageSource, entity)) {
+                    entity.addEffect(entry.provider.createEffect());
+                }
+            });
         }
     }
 

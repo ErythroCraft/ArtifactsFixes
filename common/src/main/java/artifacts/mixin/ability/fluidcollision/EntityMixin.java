@@ -1,7 +1,6 @@
 package artifacts.mixin.ability.fluidcollision;
 
 import artifacts.component.SwimData;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.platform.PlatformServices;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModSoundEvents;
@@ -87,7 +86,7 @@ public abstract class EntityMixin {
         if ((Object) this instanceof LivingEntity entity) {
             SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(entity);
             return swimData != null
-                    && EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION, entity)
+                    && ModDataComponents.FLUID_COLLISION.on(entity).findAny()
                     && entity.isSprinting()
                     && !swimData.shouldBreakSurfaceTension();
         }

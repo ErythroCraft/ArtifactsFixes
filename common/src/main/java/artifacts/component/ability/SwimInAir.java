@@ -2,7 +2,6 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModKeyMappings;
 import com.mojang.serialization.Codec;
@@ -35,20 +34,24 @@ public record SwimInAir(Value<Integer> flightDuration, Value<Integer> rechargeDu
      * @return The maximum amount of time the entity is allowed to fly, in ticks
      */
     public static int getMaxFlightDuration(LivingEntity entity) {
-        return EquipmentHelper.maxInt(ModDataComponents.SWIM_IN_AIR, entity, ability -> ability.flightDuration().get() * 20, false);
+        return ModDataComponents.SWIM_IN_AIR.on(entity)
+                .includeItemsOnCooldown()
+                .maxInt(ability -> ability.flightDuration().get() * 20);
     }
 
     /**
      * @return The time it takes to fully recharge, in ticks
      */
     public static int getRechargeDuration(LivingEntity entity) {
-        int rechargeDuration = EquipmentHelper.maxInt(ModDataComponents.SWIM_IN_AIR, entity, ability -> ability.rechargeDuration().get() * 20, false);
+        int rechargeDuration = ModDataComponents.SWIM_IN_AIR.on(entity)
+                .includeItemsOnCooldown()
+                .maxInt(ability -> ability.rechargeDuration().get() * 20);
         return Math.max(20, rechargeDuration);
     }
 
     public static boolean canSwim(LivingEntity entity) {
         return entity instanceof Player player
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR, player)
+                && ModDataComponents.SWIM_IN_AIR.on(player).findAny()
                 && !player.getAbilities().flying
                 && !player.onGround()
                 && !player.isFallFlying()

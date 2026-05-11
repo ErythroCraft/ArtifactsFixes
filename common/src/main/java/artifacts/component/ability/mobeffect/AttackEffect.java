@@ -3,7 +3,6 @@ package artifacts.component.ability.mobeffect;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.DamageSourceHelper;
 import com.mojang.serialization.Codec;
@@ -49,11 +48,11 @@ public record AttackEffect(MobEffectProvider provider, Value<Double> chance, Val
     public static void onLivingHurt(LivingEntity target, DamageSource damageSource) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource) && !attacker.level().isClientSide()) {
-            EquipmentHelper.iterateComponents(ModDataComponents.ATTACK_EFFECTS, attacker, true, true, (effect, slotAccess) -> {
+            ModDataComponents.ATTACK_EFFECTS.on(attacker).iterate((effect, slot) -> {
                 if (effect.chance().get() > attacker.getRandom().nextDouble()) {
                     target.addEffect(effect.provider().createEffect(), attacker);
-                    slotAccess.addCooldown(attacker, effect.cooldown.get() * 20);
-                    slotAccess.hurtAndBreak(attacker, effect.itemDamage.get());
+                    slot.addCooldown(effect.cooldown.get() * 20);
+                    slot.hurtAndBreak(effect.itemDamage.get());
                 }
             });
         }

@@ -1,6 +1,6 @@
 package artifacts.component.ability;
 
-import artifacts.registry.ComponentType;
+import artifacts.component.ComponentType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.registries.BuiltInRegistries;

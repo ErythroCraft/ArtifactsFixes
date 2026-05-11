@@ -2,7 +2,6 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -15,6 +14,8 @@ import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public record EquipableTotem(Value<Boolean> enabled) implements EquipmentAbility {
 
     public static final Codec<EquipableTotem> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -26,16 +27,13 @@ public record EquipableTotem(Value<Boolean> enabled) implements EquipmentAbility
 
     @Nullable
     public static ItemStack findTotem(LivingEntity entity) {
-        ItemStack totem = EquipmentHelper.reduceComponents(
-                ModDataComponents.EQUIPABLE_TOTEM, entity, true, true, ItemStack.EMPTY,
-                (_, slotAccess, result) -> {
-                    if (result.isEmpty() && slotAccess.get().has(DataComponents.DEATH_PROTECTION)) {
-                        return slotAccess.get();
-                    }
-                    return result;
-                }
-        );
-        return totem.isEmpty() ? null : totem;
+        AtomicReference<ItemStack> totem = new AtomicReference<>();
+        ModDataComponents.EQUIPABLE_TOTEM.on(entity).iterate((_, slot) -> {
+            if (totem.get().isEmpty() && slot.get().has(DataComponents.DEATH_PROTECTION)) {
+                totem.set(slot.get());
+            }
+        });
+        return totem.get();
     }
 
     @Override

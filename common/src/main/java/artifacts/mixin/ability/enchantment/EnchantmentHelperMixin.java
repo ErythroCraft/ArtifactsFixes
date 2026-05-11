@@ -1,7 +1,7 @@
 package artifacts.mixin.ability.enchantment;
 
-import artifacts.equipment.EquipmentHelper;
 import artifacts.platform.PlatformServices;
+import artifacts.registry.ModDataComponents;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -22,7 +22,9 @@ public class EnchantmentHelperMixin {
             return original;
         }
         if (PlatformServices.getPlatformHelper().isFishingRod(rod) && fisher instanceof LivingEntity livingEntity) {
-            return Math.min(25, original + 5 * EquipmentHelper.getEnchantmentLevelIncrease(Enchantments.LURE, livingEntity));
+            return Math.min(25, original + 5 * ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.on(livingEntity)
+                    .filter(ability -> ability.enchantment().equals(Enchantments.LURE))
+                    .sumInt(ability -> ability.amount().get()));
         }
         return original;
     }
@@ -30,7 +32,9 @@ public class EnchantmentHelperMixin {
     @ModifyReturnValue(method = "getFishingLuckBonus", at = @At("RETURN"))
     private static int increaseFishingLuckBonus(int original, ServerLevel serverLevel, ItemStack rod, Entity fisher) {
         if (PlatformServices.getPlatformHelper().isFishingRod(rod) && fisher instanceof LivingEntity livingEntity) {
-            return original + EquipmentHelper.getEnchantmentLevelIncrease(Enchantments.LUCK_OF_THE_SEA, livingEntity);
+            return original + ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.on(livingEntity)
+                    .filter(ability -> ability.enchantment().equals(Enchantments.LUCK_OF_THE_SEA))
+                    .sumInt(ability -> ability.amount().get());
         }
         return original;
     }

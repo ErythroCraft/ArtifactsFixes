@@ -1,8 +1,7 @@
-package artifacts.component;
+package artifacts.component.itemdamage;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
@@ -36,16 +35,9 @@ public record DamageOnHurt(Value<Integer> itemDamage, Optional<TagKey<DamageType
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (entity instanceof Player player && !player.level().isClientSide()) {
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_HURT,
-                    entity,
-                    true, true,
-                    (ability, slotAccess) -> {
-                        if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
-                            slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
-                        }
-                    }
-            );
+            ModDataComponents.DAMAGE_ON_HURT.on(entity)
+                    .filter(component -> component.tag().isEmpty() || damageSource.is(component.tag().get()))
+                    .hurtAndBreak(component -> component.itemDamage.get());
         }
     }
 }

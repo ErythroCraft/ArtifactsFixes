@@ -4,15 +4,18 @@ import artifacts.component.Equipable;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 public class EquipmentSlotManager {
 
@@ -22,9 +25,29 @@ public class EquipmentSlotManager {
         SLOT_PROVIDERS.add(integration);
     }
 
-    protected static <ACC> ACC reduceEquipment(LivingEntity entity, ACC init, BiFunction<EquipmentSlotAccess, ACC, ACC> f) {
-        for (EquipmentSlotProvider slotProvider : SLOT_PROVIDERS) {
-            init = slotProvider.reduceEquipment(entity, init, f);
+    public static void iterateEquipment(@Nullable LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, Consumer<ItemStack> consumer) {
+        reduceEquipment(entity, skipItemsOnCooldown, skipDisabledItems, Unit.INSTANCE, (_, slotAccess) -> {
+            consumer.accept(slotAccess.get());
+            return Unit.INSTANCE;
+        });
+    }
+
+    public static <ACC> ACC reduceEquipment(@Nullable LivingEntity entity, boolean skipItemsOnCooldown, boolean skipDisabledItems, ACC init, BiFunction<ACC, EquipmentSlotAccess, ACC> f) {
+        return reduceEquipment(entity, init, ((slotAccess, acc) -> {
+            boolean checkCooldown = !skipItemsOnCooldown || !slotAccess.isOnCooldown(entity);
+            boolean checkDisabled = !skipDisabledItems || !slotAccess.isDisabledOrBroken();
+            if (checkCooldown && checkDisabled) {
+                return f.apply(acc, slotAccess);
+            }
+            return acc;
+        }));
+    }
+
+    protected static <ACC> ACC reduceEquipment(@Nullable LivingEntity entity, ACC init, BiFunction<EquipmentSlotAccess, ACC, ACC> f) {
+        if (entity != null) {
+            for (EquipmentSlotProvider slotProvider : SLOT_PROVIDERS) {
+                init = slotProvider.reduceEquipment(entity, init, f);
+            }
         }
         return init;
     }

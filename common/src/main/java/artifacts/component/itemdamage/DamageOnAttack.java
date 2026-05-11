@@ -1,4 +1,4 @@
-package artifacts.component;
+package artifacts.component.itemdamage;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;

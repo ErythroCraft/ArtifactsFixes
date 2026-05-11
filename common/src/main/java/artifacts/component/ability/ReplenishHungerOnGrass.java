@@ -44,7 +44,7 @@ public record ReplenishHungerOnGrass(
     public record Ticker() implements AbilityTicker<ReplenishHungerOnGrass> {
 
         @Override
-        public void wornTick(ReplenishHungerOnGrass ability, EquipmentSlotAccess slotAccess, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        public void wornTick(ReplenishHungerOnGrass ability, EquipmentSlotAccess slot, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
             if (!isDisabled && !isOnCooldown && ability.isNonCosmetic() && entity instanceof ServerPlayer player
                     && player.onGround()
                     && player.getFoodData().needsFood()
@@ -54,7 +54,7 @@ public record ReplenishHungerOnGrass(
                 player.getFoodData().eat(1, 0.5F);
                 PostEatingEffect.applyEffects(entity, 1);
                 PlaySoundAtPlayerPacket.sendSound(player, SoundEvents.GENERIC_EAT, 0.5F, 0.8F + entity.getRandom().nextFloat() * 0.4F);
-                slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
+                slot.hurtAndBreak(ability.itemDamage.get());
             }
         }
     }

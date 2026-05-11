@@ -1,8 +1,7 @@
-package artifacts.component;
+package artifacts.component.itemdamage;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -28,18 +27,13 @@ public record DamageOnItemConsumed(Value<Integer> damageOnItemEaten, Value<Integ
     );
 
     public static void onItemConsumed(LivingEntity entity, Consumable consumable) {
-        EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_ITEM_CONSUMED,
-                entity,
-                true, true,
-                (component, slotAccess) -> {
-                    if (consumable.animation() == ItemUseAnimation.EAT) {
-                        slotAccess.hurtAndBreak(entity, component.damageOnItemEaten.get());
-                    }
-                    if (consumable.animation() == ItemUseAnimation.DRINK) {
-                        slotAccess.hurtAndBreak(entity, component.damageOnItemDrunk.get());
-                    }
-                }
-        );
+        ModDataComponents.DAMAGE_ON_ITEM_CONSUMED.on(entity).iterate((component, slot) -> {
+            if (consumable.animation() == ItemUseAnimation.EAT) {
+                slot.hurtAndBreak(component.damageOnItemEaten.get());
+            }
+            if (consumable.animation() == ItemUseAnimation.DRINK) {
+                slot.hurtAndBreak(component.damageOnItemDrunk.get());
+            }
+        });
     }
 }

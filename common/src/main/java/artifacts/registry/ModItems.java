@@ -56,7 +56,9 @@ public class ModItems {
             () -> new Item.Properties().spawnEgg(ModEntityTypes.MIMIC.get())
     );
 
-    // TODO: add indestructible config option for umbrella & everlasting beef/steak
+    // TODO:
+    //  - add indestructible config option for umbrella & everlasting beef/steak
+    //  - add some sort of overlay to display equipped items that are losing durability
     // handheld
     public static final Holder<Item> UMBRELLA
             = register("umbrella", () -> Artifacts.CONFIG.items.umbrella, (builder, config) -> builder

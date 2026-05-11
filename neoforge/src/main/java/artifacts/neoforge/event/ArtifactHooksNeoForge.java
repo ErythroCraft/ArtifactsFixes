@@ -1,7 +1,6 @@
 package artifacts.neoforge.event;
 
 import artifacts.component.ability.ToolTierUpgrade;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.equipment.EquipmentSlotManager;
 import artifacts.event.ArtifactHooks;
 import artifacts.integration.ModCompat;
@@ -73,16 +72,14 @@ public class ArtifactHooksNeoForge {
 
     private static void onKittySlippersChangeTarget(LivingChangeTargetEvent event) {
         LivingEntity target = event.getNewAboutToBeSetTarget();
-        if (event.getEntity().is(ModTags.CREEPERS)
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT, target)
-        ) {
+        if (event.getEntity().is(ModTags.CREEPERS) && ModDataComponents.CREEPER_REPELLENT.on(target).findAny()) {
             event.setCanceled(true);
         }
     }
 
     private static void onKittySlippersLivingUpdate(LivingEntity entity) {
         if (entity.getLastHurtByMob() != null
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT, entity.getLastHurtByMob())
+                && ModDataComponents.CREEPER_REPELLENT.on(entity.getLastHurtByMob()).findAny()
                 && entity.is(ModTags.CREEPERS)
         ) {
             entity.setLastHurtByMob(null);

@@ -1,7 +1,7 @@
-package artifacts.registry;
+package artifacts.component;
 
-import artifacts.component.CompositeComponent;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +26,13 @@ public abstract class ComponentType<C, E> implements Supplier<DataComponentType<
             return List.of();
         }
         return extractEntries(component);
+    }
+
+    /**
+     * Create a query over the components of this type on the items equipped on the specified entity
+     */
+    public ComponentQuery<C, E> on(@Nullable LivingEntity entity) {
+        return new ComponentQuery<>(this, entity);
     }
 
     protected abstract Iterable<E> extractEntries(C component);

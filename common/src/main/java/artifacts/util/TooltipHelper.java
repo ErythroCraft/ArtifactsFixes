@@ -2,13 +2,13 @@ package artifacts.util;
 
 import artifacts.Artifacts;
 import artifacts.client.ToggleKeyHandlers;
+import artifacts.component.ComponentType;
 import artifacts.component.CompositeComponent;
 import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.component.ability.EquipmentAttributeModifier;
 import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.integration.ModCompat;
-import artifacts.registry.ComponentType;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;

@@ -8,9 +8,12 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+// TODO: test with profiler, consider caching this if needed
 public interface EquipmentSlotAccess extends SlotAccess {
 
     ItemStack get();
+
+    LivingEntity entity();
 
     @Override
     default boolean set(ItemStack stack) {
@@ -30,22 +33,22 @@ public interface EquipmentSlotAccess extends SlotAccess {
         return false;
     }
 
-    default void addCooldown(LivingEntity entity, int cooldown) {
-        if (cooldown > 0 && entity instanceof Player player && !get().isEmpty()) {
+    default void addCooldown(int cooldown) {
+        if (cooldown > 0 && entity() instanceof Player player && !get().isEmpty()) {
             player.getCooldowns().addCooldown(get(), cooldown);
         }
     }
 
-    default void hurtAndBreak(LivingEntity entity, double damage) {
-        if (damage > 0 && entity.level() instanceof ServerLevel level) {
+    default void hurtAndBreak(double damage) {
+        if (damage > 0 && entity().level() instanceof ServerLevel level) {
             ServerPlayer player = null;
-            if (entity instanceof ServerPlayer) {
-                player = (ServerPlayer) entity;
+            if (entity() instanceof ServerPlayer) {
+                player = (ServerPlayer) entity();
             }
-            if (entity.getRandom().nextDouble() < damage % 1) {
+            if (entity().getRandom().nextDouble() < damage % 1) {
                 damage += 1;
             }
-            get().hurtAndBreak((int) damage, level, player, _ -> broadcastBreakEvent(entity));
+            get().hurtAndBreak((int) damage, level, player, _ -> broadcastBreakEvent(entity()));
         }
     }
 }

@@ -2,7 +2,6 @@ package artifacts.network.payload;
 
 import artifacts.Artifacts;
 import artifacts.component.ability.DoubleJump;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.network.NetworkHandler;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.particles.ParticleOptions;
@@ -19,7 +18,7 @@ public record DoubleJumpPacket() implements CustomPacketPayload {
     public static final StreamCodec<FriendlyByteBuf, DoubleJumpPacket> CODEC = StreamCodec.unit(new DoubleJumpPacket());
 
     public void apply(NetworkHandler.PayloadContext context) {
-        if (context.player() instanceof ServerPlayer player && EquipmentHelper.hasAbilityActive(ModDataComponents.DOUBLE_JUMP, player)) {
+        if (context.player() instanceof ServerPlayer player && ModDataComponents.DOUBLE_JUMP.on(player).findAny()) {
             context.queue(() -> {
                 DoubleJump.jump(player);
 

@@ -1,6 +1,5 @@
 package artifacts.mixin.attribute.villagerreputation;
 
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.npc.villager.Villager;
@@ -10,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.function.Supplier;
+
 @Mixin(AbstractVillager.class)
 public abstract class AbstractVillagerMixin {
 
@@ -18,13 +19,7 @@ public abstract class AbstractVillagerMixin {
         // Villager reputation attribute only affects villagers
         // noinspection ConstantValue
         if ((Object) this instanceof Villager villager && villager.getTradingPlayer() != null) {
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_TRADE,
-                    villager.getTradingPlayer(),
-                    true, true,
-                    (component, slotAccess) ->
-                            slotAccess.hurtAndBreak(villager.getTradingPlayer(), component.get())
-            );
+            ModDataComponents.DAMAGE_ON_TRADE.on(villager.getTradingPlayer()).hurtAndBreak(Supplier::get);
         }
     }
 }

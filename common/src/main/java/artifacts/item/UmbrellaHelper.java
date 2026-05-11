@@ -1,7 +1,6 @@
 package artifacts.item;
 
 import artifacts.component.ability.SimpleAbility;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
@@ -20,7 +19,7 @@ public final class UmbrellaHelper {
         return !entity.onGround()
                 && entity.getDeltaMovement().y < 0
                 && !entity.hasEffect(MobEffects.SLOW_FALLING)
-                && !(entity.isInWater() && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING, entity))
+                && !(entity.isInWater() && !ModDataComponents.SINKING.on(entity).findAny())
                 && UmbrellaHelper.isHoldingUmbrellaUpright(entity, true);
     }
 

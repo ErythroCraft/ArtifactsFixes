@@ -1,8 +1,7 @@
-package artifacts.component;
+package artifacts.component.itemdamage;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.ModCodecs;
 import com.mojang.serialization.Codec;
@@ -18,6 +17,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
+// TODO:
+//  - consider using holderSet instead of tag key here and elsewhere
 public record DamageOnBlockMined(Value<Integer> itemDamage, Optional<TagKey<Block>> tag) {
 
     public static final Codec<DamageOnBlockMined> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -34,15 +35,8 @@ public record DamageOnBlockMined(Value<Integer> itemDamage, Optional<TagKey<Bloc
     );
 
     public static void onBlockBroken(LivingEntity entity, BlockState state) {
-        EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_BLOCK_MINED,
-                entity,
-                true, true,
-                (component, slotAccess) -> {
-                    if (component.tag().isEmpty() || state.is(component.tag().get())) {
-                        slotAccess.hurtAndBreak(entity, component.itemDamage().get());
-                    }
-                }
-        );
+        ModDataComponents.DAMAGE_ON_BLOCK_MINED.on(entity)
+                .filter(component -> component.tag().isEmpty() || state.is(component.tag().get()))
+                .hurtAndBreak(component -> component.itemDamage.get());
     }
 }

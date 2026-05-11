@@ -4,7 +4,6 @@ import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -38,10 +37,10 @@ public record PostEatingEffect(MobEffectProvider provider, Value<Integer> itemDa
 
     public static void applyEffects(LivingEntity entity, int foodPointsRestored) {
         if (foodPointsRestored > 0) {
-            EquipmentHelper.iterateComponents(ModDataComponents.POST_EATING_EFFECTS, entity, true, true, (entry, slotAccess) -> {
+            ModDataComponents.POST_EATING_EFFECTS.on(entity).iterate((entry, slot) -> {
                 if (entry.provider().canApply(entity)) {
                     entity.addEffect(entry.provider().createEffect(foodPointsRestored));
-                    slotAccess.hurtAndBreak(entity, entry.itemDamage.get());
+                    slot.hurtAndBreak(entry.itemDamage.get());
                 }
             });
         }

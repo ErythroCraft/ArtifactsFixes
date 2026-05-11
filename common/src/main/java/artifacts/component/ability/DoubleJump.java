@@ -2,7 +2,6 @@ package artifacts.component.ability;
 
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.event.ArtifactHooks;
 import artifacts.registry.ModDataComponents;
 import com.mojang.serialization.Codec;
@@ -49,8 +48,8 @@ public record DoubleJump(
 
     // TODO: cleanup (see vanilla jump logic)
     public static void jump(Player player) {
-        double fallDamageMultiplier = EquipmentHelper.minDouble(ModDataComponents.DOUBLE_JUMP, player, 1D,
-                ability -> ability.fallDamageMultiplier().get(), true);
+        double fallDamageMultiplier = ModDataComponents.DOUBLE_JUMP.on(player)
+                .minDouble(1D, ability -> ability.fallDamageMultiplier.get());
         if (player.fallDistance > 0 && fallDamageMultiplier > 0) {
             player.causeFallDamage(player.fallDistance, (float) fallDamageMultiplier, player.damageSources().fall());
         }
@@ -63,19 +62,15 @@ public record DoubleJump(
             upwardsMotion += 0.1 * (player.getEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1);
         }
         if (player.isSprinting()) {
-            upwardsMotion *= 1 + EquipmentHelper.maxDouble(
-                    ModDataComponents.DOUBLE_JUMP, player,
-                    ability -> ability.sprintVerticalVelocity().get(), true
-            );
+            upwardsMotion *= 1 + ModDataComponents.DOUBLE_JUMP.on(player)
+                    .maxDouble(ability -> ability.sprintVerticalVelocity.get());
         }
 
         Vec3 motion = player.getDeltaMovement();
         double motionMultiplier = 0;
         if (player.isSprinting()) {
-            motionMultiplier = EquipmentHelper.maxDouble(
-                    ModDataComponents.DOUBLE_JUMP, player,
-                    ability -> ability.sprintHorizontalVelocity().get(), true
-            );
+            motionMultiplier = ModDataComponents.DOUBLE_JUMP.on(player)
+                    .maxDouble(ability -> ability.sprintHorizontalVelocity.get());
         }
         float direction = (float) (player.getYRot() * Math.PI / 180);
         player.setDeltaMovement(player.getDeltaMovement().add(
@@ -94,12 +89,8 @@ public record DoubleJump(
                 player.causeFoodExhaustion(0.05F);
             }
 
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.DOUBLE_JUMP,
-                    player,
-                    true, true,
-                    (ability, slotAccess) -> slotAccess.hurtAndBreak(player, ability.itemDamage.get())
-            );
+            ModDataComponents.DOUBLE_JUMP.on(player)
+                    .hurtAndBreak(ability -> ability.itemDamage.get());
 
             if (!ArtifactHooks.fart(player)) {
                 player.level().playSound(null, player, SoundEvents.WOOL_FALL, SoundSource.PLAYERS, 1, 0.9F + player.getRandom().nextFloat() * 0.2F);

@@ -19,7 +19,7 @@ public class ArmorSlotProvider implements EquipmentSlotProvider {
             }
             ItemStack stack = entity.getItemBySlot(slot);
             if (!stack.isEmpty()) {
-                EquipmentSlotAccess slotAccess = new SlotAccess(stack, slot);
+                EquipmentSlotAccess slotAccess = new SlotAccess(entity, stack, slot);
                 init = f.apply(slotAccess, init);
             }
         }
@@ -31,7 +31,7 @@ public class ArmorSlotProvider implements EquipmentSlotProvider {
         return stack;
     }
 
-    private record SlotAccess(ItemStack stack, EquipmentSlot slot) implements EquipmentSlotAccess {
+    private record SlotAccess(LivingEntity entity, ItemStack stack, EquipmentSlot slot) implements EquipmentSlotAccess {
 
         @Override
         public ItemStack get() {

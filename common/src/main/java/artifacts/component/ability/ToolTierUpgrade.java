@@ -3,7 +3,6 @@ package artifacts.component.ability;
 import artifacts.Artifacts;
 import artifacts.config.value.Value;
 import artifacts.config.value.ValueTypes;
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
 import com.mojang.serialization.Codec;
@@ -34,11 +33,9 @@ public record ToolTierUpgrade(Value<Tier> tier, Value<Integer> itemDamage) imple
 
     public static boolean canHarvestWithTier(LivingEntity entity, BlockState state) {
         if (state.is(ModTags.MINEABLE_WITH_DIGGING_CLAWS)) {
-            Tier tier = Tier.fromLevel(EquipmentHelper.maxInt(
-                    ModDataComponents.TOOL_TIER_UPGRADE, entity,
-                    ability -> ability.tier().get().getLevel(), true
-            ));
-            return isCorrectTierForDrops(tier, state);
+            int level = ModDataComponents.TOOL_TIER_UPGRADE.on(entity)
+                    .maxInt(ability -> ability.tier().get().getLevel());
+            return isCorrectTierForDrops(Tier.fromLevel(level), state);
         }
         return false;
     }
@@ -65,16 +62,9 @@ public record ToolTierUpgrade(Value<Tier> tier, Value<Integer> itemDamage) imple
                 && state.requiresCorrectToolForDrops()
                 && !player.getInventory().getSelectedItem().isCorrectToolForDrops(state)
         ) {
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.TOOL_TIER_UPGRADE,
-                    player,
-                    true, true,
-                    (ability, slotAccess) -> {
-                        if (isCorrectTierForDrops(ability.tier.get(), state)) {
-                            slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
-                        }
-                    }
-            );
+            ModDataComponents.TOOL_TIER_UPGRADE.on(player)
+                    .filter(ability -> isCorrectTierForDrops(ability.tier.get(), state))
+                    .hurtAndBreak(ability -> ability.itemDamage.get());
         }
     }
 

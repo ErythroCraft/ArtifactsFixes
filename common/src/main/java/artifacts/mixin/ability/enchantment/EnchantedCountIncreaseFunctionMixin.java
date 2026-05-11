@@ -1,13 +1,12 @@
 package artifacts.mixin.ability.enchantment;
 
-import artifacts.equipment.EquipmentHelper;
+import artifacts.registry.ModDataComponents;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -27,8 +26,10 @@ public class EnchantedCountIncreaseFunctionMixin {
     private int addLootingLevel(int level, ItemStack itemStack, LootContext context) {
         Entity entity = context.getOptionalParameter(LootContextParams.ATTACKING_ENTITY);
 
-        if (this.enchantment.is(Enchantments.LOOTING) && entity instanceof LivingEntity livingEntity) {
-            level += EquipmentHelper.getEnchantmentLevelIncrease(Enchantments.LOOTING, livingEntity);
+        if (entity instanceof LivingEntity livingEntity) {
+            level += ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.on(livingEntity)
+                    .filter(ability -> ability.enchantment().equals(enchantment))
+                    .sumInt(ability -> ability.amount().get());
         }
 
         return level;

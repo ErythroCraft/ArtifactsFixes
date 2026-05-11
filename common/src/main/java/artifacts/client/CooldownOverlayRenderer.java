@@ -1,7 +1,7 @@
 package artifacts.client;
 
 import artifacts.Artifacts;
-import artifacts.equipment.EquipmentHelper;
+import artifacts.equipment.EquipmentSlotManager;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -30,7 +30,7 @@ public class CooldownOverlayRenderer {
 
         MutableInt k = new MutableInt(0);
 
-        EquipmentHelper.iterateEquipment(player, false, false, stack -> {
+        EquipmentSlotManager.iterateEquipment(player, false, false, stack -> {
             if (!stack.isEmpty()
                     && ModDataComponents.hasAbilityWithCooldown(stack)
                     && player.getCooldowns().isOnCooldown(stack)

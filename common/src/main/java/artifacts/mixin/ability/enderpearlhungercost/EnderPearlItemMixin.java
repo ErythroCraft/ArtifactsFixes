@@ -1,6 +1,5 @@
 package artifacts.mixin.ability.enderpearlhungercost;
 
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -23,8 +22,9 @@ public abstract class EnderPearlItemMixin extends Item {
 
     @WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V"))
     private void shouldConsumeEnderPearl(ItemStack stack, int amount, LivingEntity owner, Operation<Void> operation) {
-        if (EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_HUNGER_COST, owner) && owner instanceof Player player) {
-            int cost = EquipmentHelper.minInt(ModDataComponents.ENDER_PEARL_HUNGER_COST, player, 20, ability -> ability.foodCost().get(), true);
+        if (ModDataComponents.ENDER_PEARL_HUNGER_COST.on(owner).findAny() && owner instanceof Player player) {
+            int cost = ModDataComponents.ENDER_PEARL_HUNGER_COST.on(player)
+                    .minInt(20, ability -> ability.foodCost().get());
             if (player.getFoodData().getFoodLevel() >= cost || player.isCreative()) {
                 if (cost > 0 && !player.isCreative()) {
                     player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() - cost);
@@ -39,15 +39,10 @@ public abstract class EnderPearlItemMixin extends Item {
                             0.8F + owner.getRandom().nextFloat() * 0.4F
                     );
                 }
-                EquipmentHelper.iterateComponents(
-                        ModDataComponents.ENDER_PEARL_HUNGER_COST,
-                        player,
-                        true, true,
-                        (ability, slotAccess) -> {
-                            slotAccess.addCooldown(player, ability.cooldown().get() * 20);
-                            slotAccess.hurtAndBreak(player, ability.itemDamage().get());
-                        }
-                );
+                ModDataComponents.ENDER_PEARL_HUNGER_COST.on(player).iterate((ability, slot) -> {
+                    slot.addCooldown(ability.cooldown().get() * 20);
+                    slot.hurtAndBreak(ability.itemDamage().get());
+                });
                 return;
             }
         }

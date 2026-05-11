@@ -1,16 +1,16 @@
 package artifacts.event;
 
 import artifacts.attribute.DynamicAttributeModifier;
-import artifacts.component.DamageOnBlockMined;
-import artifacts.component.DamageOnHurt;
-import artifacts.component.DamageOverTime;
 import artifacts.component.SwimData;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.component.ability.PostDamageCooldown;
 import artifacts.component.ability.ToolTierUpgrade;
 import artifacts.component.ability.mobeffect.AttackEffect;
 import artifacts.component.ability.mobeffect.PostDamageEffect;
-import artifacts.equipment.EquipmentHelper;
+import artifacts.component.itemdamage.DamageOnBlockMined;
+import artifacts.component.itemdamage.DamageOnHurt;
+import artifacts.component.itemdamage.DamageOverTime;
+import artifacts.equipment.EquipmentSlotManager;
 import artifacts.extensions.ability.LivingEntityExtensions;
 import artifacts.item.UmbrellaHelper;
 import artifacts.mixin.accessors.MobAccessor;
@@ -48,6 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ArtifactHooks {
 
@@ -114,7 +115,7 @@ public class ArtifactHooks {
     }
 
     public static void updateHasTickingAbilities(LivingEntity entity) {
-        boolean shouldTick = EquipmentHelper.reduceEquipment(entity, false, false, false, (slotAccess, hasTickingAbilities) -> {
+        boolean shouldTick = EquipmentSlotManager.reduceEquipment(entity, false, false, false, (hasTickingAbilities, slotAccess) -> {
             for (ModDataComponents.TickingAbility<?, ?> entry : ModDataComponents.TICKING_ABILITIES) {
                 // abilities are tracked as ticking even when they're cosmetic,
                 // since updating the config does not trigger onItemChanged
@@ -141,9 +142,11 @@ public class ArtifactHooks {
             ModDataComponents.TickingAbility<?, T> entry,
             LivingEntity entity
     ) {
-        EquipmentHelper.iterateComponents(entry.type(), entity, false, false, (ability, slotAccess) ->
-                entry.ticker().wornTick(ability, slotAccess, entity, slotAccess.isOnCooldown(entity), slotAccess.isDisabledOrBroken())
-        );
+        entry.type().on(entity)
+                .includeInactive()
+                .iterate((ability, slot) ->
+                        entry.ticker().wornTick(ability, slot, entity, slot.isOnCooldown(entity), slot.isDisabledOrBroken())
+                );
     }
 
     public static void onAttackBurningLivingHurt(LivingEntity entity, DamageSource damageSource) {
@@ -155,8 +158,8 @@ public class ArtifactHooks {
     }
 
     public static void doPostAttackEffects(LivingEntity entity, DamageSource damageSource) {
-        EquipmentHelper.iterateComponents(ModDataComponents.RETALIATION_EFFECTS, entity, true, true,
-                (ability, slotAccess) -> ability.onLivingHurt(entity, slotAccess, damageSource)
+        ModDataComponents.RETALIATION_EFFECTS.on(entity).iterate((ability, slot) ->
+                ability.onLivingHurt(entity, slot, damageSource)
         );
 
         AttackEffect.onLivingHurt(entity, damageSource);
@@ -168,7 +171,7 @@ public class ArtifactHooks {
             updateHasTickingAbilities(livingEntity);
         }
         if (entity instanceof PathfinderMob creeper && creeper.is(ModTags.CREEPERS)) {
-            Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT, target);
+            Predicate<LivingEntity> predicate = target -> ModDataComponents.CREEPER_REPELLENT.on(target).findAny();
             ((MobAccessor) creeper).getGoalSelector().addGoal(3,
                     new AvoidEntityGoal<>(creeper, Player.class, predicate, 6, 1, 1.3, EntitySelector.NO_CREATIVE_OR_SPECTATOR)
             );
@@ -176,22 +179,16 @@ public class ArtifactHooks {
     }
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
-        EquipmentHelper.iterateComponents(
-                ModDataComponents.HURT_SOUND,
-                entity,
-                false, false,
-                (component, _) -> {
-                    if (component.enabled().get()) {
-                        entity.playSound(component.soundEvent().value(), volume, pitch);
-                    }
-                }
-        );
+        ModDataComponents.HURT_SOUND.on(entity)
+                .includeInactive()
+                .filter(component -> component.enabled().get())
+                .iterate((component, _) -> entity.playSound(component.soundEvent().value(), volume, pitch));
     }
 
     public static ItemStack applySmeltOresAbility(ItemStack original, @Nullable Entity entity, @Nullable BlockState state, Consumer<Integer> experienceConsumer) {
         if (entity instanceof LivingEntity livingEntity
                 && livingEntity.level() instanceof ServerLevel serverLevel
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.AUTO_SMELT, livingEntity)
+                && ModDataComponents.AUTO_SMELT.on(livingEntity).findAny()
                 && state != null
                 && state.is(ModTags.ORES)
         ) {
@@ -250,23 +247,18 @@ public class ArtifactHooks {
     public static void absorbDamage(LivingEntity entity, DamageSource damageSource, float amount) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ABSORPTION,
-                    attacker,
-                    true, true,
-                    (ability, slotAccess) -> {
-                        double absorptionRatio = ability.absorptionRatio().get();
-                        double maxHealthAbsorbed = ability.maxDamageAbsorbed().get();
+            ModDataComponents.DAMAGE_ABSORPTION.on(attacker).iterate((ability, slot) -> {
+                double absorptionRatio = ability.absorptionRatio().get();
+                double maxHealthAbsorbed = ability.maxDamageAbsorbed().get();
 
-                        float damageDealt = Math.min(amount, entity.getHealth());
-                        float damageAbsorbed = (float) Math.min(maxHealthAbsorbed, absorptionRatio * damageDealt);
+                float damageDealt = Math.min(amount, entity.getHealth());
+                float damageAbsorbed = (float) Math.min(maxHealthAbsorbed, absorptionRatio * damageDealt);
 
-                        if (damageAbsorbed > 0 && ability.absorptionChance().get() > entity.getRandom().nextDouble()) {
-                            attacker.heal(damageAbsorbed);
-                            slotAccess.hurtAndBreak(entity, ability.itemDamage().get());
-                        }
-                    }
-            );
+                if (damageAbsorbed > 0 && ability.absorptionChance().get() > entity.getRandom().nextDouble()) {
+                    attacker.heal(damageAbsorbed);
+                    slot.hurtAndBreak(ability.itemDamage().get());
+                }
+            });
         }
     }
 
@@ -275,19 +267,11 @@ public class ArtifactHooks {
         if (attacker == null) {
             return;
         }
-        EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_ATTACK,
-                attacker,
-                true, true,
-                (component, slotAccess) -> {
-                    boolean checkMelee = !component.requireMelee() || DamageSourceHelper.isMeleeAttack(damageSource);
-                    boolean checkKill = !component.requireKill() || isKillingBlow;
-                    boolean checkEntity = component.entity().isEmpty() || component.entity().get().contains(target.typeHolder());
-                    if (checkMelee && checkKill && checkEntity) {
-                        slotAccess.hurtAndBreak(attacker, component.itemDamage().get());
-                    }
-                }
-        );
+        ModDataComponents.DAMAGE_ON_ATTACK.on(attacker)
+                .filter(component -> !component.requireMelee() || DamageSourceHelper.isMeleeAttack(damageSource))
+                .filter(component -> !component.requireKill() || isKillingBlow)
+                .filter(component -> component.entity().isEmpty() || component.entity().get().contains(target.typeHolder()))
+                .hurtAndBreak(component -> component.itemDamage().get());
     }
 
     public static float getModifiedFriction(float friction, LivingEntity entity, Block block) {
@@ -300,7 +284,7 @@ public class ArtifactHooks {
 
     public static void applyBoneMealAfterEating(LivingEntity entity, FoodProperties properties) {
         if (!entity.level().isClientSide()
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.POST_EATING_PLANT_GROWTH, entity)
+                && ModDataComponents.POST_EATING_PLANT_GROWTH.on(entity).findAny()
                 && properties.nutrition() > 0
                 && !properties.canAlwaysEat()
                 && entity.onGround()
@@ -315,7 +299,7 @@ public class ArtifactHooks {
         if (swimData != null) {
             if (swimData.isSwimFlying()) {
                 return EventResult.SUCCESS;
-            } else if (EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING, player)) {
+            } else if (ModDataComponents.SINKING.on(player).findAny()) {
                 return EventResult.FAIL;
             }
         }
@@ -327,9 +311,9 @@ public class ArtifactHooks {
         if (swimData == null || swimData.shouldBreakSurfaceTension() || swimData.isSwimFlying()) {
             return false;
         }
-        return EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION, entity, true, ability ->
-                ability.matchesFluid(fluidState) && ability.condition().test(entity)
-        );
+        return ModDataComponents.FLUID_COLLISION.on(entity)
+                .filter(ability -> ability.matchesFluid(fluidState) && ability.condition().test(entity))
+                .findAny();
     }
 
     public static boolean fart(LivingEntity entity) {
@@ -337,43 +321,23 @@ public class ArtifactHooks {
         if (!entity.level().isClientSide() && entity.getRandom().nextFloat() < chance) {
             entity.gameEvent(ModGameEvents.FART);
             entity.level().playSound(null, entity, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + entity.getRandom().nextFloat() * 0.2F);
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_FART,
-                    entity,
-                    true, true,
-                    (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
-            );
+            ModDataComponents.DAMAGE_ON_FART.on(entity).hurtAndBreak(Supplier::get);
             return true;
         }
         return false;
     }
 
     public static void onItemFished(Player player) {
-        EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_ITEM_FISHED,
-                player,
-                true, true,
-                (component, slotAccess) -> slotAccess.hurtAndBreak(player, component.get())
-        );
+        ModDataComponents.DAMAGE_ON_ITEM_FISHED.on(player).hurtAndBreak(Supplier::get);
     }
 
     public static void onJump(LivingEntity entity) {
-        EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_JUMP,
-                entity,
-                true, true,
-                (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
-        );
+        ModDataComponents.DAMAGE_ON_JUMP.on(entity).hurtAndBreak(Supplier::get);
     }
 
     public static void onFall(LivingEntity entity, int damage, double effectiveFallDistance) {
         if (!entity.is(EntityTypeTags.FALL_DAMAGE_IMMUNE) && damage <= 0 && effectiveFallDistance > 3) {
-            EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_FALL,
-                    entity,
-                    true, true,
-                    (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
-            );
+            ModDataComponents.DAMAGE_ON_FALL.on(entity).hurtAndBreak(Supplier::get);
         }
     }
 }

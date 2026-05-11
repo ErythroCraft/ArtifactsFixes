@@ -1,6 +1,5 @@
 package artifacts.mixin.ability.phantomrepellent;
 
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -31,7 +30,7 @@ public class PhantomSweepAttackGoalMixin {
         if (artifacts$phantom != null && original) {
             LivingEntity target = artifacts$phantom.getTarget();
             if (target != null && artifacts$phantom.distanceToSqr(target) < 16 * 16
-                    && EquipmentHelper.hasAbilityActive(ModDataComponents.PHANTOM_REPELLENT, target)
+                    && ModDataComponents.PHANTOM_REPELLENT.on(target).findAny()
             ) {
                 Holder<SoundEvent> hiss = SoundEvents.CAT_SOUNDS.get(CatSoundVariants.SoundSet.CLASSIC).adultSounds().hissSound();
                 target.level().playSound(null, target.getX(), target.getY(), target.getZ(), hiss, target.getSoundSource(), 1F, 1F);

@@ -1,6 +1,5 @@
 package artifacts.mixin.ability.nightvision.client;
 
-import artifacts.equipment.EquipmentHelper;
 import artifacts.registry.ModDataComponents;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.renderer.GameRenderer;
@@ -22,8 +21,9 @@ public class GameRendererMixin {
         if (effect == null || !effect.endsWithin(12 * 20)) {
             return original;
         }
-        // TODO: don't skip disabled items to prevent weird flicker when toggling off
-        double scale = EquipmentHelper.maxDouble(ModDataComponents.REDUCED_NIGHT_VISION, camera, Supplier::get, false);
+        double scale = ModDataComponents.REDUCED_NIGHT_VISION.on(camera)
+                .includeInactive()
+                .maxDouble(Supplier::get);
         if (scale == 0) {
             return original;
         }

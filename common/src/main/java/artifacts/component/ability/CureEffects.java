@@ -42,7 +42,7 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
     public record Ticker() implements AbilityTicker<CureEffects> {
 
         @Override
-        public void wornTick(CureEffects ability, EquipmentSlotAccess slotAccess, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
+        public void wornTick(CureEffects ability, EquipmentSlotAccess slot, LivingEntity entity, boolean isOnCooldown, boolean isDisabled) {
             if (isDisabled || isOnCooldown || !ability.isNonCosmetic()) {
                 return;
             }
@@ -63,8 +63,8 @@ public record CureEffects(Value<Boolean> enabled, Value<Integer> maxEffectDurati
             });
 
             if (!effects.isEmpty()) {
-                slotAccess.hurtAndBreak(entity, ability.itemDamage.get());
-                slotAccess.addCooldown(entity, 2 * 20);
+                slot.hurtAndBreak(ability.itemDamage.get());
+                slot.addCooldown(2 * 20);
             }
         }
     }
