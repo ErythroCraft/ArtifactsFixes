@@ -37,7 +37,7 @@ public record DamageOnHurt(Value<Integer> itemDamage, Optional<TagKey<DamageType
         if (entity instanceof Player player && !player.level().isClientSide()) {
             ModDataComponents.DAMAGE_ON_HURT.on(entity)
                     .filter(component -> component.tag().isEmpty() || damageSource.is(component.tag().get()))
-                    .hurtAndBreak(component -> component.itemDamage.get());
+                    .iterate((component, slot) -> slot.hurtAndBreak(component.itemDamage().get()));
         }
     }
 }

@@ -36,7 +36,7 @@ public record PostDamageCooldown(Value<Integer> cooldown, Optional<TagKey<Damage
         if (entity.level().isClientSide()) {
             ModDataComponents.POST_DAMAGE_COOLDOWN.on(entity)
                     .filter(ability -> ability.tag().isEmpty() || damageSource.is(ability.tag().get()))
-                    .addCooldown(ability -> ability.cooldown.get() * 20);
+                    .iterate((ability, slot) -> slot.addCooldown(ability.cooldown.get() * 20));
         }
     }
 

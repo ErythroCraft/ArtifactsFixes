@@ -74,16 +74,6 @@ public record ComponentQuery<C, E>(
         return reduce(init, (current, component) -> Math.min(current, f.apply(component)));
     }
 
-    // TODO: This and addCooldown don't really belong here, but it makes the calls a lot cleaner.
-    //  Probably should move this to an `apply` method on damage_x components
-    public void hurtAndBreak(Function<E, Integer> damage) {
-        iterate((component, slot) -> slot.hurtAndBreak(damage.apply(component)));
-    }
-
-    public void addCooldown(Function<E, Integer> cooldown) {
-        iterate((component, slot) -> slot.addCooldown(cooldown.apply(component)));
-    }
-
     /**
      * Iterate over all components matching this query
      */

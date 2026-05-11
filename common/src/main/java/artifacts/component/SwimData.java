@@ -83,8 +83,9 @@ public class SwimData {
                     );
                 }
                 // Add minimum 0.25s cooldown to prevent player from immediately entering fly state again
-                ModDataComponents.SWIM_IN_AIR.on(player)
-                        .addCooldown(ability -> Math.max(5, ability.cooldown().get() * 20));
+                ModDataComponents.SWIM_IN_AIR.on(player).iterate((ability, slot) ->
+                        slot.addCooldown(Math.max(5, ability.cooldown().get() * 20))
+                );
             }
         }
     }

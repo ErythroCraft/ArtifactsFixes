@@ -37,6 +37,6 @@ public record DamageOnBlockMined(Value<Integer> itemDamage, Optional<TagKey<Bloc
     public static void onBlockBroken(LivingEntity entity, BlockState state) {
         ModDataComponents.DAMAGE_ON_BLOCK_MINED.on(entity)
                 .filter(component -> component.tag().isEmpty() || state.is(component.tag().get()))
-                .hurtAndBreak(component -> component.itemDamage.get());
+                .iterate((component, slot) -> slot.hurtAndBreak(component.itemDamage().get()));
     }
 }

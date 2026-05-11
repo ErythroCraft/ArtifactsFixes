@@ -48,7 +48,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class ArtifactHooks {
 
@@ -271,7 +270,7 @@ public class ArtifactHooks {
                 .filter(component -> !component.requireMelee() || DamageSourceHelper.isMeleeAttack(damageSource))
                 .filter(component -> !component.requireKill() || isKillingBlow)
                 .filter(component -> component.entity().isEmpty() || component.entity().get().contains(target.typeHolder()))
-                .hurtAndBreak(component -> component.itemDamage().get());
+                .iterate((component, slot) -> slot.hurtAndBreak(component.itemDamage().get()));
     }
 
     public static float getModifiedFriction(float friction, LivingEntity entity, Block block) {
@@ -321,23 +320,27 @@ public class ArtifactHooks {
         if (!entity.level().isClientSide() && entity.getRandom().nextFloat() < chance) {
             entity.gameEvent(ModGameEvents.FART);
             entity.level().playSound(null, entity, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + entity.getRandom().nextFloat() * 0.2F);
-            ModDataComponents.DAMAGE_ON_FART.on(entity).hurtAndBreak(Supplier::get);
+            ModDataComponents.DAMAGE_ON_FART.on(entity)
+                    .iterate((component, slot) -> slot.hurtAndBreak(component.get()));
             return true;
         }
         return false;
     }
 
     public static void onItemFished(Player player) {
-        ModDataComponents.DAMAGE_ON_ITEM_FISHED.on(player).hurtAndBreak(Supplier::get);
+        ModDataComponents.DAMAGE_ON_ITEM_FISHED.on(player)
+                .iterate((component, slot) -> slot.hurtAndBreak(component.get()));
     }
 
     public static void onJump(LivingEntity entity) {
-        ModDataComponents.DAMAGE_ON_JUMP.on(entity).hurtAndBreak(Supplier::get);
+        ModDataComponents.DAMAGE_ON_JUMP.on(entity)
+                .iterate((component, slot) -> slot.hurtAndBreak(component.get()));
     }
 
     public static void onFall(LivingEntity entity, int damage, double effectiveFallDistance) {
         if (!entity.is(EntityTypeTags.FALL_DAMAGE_IMMUNE) && damage <= 0 && effectiveFallDistance > 3) {
-            ModDataComponents.DAMAGE_ON_FALL.on(entity).hurtAndBreak(Supplier::get);
+            ModDataComponents.DAMAGE_ON_FALL.on(entity)
+                    .iterate((component, slot) -> slot.hurtAndBreak(component.get()));
         }
     }
 }

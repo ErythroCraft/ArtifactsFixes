@@ -90,7 +90,7 @@ public record DoubleJump(
             }
 
             ModDataComponents.DOUBLE_JUMP.on(player)
-                    .hurtAndBreak(ability -> ability.itemDamage.get());
+                    .iterate((component, slot) -> slot.hurtAndBreak(component.itemDamage.get()));
 
             if (!ArtifactHooks.fart(player)) {
                 player.level().playSound(null, player, SoundEvents.WOOL_FALL, SoundSource.PLAYERS, 1, 0.9F + player.getRandom().nextFloat() * 0.2F);

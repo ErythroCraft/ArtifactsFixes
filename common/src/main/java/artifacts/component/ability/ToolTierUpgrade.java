@@ -64,7 +64,7 @@ public record ToolTierUpgrade(Value<Tier> tier, Value<Integer> itemDamage) imple
         ) {
             ModDataComponents.TOOL_TIER_UPGRADE.on(player)
                     .filter(ability -> isCorrectTierForDrops(ability.tier.get(), state))
-                    .hurtAndBreak(ability -> ability.itemDamage.get());
+                    .iterate((ability, slot) -> slot.hurtAndBreak(ability.itemDamage.get()));
         }
     }
 
