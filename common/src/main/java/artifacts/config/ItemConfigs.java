@@ -99,7 +99,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerItemFished = define("damagePerItemFished", 1)
                     .descriptionLine("The amount of durability lost every time the wearer fishes an item")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(320);
@@ -140,7 +140,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
                     .descriptionLine("The amount of durability lost per second when walking on water")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(1800);
@@ -178,11 +178,11 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerJump = define("damagePerJump", 0)
                     .descriptionLine("The amount of durability lost per jump")
-                    .syncToClients().build();
+                    .build();
 
             public final ConfigValue<Integer> damagePerFallSurvived = define("damagePerFallSurvived", 1)
                     .descriptionLine("The amount of durability lost after falling for more than 3 blocks without taking damage")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(200);
@@ -232,7 +232,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second spent underwater")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 // 900 at 0.1/s = 2.5 hours
@@ -291,7 +291,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerDoubleJump = define("damagePerDoubleJump", 1)
                     .descriptionLine("The amount of durability lost for every double jump")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(120);
@@ -315,7 +315,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second while controlling a mount")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 // 900 at 0.1 = 2.5 hours
@@ -357,7 +357,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damageWhenHurt = define("damageWhenHurt", 1)
                     .descriptionLine("The amount of durability lost every time the wearer takes damage")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(600);
@@ -385,15 +385,15 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerBlockMined = define("damagePerBlockMined", 0)
                     .descriptionLine("The amount of durability lost per block mined")
-                    .syncToClients().build();
+                    .build();
 
             public final ConfigValue<Integer> damagePerBlockHarvested = define("damagePerBlockHarvested", 1)
                     .descriptionLine("The amount of durability lost per block mined that would not be harvestable without the digging claws")
-                    .syncToClients().build();
+                    .build();
 
             public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", 0)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(500);
@@ -423,12 +423,12 @@ public final class ItemConfigs extends ConfigManager {
             public final ConfigValue<Integer> damagePerItemDrunk
                     = define("damagePerItemDrunk", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ITEM_DRUNK)
-                    .syncToClients().build();
+                    .build();
 
             public final ConfigValue<Integer> damagePerItemEaten
                     = define("damagePerItemEaten", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ITEM_EATEN)
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(64 * 4);
@@ -462,7 +462,7 @@ public final class ItemConfigs extends ConfigManager {
             public final ConfigValue<Integer> damageWhenConsumed
                     = define("damageWhenConsumed", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_WHEN_CONSUMED)
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(64 * 5);
@@ -558,7 +558,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second when swimming")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 // 900 at 0.1/s = 2 hours
@@ -604,7 +604,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
                     .descriptionLine("The amount of durability lost per second while flying with the Helium Flamingo")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 // 800 at 1/s & 8 seconds per flight = 100 flights
@@ -637,11 +637,11 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerCreeperScared = define("damagePerCreeperScared", 1)
                     .descriptionLine("The amount of durability lost per creeper killed while wearing the kitty slippers")
-                    .syncToClients().build();
+                    .build();
 
             public final ConfigValue<Integer> damagePerPhantomScared = define("damagePerPhantomScared", 1)
                     .descriptionLine("The amount of durability lost per phantom killed while wearing the kitty slippers")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(120);
@@ -665,7 +665,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(256);
@@ -758,7 +758,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(256);
@@ -816,7 +816,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerFoodPoint = define("damagePerFoodPoint", 1)
                     .descriptionLine("The amount of durability lost every time the Rooted Boots restore a food point")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(20 * 20);
@@ -844,7 +844,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second when sprinting")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 // 900 at 0.1/s = 2.5 hours
@@ -918,7 +918,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.2)
                     .descriptionLine("The amount of durability lost per second while underwater")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 // 900 at 0.2 = 1.25 hours
@@ -947,7 +947,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second when walking on snow")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(1800);
@@ -976,7 +976,6 @@ public final class ItemConfigs extends ConfigManager {
             public final ConfigValue<Integer> damageWhenAttacked
                     = define("damageWhenAttacked", 1)
                     .descriptionLine("The amount of durability lost when the wearer is attacked by an entity or player")
-                    .syncToClients()
                     .build();
 
             private Durability() {
@@ -1005,7 +1004,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
                     .descriptionLine("The amount of durability lost per second when walking on lava")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(1800);
@@ -1076,21 +1075,18 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerAttack = define("damagePerAttack", 1)
                     .descriptionLine("The amount of durability lost for each attack performed with the umbrella")
-                    .syncToClients()
                     .requiresRestart().build();
 
             public final ConfigValue<Integer> damagePerBlockedAttackBase
                     = define("damagePerBlockedAttackBase", ValueTypes.NON_NEGATIVE_INT, 1)
                     .title("Damage per Blocked Attack (Base)")
                     .descriptionLine("The constant amount of damage that should be applied to the umbrella when an attack is blocked")
-                    .syncToClients()
                     .requiresRestart().build();
 
             public final ConfigValue<Double> damagePerBlockedAttackFactor
                     = define("damagePerBlockedAttackFactor", ValueTypes.NON_NEGATIVE_DOUBLE, 1D)
                     .title("Damage per Blocked Attack (Factor)")
                     .descriptionLine("The fraction of the dealt damage that should be applied to the umbrella when an attack is blocked")
-                    .syncToClients()
                     .requiresRestart().build();
 
             private Durability() {
@@ -1151,7 +1147,7 @@ public final class ItemConfigs extends ConfigManager {
 
             public final ConfigValue<Integer> damagePerTrade = define("damagePerTrade", 1)
                     .descriptionLine("The amount of durability lost per trade completed with the Villager Hat")
-                    .syncToClients().build();
+                    .build();
 
             private Durability() {
                 super(240);
@@ -1277,20 +1273,17 @@ public final class ItemConfigs extends ConfigManager {
                 setTitle(SharedConfigLang.DURABILITY);
                 this.canBeDamaged = define("canBeDamaged", false)
                         .titleAndDescription(SharedConfigLang.CAN_BE_DAMAGED)
-                        .syncToClients()
                         .requiresRestart()
                         .displayPriority(-4)
                         .build();
                 this.canBeRepaired = define("canBeRepaired", false)
                         .title(SharedConfigLang.CAN_BE_REPAIRED.title())
                         .descriptionLine(SharedConfigLang.CAN_BE_REPAIRED.description().withArgs(repairMaterials.location().toString()))
-                        .syncToClients()
                         .requiresRestart()
                         .displayPriority(-3)
                         .build();
                 this.maxDamage = define("maxDamage", ValueTypes.NON_NEGATIVE_INT, maxDamage)
                         .titleAndDescription(SharedConfigLang.MAX_DAMAGE)
-                        .syncToClients()
                         .requiresRestart()
                         .displayPriority(-1)
                         .build();
@@ -1365,7 +1358,7 @@ public final class ItemConfigs extends ConfigManager {
                 super(maxDamage);
                 this.damagePerActivation = define("damagePerActivation", damagePerActivation)
                         .titleAndDescription(SharedConfigLang.DAMAGE_PER_ACTIVATION)
-                        .syncToClients().build();
+                        .build();
             }
         }
 
@@ -1381,7 +1374,7 @@ public final class ItemConfigs extends ConfigManager {
                 super(maxDamage);
                 this.damagePerAttack = define("damagePerAttack", damagePerAttack)
                         .titleAndDescription(SharedConfigLang.DAMAGE_PER_ATTACK)
-                        .syncToClients().build();
+                        .build();
             }
         }
 
@@ -1397,7 +1390,7 @@ public final class ItemConfigs extends ConfigManager {
                 super(maxDamage);
                 this.damagePerKill = define("damagePerKill", damagePerKill)
                         .titleAndDescription(SharedConfigLang.DAMAGE_PER_KILL)
-                        .syncToClients().build();
+                        .build();
             }
         }
 
@@ -1409,7 +1402,7 @@ public final class ItemConfigs extends ConfigManager {
                 super(maxDamage);
                 damagePerSecondActive = damagePerSecondActive(damagePerSecond)
                         .descriptionLine(SharedConfigLang.DAMAGE_PER_SECOND_ACTIVE.description())
-                        .syncToClients().build();
+                        .build();
             }
         }
     }
