@@ -23,8 +23,8 @@ public abstract class EnderPearlItemMixin extends Item {
 
     @WrapOperation(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V"))
     private void shouldConsumeEnderPearl(ItemStack stack, int amount, LivingEntity owner, Operation<Void> operation) {
-        if (EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), owner) && owner instanceof Player player) {
-            int cost = EquipmentHelper.minInt(ModDataComponents.ENDER_PEARL_HUNGER_COST.get(), player, 20, ability -> ability.foodCost().get(), true);
+        if (EquipmentHelper.hasAbilityActive(ModDataComponents.ENDER_PEARL_HUNGER_COST, owner) && owner instanceof Player player) {
+            int cost = EquipmentHelper.minInt(ModDataComponents.ENDER_PEARL_HUNGER_COST, player, 20, ability -> ability.foodCost().get(), true);
             if (player.getFoodData().getFoodLevel() >= cost || player.isCreative()) {
                 if (cost > 0 && !player.isCreative()) {
                     player.getFoodData().setFoodLevel(player.getFoodData().getFoodLevel() - cost);
@@ -39,8 +39,8 @@ public abstract class EnderPearlItemMixin extends Item {
                             0.8F + owner.getRandom().nextFloat() * 0.4F
                     );
                 }
-                EquipmentHelper.iterateAbilities(
-                        ModDataComponents.ENDER_PEARL_HUNGER_COST.get(),
+                EquipmentHelper.iterateComponents(
+                        ModDataComponents.ENDER_PEARL_HUNGER_COST,
                         player,
                         true, true,
                         (ability, slotAccess) -> {

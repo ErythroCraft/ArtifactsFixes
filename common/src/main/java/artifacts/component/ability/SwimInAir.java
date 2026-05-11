@@ -35,20 +35,20 @@ public record SwimInAir(Value<Integer> flightDuration, Value<Integer> rechargeDu
      * @return The maximum amount of time the entity is allowed to fly, in ticks
      */
     public static int getMaxFlightDuration(LivingEntity entity) {
-        return EquipmentHelper.maxInt(ModDataComponents.SWIM_IN_AIR.get(), entity, ability -> ability.flightDuration().get() * 20, false);
+        return EquipmentHelper.maxInt(ModDataComponents.SWIM_IN_AIR, entity, ability -> ability.flightDuration().get() * 20, false);
     }
 
     /**
      * @return The time it takes to fully recharge, in ticks
      */
     public static int getRechargeDuration(LivingEntity entity) {
-        int rechargeDuration = EquipmentHelper.maxInt(ModDataComponents.SWIM_IN_AIR.get(), entity, ability -> ability.rechargeDuration().get() * 20, false);
+        int rechargeDuration = EquipmentHelper.maxInt(ModDataComponents.SWIM_IN_AIR, entity, ability -> ability.rechargeDuration().get() * 20, false);
         return Math.max(20, rechargeDuration);
     }
 
     public static boolean canSwim(LivingEntity entity) {
         return entity instanceof Player player
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR, player)
                 && !player.getAbilities().flying
                 && !player.onGround()
                 && !player.isFallFlying()

@@ -20,7 +20,7 @@ public final class UmbrellaHelper {
         return !entity.onGround()
                 && entity.getDeltaMovement().y < 0
                 && !entity.hasEffect(MobEffects.SLOW_FALLING)
-                && !(entity.isInWater() && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), entity))
+                && !(entity.isInWater() && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING, entity))
                 && UmbrellaHelper.isHoldingUmbrellaUpright(entity, true);
     }
 

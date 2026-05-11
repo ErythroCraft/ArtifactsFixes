@@ -38,7 +38,7 @@ public class HeliumFlamingoOverlay {
     // Largely identical to Gui::renderAirBubbles
     public boolean renderOverlay(GuiGraphicsExtractor guiGraphics, Player player, int height) {
         SwimData swimData = PlatformServices.getPlatformHelper().getSwimData(player);
-        if (!EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR.get(), player, false) || swimData == null) {
+        if (!EquipmentHelper.hasAbilityActive(ModDataComponents.SWIM_IN_AIR, player, false) || swimData == null) {
             return false;
         }
 

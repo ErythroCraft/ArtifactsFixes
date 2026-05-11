@@ -13,6 +13,6 @@ public class PlayerMixin {
     @ModifyExpressionValue(method = "getDestroySpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"))
     private boolean isDestroySpeedAffectedByWater(boolean isInFluid) {
         Player player = (Player) (Object) this;
-        return isInFluid && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player);
+        return isInFluid && !EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING, player);
     }
 }

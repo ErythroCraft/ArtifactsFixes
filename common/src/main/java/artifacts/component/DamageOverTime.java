@@ -28,7 +28,7 @@ public record DamageOverTime(Value<Double> damagePerSecond, EntityCondition cond
 
     public static void onLivingUpdate(LivingEntity entity) {
         EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_OVER_TIME.get(),
+                ModDataComponents.DAMAGE_OVER_TIME,
                 entity,
                 true, true,
                 (component, slotAccess) -> {

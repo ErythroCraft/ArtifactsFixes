@@ -11,6 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+import java.util.function.Supplier;
+
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
 
@@ -20,14 +22,8 @@ public class GameRendererMixin {
         if (effect == null || !effect.endsWithin(12 * 20)) {
             return original;
         }
-        double scale = EquipmentHelper.reduceComponents(
-                ModDataComponents.REDUCED_NIGHT_VISION.get(),
-                camera,
-                false,
-                false,
-                0D,
-                (component, _, prefix) -> Math.max(component.get(), prefix)
-        );
+        // TODO: don't skip disabled items to prevent weird flicker when toggling off
+        double scale = EquipmentHelper.maxDouble(ModDataComponents.REDUCED_NIGHT_VISION, camera, Supplier::get, false);
         if (scale == 0) {
             return original;
         }

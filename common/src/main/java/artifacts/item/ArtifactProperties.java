@@ -10,9 +10,9 @@ import artifacts.config.value.Value;
 import artifacts.item.consumeeffects.DamageItemConsumeEffect;
 import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModTags;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentInitializers;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
@@ -25,6 +25,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
@@ -36,24 +37,26 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Repairable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class ArtifactProperties {
 
     private final String itemName;
     private final Item.Properties properties;
-    private final List<Pair<Supplier<Boolean>, EquipmentAttributeModifier>> attributes;
-    private final List<EnchantmentLevelModifier> enchantments;
+    private final List<CompositeComponentInitializer<?>> compositeComponents;
 
     private boolean isEquipable = false;
 
     public ArtifactProperties(String itemName) {
         this.itemName = itemName;
         this.properties = new Item.Properties();
-        this.attributes = new ArrayList<>();
-        this.enchantments = new ArrayList<>();
+        this.compositeComponents = new ArrayList<>();
     }
 
     public ArtifactProperties abilityLore(MutableComponent component) {
@@ -102,21 +105,21 @@ public final class ArtifactProperties {
     }
 
     public ArtifactProperties addAttributeModifier(Holder<Attribute> attribute, Value<Double> amount, AttributeModifier.Operation operation, Supplier<Boolean> condition, boolean ignoreCooldown) {
-        attributes.add(Pair.of(condition, new EquipmentAttributeModifier(attribute, amount, operation,
-                Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().identifier().getPath()), ignoreCooldown)
+        return compositeComponent(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), condition, _ -> new EquipmentAttributeModifier(
+                attribute, amount, operation,
+                Artifacts.id(itemName + '/' + attribute.unwrapKey().orElseThrow().identifier().getPath()),
+                ignoreCooldown
         ));
-        return this;
     }
 
     public ArtifactProperties mobEffect(Holder<MobEffect> effect, Value<Integer> level, Value<Integer> duration, Supplier<EntityCondition> condition) {
-        return delayedComponent(ModDataComponents.MOB_EFFECTS.get(), _ -> new CompositeAbility<>(List.of(
+        return delayedComponent(ModDataComponents.MOB_EFFECTS.get(), _ -> new CompositeComponent<>(List.of(
                 new EquipmentMobEffect(new MobEffectProvider(effect, level, duration, Value.of(false), Value.of(true), condition.get()))
         )));
     }
 
     public ArtifactProperties increasesEnchantment(ResourceKey<Enchantment> enchantment, Value<Integer> amount) {
-        enchantments.add(new EnchantmentLevelModifier(enchantment, amount));
-        return this;
+        return compositeComponent(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get(), _ -> new EnchantmentLevelModifier(enchantment, amount));
     }
 
     public ArtifactProperties useCooldown(Value<Integer> cooldown) {
@@ -194,11 +197,6 @@ public final class ArtifactProperties {
         return component(type, new SimpleAbility(enabled));
     }
 
-    @SafeVarargs
-    public final <ENTRY extends EquipmentAbility> ArtifactProperties component(DataComponentType<CompositeAbility<ENTRY>> type, ENTRY... entries) {
-        return component(type, CompositeAbility.of(entries));
-    }
-
     public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
         return delayedComponent(type, () -> true, initializer);
     }
@@ -207,6 +205,28 @@ public final class ArtifactProperties {
     public <T> ArtifactProperties delayedComponent(DataComponentType<T> type, Supplier<Boolean> condition, DataComponentInitializers.SingleComponentInitializer<@Nullable T> initializer) {
         assertRequiresWorldRestart(condition);
         properties.delayedComponent(type, context -> condition.get() ? initializer.create(context) : null);
+        return this;
+    }
+
+    public <T> ArtifactProperties compositeComponent(DataComponentType<CompositeComponent<T>> type, Supplier<Boolean> condition, EntryInitializer<T> initializer) {
+        assertRequiresWorldRestart(condition);
+        return compositeComponent(type, registries -> condition.get() ? initializer.create(registries) : null);
+    }
+
+    @SafeVarargs
+    public final <T> ArtifactProperties compositeComponent(DataComponentType<CompositeComponent<T>> type, EntryInitializer<T>... entries) {
+        CompositeComponentInitializer<T> initializer = null;
+        for (CompositeComponentInitializer<?> compositeComponent : compositeComponents) {
+            if (type.equals(compositeComponent.type)) {
+                // noinspection unchecked
+                initializer = ((CompositeComponentInitializer<T>) compositeComponent);
+            }
+        }
+        if (initializer == null) {
+            initializer = new CompositeComponentInitializer<>(type);
+            compositeComponents.add(initializer);
+        }
+        initializer.entries.addAll(Arrays.asList(entries));
         return this;
     }
 
@@ -228,20 +248,8 @@ public final class ArtifactProperties {
         properties.stacksTo(1);
         properties.rarity(Rarity.RARE);
         properties.fireResistant();
-        if (!attributes.isEmpty()) {
-            properties.delayedComponent(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), _ -> {
-                List<EquipmentAttributeModifier> result = new ArrayList<>();
-                for (Pair<Supplier<Boolean>, EquipmentAttributeModifier> entry : attributes) {
-                    assertRequiresWorldRestart(entry.getFirst());
-                    if (entry.getFirst().get()) {
-                        result.add(entry.getSecond());
-                    }
-                }
-                return new CompositeAbility<>(List.copyOf(result));
-            });
-        }
-        if (!enchantments.isEmpty()) {
-            properties.component(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get(), new CompositeAbility<>(enchantments));
+        for (CompositeComponentInitializer<?> initializer : compositeComponents) {
+            initializer.addTo(properties);
         }
         return properties;
     }
@@ -252,5 +260,29 @@ public final class ArtifactProperties {
                     "Config value '%s' used as a component condition should require world restart".formatted(configValue.getKey())
             );
         }
+    }
+
+    private static class CompositeComponentInitializer<T> {
+
+        private final DataComponentType<CompositeComponent<T>> type;
+        private final List<EntryInitializer<T>> entries;
+
+        private CompositeComponentInitializer(DataComponentType<CompositeComponent<T>> type) {
+            this.type = type;
+            this.entries = new ArrayList<>();
+        }
+
+        private void addTo(Item.Properties properties) {
+            properties.delayedComponent(type, registries -> new CompositeComponent<>(
+                    entries.stream().map(entry -> entry.create(registries)).toList()
+            ));
+        }
+    }
+
+    @FunctionalInterface
+    public interface EntryInitializer<T> {
+
+        @Nullable
+        T create(HolderLookup.Provider registries);
     }
 }

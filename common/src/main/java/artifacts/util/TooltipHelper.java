@@ -2,14 +2,15 @@ package artifacts.util;
 
 import artifacts.Artifacts;
 import artifacts.client.ToggleKeyHandlers;
+import artifacts.component.CompositeComponent;
 import artifacts.component.ability.EntityCondition;
 import artifacts.component.ability.EquipmentAbility;
 import artifacts.component.ability.EquipmentAttributeModifier;
-import artifacts.component.ability.mobeffect.*;
+import artifacts.component.ability.mobeffect.MobEffectProvider;
 import artifacts.integration.ModCompat;
+import artifacts.registry.ComponentType;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.network.chat.CommonComponents;
@@ -34,8 +35,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
@@ -68,49 +70,48 @@ public class TooltipHelper {
         }
 
         // Description that shows even when the item is cosmetic (used by Novelty Drinking Hat)
-        TooltipHelper.getComponentIfVisible(ModDataComponents.ABILITY_LORE.get(), stack, display).ifPresent(lore ->
-                lore.addToTooltip(context, tooltip, tooltipFlag, stack)
-        );
+        TooltipHelper.getComponentIfVisible(ModDataComponents.ABILITY_LORE, stack, display)
+                .forEach(lore -> lore.addToTooltip(context, tooltip, tooltipFlag, stack));
 
         // Tooltip order (a bit janky but vanilla does it in a similar way)
-        Consumer<DataComponentType<? extends EquipmentAbility>> descriptions
+        Consumer<ComponentType<?, ? extends EquipmentAbility>> descriptions
                 = type -> TooltipHelper.addAbilityDescription(tooltip, stack, context, display, type);
 
         // Non-equipable abilities
-        descriptions.accept(ModDataComponents.HANDHELD_GLIDER.get());
-        descriptions.accept(ModDataComponents.BLOCKS_ATTACKS.get());
-        descriptions.accept(ModDataComponents.INFINITE_CONSUMABLE.get());
-        descriptions.accept(ModDataComponents.EQUIPABLE_TOTEM.get());
+        descriptions.accept(ModDataComponents.HANDHELD_GLIDER);
+        descriptions.accept(ModDataComponents.BLOCKS_ATTACKS);
+        descriptions.accept(ModDataComponents.INFINITE_CONSUMABLE);
+        descriptions.accept(ModDataComponents.EQUIPABLE_TOTEM);
 
         // Composite abilities
-        descriptions.accept(ModDataComponents.MOB_EFFECTS.get());
-        descriptions.accept(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS.get());
-        descriptions.accept(ModDataComponents.ATTRIBUTE_MODIFIERS.get());
-        descriptions.accept(ModDataComponents.POST_DAMAGE_EFFECTS.get());
-        descriptions.accept(ModDataComponents.POST_EATING_EFFECTS.get());
-        descriptions.accept(ModDataComponents.ATTACK_EFFECTS.get());
-        descriptions.accept(ModDataComponents.RETALIATION_EFFECTS.get());
+        descriptions.accept(ModDataComponents.MOB_EFFECTS);
+        descriptions.accept(ModDataComponents.ENCHANTMENT_LEVEL_MODIFIERS);
+        descriptions.accept(ModDataComponents.ATTRIBUTE_MODIFIERS);
+        descriptions.accept(ModDataComponents.POST_DAMAGE_EFFECTS);
+        descriptions.accept(ModDataComponents.POST_EATING_EFFECTS);
+        descriptions.accept(ModDataComponents.ATTACK_EFFECTS);
+        descriptions.accept(ModDataComponents.RETALIATION_EFFECTS);
 
         // Other
-        descriptions.accept(ModDataComponents.TOOL_TIER_UPGRADE.get());
-        descriptions.accept(ModDataComponents.DOUBLE_JUMP.get());
-        descriptions.accept(ModDataComponents.CURE_EFFECTS.get());
-        descriptions.accept(ModDataComponents.DAMAGE_ABSORPTION.get());
-        descriptions.accept(ModDataComponents.ENDER_PEARL_HUNGER_COST.get());
-        descriptions.accept(ModDataComponents.ENDER_PEARL_DAMAGE_IMMUNITY.get());
-        descriptions.accept(ModDataComponents.REPLENISH_HUNGER_ON_GRASS.get());
-        descriptions.accept(ModDataComponents.CREEPER_REPELLENT.get());
-        descriptions.accept(ModDataComponents.PHANTOM_REPELLENT.get());
-        descriptions.accept(ModDataComponents.SINKING.get());
-        descriptions.accept(ModDataComponents.AUTO_SMELT.get());
-        descriptions.accept(ModDataComponents.FLUID_COLLISION.get());
-        descriptions.accept(ModDataComponents.SWIM_IN_AIR.get());
-        descriptions.accept(ModDataComponents.WALK_ON_POWDER_SNOW.get());
-        descriptions.accept(ModDataComponents.DAMAGE_IMMUNITY.get());
-        descriptions.accept(ModDataComponents.POST_EATING_PLANT_GROWTH.get());
+        descriptions.accept(ModDataComponents.TOOL_TIER_UPGRADE);
+        descriptions.accept(ModDataComponents.DOUBLE_JUMP);
+        descriptions.accept(ModDataComponents.CURE_EFFECTS);
+        descriptions.accept(ModDataComponents.DAMAGE_ABSORPTION);
+        descriptions.accept(ModDataComponents.ENDER_PEARL_HUNGER_COST);
+        descriptions.accept(ModDataComponents.ENDER_PEARL_DAMAGE_IMMUNITY);
+        descriptions.accept(ModDataComponents.REPLENISH_HUNGER_ON_GRASS);
+        descriptions.accept(ModDataComponents.CREEPER_REPELLENT);
+        descriptions.accept(ModDataComponents.PHANTOM_REPELLENT);
+        descriptions.accept(ModDataComponents.SINKING);
+        descriptions.accept(ModDataComponents.AUTO_SMELT);
+        descriptions.accept(ModDataComponents.FLUID_COLLISION);
+        descriptions.accept(ModDataComponents.SWIM_IN_AIR);
+        descriptions.accept(ModDataComponents.WALK_ON_POWDER_SNOW);
+        descriptions.accept(ModDataComponents.DAMAGE_IMMUNITY);
+        descriptions.accept(ModDataComponents.POST_EATING_PLANT_GROWTH);
 
         // Toggle key(s)
-        TooltipHelper.getComponentIfVisible(ModDataComponents.TOGGLE_KEY.get(), stack, display).ifPresent(toggleKey -> {
+        TooltipHelper.getComponentIfVisible(ModDataComponents.TOGGLE_KEY, stack, display).forEach(toggleKey -> {
             if (!TooltipHelper.isCosmetic(stack) && player != null && player.level().isClientSide()) {
                 ToggleKeyHandlers.addTooltip(toggleKey, stack.has(ModDataComponents.DISABLED_BY_TOGGLE.get()), tooltip);
             }
@@ -122,9 +123,9 @@ public class TooltipHelper {
             ItemStack stack,
             Item.TooltipContext context,
             TooltipDisplay display,
-            DataComponentType<? extends EquipmentAbility> type
+            ComponentType<?, ? extends EquipmentAbility> type
     ) {
-        TooltipHelper.getAbilityIfVisible(type, stack, display).ifPresent(ability ->
+        TooltipHelper.getAbilityIfVisible(type, stack, display).forEach(ability ->
                 ability.addToTooltip(new EquipmentAbility.TooltipWriter(type, tooltip, context, stack))
         );
     }
@@ -151,8 +152,8 @@ public class TooltipHelper {
 
         // add attribute and mob effect tooltips if they haven't already been added under the vanilla tooltip
         if (!hasSlotTooltip) {
-            if (getAbilityIfVisible(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack, display).isPresent()
-                    || getAbilityIfVisible(ModDataComponents.MOB_EFFECTS.get(), stack, display).isPresent()
+            if (getAbilityIfVisible(ModDataComponents.ATTRIBUTE_MODIFIERS, stack, display).findAny().isPresent()
+                    || getAbilityIfVisible(ModDataComponents.MOB_EFFECTS, stack, display).findAny().isPresent()
             ) {
                 tooltip.accept(CommonComponents.EMPTY);
                 tooltip.accept(Component.translatable("item.modifiers.%s".formatted(EquipmentSlotGroup.BODY.getSerializedName()))
@@ -171,43 +172,36 @@ public class TooltipHelper {
     }
 
     private static void addAttributeTooltips(Consumer<Component> tooltip, ItemStack stack, TooltipDisplay display) {
-        getAbilityIfVisible(ModDataComponents.ATTRIBUTE_MODIFIERS.get(), stack, display).ifPresent(ability -> {
-            for (EquipmentAttributeModifier entry : ability.entries()) {
-                addAttributeTooltip(tooltip, entry);
-            }
-        });
+        getAbilityIfVisible(ModDataComponents.ATTRIBUTE_MODIFIERS, stack, display)
+                .forEach(entry -> addAttributeTooltip(tooltip, entry));
     }
 
     private static void addMobEffectTooltips(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
-        getAbilityIfVisible(ModDataComponents.MOB_EFFECTS.get(), stack, display).ifPresent(ability -> {
-            for (EquipmentMobEffect entry : ability.entries()) {
-                MobEffectProvider provider = entry.provider();
-                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, provider.condition() == EntityCondition.ALWAYS);
-            }
+        getAbilityIfVisible(ModDataComponents.MOB_EFFECTS, stack, display).forEach(entry -> {
+            MobEffectProvider provider = entry.provider();
+            addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, provider.condition() == EntityCondition.ALWAYS);
         });
     }
 
     private static void addWhenHurtTooltips(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
-        MutableBoolean flag = new MutableBoolean(false);
+        MutableBoolean shouldAddWhenHurtTooltip = new MutableBoolean(false);
         List<TagKey<DamageType>> list = new ArrayList<>();
-        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_EFFECTS.get(), stack, display).ifPresent(ability -> {
-            for (PostDamageEffect entry : ability.entries()) {
-                if (entry.tag().isEmpty()) {
-                    flag.setTrue();
-                } else {
-                    list.add(entry.tag().get());
-                }
+        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_EFFECTS, stack, display).forEach(entry -> {
+            if (entry.tag().isEmpty()) {
+                shouldAddWhenHurtTooltip.setTrue();
+            } else {
+                list.add(entry.tag().get());
             }
         });
-        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), stack, display).ifPresent(ability -> {
+        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_COOLDOWN, stack, display).forEach(ability -> {
             if (ability.tag().isEmpty()) {
-                flag.setTrue();
+                shouldAddWhenHurtTooltip.setTrue();
             } else if (!list.contains(ability.tag().get())) {
                 list.add(ability.tag().get());
             }
         });
 
-        if (flag.booleanValue()) {
+        if (shouldAddWhenHurtTooltip.booleanValue()) {
             tooltip.accept(CommonComponents.EMPTY);
             tooltip.accept(Component.translatable("artifacts.tooltip.when_hurt").withStyle(ChatFormatting.GRAY));
             addWhenHurtTooltip(tooltip, stack, context, display, null);
@@ -225,14 +219,12 @@ public class TooltipHelper {
     }
 
     private static void addWhenHurtTooltip(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display, @Nullable TagKey<DamageType> tag) {
-        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_EFFECTS.get(), stack, display).ifPresent(ability -> {
-            for (PostDamageEffect entry : ability.entries()) {
-                if (entry.tag().isEmpty() && tag == null || entry.tag().isPresent() && entry.tag().get().equals(tag)) {
-                    addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), 1, false);
-                }
+        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_EFFECTS, stack, display).forEach(entry -> {
+            if (entry.tag().isEmpty() && tag == null || entry.tag().isPresent() && entry.tag().get().equals(tag)) {
+                addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), 1, false);
             }
         });
-        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), stack, display).ifPresent(ability -> {
+        getAbilityIfVisible(ModDataComponents.POST_DAMAGE_COOLDOWN, stack, display).forEach(ability -> {
             if (ability.tag().isEmpty() && tag == null || ability.tag().isPresent() && ability.tag().get().equals(tag)) {
                 tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(context, ability.cooldown().get())).withStyle(ChatFormatting.GOLD));
             }
@@ -240,25 +232,30 @@ public class TooltipHelper {
     }
 
     private static void addPerFoodPointEatenTooltips(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
-        getAbilityIfVisible(ModDataComponents.POST_EATING_EFFECTS.get(), stack, display).ifPresent(ability -> {
-            tooltip.accept(CommonComponents.EMPTY);
-            tooltip.accept(Component.translatable("artifacts.tooltip.per_food_point_restored").withStyle(ChatFormatting.GRAY));
-            for (PostEatingEffect entry : ability.entries()) {
-                MobEffectProvider provider = entry.provider();
-                addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, false);
+        MutableBoolean hasHeader = new MutableBoolean(false);
+        getAbilityIfVisible(ModDataComponents.POST_EATING_EFFECTS, stack, display).forEach(entry -> {
+            if (!hasHeader.booleanValue()) {
+                tooltip.accept(CommonComponents.EMPTY);
+                tooltip.accept(Component.translatable("artifacts.tooltip.per_food_point_restored").withStyle(ChatFormatting.GRAY));
             }
+
+            MobEffectProvider provider = entry.provider();
+            addMobEffectTooltip(tooltip, context, provider.mobEffect().value(), provider.duration().get(), provider.level().get(), 1, false);
         });
     }
 
     private static void addAttacksInflictTooltips(Consumer<Component> tooltip, ItemStack stack, Item.TooltipContext context, TooltipDisplay display) {
-        getAbilityIfVisible(ModDataComponents.ATTACK_EFFECTS.get(), stack, display).ifPresent(ability -> {
-            tooltip.accept(CommonComponents.EMPTY);
-            tooltip.accept(Component.translatable("artifacts.tooltip.attacks_inflict").withStyle(ChatFormatting.GRAY));
-            for (AttackEffect entry : ability.entries()) {
-                addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), entry.chance().get(), false);
-                if (entry.cooldown().get() > 0) {
-                    tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(context, entry.cooldown().get())).withStyle(ChatFormatting.GOLD));
-                }
+        MutableBoolean hasHeader = new MutableBoolean(false);
+        getAbilityIfVisible(ModDataComponents.ATTACK_EFFECTS, stack, display).forEach(entry -> {
+            if (!hasHeader.booleanValue()) {
+                tooltip.accept(CommonComponents.EMPTY);
+                tooltip.accept(Component.translatable("artifacts.tooltip.attacks_inflict").withStyle(ChatFormatting.GRAY));
+                hasHeader.setTrue();
+            }
+
+            addMobEffectTooltip(tooltip, context, entry.provider().mobEffect().value(), entry.provider().duration().get(), entry.provider().level().get(), entry.chance().get(), false);
+            if (entry.cooldown().get() > 0) {
+                tooltip.accept(Component.translatable("artifacts.tooltip.cooldown", formatDurationSeconds(context, entry.cooldown().get())).withStyle(ChatFormatting.GOLD));
             }
         });
     }
@@ -309,25 +306,35 @@ public class TooltipHelper {
         return Component.literal(StringUtil.formatTickDuration(seconds * 20, context.tickRate()));
     }
 
-    private static <A extends EquipmentAbility> Optional<A> getAbilityIfVisible(DataComponentType<A> type, ItemStack stack, TooltipDisplay display) {
-        return getComponentIfVisible(type, stack, display)
+    private static <A extends EquipmentAbility> Stream<A> getAbilityIfVisible(ComponentType<?, A> type, ItemStack stack, TooltipDisplay display) {
+        return StreamSupport.stream(getComponentIfVisible(type, stack, display).spliterator(), false)
                 .filter(EquipmentAbility::isNonCosmetic);
     }
 
-    private static <C> Optional<C> getComponentIfVisible(DataComponentType<C> type, ItemStack stack, TooltipDisplay display) {
-        if (display.shows(type)) {
-            return Optional.ofNullable(stack.get(type));
+    private static <C> Stream<C> getComponentIfVisible(ComponentType<?, C> type, ItemStack stack, TooltipDisplay display) {
+        if (display.shows(type.get())) {
+            return StreamSupport.stream(type.getEntries(stack).spliterator(), false);
         }
-        return Optional.empty();
+        return Stream.empty();
     }
 
     private static boolean isCosmetic(ItemStack stack) {
         for (TypedDataComponent<?> component : stack.getComponents()) {
-            if (component.value() instanceof EquipmentAbility ability && ability.isNonCosmetic()) {
+            if (component.value() instanceof CompositeComponent<?>(List<?> entries)) {
+                for (Object entry : entries) {
+                    if (isNonCosmetic(entry)) {
+                        return false;
+                    }
+                }
+            } else if (isNonCosmetic(component.value())) {
                 return false;
             }
         }
         return true;
+    }
+
+    private static boolean isNonCosmetic(Object component) {
+        return component instanceof EquipmentAbility ability && ability.isNonCosmetic();
     }
 
     private static boolean showsMissingDependencyTooltip(ItemStack stack, TooltipDisplay display) {

@@ -39,15 +39,13 @@ public record PostDamageEffect(
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (!entity.level().isClientSide()) {
-            EquipmentHelper.iterateAbilities(
-                    ModDataComponents.POST_DAMAGE_EFFECTS.get(), entity,
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.POST_DAMAGE_EFFECTS, entity,
                     true,
                     true,
-                    (ability, _) -> {
-                        for (PostDamageEffect entry : ability.entries()) {
-                            if (entry.shouldApply(damageSource, entity)) {
-                                entity.addEffect(entry.provider.createEffect());
-                            }
+                    (entry, _) -> {
+                        if (entry.shouldApply(damageSource, entity)) {
+                            entity.addEffect(entry.provider.createEffect());
                         }
                     }
             );

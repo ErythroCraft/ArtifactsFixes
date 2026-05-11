@@ -89,31 +89,33 @@ public class ArtifactHooks {
 
         boolean wasToggledOff = !ItemDamageUtil.isDisabledOrBroken(oldStack)
                 && ItemDamageUtil.isDisabledOrBroken(newStack);
-        for (var entry : ModDataComponents.TICKING_ABILITIES) {
+        for (ModDataComponents.TickingAbility<?, ?> entry : ModDataComponents.TICKING_ABILITIES) {
             handleUnequip(entry, entity, oldStack, newStack, wasToggledOff);
         }
 
         updateHasTickingAbilities(entity);
     }
 
-    private static <T extends EquipmentAbility> void handleUnequip(
-            ModDataComponents.TickingAbility<T> entry,
+    private static <C, T extends EquipmentAbility> void handleUnequip(
+            ModDataComponents.TickingAbility<C, T> tickingAbility,
             LivingEntity entity,
             ItemStack oldStack, ItemStack newStack,
             boolean wasToggledOff
     ) {
-        T oldAbility = oldStack.get(entry.type().get());
+        C oldComponent = oldStack.get(tickingAbility.type().get());
         // Item was toggled off, does not have the ability, or the new ability is different
-        if (oldAbility != null && oldAbility.isNonCosmetic()
-                && (wasToggledOff || !oldAbility.equals(newStack.get(entry.type().get())))
-        ) {
-            entry.ticker().onUnequip(oldAbility, entity);
+        if (oldComponent != null && (wasToggledOff || !oldComponent.equals(newStack.get(tickingAbility.type().get())))) {
+            for (T oldAbility : tickingAbility.type().getEntries(oldComponent)) {
+                if (oldAbility.isNonCosmetic()) {
+                    tickingAbility.ticker().onUnequip(oldAbility, entity);
+                }
+            }
         }
     }
 
     public static void updateHasTickingAbilities(LivingEntity entity) {
         boolean shouldTick = EquipmentHelper.reduceEquipment(entity, false, false, false, (slotAccess, hasTickingAbilities) -> {
-            for (var entry : ModDataComponents.TICKING_ABILITIES) {
+            for (ModDataComponents.TickingAbility<?, ?> entry : ModDataComponents.TICKING_ABILITIES) {
                 // abilities are tracked as ticking even when they're cosmetic,
                 // since updating the config does not trigger onItemChanged
                 if (slotAccess.get().has(entry.type().get())) {
@@ -130,16 +132,16 @@ public class ArtifactHooks {
         if (!(entity instanceof Player) && !((LivingEntityExtensions) entity).artifacts$hasTickingAbilities()) {
             return;
         }
-        for (var entry : ModDataComponents.TICKING_ABILITIES) {
+        for (ModDataComponents.TickingAbility<?, ?> entry : ModDataComponents.TICKING_ABILITIES) {
             onAbilityTick(entry, entity);
         }
     }
 
     private static <T extends EquipmentAbility> void onAbilityTick(
-            ModDataComponents.TickingAbility<T> entry,
+            ModDataComponents.TickingAbility<?, T> entry,
             LivingEntity entity
     ) {
-        EquipmentHelper.iterateAbilities(entry.type().get(), entity, false, false, (ability, slotAccess) ->
+        EquipmentHelper.iterateComponents(entry.type(), entity, false, false, (ability, slotAccess) ->
                 entry.ticker().wornTick(ability, slotAccess, entity, slotAccess.isOnCooldown(entity), slotAccess.isDisabledOrBroken())
         );
     }
@@ -153,7 +155,7 @@ public class ArtifactHooks {
     }
 
     public static void doPostAttackEffects(LivingEntity entity, DamageSource damageSource) {
-        EquipmentHelper.iterateAbilities(ModDataComponents.RETALIATION_EFFECTS.get(), entity, true, true,
+        EquipmentHelper.iterateComponents(ModDataComponents.RETALIATION_EFFECTS, entity, true, true,
                 (ability, slotAccess) -> ability.onLivingHurt(entity, slotAccess, damageSource)
         );
 
@@ -166,7 +168,7 @@ public class ArtifactHooks {
             updateHasTickingAbilities(livingEntity);
         }
         if (entity instanceof PathfinderMob creeper && creeper.is(ModTags.CREEPERS)) {
-            Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT.get(), target);
+            Predicate<LivingEntity> predicate = target -> EquipmentHelper.hasAbilityActive(ModDataComponents.CREEPER_REPELLENT, target);
             ((MobAccessor) creeper).getGoalSelector().addGoal(3,
                     new AvoidEntityGoal<>(creeper, Player.class, predicate, 6, 1, 1.3, EntitySelector.NO_CREATIVE_OR_SPECTATOR)
             );
@@ -175,7 +177,7 @@ public class ArtifactHooks {
 
     public static void onPlaySoundAtEntity(LivingEntity entity, float volume, float pitch) {
         EquipmentHelper.iterateComponents(
-                ModDataComponents.HURT_SOUND.get(),
+                ModDataComponents.HURT_SOUND,
                 entity,
                 false, false,
                 (component, _) -> {
@@ -189,7 +191,7 @@ public class ArtifactHooks {
     public static ItemStack applySmeltOresAbility(ItemStack original, @Nullable Entity entity, @Nullable BlockState state, Consumer<Integer> experienceConsumer) {
         if (entity instanceof LivingEntity livingEntity
                 && livingEntity.level() instanceof ServerLevel serverLevel
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.AUTO_SMELT.get(), livingEntity)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.AUTO_SMELT, livingEntity)
                 && state != null
                 && state.is(ModTags.ORES)
         ) {
@@ -248,8 +250,8 @@ public class ArtifactHooks {
     public static void absorbDamage(LivingEntity entity, DamageSource damageSource, float amount) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker != null && DamageSourceHelper.isMeleeAttack(damageSource)) {
-            EquipmentHelper.iterateAbilities(
-                    ModDataComponents.DAMAGE_ABSORPTION.get(),
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.DAMAGE_ABSORPTION,
                     attacker,
                     true, true,
                     (ability, slotAccess) -> {
@@ -274,7 +276,7 @@ public class ArtifactHooks {
             return;
         }
         EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_ATTACK.get(),
+                ModDataComponents.DAMAGE_ON_ATTACK,
                 attacker,
                 true, true,
                 (component, slotAccess) -> {
@@ -297,7 +299,7 @@ public class ArtifactHooks {
 
     public static void applyBoneMealAfterEating(LivingEntity entity, FoodProperties properties) {
         if (!entity.level().isClientSide()
-                && EquipmentHelper.hasAbilityActive(ModDataComponents.POST_EATING_PLANT_GROWTH.get(), entity)
+                && EquipmentHelper.hasAbilityActive(ModDataComponents.POST_EATING_PLANT_GROWTH, entity)
                 && properties.nutrition() > 0
                 && !properties.canAlwaysEat()
                 && entity.onGround()
@@ -312,7 +314,7 @@ public class ArtifactHooks {
         if (swimData != null) {
             if (swimData.isSwimFlying()) {
                 return EventResult.SUCCESS;
-            } else if (EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player)) {
+            } else if (EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING, player)) {
                 return EventResult.FAIL;
             }
         }
@@ -324,7 +326,7 @@ public class ArtifactHooks {
         if (swimData == null || swimData.shouldBreakSurfaceTension() || swimData.isSwimFlying()) {
             return false;
         }
-        return EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION.get(), entity, true, ability ->
+        return EquipmentHelper.hasAbilityActive(ModDataComponents.FLUID_COLLISION, entity, true, ability ->
                 ability.matchesFluid(fluidState) && ability.condition().test(entity)
         );
     }
@@ -335,7 +337,7 @@ public class ArtifactHooks {
             entity.gameEvent(ModGameEvents.FART);
             entity.level().playSound(null, entity, ModSoundEvents.FART.value(), SoundSource.PLAYERS, 1, 0.9F + entity.getRandom().nextFloat() * 0.2F);
             EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_FART.get(),
+                    ModDataComponents.DAMAGE_ON_FART,
                     entity,
                     true, true,
                     (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
@@ -347,7 +349,7 @@ public class ArtifactHooks {
 
     public static void onItemFished(Player player) {
         EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_ITEM_FISHED.get(),
+                ModDataComponents.DAMAGE_ON_ITEM_FISHED,
                 player,
                 true, true,
                 (component, slotAccess) -> slotAccess.hurtAndBreak(player, component.get())
@@ -356,7 +358,7 @@ public class ArtifactHooks {
 
     public static void onJump(LivingEntity entity) {
         EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_JUMP.get(),
+                ModDataComponents.DAMAGE_ON_JUMP,
                 entity,
                 true, true,
                 (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())
@@ -366,7 +368,7 @@ public class ArtifactHooks {
     public static void onFall(LivingEntity entity, int damage, double effectiveFallDistance) {
         if (!entity.is(EntityTypeTags.FALL_DAMAGE_IMMUNE) && damage <= 0 && effectiveFallDistance > 3) {
             EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_FALL.get(),
+                    ModDataComponents.DAMAGE_ON_FALL,
                     entity,
                     true, true,
                     (component, slotAccess) -> slotAccess.hurtAndBreak(entity, component.get())

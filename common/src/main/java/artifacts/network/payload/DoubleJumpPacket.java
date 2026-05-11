@@ -19,7 +19,7 @@ public record DoubleJumpPacket() implements CustomPacketPayload {
     public static final StreamCodec<FriendlyByteBuf, DoubleJumpPacket> CODEC = StreamCodec.unit(new DoubleJumpPacket());
 
     public void apply(NetworkHandler.PayloadContext context) {
-        if (context.player() instanceof ServerPlayer player && EquipmentHelper.hasAbilityActive(ModDataComponents.DOUBLE_JUMP.get(), player)) {
+        if (context.player() instanceof ServerPlayer player && EquipmentHelper.hasAbilityActive(ModDataComponents.DOUBLE_JUMP, player)) {
             context.queue(() -> {
                 DoubleJump.jump(player);
 

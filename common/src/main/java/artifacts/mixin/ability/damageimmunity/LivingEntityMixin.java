@@ -16,7 +16,7 @@ public class LivingEntityMixin {
     public boolean isInvulnerableTo(boolean original, ServerLevel level, DamageSource source) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (!original && EquipmentHelper.hasAbilityActive(
-                ModDataComponents.DAMAGE_IMMUNITY.get(), entity, true,
+                ModDataComponents.DAMAGE_IMMUNITY, entity, true,
                 ability -> ability.condition().test(entity) && source.is(ability.tag())
         )) {
             return true;

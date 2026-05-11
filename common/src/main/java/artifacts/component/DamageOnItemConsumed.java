@@ -29,7 +29,7 @@ public record DamageOnItemConsumed(Value<Integer> damageOnItemEaten, Value<Integ
 
     public static void onItemConsumed(LivingEntity entity, Consumable consumable) {
         EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_ITEM_CONSUMED.get(),
+                ModDataComponents.DAMAGE_ON_ITEM_CONSUMED,
                 entity,
                 true, true,
                 (component, slotAccess) -> {

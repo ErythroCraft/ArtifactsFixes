@@ -35,7 +35,7 @@ public record PostDamageCooldown(Value<Integer> cooldown, Optional<TagKey<Damage
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (entity.level().isClientSide()) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.POST_DAMAGE_COOLDOWN.get(), entity, true, true, (ability, slotAccess) -> {
+            EquipmentHelper.iterateComponents(ModDataComponents.POST_DAMAGE_COOLDOWN, entity, true, true, (ability, slotAccess) -> {
                 if (ability.tag().isEmpty() || damageSource.is(ability.tag().get())) {
                     slotAccess.addCooldown(entity, ability.cooldown().get() * 20);
                 }

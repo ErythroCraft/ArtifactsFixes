@@ -35,7 +35,7 @@ public record DamageOnBlockMined(Value<Integer> itemDamage, Optional<TagKey<Bloc
 
     public static void onBlockBroken(LivingEntity entity, BlockState state) {
         EquipmentHelper.iterateComponents(
-                ModDataComponents.DAMAGE_ON_BLOCK_MINED.get(),
+                ModDataComponents.DAMAGE_ON_BLOCK_MINED,
                 entity,
                 true, true,
                 (component, slotAccess) -> {

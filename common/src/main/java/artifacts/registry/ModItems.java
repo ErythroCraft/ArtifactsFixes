@@ -244,9 +244,9 @@ public class ModItems {
             .durability(config.durability)
             .damageOnHurt(config.durability.damagePerActivation)
             .cooldownOnHurt(config.cooldown)
-            .component(
+            .compositeComponent(
                     ModDataComponents.POST_DAMAGE_EFFECTS.get(),
-                    new PostDamageEffect(
+                    _ -> new PostDamageEffect(
                             new MobEffectProvider(
                                     MobEffects.SPEED,
                                     config.speedLevel,
@@ -354,9 +354,9 @@ public class ModItems {
             .durability(config.durability)
             .damageOnHurt(config.durability.damagePerActivation, DamageTypeTags.IS_FIRE)
             .cooldownOnHurt(config.cooldown, DamageTypeTags.IS_FIRE)
-            .component(
+            .compositeComponent(
                     ModDataComponents.POST_DAMAGE_EFFECTS.get(),
-                    new PostDamageEffect(
+                    _ -> new PostDamageEffect(
                             new MobEffectProvider(
                                     MobEffects.FIRE_RESISTANCE,
                                     Value.of(1),
@@ -502,9 +502,9 @@ public class ModItems {
             .equipable()
             .durability(config.durability)
             .properties(properties -> properties.food(new FoodProperties.Builder().nutrition(2).build()))
-            .component(
+            .compositeComponent(
                     ModDataComponents.POST_EATING_EFFECTS.get(),
-                    new PostEatingEffect(
+                    _ -> new PostEatingEffect(
                             new MobEffectProvider(
                                     MobEffects.HASTE,
                                     config.hasteLevel,
@@ -528,9 +528,9 @@ public class ModItems {
             = register("withered_bracelet", () -> Artifacts.CONFIG.items.witheredBracelet, (builder, config) -> builder
             .equipable()
             .durability(config.durability)
-            .component(
+            .compositeComponent(
                     ModDataComponents.ATTACK_EFFECTS.get(),
-                    new AttackEffect(
+                    _ -> new AttackEffect(
                             new MobEffectProvider(
                                     MobEffects.WITHER,
                                     config.witherLevel,

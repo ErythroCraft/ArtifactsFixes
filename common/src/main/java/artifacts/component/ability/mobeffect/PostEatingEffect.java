@@ -38,12 +38,10 @@ public record PostEatingEffect(MobEffectProvider provider, Value<Integer> itemDa
 
     public static void applyEffects(LivingEntity entity, int foodPointsRestored) {
         if (foodPointsRestored > 0) {
-            EquipmentHelper.iterateAbilities(ModDataComponents.POST_EATING_EFFECTS.get(), entity, true, true, (ability, slotAccess) -> {
-                for (PostEatingEffect entry : ability.entries()) {
-                    if (entry.provider().canApply(entity)) {
-                        entity.addEffect(entry.provider().createEffect(foodPointsRestored));
-                        slotAccess.hurtAndBreak(entity, entry.itemDamage.get());
-                    }
+            EquipmentHelper.iterateComponents(ModDataComponents.POST_EATING_EFFECTS, entity, true, true, (entry, slotAccess) -> {
+                if (entry.provider().canApply(entity)) {
+                    entity.addEffect(entry.provider().createEffect(foodPointsRestored));
+                    slotAccess.hurtAndBreak(entity, entry.itemDamage.get());
                 }
             });
         }

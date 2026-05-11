@@ -71,7 +71,7 @@ public class SwimData {
     }
 
     public boolean shouldDepleteSwimFlyingCharge(Player player) {
-        boolean hasSinkingAbility = EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING.get(), player);
+        boolean hasSinkingAbility = EquipmentHelper.hasAbilityActive(ModDataComponents.SINKING, player);
         return isSwimFlying && (!player.isUnderWater() || hasSinkingAbility);
     }
 
@@ -84,8 +84,8 @@ public class SwimData {
                             ModSoundEvents.POP.value(), player.getSoundSource(), 1F, 1F
                     );
                 }
-                EquipmentHelper.iterateAbilities(
-                        ModDataComponents.SWIM_IN_AIR.get(), player, true, true,
+                EquipmentHelper.iterateComponents(
+                        ModDataComponents.SWIM_IN_AIR, player, true, true,
                         (ability, slotAccess) ->
                                 slotAccess.addCooldown(player, Math.max(5, ability.cooldown().get() * 20))
                 );

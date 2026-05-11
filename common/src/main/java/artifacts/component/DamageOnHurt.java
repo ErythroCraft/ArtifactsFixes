@@ -37,7 +37,7 @@ public record DamageOnHurt(Value<Integer> itemDamage, Optional<TagKey<DamageType
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
         if (entity instanceof Player player && !player.level().isClientSide()) {
             EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_HURT.get(),
+                    ModDataComponents.DAMAGE_ON_HURT,
                     entity,
                     true, true,
                     (ability, slotAccess) -> {

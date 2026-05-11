@@ -1,8 +1,8 @@
 package artifacts.component.ability;
 
+import artifacts.registry.ComponentType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentGetter;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -26,8 +26,8 @@ public interface EquipmentAbility {
         private final Item.TooltipContext context;
         private final DataComponentGetter componentGetter;
 
-        public TooltipWriter(DataComponentType<? extends EquipmentAbility> type, Consumer<Component> tooltip, Item.TooltipContext context, DataComponentGetter componentGetter) {
-            this.id = Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(type));
+        public TooltipWriter(ComponentType<?, ? extends EquipmentAbility> type, Consumer<Component> tooltip, Item.TooltipContext context, DataComponentGetter componentGetter) {
+            this.id = Objects.requireNonNull(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(type.get()));
             this.tooltip = tooltip;
             this.context = context;
             this.componentGetter = componentGetter;

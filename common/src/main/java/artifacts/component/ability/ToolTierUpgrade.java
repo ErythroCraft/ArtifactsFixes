@@ -35,7 +35,7 @@ public record ToolTierUpgrade(Value<Tier> tier, Value<Integer> itemDamage) imple
     public static boolean canHarvestWithTier(LivingEntity entity, BlockState state) {
         if (state.is(ModTags.MINEABLE_WITH_DIGGING_CLAWS)) {
             Tier tier = Tier.fromLevel(EquipmentHelper.maxInt(
-                    ModDataComponents.TOOL_TIER_UPGRADE.get(), entity,
+                    ModDataComponents.TOOL_TIER_UPGRADE, entity,
                     ability -> ability.tier().get().getLevel(), true
             ));
             return isCorrectTierForDrops(tier, state);
@@ -65,8 +65,8 @@ public record ToolTierUpgrade(Value<Tier> tier, Value<Integer> itemDamage) imple
                 && state.requiresCorrectToolForDrops()
                 && !player.getInventory().getSelectedItem().isCorrectToolForDrops(state)
         ) {
-            EquipmentHelper.iterateAbilities(
-                    ModDataComponents.TOOL_TIER_UPGRADE.get(),
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.TOOL_TIER_UPGRADE,
                     player,
                     true, true,
                     (ability, slotAccess) -> {

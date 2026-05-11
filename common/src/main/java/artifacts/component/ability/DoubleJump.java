@@ -49,7 +49,7 @@ public record DoubleJump(
 
     // TODO: cleanup (see vanilla jump logic)
     public static void jump(Player player) {
-        double fallDamageMultiplier = EquipmentHelper.minDouble(ModDataComponents.DOUBLE_JUMP.get(), player, 1D,
+        double fallDamageMultiplier = EquipmentHelper.minDouble(ModDataComponents.DOUBLE_JUMP, player, 1D,
                 ability -> ability.fallDamageMultiplier().get(), true);
         if (player.fallDistance > 0 && fallDamageMultiplier > 0) {
             player.causeFallDamage(player.fallDistance, (float) fallDamageMultiplier, player.damageSources().fall());
@@ -64,7 +64,7 @@ public record DoubleJump(
         }
         if (player.isSprinting()) {
             upwardsMotion *= 1 + EquipmentHelper.maxDouble(
-                    ModDataComponents.DOUBLE_JUMP.get(), player,
+                    ModDataComponents.DOUBLE_JUMP, player,
                     ability -> ability.sprintVerticalVelocity().get(), true
             );
         }
@@ -73,7 +73,7 @@ public record DoubleJump(
         double motionMultiplier = 0;
         if (player.isSprinting()) {
             motionMultiplier = EquipmentHelper.maxDouble(
-                    ModDataComponents.DOUBLE_JUMP.get(), player,
+                    ModDataComponents.DOUBLE_JUMP, player,
                     ability -> ability.sprintHorizontalVelocity().get(), true
             );
         }
@@ -94,8 +94,8 @@ public record DoubleJump(
                 player.causeFoodExhaustion(0.05F);
             }
 
-            EquipmentHelper.iterateAbilities(
-                    ModDataComponents.DOUBLE_JUMP.get(),
+            EquipmentHelper.iterateComponents(
+                    ModDataComponents.DOUBLE_JUMP,
                     player,
                     true, true,
                     (ability, slotAccess) -> slotAccess.hurtAndBreak(player, ability.itemDamage.get())

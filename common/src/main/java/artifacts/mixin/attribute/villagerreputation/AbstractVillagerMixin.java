@@ -19,7 +19,7 @@ public abstract class AbstractVillagerMixin {
         // noinspection ConstantValue
         if ((Object) this instanceof Villager villager && villager.getTradingPlayer() != null) {
             EquipmentHelper.iterateComponents(
-                    ModDataComponents.DAMAGE_ON_TRADE.get(),
+                    ModDataComponents.DAMAGE_ON_TRADE,
                     villager.getTradingPlayer(),
                     true, true,
                     (component, slotAccess) ->
