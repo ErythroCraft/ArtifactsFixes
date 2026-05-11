@@ -71,8 +71,8 @@ public class ModDataComponents {
     public static final ComponentType.Singleton<DamageOnHurt> DAMAGE_ON_HURT =
             registerSynced("damage_on_hurt", DamageOnHurt.CODEC, DamageOnHurt.STREAM_CODEC);
     /** Damage applied to the item when attacking an entity, while worn and not on cooldown */
-    public static final ComponentType.Singleton<DamageOnAttack> DAMAGE_ON_ATTACK =
-            registerSynced("damage_on_attack", DamageOnAttack.CODEC, DamageOnAttack.STREAM_CODEC);
+    public static final ComponentType.Composite<DamageOnAttack> DAMAGE_ON_ATTACK =
+            registerComposite("damage_on_attack", DamageOnAttack.CODEC, DamageOnAttack.STREAM_CODEC);
     /** Damage applied to the item when farting, while worn and not on cooldown */
     public static final ComponentType.Singleton<Value<Integer>> DAMAGE_ON_FART =
             registerSynced("damage_on_fart", ValueTypes.NON_NEGATIVE_INT.codec(), ValueTypes.NON_NEGATIVE_INT.streamCodec());

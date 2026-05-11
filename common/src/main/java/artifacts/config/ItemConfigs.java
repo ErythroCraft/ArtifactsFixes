@@ -627,8 +627,25 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("Whether the Kitty Slippers hiss at nearby phantoms")
                 .syncToClients().build();
 
+        public final Durability durability = new Durability();
+
         private KittySlippers() {
             super(ModItems.KITTY_SLIPPERS);
+        }
+
+        public final class Durability extends EquippableDurabilityCategory {
+
+            public final ConfigValue<Integer> damagePerCreeperScared = define("damagePerCreeperScared", 1)
+                    .descriptionLine("The amount of durability lost per creeper killed while wearing the kitty slippers")
+                    .syncToClients().build();
+
+            public final ConfigValue<Integer> damagePerPhantomScared = define("damagePerPhantomScared", 1)
+                    .descriptionLine("The amount of durability lost per phantom killed while wearing the kitty slippers")
+                    .syncToClients().build();
+
+            private Durability() {
+                super(120);
+            }
         }
     }
 

@@ -13,6 +13,7 @@ import artifacts.registry.ModTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentInitializers;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
@@ -170,11 +171,18 @@ public final class ArtifactProperties {
     }
 
     public ArtifactProperties damageOnMeleeAttack(Value<Integer> itemDamage) {
-        return component(ModDataComponents.DAMAGE_ON_ATTACK.get(), new DamageOnAttack(itemDamage, true, false));
+        return compositeComponent(ModDataComponents.DAMAGE_ON_ATTACK.get(), _ -> new DamageOnAttack(itemDamage, true, false, Optional.empty()));
     }
 
     public ArtifactProperties damageOnKill(Value<Integer> itemDamage) {
-        return component(ModDataComponents.DAMAGE_ON_ATTACK.get(), new DamageOnAttack(itemDamage, false, true));
+        return compositeComponent(ModDataComponents.DAMAGE_ON_ATTACK.get(), _ -> new DamageOnAttack(itemDamage, false, true, Optional.empty()));
+    }
+
+    public ArtifactProperties damageOnKill(Value<Integer> itemDamage, Function<HolderLookup.Provider, HolderSet<EntityType<?>>> entity) {
+        return compositeComponent(
+                ModDataComponents.DAMAGE_ON_ATTACK.get(),
+                registries -> new DamageOnAttack(itemDamage, false, true, Optional.of(entity.apply(registries)))
+        );
     }
 
     public ArtifactProperties damageOnBlockMined(Value<Integer> itemDamage) {

@@ -16,6 +16,7 @@ import artifacts.config.value.Value;
 import artifacts.item.ArtifactProperties;
 import artifacts.item.consumeeffects.HealConsumeEffect;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +26,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -574,10 +576,13 @@ public class ModItems {
                     )
             )
     );
-    // TODO: add durability config options
+    @SuppressWarnings("deprecation")
     public static final Holder<Item> KITTY_SLIPPERS
             = register("kitty_slippers", () -> Artifacts.CONFIG.items.kittySlippers, (builder, config) -> builder
             .equipable(SoundEvents.CAT_SOUNDS.get(CatSoundVariants.SoundSet.CLASSIC).adultSounds().ambientSound())
+            .durability(config.durability)
+            .damageOnKill(config.durability.damagePerCreeperScared, registries -> registries.getOrThrow(ModTags.CREEPERS))
+            .damageOnKill(config.durability.damagePerPhantomScared, _ -> HolderSet.direct(EntityType.PHANTOM.builtInRegistryHolder()))
             .component(ModDataComponents.CREEPER_REPELLENT.get(), config.repelCreepers)
             .component(ModDataComponents.PHANTOM_REPELLENT.get(), config.repelPhantoms)
             .component(

@@ -161,6 +161,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
         repairMaterials(ModItems.FLIPPERS).add(Items.DRIED_KELP);
         repairMaterials(ModItems.GOLDEN_HOOK).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.HELIUM_FLAMINGO).add(Items.RESIN_CLUMP);
+        repairMaterials(ModItems.KITTY_SLIPPERS).addTag(net.minecraft.tags.ItemTags.CAT_FOOD);
         repairMaterials(ModItems.LUCKY_SCARF).addTag(net.minecraft.tags.ItemTags.WOOL);
         repairMaterials(ModItems.NIGHT_VISION_GOGGLES).add(Items.GOLDEN_CARROT);
         repairMaterials(ModItems.NOVELTY_DRINKING_HAT).add(Items.RESIN_CLUMP);

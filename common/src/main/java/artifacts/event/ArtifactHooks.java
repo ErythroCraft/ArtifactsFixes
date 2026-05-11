@@ -77,7 +77,7 @@ public class ArtifactHooks {
         PostDamageEffect.onLivingDamaged(entity, source);
         // item damage
         DamageOnHurt.onLivingDamaged(entity, source);
-        damageItemsWhenAttacking(source, isKillingBlow);
+        damageItemsWhenAttacking(entity, source, isKillingBlow);
         // cooldowns
         PostDamageCooldown.onLivingDamaged(entity, source);
     }
@@ -270,7 +270,7 @@ public class ArtifactHooks {
         }
     }
 
-    public static void damageItemsWhenAttacking(DamageSource damageSource, boolean isKillingBlow) {
+    public static void damageItemsWhenAttacking(LivingEntity target, DamageSource damageSource, boolean isKillingBlow) {
         LivingEntity attacker = DamageSourceHelper.getAttacker(damageSource);
         if (attacker == null) {
             return;
@@ -282,7 +282,8 @@ public class ArtifactHooks {
                 (component, slotAccess) -> {
                     boolean checkMelee = !component.requireMelee() || DamageSourceHelper.isMeleeAttack(damageSource);
                     boolean checkKill = !component.requireKill() || isKillingBlow;
-                    if (checkMelee && checkKill) {
+                    boolean checkEntity = component.entity().isEmpty() || component.entity().get().contains(target.typeHolder());
+                    if (checkMelee && checkKill && checkEntity) {
                         slotAccess.hurtAndBreak(attacker, component.itemDamage().get());
                     }
                 }

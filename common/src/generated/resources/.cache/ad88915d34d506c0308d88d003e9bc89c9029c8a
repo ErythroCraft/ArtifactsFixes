@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-09T16:00:42.5525933	Model Definitions - artifacts
+// 26.1.2	2026-05-11T14:37:39.9786844	Model Definitions - artifacts
 53575fc91d842c1b17ac962a71b488ad0cea47ac assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 ed7709072df911479dc455bfae83dac2f52ba714 assets/artifacts/items/aqua_dashers.json
@@ -19,7 +19,7 @@ d77860cc844f922007ec30ac198e233aedef88a9 assets/artifacts/items/feral_claws.json
 233d95d5726f5f8078759fcf27614ba757be3d26 assets/artifacts/items/flippers.json
 081dd1ea5e38ba75581100ae2ee36da30b7d4752 assets/artifacts/items/golden_hook.json
 f9b15515586359aaddac62d8fb04da3c94284fa0 assets/artifacts/items/helium_flamingo.json
-37d7b17e076d1c48ac4859cf5e1f596d1b2a0678 assets/artifacts/items/kitty_slippers.json
+c6056c806095b257365794d5702495e283ed082b assets/artifacts/items/kitty_slippers.json
 2a221362447f69146e5e077201a6769e26683680 assets/artifacts/items/lucky_scarf.json
 8e5996b6600d846ab8f3383359fb4a6337950fe7 assets/artifacts/items/mimic_spawn_egg.json
 313e613f9323d8276820ce18587781261322487a assets/artifacts/items/night_vision_goggles.json
@@ -86,6 +86,7 @@ ea76f5e79e43da7fa1772a557da8096f090403a6 assets/artifacts/models/item/golden_hoo
 17a475e4b144773d373590396d5d2ec0668097c1 assets/artifacts/models/item/helium_flamingo.json
 d07153c63d0d899cceb26a675ad35832d94cde21 assets/artifacts/models/item/helium_flamingo_broken.json
 976cb2c788f732a668e994c0a3e9bdd9dc1cb493 assets/artifacts/models/item/kitty_slippers.json
+041d454487a21b685b7448fddbef8fbc99d17624 assets/artifacts/models/item/kitty_slippers_broken.json
 ab8427a60b9cf3cf6e2e3edfda61434708f2d798 assets/artifacts/models/item/lucky_scarf.json
 9b95171a73190ecbf9e108c4b79375b9a16f3ea7 assets/artifacts/models/item/lucky_scarf_broken.json
 e3e2895942abbe6799c0e48c3d26aa5ac7898208 assets/artifacts/models/item/night_vision_goggles.json
