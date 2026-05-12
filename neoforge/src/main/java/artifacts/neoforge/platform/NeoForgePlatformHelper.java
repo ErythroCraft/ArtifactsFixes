@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -34,6 +35,11 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public boolean isFishingRod(ItemStack stack) {
         return stack.canPerformAction(ItemAbilities.FISHING_ROD_CAST);
+    }
+
+    @Override
+    public boolean isDedicatedServer() {
+        return FMLLoader.getCurrent().getDist().isDedicatedServer();
     }
 
     @Override

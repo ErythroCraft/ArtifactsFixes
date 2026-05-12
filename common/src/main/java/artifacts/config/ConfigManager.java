@@ -1,6 +1,7 @@
 package artifacts.config;
 
 import artifacts.Artifacts;
+import artifacts.ArtifactsClient;
 import artifacts.config.display.ConfigEntryDisplay;
 import artifacts.config.display.SharedConfigLang;
 import artifacts.config.value.ConfigValue;
@@ -151,7 +152,7 @@ public abstract class ConfigManager {
 
     public void readValuesFromConfig(boolean readSyncedValues) {
         getValues().forEach((key, value) -> {
-            // Clients should always receive synced configs from the server, only servers should read these
+            // Clients should always receive synced configs from the server, only servers should read these from file
             if (!value.shouldSyncToClients() || readSyncedValues) {
                 readValueFromConfig(key, value);
             }
@@ -178,8 +179,10 @@ public abstract class ConfigManager {
     }
 
     public void onConfigChanged() {
-        // TODO: Synced values aren't re-read when changed from main menu
-        readValuesFromConfig(Artifacts.getCurrentServer() != null);
+        // Don't read synced config values when this would override those received from the server
+        boolean readSyncedValues = PlatformServices.getPlatformHelper().isDedicatedServer()
+                || !ArtifactsClient.isConnectedToRemoteServer();
+        readValuesFromConfig(readSyncedValues);
         if (Artifacts.getCurrentServer() != null) {
             Artifacts.LOGGER.info("Sending updated {} config values to connected clients", getName());
             sendToClients(Artifacts.getCurrentServer());

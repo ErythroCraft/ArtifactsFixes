@@ -6,6 +6,7 @@ import artifacts.fabric.registry.ModAttributesFabric;
 import artifacts.fabric.registry.ModComponents;
 import artifacts.platform.PlatformHelper;
 import artifacts.registry.Register;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -34,6 +35,11 @@ public class FabricPlatformHelper implements PlatformHelper {
     @Override
     public boolean isFishingRod(ItemStack stack) {
         return stack.getItem() instanceof FishingRodItem;
+    }
+
+    @Override
+    public boolean isDedicatedServer() {
+        return FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER);
     }
 
     @Override

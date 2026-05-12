@@ -15,7 +15,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperty;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ExtraCodecs;
 
 import java.util.function.BiConsumer;
 
@@ -30,6 +29,11 @@ public class ArtifactsClient {
         if (ModCompat.ACCESSORIES.isLoaded()) {
             AccessoriesCompatClient.setup();
         }
+    }
+
+    public static boolean isConnectedToRemoteServer() {
+        return !Minecraft.getInstance().hasSingleplayerServer()
+                && Minecraft.getInstance().getConnection() != null;
     }
 
     public static HeliumFlamingoOverlay getHeliumFlamingoOverlay() {

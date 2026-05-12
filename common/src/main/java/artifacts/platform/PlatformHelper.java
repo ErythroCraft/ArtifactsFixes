@@ -21,6 +21,8 @@ public interface PlatformHelper {
 
     boolean isFishingRod(ItemStack stack);
 
+    boolean isDedicatedServer();
+
     Path getConfigDir();
 
     <R> Register<R> createRegister(ResourceKey<Registry<R>> registry);
