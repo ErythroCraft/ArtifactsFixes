@@ -5,6 +5,7 @@ plugins {
 
 neoForge {
     neoFormVersion = neo_form_version
+    accessTransformers.from(file('src/main/resources/META-INF/accesstransformer.cfg').absolutePath)
 }
 
 dependencies {

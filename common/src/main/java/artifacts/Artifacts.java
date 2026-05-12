@@ -72,6 +72,7 @@ public class Artifacts {
         ModAttributes.ATTRIBUTES.register();
         ModEntityTypes.ENTITY_TYPES.register();
         ModItems.ITEMS.register();
+        ModItems.CREATIVE_MODE_TABS.register();
         ModFeatures.FEATURES.register();
         ModGameEvents.GAME_EVENTS.register();
     }
