@@ -5,29 +5,22 @@ import me.shedaniel.clothconfig2.gui.entries.SubCategoryListEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
 public class ItemSubCategoryListEntry extends SubCategoryListEntry {
 
-    @Nullable
-    private ItemStack stack;
+    private final Identifier textureId;
 
     @SuppressWarnings("deprecation")
-    public ItemSubCategoryListEntry(Component title, Item item, List<AbstractConfigListEntry<?>> entries) {
-        // Item components might not be bound yet when opened from the main menu
+    public ItemSubCategoryListEntry(Component title, Identifier textureId, List<AbstractConfigListEntry<?>> entries) {
         super(title, List.copyOf(entries), false);
-        try {
-            this.stack = new ItemStack(item);
-        } catch (NullPointerException ignored) {
-            // 🤠
-        }
+        this.textureId = textureId;
     }
 
     // https://github.com/shedaniel/cloth-config/issues/153
@@ -46,19 +39,14 @@ public class ItemSubCategoryListEntry extends SubCategoryListEntry {
     public void extractRenderState(GuiGraphicsExtractor graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isHovered, float delta) {
         super.extractRenderState(graphics, index, y, x, entryWidth, entryHeight, mouseX, mouseY, isHovered, delta);
 
-        if (stack != null) {
-            graphics.fakeItem(stack, x - 4, y + 2);
-            graphics.text(Minecraft.getInstance().font, this.getActualDisplayedFieldName().getVisualOrderText(), x + 16, y + 6, -1);
-        }
+        graphics.blit(RenderPipelines.GUI_TEXTURED, textureId, x - 4, y + 2, 0, 0, 16, 16, 16, 16);
+        graphics.text(Minecraft.getInstance().font, this.getActualDisplayedFieldName().getVisualOrderText(), x + 16, y + 6, -1);
     }
 
     @Override
     public Component getDisplayedFieldName() {
-        if (stack != null) {
-            // We render this ourselves, offset to the right
-            return CommonComponents.EMPTY;
-        }
-        return super.getDisplayedFieldName();
+        // We render this ourselves to offset it to the right
+        return CommonComponents.EMPTY;
     }
 
     public Component getActualDisplayedFieldName() {

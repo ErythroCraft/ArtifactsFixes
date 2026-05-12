@@ -21,6 +21,7 @@ import net.minecraft.resources.Identifier;
 import java.util.*;
 
 // FIXME: number fields in nested subcategories can't be clicked for some reason
+// TODO: look into switching to YACL for config screen
 public class ArtifactsConfigScreen {
 
     private final ConfigBuilder builder;
@@ -71,7 +72,7 @@ public class ArtifactsConfigScreen {
         List<AbstractConfigListEntry<?>> entries = subCategories.get(key);
         // TODO: Query actual item holder/key instead of parsing from string
         if (isItem(key.path().getLast())) {
-            return new ItemSubCategoryListEntry(getTitle(key), BuiltInRegistries.ITEM.getValue(Artifacts.id(key.path().getLast())), entries);
+            return new ItemSubCategoryListEntry(getTitle(key), Artifacts.id("textures/item/%s.png".formatted(key.path().getLast())), entries);
         }
         return builder.entryBuilder().startSubCategory(getTitle(key), List.copyOf(entries)).build();
     }
