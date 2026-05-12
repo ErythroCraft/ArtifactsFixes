@@ -510,7 +510,6 @@ public class ModItems {
             .piglinLoved()
             .modifiesAttributeBase(ModAttributes.ENTITY_EXPERIENCE, config.entityExperienceBonus)
     );
-    // TODO: fix not being able to eat
     public static final Holder<Item> ONION_RING
             = register("onion_ring", () -> Artifacts.CONFIG.items.onionRing, (builder, config) -> builder
             .equipable()

@@ -3,12 +3,14 @@ package artifacts.equipment;
 import artifacts.component.Equipable;
 import artifacts.registry.ModDataComponents;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,7 +66,8 @@ public class EquipmentSlotManager {
     public static InteractionResult tryEquipFromUse(LivingEntity entity, InteractionHand hand) {
         ItemStack stack = entity.getItemInHand(hand);
         Equipable equipable = stack.get(ModDataComponents.EQUIPABLE.get());
-        if (equipable != null) {
+        Consumable consumable = stack.get(DataComponents.CONSUMABLE);
+        if (equipable != null && (consumable == null || !consumable.canConsume(entity, stack))) {
             // try equipping in an empty slot first, otherwise swap if allowed
             ItemStack result = tryEquipFromUse(entity, stack, false);
             if (result == stack && equipable.swappable()) {
