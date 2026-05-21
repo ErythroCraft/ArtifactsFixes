@@ -35,6 +35,8 @@ dependencies {
         exclude(group: 'net.fabricmc.fabric-api')
     }
 
+    compileOnly("dev.isxander:yet-another-config-lib:${yacl_version}-fabric")
+
     // compat & integration
     compileOnly "maven.modrinth:lootr:s0EnSZFB"
     compileOnly "maven.modrinth:origins:5o5sFcLS"
