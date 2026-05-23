@@ -42,11 +42,14 @@ public class TrinketsRenderingHandler implements EquipmentRenderingHandler {
 
     @Override
     public void renderArm(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, AbstractClientPlayer player, HumanoidArm side) {
+        if (!TrinketRenderer.renderInFirstPerson()) {
+            return;
+        }
         String groupId = side == player.getMainArm() ? "hand" : "offhand";
         for (Tuple<TrinketSlotAccess, ItemStack> pair : TrinketsApi.getAttachment(player).getAllEquipped()) {
             ItemStack stack = pair.getB();
             if (pair.getA().inventory().slotType().group().equals(groupId)) {
-                GloveArtifactRenderer gloveRenderer = GloveArtifactRenderer.getGloveRenderer(stack);
+                GloveArtifactRenderer gloveRenderer = getGloveRenderer(stack);
                 if (gloveRenderer != null) {
                     gloveRenderer.renderFirstPersonArm(poseStack, submitNodeCollector, packedLight, player, side, stack.hasFoil());
                 }

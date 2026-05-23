@@ -31,8 +31,8 @@ public class CuriosRenderingHandler implements EquipmentRenderingHandler {
 
     @Override
     public @Nullable ArtifactRenderer getArtifactRenderer(Item item) {
-        if (ICurioRenderer.getOrNull(item) instanceof ArtifactCurioRenderer artifactCurioRenderer) {
-            return artifactCurioRenderer.renderer();
+        if (ICurioRenderer.getOrNull(item) instanceof ArtifactCurioRenderer(ArtifactRenderer renderer)) {
+            return renderer;
         }
         return null;
     }
@@ -52,7 +52,7 @@ public class CuriosRenderingHandler implements EquipmentRenderingHandler {
                         stack = stacks.getStackInSlot(slot);
                     }
 
-                    GloveArtifactRenderer renderer = GloveArtifactRenderer.getGloveRenderer(stack);
+                    GloveArtifactRenderer renderer = getGloveRenderer(stack);
                     if (renderer != null) {
                         renderer.renderFirstPersonArm(poseStack, submitNodeCollector, packedLight, player, side, stack.hasFoil());
                     }

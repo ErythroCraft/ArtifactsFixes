@@ -1,7 +1,6 @@
 package artifacts.client.item.renderer;
 
 import artifacts.client.item.ArmsModelSet;
-import artifacts.equipment.client.EquipmentRenderingManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -21,7 +20,6 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.PlayerModelType;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class GloveArtifactRenderer extends ArtifactRenderer {
@@ -71,14 +69,6 @@ public class GloveArtifactRenderer extends ArtifactRenderer {
     private static HumanoidArm getArm(HumanoidRenderState renderState, int slotIndex) {
         InteractionHand hand = slotIndex % 2 == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         return hand == InteractionHand.MAIN_HAND ? renderState.mainArm : renderState.mainArm.getOpposite();
-    }
-
-    @Nullable
-    public static GloveArtifactRenderer getGloveRenderer(ItemStack stack) {
-        if (!stack.isEmpty() && EquipmentRenderingManager.getArtifactRenderer(stack.getItem()) instanceof GloveArtifactRenderer gloveRenderer) {
-            return gloveRenderer;
-        }
-        return null;
     }
 
     @Override
