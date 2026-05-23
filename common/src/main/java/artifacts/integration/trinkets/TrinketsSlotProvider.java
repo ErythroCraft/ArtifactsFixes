@@ -11,21 +11,21 @@ import eu.pb4.trinkets.impl.TrinketSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Map;
 import java.util.function.BiFunction;
 
 public class TrinketsSlotProvider implements EquipmentSlotProvider {
 
     @Override
     public <T> T reduceEquipment(LivingEntity entity, T init, BiFunction<EquipmentSlotAccess, T, T> f) {
-        for (Map<String, TrinketInventory> map : TrinketsApi.getAttachment(entity).getInventory().values()) {
-            for (TrinketInventory inventory : map.values()) {
-                for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
-                    ItemStack item = inventory.getItem(slot);
-                    if (!item.isEmpty()) {
-                        EquipmentSlotAccess slotAccess = new SlotAccess(entity, inventory.getOrCreateSlotAccess(slot));
-                        init = f.apply(slotAccess, init);
-                    }
+        for (TrinketInventory inventory : TrinketsApi.getAttachment(entity).getInventories().values()) {
+            if (inventory.slotType().isVanityOnly()) {
+                continue;
+            }
+            for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+                ItemStack item = inventory.getItem(slot);
+                if (!item.isEmpty()) {
+                    EquipmentSlotAccess slotAccess = new SlotAccess(entity, inventory.getOrCreateSlotAccess(slot));
+                    init = f.apply(slotAccess, init);
                 }
             }
         }
@@ -36,19 +36,20 @@ public class TrinketsSlotProvider implements EquipmentSlotProvider {
     public ItemStack tryEquip(LivingEntity entity, ItemStack stack, boolean allowSwapping) {
         // see TrinketItem::equipItem
         TrinketAttachment trinkets = TrinketsApi.getAttachment(entity);
-        for (Map<String, TrinketInventory> group : trinkets.getInventory().values()) {
-            for (TrinketInventory inventory : group.values()) {
-                for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
-                    TrinketSlotAccess slotAccess = inventory.getOrCreateSlotAccess(slot);
-                    ItemStack existingItem = inventory.getItem(slot);
-                    boolean canUnequip = TrinketCallback.getCallback(existingItem).canUnequip(existingItem, slotAccess, entity);
-                    if (TrinketSlot.canInsert(stack, slotAccess, entity)
-                            && canUnequip
-                            && (allowSwapping || inventory.getItem(slot).isEmpty())
-                    ) {
-                        inventory.setItem(slot, stack);
-                        return existingItem;
-                    }
+        for (TrinketInventory inventory : trinkets.getInventories().values()) {
+            if (inventory.slotType().isVanityOnly()) {
+                continue;
+            }
+            for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+                TrinketSlotAccess slotAccess = inventory.getOrCreateSlotAccess(slot);
+                ItemStack existingItem = inventory.getItem(slot);
+                boolean canUnequip = TrinketCallback.getCallback(existingItem).canUnequip(existingItem, slotAccess, entity);
+                if (TrinketSlot.canInsert(stack, slotAccess, entity)
+                        && canUnequip
+                        && (allowSwapping || inventory.getItem(slot).isEmpty())
+                ) {
+                    inventory.setItem(slot, stack);
+                    return existingItem;
                 }
             }
         }
