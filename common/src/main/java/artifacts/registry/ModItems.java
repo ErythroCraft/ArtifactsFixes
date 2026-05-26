@@ -135,7 +135,7 @@ public class ModItems {
             .durability(config.durability)
             .damageWhenConsumed(config.enabled, config.durability.damageWhenConsumed)
             .useCooldown(config.cooldown)
-            .delayedComponent(DataComponents.FOOD, config.enabled, _ -> Foods.BEEF)
+            .component(DataComponents.FOOD, Foods.BEEF)
             .component(ModDataComponents.INFINITE_CONSUMABLE.get(), config.enabled)
     );
     public static final Holder<Item> ETERNAL_STEAK
@@ -143,7 +143,7 @@ public class ModItems {
             .durability(config.durability)
             .damageWhenConsumed(config.enabled, config.durability.damageWhenConsumed)
             .useCooldown(config.cooldown)
-            .delayedComponent(DataComponents.FOOD, config.enabled, _ -> Foods.COOKED_BEEF)
+            .component(DataComponents.FOOD, Foods.COOKED_BEEF)
             .component(ModDataComponents.INFINITE_CONSUMABLE.get(), config.enabled)
     );
 
