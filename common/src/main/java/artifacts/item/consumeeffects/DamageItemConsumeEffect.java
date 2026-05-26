@@ -14,13 +14,13 @@ import net.minecraft.world.level.Level;
 
 public record DamageItemConsumeEffect(Value<Integer> amount) implements ConsumeEffect {
 
-    public static final MapCodec<HealConsumeEffect> CODEC = ValueTypes.NON_NEGATIVE_INT.codec()
+    public static final MapCodec<DamageItemConsumeEffect> CODEC = ValueTypes.NON_NEGATIVE_INT.codec()
             .fieldOf("amount")
-            .xmap(HealConsumeEffect::new, HealConsumeEffect::amount);
+            .xmap(DamageItemConsumeEffect::new, DamageItemConsumeEffect::amount);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, HealConsumeEffect> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, DamageItemConsumeEffect> STREAM_CODEC = StreamCodec.composite(
             ValueTypes.NON_NEGATIVE_INT.streamCodec(),
-            HealConsumeEffect::amount, HealConsumeEffect::new
+            DamageItemConsumeEffect::amount, DamageItemConsumeEffect::new
     );
 
     @Override

@@ -71,6 +71,7 @@ public class Artifacts {
         ModPlacementModifierTypes.PLACEMENT_MODIFIER_TYPES.register();
         ModAttributes.ATTRIBUTES.register();
         ModEntityTypes.ENTITY_TYPES.register();
+        ModConsumeEffects.CONSUME_EFFECT_TYPES.register();
         ModItems.ITEMS.register();
         ModItems.CREATIVE_MODE_TABS.register();
         ModFeatures.FEATURES.register();
