@@ -17,6 +17,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.ItemLore;
 
 import java.util.LinkedHashSet;
@@ -68,6 +69,9 @@ public class ModDataComponents {
     /** Prevents the item from being destroyed when durability reaches 0 */
     public static final ComponentType.Singleton<Value<Boolean>> INDESTRUCTIBLE =
             registerSynced("indestructible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
+    /** Stores an indestructible and infinite consumable item's consumable when it is broken, until the item is repaired */
+    public static final ComponentType.Singleton<Consumable> DISABLED_CONSUMABLE =
+            registerSynced("disabled_consumable", Consumable.CODEC, Consumable.STREAM_CODEC);
 
     // Equipment damage rules
     /** Damage applied to the item when hurt, while worn and not on cooldown */
