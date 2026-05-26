@@ -1,7 +1,5 @@
 package artifacts.mixin.item;
 
-import artifacts.component.ability.SimpleAbility;
-import artifacts.config.value.Value;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.ItemDamageUtil;
 import artifacts.util.TooltipHelper;
@@ -49,10 +47,11 @@ public abstract class ItemStackMixin {
     @Inject(method = "setDamageValue", at = @At(value = "RETURN"))
     private void onItemDamageUpdated(int value, CallbackInfo ci) {
         ItemStack stack = (ItemStack) (Object) this;
-        if (ItemDamageUtil.isIndestructible(stack)
-                && stack.get(ModDataComponents.INFINITE_CONSUMABLE.get()) instanceof SimpleAbility(Value<Boolean> enabled)
-                && enabled.get()
-        ) {
+        // Explicitly don't check whether the infinite_consumable ability is enabled,
+        // this prevents the item from entering an invalid state when repaired while cosmetic
+        // FIXME: Disabling the everlasting steak/eternal beef removes the consumable default component,
+        //  but if the item is repaired from a damaged state, it could be brought back from the disabled_consumable component
+        if (ItemDamageUtil.isIndestructible(stack) && stack.has(ModDataComponents.INFINITE_CONSUMABLE.get())) {
             if (stack.nextDamageWillBreak()) {
                 artifacts$moveComponent(stack, DataComponents.CONSUMABLE, ModDataComponents.DISABLED_CONSUMABLE.get());
             } else {

@@ -199,7 +199,8 @@ public class ModDataComponents {
     public static final ComponentType.Singleton<SimpleAbility> HANDHELD_GLIDER =
             registerSimpleAbility("handheld_glider");
     /**
-     * Prevents the item from being consumed when eaten
+     * Prevents the item from being consumed when eaten. Indestructible items with this ability will store their consumable
+     * in the disabled_consumable component until repaired
      */
     public static final ComponentType.Singleton<SimpleAbility> INFINITE_CONSUMABLE =
             registerSimpleAbility("infinite_consumable");
