@@ -9,10 +9,13 @@ import artifacts.registry.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -183,11 +186,18 @@ public class Language extends LanguageProvider {
     }
 
     private void addItems() {
-        for (Holder<Item> item : ModItems.ITEMS.getEntries()) {
-            add(item.value(), LangUtil.fromSnakeCasedString(item.unwrapKey().orElseThrow().identifier().getPath()));
+        for (Holder<Item> holder : ModItems.ITEMS.getEntries()) {
+            add(holder.value(), getItemName(holder.unwrapKey().orElseThrow()));
         }
-        override(ModItems.ANGLERS_HAT.value().getDescriptionId(), "Angler's Hat");
-        override(ModItems.AQUA_DASHERS.value().getDescriptionId(), "Aqua-Dashers");
+    }
+
+    private String getItemName(ResourceKey<Item> key) {
+        if (ModItems.ANGLERS_HAT.is(key)) {
+            return "Angler's Hat";
+        } else if (ModItems.AQUA_DASHERS.is(key)) {
+            return "Aqua-Dashers";
+        }
+        return LangUtil.fromSnakeCasedString(key.identifier().getPath());
     }
 
     private void addTags() {
@@ -207,6 +217,13 @@ public class Language extends LanguageProvider {
         add(ModTags.MINEABLE_WITH_DIGGING_CLAWS, "Mineable With Digging Claws");
         add(ModTags.ROOTED_BOOTS_GRASS, "Rooted Boots Grass");
         add(ModTags.SNOW_LAYERS, "Snow Layers");
+
+        for (Holder<Item> holder : ModItems.ITEMS.getEntries()) {
+            ResourceKey<Item> key = holder.unwrapKey().orElseThrow();
+            if (Artifacts.CONFIG.items.get(key) != null) {
+                add(TagKey.create(Registries.ITEM, key.identifier().withPrefix("repairs_")), "Repairs " + getItemName(key));
+            }
+        }
     }
 
     private void addTooltips() {

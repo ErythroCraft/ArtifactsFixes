@@ -16,6 +16,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -1227,7 +1228,7 @@ public final class ItemConfigs extends ConfigManager {
     }
 
     @SuppressWarnings("unchecked")
-    public <CONFIG> CONFIG get(ResourceKey<Item> key) {
+    public <CONFIG> @Nullable CONFIG get(ResourceKey<Item> key) {
         return (CONFIG) itemCategories.get(key);
     }
 
