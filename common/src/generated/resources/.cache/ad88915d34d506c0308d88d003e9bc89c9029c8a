@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-11T14:37:39.9786844	Model Definitions - artifacts
+// 26.1.2	2026-05-26T17:59:53.7150772	Model Definitions - artifacts
 53575fc91d842c1b17ac962a71b488ad0cea47ac assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 ed7709072df911479dc455bfae83dac2f52ba714 assets/artifacts/items/aqua_dashers.json
@@ -11,8 +11,8 @@ c91ed6234cb403eb346feb1bc35f2394377ae325 assets/artifacts/items/cloud_in_a_bottl
 4b83f87ba62969312a32dd74803937c99c56c762 assets/artifacts/items/cross_necklace.json
 19453cdef2cc3d9ef802a630a526b0320d8b4d8e assets/artifacts/items/crystal_heart.json
 1bd933b887ee068bb5914d9c16a43e849733b8e0 assets/artifacts/items/digging_claws.json
-5566c52b92fe86303fab84ba5425214d4ba198bb assets/artifacts/items/eternal_steak.json
-489a34fa4a36aafa79c06311fa2d84bcb67dd6af assets/artifacts/items/everlasting_beef.json
+ffbe06c960aefb36167a637f25c8a859c4a0fd99 assets/artifacts/items/eternal_steak.json
+1c84524d890ef52990e136a70b670bcf32651a8e assets/artifacts/items/everlasting_beef.json
 d77860cc844f922007ec30ac198e233aedef88a9 assets/artifacts/items/feral_claws.json
 525d7c010a2cf9a00a49f140629254e7d4554236 assets/artifacts/items/fire_gauntlet.json
 1c7baac68a894c537ac8423f5d18c568d35f5fd4 assets/artifacts/items/flame_pendant.json
@@ -72,7 +72,9 @@ a22a2125e7452b05c89cc2b762e2c61237e0d8c1 assets/artifacts/models/item/crystal_he
 729540b6e9ec8bc3d33d12da09f71d0bd7b8f2f5 assets/artifacts/models/item/digging_claws.json
 70cfa3c012bb97e4749387af77de4457fb662752 assets/artifacts/models/item/digging_claws_broken.json
 94e735e25cb7c532ddf2cedb8c7b0525914c7a62 assets/artifacts/models/item/eternal_steak.json
+fc83f09a4777925167db9009a9a2a4223047f3b4 assets/artifacts/models/item/eternal_steak_broken.json
 5de7e1374647af67ef9cec0c0d2275385237879c assets/artifacts/models/item/everlasting_beef.json
+1869cebfd2152cf2ca4a5c64c41cf087fd21d67d assets/artifacts/models/item/everlasting_beef_broken.json
 67c9719e2564bc89460fee1ab0bb31add1ad45bc assets/artifacts/models/item/feral_claws.json
 e0a04ba314315c333188d56b258faae3d8a82fa7 assets/artifacts/models/item/feral_claws_broken.json
 b33c2226b7661ebd8378d72d7ce03bd309d403cb assets/artifacts/models/item/fire_gauntlet.json

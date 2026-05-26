@@ -95,7 +95,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.ANGLERS_HAT);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerItemFished = define("damagePerItemFished", 1)
                     .descriptionLine("The amount of durability lost every time the wearer fishes an item")
@@ -136,7 +136,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.AQUA_DASHERS);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
                     .descriptionLine("The amount of durability lost per second when walking on water")
@@ -174,7 +174,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.BUNNY_HOPPERS);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerJump = define("damagePerJump", 0)
                     .descriptionLine("The amount of durability lost per jump")
@@ -228,7 +228,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.CHARM_OF_SINKING);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second spent underwater")
@@ -287,7 +287,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.CLOUD_IN_A_BOTTLE);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerDoubleJump = define("damagePerDoubleJump", 1)
                     .descriptionLine("The amount of durability lost for every double jump")
@@ -311,7 +311,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.COWBOY_HAT);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second while controlling a mount")
@@ -353,7 +353,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.CRYSTAL_HEART);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damageWhenHurt = define("damageWhenHurt", 1)
                     .descriptionLine("The amount of durability lost every time the wearer takes damage")
@@ -381,7 +381,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.DIGGING_CLAWS);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerBlockMined = define("damagePerBlockMined", 0)
                     .descriptionLine("The amount of durability lost per block mined")
@@ -418,7 +418,7 @@ public final class ItemConfigs extends ConfigManager {
                     .syncToClients().build();
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerItemDrunk
                     = define("damagePerItemDrunk", 1)
@@ -457,7 +457,7 @@ public final class ItemConfigs extends ConfigManager {
             durability = new Durability();
         }
 
-        public final class Durability extends DurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damageWhenConsumed
                     = define("damageWhenConsumed", 1)
@@ -554,7 +554,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.FLIPPERS);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second when swimming")
@@ -600,7 +600,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.HELIUM_FLAMINGO);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
                     .descriptionLine("The amount of durability lost per second while flying with the Helium Flamingo")
@@ -633,7 +633,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.KITTY_SLIPPERS);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerCreeperScared = define("damagePerCreeperScared", 1)
                     .descriptionLine("The amount of durability lost per creeper killed while wearing the kitty slippers")
@@ -661,7 +661,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.LUCKY_SCARF);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
@@ -754,7 +754,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.PICKAXE_HEATER);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerOreMined = define("damagePerOreMined", 1)
                     .titleAndDescription(SharedConfigLang.DAMAGE_PER_ORE_MINED)
@@ -812,7 +812,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.ROOTED_BOOTS);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerFoodPoint = define("damagePerFoodPoint", 1)
                     .descriptionLine("The amount of durability lost every time the Rooted Boots restore a food point")
@@ -840,7 +840,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.RUNNING_SHOES);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second when sprinting")
@@ -914,7 +914,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.SNORKEL);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.2)
                     .descriptionLine("The amount of durability lost per second while underwater")
@@ -943,7 +943,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.SNOWSHOES);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(0.1)
                     .descriptionLine("The amount of durability lost per second when walking on snow")
@@ -971,7 +971,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.STEADFAST_SPIKES);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damageWhenAttacked
                     = define("damageWhenAttacked", 1)
@@ -1000,7 +1000,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.STRIDER_SHOES);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive = damagePerSecondActive(1)
                     .descriptionLine("The amount of durability lost per second when walking on lava")
@@ -1143,7 +1143,7 @@ public final class ItemConfigs extends ConfigManager {
             super(ModItems.VILLAGER_HAT);
         }
 
-        public final class Durability extends EquippableDurabilityCategory {
+        public final class Durability extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerTrade = define("damagePerTrade", 1)
                     .descriptionLine("The amount of durability lost per trade completed with the Villager Hat")
@@ -1328,7 +1328,7 @@ public final class ItemConfigs extends ConfigManager {
             }
         }
 
-        protected abstract class EquippableDurabilityCategory extends DurabilityCategory {
+        protected abstract class IndestructibleDurabilityCategory extends DurabilityCategory {
 
             public ConfigValue<Boolean> indestructible = define("indestructible", true)
                     .titleAndDescription(SharedConfigLang.INDESTRUCTIBLE)
@@ -1336,7 +1336,7 @@ public final class ItemConfigs extends ConfigManager {
                     .displayPriority(-2)
                     .build();
 
-            private EquippableDurabilityCategory(int maxDamage) {
+            private IndestructibleDurabilityCategory(int maxDamage) {
                 super(maxDamage);
             }
 
@@ -1346,7 +1346,7 @@ public final class ItemConfigs extends ConfigManager {
             }
         }
 
-        public class TriggerBasedDurabilityCategory extends EquippableDurabilityCategory {
+        public class TriggerBasedDurabilityCategory extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerActivation;
 
@@ -1362,7 +1362,7 @@ public final class ItemConfigs extends ConfigManager {
             }
         }
 
-        public class AttackBasedDurabilityCategory extends EquippableDurabilityCategory {
+        public class AttackBasedDurabilityCategory extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerAttack;
 
@@ -1378,7 +1378,7 @@ public final class ItemConfigs extends ConfigManager {
             }
         }
 
-        public class KillBasedDurabilityCategory extends EquippableDurabilityCategory {
+        public class KillBasedDurabilityCategory extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Integer> damagePerKill;
 
@@ -1394,7 +1394,7 @@ public final class ItemConfigs extends ConfigManager {
             }
         }
 
-        public class ToggleBasedDurabilityCategory extends EquippableDurabilityCategory {
+        public class ToggleBasedDurabilityCategory extends IndestructibleDurabilityCategory {
 
             public final ConfigValue<Double> damagePerSecondActive;
 
