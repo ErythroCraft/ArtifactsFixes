@@ -2,6 +2,7 @@ package artifacts.item;
 
 import artifacts.component.ability.SimpleAbility;
 import artifacts.registry.ModDataComponents;
+import artifacts.util.ItemDamageUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -26,6 +27,7 @@ public final class UmbrellaHelper {
     private static boolean isHoldingUmbrellaUpright(LivingEntity entity, InteractionHand hand, boolean allowCosmetic) {
         SimpleAbility gliderAbility = entity.getItemInHand(hand).get(ModDataComponents.HANDHELD_GLIDER.get());
         return gliderAbility != null
+                && !ItemDamageUtil.isDisabledOrBroken(entity.getItemInHand(hand))
                 && (allowCosmetic || gliderAbility.isNonCosmetic())
                 && (!entity.isUsingItem() || entity.getUsedItemHand() != hand)
                 && (!entity.swinging || entity.swingingArm != hand);

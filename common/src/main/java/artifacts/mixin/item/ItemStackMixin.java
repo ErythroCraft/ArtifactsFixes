@@ -51,11 +51,17 @@ public abstract class ItemStackMixin {
         // this prevents the item from entering an invalid state when repaired while cosmetic
         // FIXME: Disabling the everlasting steak/eternal beef removes the consumable default component,
         //  but if the item is repaired from a damaged state, it could be brought back from the disabled_consumable component
-        if (ItemDamageUtil.isIndestructible(stack) && stack.has(ModDataComponents.INFINITE_CONSUMABLE.get())) {
+        if (ItemDamageUtil.isIndestructible(stack)) {
             if (stack.nextDamageWillBreak()) {
-                artifacts$moveComponent(stack, DataComponents.CONSUMABLE, ModDataComponents.DISABLED_CONSUMABLE.get());
+                if (stack.has(ModDataComponents.INFINITE_CONSUMABLE.get())) {
+                    artifacts$moveComponent(stack, DataComponents.CONSUMABLE, ModDataComponents.DISABLED_CONSUMABLE.get());
+                }
+                if (stack.has(ModDataComponents.BLOCKS_ATTACKS.get())) {
+                    artifacts$moveComponent(stack, DataComponents.BLOCKS_ATTACKS, ModDataComponents.DISABLED_BLOCKS_ATTACKS.get());
+                }
             } else {
                 artifacts$moveComponent(stack, ModDataComponents.DISABLED_CONSUMABLE.get(), DataComponents.CONSUMABLE);
+                artifacts$moveComponent(stack, ModDataComponents.DISABLED_BLOCKS_ATTACKS.get(), DataComponents.BLOCKS_ATTACKS);
             }
         }
     }

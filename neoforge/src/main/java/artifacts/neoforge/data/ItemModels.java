@@ -49,7 +49,9 @@ public class ItemModels extends ModelProvider {
     }
 
     private static void createUmbrellaModel(Item item, ItemModelGenerators itemModels) {
-        ItemModel.Unbaked flatModel = ItemModelUtils.plainModel(itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked inventoryDefault = ItemModelUtils.plainModel(itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked inventoryBroken = ItemModelUtils.plainModel(itemModels.createFlatItemModel(item, "_broken", ModelTemplates.FLAT_ITEM));
+        ItemModel.Unbaked inventory = ItemModelUtils.conditional(new NeedsRepair(), inventoryBroken, inventoryDefault);
         ItemModel.Unbaked heldNonBlockingModel = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_held"));
         ItemModel.Unbaked heldBlockingModel = ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item, "_held_blocking"));
         ItemModel.Unbaked heldModel = ItemModelUtils.conditional(ItemModelUtils.isUsingItem(), heldBlockingModel, heldNonBlockingModel);
@@ -62,7 +64,7 @@ public class ItemModels extends ModelProvider {
                 ItemDisplayContext.HEAD
         );
         itemModels.itemModelOutput.accept(item, ItemModelUtils.select(
-                new DisplayContext(), flatModel, ItemModelUtils.when(heldDisplayContexts, heldModel)
+                new DisplayContext(), inventory, ItemModelUtils.when(heldDisplayContexts, heldModel)
         ));
     }
 }

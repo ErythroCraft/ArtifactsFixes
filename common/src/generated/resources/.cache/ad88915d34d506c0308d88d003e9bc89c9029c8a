@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-26T17:59:53.7150772	Model Definitions - artifacts
+// 26.1.2	2026-05-26T19:55:51.6460834	Model Definitions - artifacts
 53575fc91d842c1b17ac962a71b488ad0cea47ac assets/artifacts/items/anglers_hat.json
 aff92177c807218c389428076f120f99e0b7b52c assets/artifacts/items/antidote_vessel.json
 ed7709072df911479dc455bfae83dac2f52ba714 assets/artifacts/items/aqua_dashers.json
@@ -41,7 +41,7 @@ e6b97fe1e54787f046d9209eb79f381d459c3ec8 assets/artifacts/items/pickaxe_heater.j
 375600054e4a5c2ec20d4a643f1191c66c3661a7 assets/artifacts/items/strider_shoes.json
 789be110fda07e633f17194d8bc19d84a308449e assets/artifacts/items/superstitious_hat.json
 a0224f4260a346eb53796479846cee53361ae8a6 assets/artifacts/items/thorn_pendant.json
-f43cbf99edd8bc069a53553e6a2ae06a1c366948 assets/artifacts/items/umbrella.json
+21ad78a815ab1561af3b81a4c1de61f673d3b56b assets/artifacts/items/umbrella.json
 facd3cd3396a706f30bb2b1ee2c40ec7cc286775 assets/artifacts/items/universal_attractor.json
 8709df574fba8906f7117ada78a7de3d5995ec9b assets/artifacts/items/vampiric_glove.json
 1c897c72b3758b18f1d030c5162b405fca305a34 assets/artifacts/items/villager_hat.json
@@ -130,6 +130,7 @@ cd2c3aa105d7d53091b42f0cf3e2da822939f584 assets/artifacts/models/item/superstiti
 8ea2cd608815107191a446c558f3ef6d03790d24 assets/artifacts/models/item/thorn_pendant.json
 3b2cd8e9ba77d3d6ba4aac175dd7d0653a0dc113 assets/artifacts/models/item/thorn_pendant_broken.json
 21be884f84eebf6c5b9e47f842ca568b8d807190 assets/artifacts/models/item/umbrella.json
+a63c426002647af7088a87bbe2262d9e5d2766a8 assets/artifacts/models/item/umbrella_broken.json
 a9b754c78878aec03a96e994ad1aeb675ce654c4 assets/artifacts/models/item/universal_attractor.json
 071fb8da1f4a304244861a323766221dd35a67b6 assets/artifacts/models/item/universal_attractor_broken.json
 ca2954c77cbaef4a1e886000f8fb65554e413b47 assets/artifacts/models/item/vampiric_glove.json
