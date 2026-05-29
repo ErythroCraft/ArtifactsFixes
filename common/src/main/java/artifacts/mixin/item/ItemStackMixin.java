@@ -1,5 +1,6 @@
 package artifacts.mixin.item;
 
+import artifacts.component.itemdamage.StoredComponents;
 import artifacts.registry.ModDataComponents;
 import artifacts.util.ItemDamageUtil;
 import artifacts.util.TooltipHelper;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Set;
 import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
@@ -47,30 +49,36 @@ public abstract class ItemStackMixin {
     @Inject(method = "setDamageValue", at = @At(value = "RETURN"))
     private void onItemDamageUpdated(int value, CallbackInfo ci) {
         ItemStack stack = (ItemStack) (Object) this;
-        // Explicitly don't check whether the infinite_consumable ability is enabled,
-        // this prevents the item from entering an invalid state when repaired while cosmetic
-        // FIXME: Disabling the everlasting steak/eternal beef removes the consumable default component,
-        //  but if the item is repaired from a damaged state, it could be brought back from the disabled_consumable component
-        if (ItemDamageUtil.isIndestructible(stack)) {
-            if (stack.nextDamageWillBreak()) {
-                if (stack.has(ModDataComponents.INFINITE_CONSUMABLE.get())) {
-                    artifacts$moveComponent(stack, DataComponents.CONSUMABLE, ModDataComponents.DISABLED_CONSUMABLE.get());
-                }
-                if (stack.has(ModDataComponents.BLOCKS_ATTACKS.get())) {
-                    artifacts$moveComponent(stack, DataComponents.BLOCKS_ATTACKS, ModDataComponents.DISABLED_BLOCKS_ATTACKS.get());
-                }
-            } else {
-                artifacts$moveComponent(stack, ModDataComponents.DISABLED_CONSUMABLE.get(), DataComponents.CONSUMABLE);
-                artifacts$moveComponent(stack, ModDataComponents.DISABLED_BLOCKS_ATTACKS.get(), DataComponents.BLOCKS_ATTACKS);
-            }
+        // Always restore broken components first, even if the item is already broken
+        // This prevents previously broken components from being overridden,
+        // even if for some reason the item takes damage when already broken
+        // FIXME: broken items don't regain their components when
+        //  `can_be_damaged` or `indestructible` are reset to to false in the config
+        artifacts$restoreBrokenComponents(stack);
+        if (ItemDamageUtil.isIndestructible(stack) && stack.nextDamageWillBreak()) {
+            artifacts$disableComponentsOnItemBroken(stack);
         }
     }
 
     @Unique
-    private <T> void artifacts$moveComponent(ItemStack stack, DataComponentType<T> source, DataComponentType<T> receiver) {
-        T component = stack.remove(source);
-        if (component != null) {
-            stack.set(receiver, component);
+    private void artifacts$disableComponentsOnItemBroken(ItemStack stack) {
+        // TODO: consider moving this into a separate component
+        Set<DataComponentType<?>> types = Set.of(
+                DataComponents.CONSUMABLE,
+                DataComponents.BLOCKS_ATTACKS
+        );
+        StoredComponents brokenComponents = StoredComponents.from(stack, types);
+        stack.set(ModDataComponents.BROKEN_COMPONENTS.get(), brokenComponents);
+        for (DataComponentType<?> type : types) {
+            stack.remove(type);
+        }
+    }
+
+    @Unique
+    private void artifacts$restoreBrokenComponents(ItemStack stack) {
+        StoredComponents storedComponents = stack.remove(ModDataComponents.BROKEN_COMPONENTS.get());
+        if (storedComponents != null) {
+            storedComponents.applyTo(stack);
         }
     }
 }

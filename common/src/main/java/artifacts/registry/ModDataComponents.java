@@ -17,8 +17,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.BlocksAttacks;
-import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.ItemLore;
 
 import java.util.LinkedHashSet;
@@ -67,17 +65,13 @@ public class ModDataComponents {
     /** Hides the item's model when the entity wearing it is invisible */
     public static final ComponentType.Singleton<Value<Boolean>> HIDE_WHEN_INVISIBLE =
             registerSynced("hide_when_invisible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
+    // TODO: play break sound & particles
     /** Prevents the item from being destroyed when durability reaches 0 */
     public static final ComponentType.Singleton<Value<Boolean>> INDESTRUCTIBLE =
             registerSynced("indestructible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
-
-    // TODO: Consider merging these into a single disabled_components component
-    /** Stores an indestructible and infinite consumable item's consumable when it is broken, until the item is repaired */
-    public static final ComponentType.Singleton<Consumable> DISABLED_CONSUMABLE =
-            registerSynced("disabled_consumable", Consumable.CODEC, Consumable.STREAM_CODEC);
-    /** Stores the blocks_attacks component of an indestructible item when it is broken, until the item is repaired */
-    public static final ComponentType.Singleton<BlocksAttacks> DISABLED_BLOCKS_ATTACKS =
-            registerSynced("disabled_blocks_attacks", BlocksAttacks.CODEC, BlocksAttacks.STREAM_CODEC);
+    /** Stores components that have been disabled when the item was broken, such that they can be reinstated when the item is repaired */
+    public static final ComponentType.Singleton<StoredComponents> BROKEN_COMPONENTS =
+            registerSynced("broken_components", StoredComponents.CODEC, StoredComponents.STREAM_CODEC);
 
     // Equipment damage rules
     /** Damage applied to the item when hurt, while worn and not on cooldown */
