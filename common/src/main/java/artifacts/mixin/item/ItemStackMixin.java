@@ -8,6 +8,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -57,6 +58,14 @@ public abstract class ItemStackMixin {
         artifacts$restoreBrokenComponents(stack);
         if (ItemDamageUtil.isIndestructible(stack) && stack.nextDamageWillBreak()) {
             artifacts$disableComponentsOnItemBroken(stack);
+        }
+    }
+
+    @Inject(method = "applyDamage", at = @At(value = "RETURN"))
+    private void onItemDamaged(int newDamage, @Nullable ServerPlayer player, Consumer<Item> onBreak, CallbackInfo ci) {
+        ItemStack self = (ItemStack) (Object) this;
+        if (ItemDamageUtil.needsRepair(self)) {
+            onBreak.accept(self.getItem());
         }
     }
 
