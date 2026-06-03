@@ -24,7 +24,7 @@ import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import org.apache.commons.lang3.mutable.MutableInt;
 
@@ -102,7 +102,7 @@ public class ArtifactHooksNeoForge {
         event.setDroppedExperience(event.getDroppedExperience() + experience.get().intValue());
     }
 
-    private static void onBreakBlock(BlockEvent.BreakEvent event) {
+    private static void onBreakBlock(BreakBlockEvent event) {
         if (!event.isCanceled()) {
             ArtifactHooks.onBlockBroken(event.getPlayer(), event.getState());
         }
