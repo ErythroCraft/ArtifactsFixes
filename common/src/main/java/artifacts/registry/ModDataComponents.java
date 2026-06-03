@@ -65,7 +65,6 @@ public class ModDataComponents {
     /** Hides the item's model when the entity wearing it is invisible */
     public static final ComponentType.Singleton<Value<Boolean>> HIDE_WHEN_INVISIBLE =
             registerSynced("hide_when_invisible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
-    // TODO: play break sound & particles
     /** Prevents the item from being destroyed when durability reaches 0 */
     public static final ComponentType.Singleton<Value<Boolean>> INDESTRUCTIBLE =
             registerSynced("indestructible", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
