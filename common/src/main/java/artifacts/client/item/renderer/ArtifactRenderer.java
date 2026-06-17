@@ -30,7 +30,7 @@ public abstract class ArtifactRenderer {
         return null;
     }
 
-    public void render(
+    public final void render(
             ItemStack stack,
             LivingEntityRenderState renderState,
             EntityModel<?> entityModel,
@@ -44,7 +44,7 @@ public abstract class ArtifactRenderer {
         }
     }
 
-    public <S extends HumanoidRenderState> void render(
+    private <S extends HumanoidRenderState> void render(
             ItemStack stack,
             S renderState,
             HumanoidModel<S> entityModel,
@@ -54,9 +54,14 @@ public abstract class ArtifactRenderer {
             int light
     ) {
         poseStack.pushPose();
-        Value<Boolean> hideWhenInvisible = stack.get(ModDataComponents.HIDE_WHEN_INVISIBLE.get());
-        if (hideWhenInvisible != null && hideWhenInvisible.get() && renderState.isInvisible && renderState.entityType == EntityType.PLAYER) {
-            return;
+        if (renderState.entityType == EntityType.PLAYER) {
+            if (!Artifacts.CONFIG.client.showArtifactsOnPlayers.get()) {
+                return;
+            }
+            Value<Boolean> hideWhenInvisible = stack.get(ModDataComponents.HIDE_WHEN_INVISIBLE.get());
+            if (renderState.isInvisible && hideWhenInvisible != null && hideWhenInvisible.get()) {
+                return;
+            }
         }
 
         HumanoidModel<HumanoidRenderState> artifactModel = getModel(renderState, slotIndex);
