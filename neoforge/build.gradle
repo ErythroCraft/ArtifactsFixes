@@ -17,7 +17,6 @@ dependencies {
     compileOnly "io.wispforest:owo-lib:${owo_version}"
 
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-    implementation "dev.isxander:yet-another-config-lib:${yacl_version}-neoforge"
 
     // compat & integration
     compileOnly "maven.modrinth:lootr:s0EnSZFB"

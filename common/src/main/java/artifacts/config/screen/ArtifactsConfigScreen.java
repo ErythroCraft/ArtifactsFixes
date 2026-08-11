@@ -21,7 +21,7 @@ import net.minecraft.resources.Identifier;
 import java.util.*;
 
 // FIXME: number fields in nested subcategories can't be clicked for some reason
-// TODO: look into switching to YACL for config screen
+// TODO: look into switching to YACL for config screen (never mind, apparently it doesn't support nested subcategories at all)
 public class ArtifactsConfigScreen {
 
     private final ConfigBuilder builder;

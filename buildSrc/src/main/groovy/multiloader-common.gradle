@@ -119,13 +119,6 @@ repositories {
             includeGroupAndSubgroups 'org.sinytra' // Forgified Fabric API (Accessories)
         }
     }
-    maven {
-        name 'Xander Maven'
-        url 'https://maven.isxander.dev/releases'
-        content {
-            includeGroupAndSubgroups 'dev.isxander'
-        }
-    }
 }
 
 sourcesJar {
