@@ -20,8 +20,7 @@ import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
-// FIXME: number fields in nested subcategories can't be clicked for some reason
-// TODO: look into switching to YACL for config screen (never mind, apparently it doesn't support nested subcategories at all)
+// TODO: cleanup this mess
 public class ArtifactsConfigScreen {
 
     private final ConfigBuilder builder;
@@ -48,13 +47,6 @@ public class ArtifactsConfigScreen {
         )) {
             addConfigs(config);
         }
-
-        // Add nested subcategories into their parents
-        subCategories.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key ->
-                key.parent().ifPresent(parentKey ->
-                        subCategories.get(parentKey).add(buildSubCategory(key))
-                )
-        );
 
         // Add top-level subcategories to their categories
         subCategories.keySet().stream().sorted().forEach(key -> {
@@ -96,12 +88,12 @@ public class ArtifactsConfigScreen {
         if (parent.isEmpty()) {
             category.addEntry(field);
         } else {
-            getOrCreateSubCategory(parent.get()).add(field);
-            // Ensure all intermediate subcategories exist
-            do {
-                getOrCreateSubCategory(parent.get());
-                parent = parent.get().parent();
-            } while (parent.isPresent());
+            ConfigEntryKey subCategory = parent.get();
+            while (subCategory.parent().isPresent()) {
+                subCategory = subCategory.parent().get();
+            }
+
+            getOrCreateSubCategory(subCategory).add(field);
         }
     }
 
@@ -111,6 +103,7 @@ public class ArtifactsConfigScreen {
                 .stream()
                 .sorted(Comparator.naturalOrder())
                 .sorted(Comparator.comparingInt(key -> getDisplay(key).displayPriority()))
+                .sorted(Comparator.comparingInt(key -> key.path().size()))
                 .forEach(key -> addConfigEntry(category, config, key));
     }
 
