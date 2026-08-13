@@ -80,7 +80,9 @@ public record ComponentQuery<C, E>(
     public void iterate(ComponentVisitor<E> visitor) {
         EquipmentSlotManager.reduceEquipment(entity, skipCooldown, skipDisabled, Unit.INSTANCE, (acc, slotAccess) -> {
             for (E entry : type.getEntries(slotAccess.get())) {
-                if (!skipCosmetic || !(entry instanceof EquipmentAbility ability) || ability.isNonCosmetic()) {
+                if ((!skipCosmetic || entry instanceof EquipmentAbility ability && ability.isNonCosmetic())
+                        && filter.test(entry)
+                ) {
                     visitor.visit(entry, slotAccess);
                 }
             }
@@ -94,7 +96,9 @@ public record ComponentQuery<C, E>(
     public <ACC> ACC reduce(ACC init, ComponentAccumulator<ACC, E> accumulator) {
         return EquipmentSlotManager.reduceEquipment(entity, skipCooldown, skipDisabled, init, (acc, slotAccess) -> {
             for (E entry : type.getEntries(slotAccess.get())) {
-                if (!skipCosmetic || !(entry instanceof EquipmentAbility ability) || ability.isNonCosmetic()) {
+                if ((!skipCosmetic || entry instanceof EquipmentAbility ability && ability.isNonCosmetic())
+                        && filter.test(entry)
+                ) {
                     acc = accumulator.accumulate(acc, entry);
                 }
             }
