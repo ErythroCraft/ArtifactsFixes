@@ -9,7 +9,6 @@
   "artifacts.key.helium_flamingo.activate": "Hoist the Seagull o' Floatin'",
   "artifacts.key.night_vision_goggles.toggle": "Switch th' Eyepatch o' the Night",
   "artifacts.key.universal_attractor.toggle": "Switch the Magic Metal",
-  "artifacts.key_category": "Arrrtifacts",
   "artifacts.subtitles.entity.mimic.close": "Possessed Coffer closes",
   "artifacts.subtitles.entity.mimic.death": "Possessed Coffer dies",
   "artifacts.subtitles.entity.mimic.hurt": "Possessed Coffer hurts",
@@ -128,5 +127,6 @@
   "item.artifacts.universal_attractor": "Magic Metal",
   "item.artifacts.vampiric_glove": "Bloodsuckin' Hook",
   "item.artifacts.villager_hat": "Landlubber's Lid",
-  "item.artifacts.whoopee_cushion": "Pillow o' Farts"
+  "item.artifacts.whoopee_cushion": "Pillow o' Farts",
+  "key.category.artifacts.artifacts": "Arrrtifacts"
 }

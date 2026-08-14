@@ -69,7 +69,6 @@
   "artifacts.key.helium_flamingo.activate": "Activar el Flamenco de Helio",
   "artifacts.key.night_vision_goggles.toggle": "Activar las Gafas de Visión Nocturna",
   "artifacts.key.universal_attractor.toggle": "Activar el Imán Universal",
-  "artifacts.key_category": "Artefactos",
   "artifacts.subtitles.entity.mimic.close": "El mimic se cerró",
   "artifacts.subtitles.entity.mimic.death": "El mimic murió",
   "artifacts.subtitles.entity.mimic.hurt": "El mimic dañado",
@@ -168,5 +167,6 @@
   "item.artifacts.universal_attractor": "Imán Universal",
   "item.artifacts.vampiric_glove": "Guante Vampírico",
   "item.artifacts.villager_hat": "Sombrero de Paja",
-  "item.artifacts.whoopee_cushion": "Cojín de Pedos"
+  "item.artifacts.whoopee_cushion": "Cojín de Pedos",
+  "key.category.artifacts.artifacts": "Artefactos"
 }

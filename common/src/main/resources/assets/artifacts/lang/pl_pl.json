@@ -4,7 +4,6 @@
   "artifacts.advancements.chest_slayer.description": "Zabij Mimika",
   "artifacts.advancements.chest_slayer.title": "Łowca Skrzyń",
   "artifacts.creative_tab": "Artifacts",
-  "artifacts.key_category": "Artifacts",
   "artifacts.tooltip.ability.attribute_modifiers.attack_burning_duration": "Sprawia, że walcząc wręcz, noszący zadaje obrażenia ogniowe",
   "artifacts.tooltip.ability.attribute_modifiers.attack_damage": "Zwiększa obrażenia zadawaneIncreases damage dealt by the wearer",
   "artifacts.tooltip.ability.attribute_modifiers.attack_knockback": "Zwiększa odrzut zadawany przez noszącego",
@@ -66,5 +65,6 @@
   "item.artifacts.umbrella": "Parasol",
   "item.artifacts.universal_attractor": "Uniwersalny Magnes",
   "item.artifacts.villager_hat": "Kapelusz Osadnika",
-  "item.artifacts.whoopee_cushion": "Poduszka Pierdziuszka"
+  "item.artifacts.whoopee_cushion": "Poduszka Pierdziuszka",
+  "key.category.artifacts.artifacts": "Artifacts"
 }

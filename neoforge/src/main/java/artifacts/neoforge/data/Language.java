@@ -65,7 +65,7 @@ public class Language extends LanguageProvider {
             String itemName = LangUtil.fromSnakeCasedString(list.get(list.size() - 2));
             add(keyMapping.getName(), "%s %s".formatted(action, itemName));
         });
-        add("artifacts.key_category", "Artifacts");
+        add("key.category.artifacts.artifacts", "Artifacts");
         add(ModSoundEvents.FART.value(), "Fart");
         add("curios.identifier.feet", "Feet");
         add("curios.modifiers.feet", "When on feet:");

@@ -4,7 +4,6 @@
   "artifacts.advancements.chest_slayer.description": "Tuer un mimique",
   "artifacts.advancements.chest_slayer.title": "Tueur de coffre",
   "artifacts.creative_tab": "Artifacts",
-  "artifacts.key_category": "Artifacts",
   "artifacts.tooltip.ability.attribute_modifiers.attack_burning_duration": "Permet aux attaques de mêlée du porteur d'enflammer leur cibles",
   "artifacts.tooltip.ability.attribute_modifiers.attack_damage": "Augmente les dégâts d'attaque en mêlée du porteur",
   "artifacts.tooltip.ability.attribute_modifiers.attack_knockback": "Augmente le recul de toutes les attaques du porteur",
@@ -66,5 +65,6 @@
   "item.artifacts.umbrella": "Parapluie",
   "item.artifacts.universal_attractor": "Attracteur universel",
   "item.artifacts.villager_hat": "Chapeau de villageois",
-  "item.artifacts.whoopee_cushion": "Coussin péteur"
+  "item.artifacts.whoopee_cushion": "Coussin péteur",
+  "key.category.artifacts.artifacts": "Artifacts"
 }

@@ -96,7 +96,6 @@
   "artifacts.key.helium_flamingo.activate": "Activar Flamenco de Helio",
   "artifacts.key.night_vision_goggles.toggle": "Alternar Gafas de Visión Nocturna",
   "artifacts.key.universal_attractor.toggle": "Alternar Atractor Universal",
-  "artifacts.key_category": "Artefactos",
   "artifacts.subtitles.entity.mimic.close": "Mimic se cierra",
   "artifacts.subtitles.entity.mimic.death": "Mimic muere",
   "artifacts.subtitles.entity.mimic.hurt": "Mimic herido",
@@ -215,5 +214,6 @@
   "item.artifacts.universal_attractor": "Atractor Universal",
   "item.artifacts.vampiric_glove": "Guantelete Vampírico",
   "item.artifacts.villager_hat": "Sombrero de Aldeano",
-  "item.artifacts.whoopee_cushion": "Cojín Bromista"
+  "item.artifacts.whoopee_cushion": "Cojín Bromista",
+  "key.category.artifacts.artifacts": "Artefactos"
 }

@@ -69,7 +69,6 @@
   "artifacts.key.helium_flamingo.activate": "Attiva il fenicottero ad elio",
   "artifacts.key.night_vision_goggles.toggle": "Attiva/Disattiva visore notturno",
   "artifacts.key.universal_attractor.toggle": "Attiva/Disattiva attrattore universale",
-  "artifacts.key_category": "Artefatti",
   "artifacts.subtitles.entity.mimic.close": "Mimic si chiude",
   "artifacts.subtitles.entity.mimic.death": "Mimic salta",
   "artifacts.subtitles.entity.mimic.hurt": "Mimic ferito",
@@ -168,5 +167,6 @@
   "item.artifacts.universal_attractor": "Attrattore universale",
   "item.artifacts.vampiric_glove": "Guanto vampirico",
   "item.artifacts.villager_hat": "Cappello da villico",
-  "item.artifacts.whoopee_cushion": "Cuscino scorreggione"
+  "item.artifacts.whoopee_cushion": "Cuscino scorreggione",
+  "key.category.artifacts.artifacts": "Artefatti"
 }

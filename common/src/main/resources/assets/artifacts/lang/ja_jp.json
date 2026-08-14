@@ -76,7 +76,6 @@
   "artifacts.key.helium_flamingo.activate": "ヘリウムフラミンゴをアクティブ化",
   "artifacts.key.night_vision_goggles.toggle": "暗視ゴーグルの切り替え",
   "artifacts.key.universal_attractor.toggle": "ユニバーサルアトラクターの切り替え",
-  "artifacts.key_category": "アーティファクト",
   "artifacts.subtitles.entity.mimic.close": "ミミックが閉じる",
   "artifacts.subtitles.entity.mimic.death": "ミミックが死ぬ",
   "artifacts.subtitles.entity.mimic.hurt": "ミミックがダメージを受ける",
@@ -175,5 +174,6 @@
   "item.artifacts.universal_attractor": "ユニバーサルアトラクター",
   "item.artifacts.vampiric_glove": "吸血鬼の手袋",
   "item.artifacts.villager_hat": "村人の帽子",
-  "item.artifacts.whoopee_cushion": "ブーブークッション"
+  "item.artifacts.whoopee_cushion": "ブーブークッション",
+  "key.category.artifacts.artifacts": "アーティファクト"
 }

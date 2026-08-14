@@ -4,7 +4,6 @@
   "artifacts.advancements.chest_slayer.description": "Töt ein Mimic",
   "artifacts.advancements.chest_slayer.title": "Truhe Mörder",
   "artifacts.creative_tab": "Artifacts",
-  "artifacts.key_category": "Artifacts",
   "artifacts.tooltip.ability.attribute_modifiers.attack_burning_duration": "Der Nahschaden des Trägers oder der Trägerin bewirkt Feuerschaden.",
   "artifacts.tooltip.ability.attribute_modifiers.attack_damage": "Träger(in) gibt mehr Schaden.",
   "artifacts.tooltip.ability.attribute_modifiers.attack_knockback": "Die Angriffen des Trägers oder der Trägerin gibt mehr Rückstoß.",
@@ -67,5 +66,6 @@
   "item.artifacts.umbrella": "Regenschirm",
   "item.artifacts.universal_attractor": "Allgemeiner Magnet",
   "item.artifacts.villager_hat": "Dorfbewohnerhut",
-  "item.artifacts.whoopee_cushion": "Whoopee Cushion"
+  "item.artifacts.whoopee_cushion": "Whoopee Cushion",
+  "key.category.artifacts.artifacts": "Artifacts"
 }
