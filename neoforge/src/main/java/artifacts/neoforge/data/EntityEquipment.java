@@ -1,34 +1,24 @@
 package artifacts.neoforge.data;
 
-import artifacts.config.value.Value;
 import artifacts.loot.ConfigValueChance;
-import artifacts.registry.ModDataComponents;
 import artifacts.registry.ModItems;
 import artifacts.registry.ModLootTables;
-import com.google.common.collect.Sets;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class EntityEquipment {
 
     private final LootTables lootTables;
-    private final Set<EntityType<?>> entityTypes = new HashSet<>();
 
     public EntityEquipment(LootTables lootTables) {
         this.lootTables = lootTables;
     }
 
+    // TODO: Add bogged & parched loot tables
     public void addLootTables() {
-        entityTypes.clear();
-
         addItems(EntityType.ZOMBIE,
                 ModItems.COWBOY_HAT.value(),
                 ModItems.BUNNY_HOPPERS.value(),
@@ -69,16 +59,9 @@ public class EntityEquipment {
                 ModItems.ONION_RING.value(),
                 ModItems.STRIDER_SHOES.value()
         );
-
-        if (!entityTypes.equals(ModLootTables.ENTITY_EQUIPMENT.keySet())) {
-            throw new IllegalStateException(Sets.symmetricDifference(entityTypes, ModLootTables.ENTITY_EQUIPMENT.keySet()).toString());
-        }
     }
 
     public void addItems(EntityType<?> entityType, Item... items) {
-        if (!ModLootTables.ENTITY_EQUIPMENT.containsKey(entityType)) {
-            throw new IllegalArgumentException("Missing entity equipment entity: %s".formatted(BuiltInRegistries.ENTITY_TYPE.getKey(entityType)));
-        }
         LootPool.Builder pool = LootPool.lootPool();
         for (Item item : items) {
             pool.add(LootTables.item(item, 1));
@@ -87,9 +70,8 @@ public class EntityEquipment {
     }
 
     public void addEquipment(EntityType<?> entityType, LootPool.Builder pool) {
-        entityTypes.add(entityType);
         LootTable.Builder builder = LootTable.lootTable();
         builder.withPool(pool.when(ConfigValueChance.entityEquipmentChance()));
-        lootTables.addLootTable(ModLootTables.entityEquipmentLootTable(entityType).identifier().getPath(), _ -> builder, LootContextParamSets.ALL_PARAMS);
+        lootTables.addLootTable(ModLootTables.getEntityEquipmentLootTable(entityType).identifier().getPath(), _ -> builder, LootContextParamSets.ALL_PARAMS);
     }
 }
