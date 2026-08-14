@@ -20,6 +20,7 @@
     "ability.enderpearlhungercost.EnderPearlItemMixin",
     "ability.equipabletotem.LivingEntityMixin",
     "ability.fluidcollision.EntityMixin",
+    "ability.hideseffectparticles.LivingEntityMixin",
     "ability.hurtsound.LivingEntityMixin",
     "ability.infiniteconsumable.ConsumableMixin",
     "ability.phantomrepellent.PhantomSweepAttackGoalMixin",

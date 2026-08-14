@@ -37,7 +37,7 @@ public record ComponentQuery<C, E>(
     }
 
     /**
-     * Include items that have been toggled off in this query
+     * Include items that are broken or have been toggled off in this query
      */
     public ComponentQuery<C, E> includeDisabledItems() {
         return new ComponentQuery<>(type, entity, filter, skipCooldown, false, skipCosmetic);
@@ -80,7 +80,7 @@ public record ComponentQuery<C, E>(
     public void iterate(ComponentVisitor<E> visitor) {
         EquipmentSlotManager.reduceEquipment(entity, skipCooldown, skipDisabled, Unit.INSTANCE, (acc, slotAccess) -> {
             for (E entry : type.getEntries(slotAccess.get())) {
-                if ((!skipCosmetic || entry instanceof EquipmentAbility ability && ability.isNonCosmetic())
+                if ((!skipCosmetic || !(entry instanceof EquipmentAbility ability) || ability.isNonCosmetic())
                         && filter.test(entry)
                 ) {
                     visitor.visit(entry, slotAccess);
@@ -96,7 +96,7 @@ public record ComponentQuery<C, E>(
     public <ACC> ACC reduce(ACC init, ComponentAccumulator<ACC, E> accumulator) {
         return EquipmentSlotManager.reduceEquipment(entity, skipCooldown, skipDisabled, init, (acc, slotAccess) -> {
             for (E entry : type.getEntries(slotAccess.get())) {
-                if ((!skipCosmetic || entry instanceof EquipmentAbility ability && ability.isNonCosmetic())
+                if ((!skipCosmetic || !(entry instanceof EquipmentAbility ability) || ability.isNonCosmetic())
                         && filter.test(entry)
                 ) {
                     acc = accumulator.accumulate(acc, entry);

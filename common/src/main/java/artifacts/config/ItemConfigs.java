@@ -865,6 +865,10 @@ public final class ItemConfigs extends ConfigManager {
                 .descriptionLine("Whether the Scarf of Invisibility is hidden when the wearer is invisible")
                 .syncToClients().build();
 
+        public final ConfigValue<Boolean> hideEffectParticles = define("hidesEffectParticles", false)
+                .descriptionLine("Whether the Scarf of Invisibility should prevent all status effects from spawning particles")
+                .syncToClients().build();
+
         // 1800 at 0.1/s = 5 hours
         public final ToggleBasedDurabilityCategory durability = new ToggleBasedDurabilityCategory(1800, 0.1);
 

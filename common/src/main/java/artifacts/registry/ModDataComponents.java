@@ -71,6 +71,9 @@ public class ModDataComponents {
     /** Stores components that have been disabled when the item was broken, such that they can be reinstated when the item is repaired */
     public static final ComponentType.Singleton<StoredComponents> BROKEN_COMPONENTS =
             registerSynced("broken_components", StoredComponents.CODEC, StoredComponents.STREAM_CODEC);
+    /** Prevents status effects from spawning particles while worn */
+    public static final ComponentType.Singleton<Value<Boolean>> HIDES_EFFECT_PARTICLES =
+            registerSynced("hides_effect_particles", ValueTypes.enabledField().codec(), ValueTypes.BOOLEAN.streamCodec());
 
     // Equipment damage rules
     /** Damage applied to the item when hurt, while worn and not on cooldown */

@@ -235,6 +235,7 @@ public class ModItems {
                     () -> config.enabled.get() ? EntityCondition.ALWAYS : EntityCondition.NEVER
             )
             .component(ModDataComponents.HIDE_WHEN_INVISIBLE.get(), config.hideWhenInvisible)
+            .component(ModDataComponents.HIDES_EFFECT_PARTICLES.get(), config.hideEffectParticles)
     );
     public static final Holder<Item> CROSS_NECKLACE
             = register("cross_necklace", () -> Artifacts.CONFIG.items.crossNecklace, (builder, config) -> builder
