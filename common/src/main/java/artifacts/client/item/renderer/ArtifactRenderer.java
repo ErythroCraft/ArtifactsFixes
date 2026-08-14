@@ -53,7 +53,6 @@ public abstract class ArtifactRenderer {
             SubmitNodeCollector submitNodeCollector,
             int light
     ) {
-        poseStack.pushPose();
         if (renderState.entityType == EntityType.PLAYER) {
             if (!Artifacts.CONFIG.client.showArtifactsOnPlayers.get()) {
                 return;
@@ -70,6 +69,7 @@ public abstract class ArtifactRenderer {
         Identifier texture = getTexture(renderState);
         Identifier glowTexture = getFullBrightOverlayTexture(renderState);
 
+        poseStack.pushPose();
         renderModelWithFoil(model, renderState, poseStack, submitNodeCollector, texture, light, stack.hasFoil());
         if (glowTexture != null) {
             renderModelWithFoil(model, renderState, poseStack, submitNodeCollector, glowTexture, LightCoordsUtil.FULL_BRIGHT, stack.hasFoil());
