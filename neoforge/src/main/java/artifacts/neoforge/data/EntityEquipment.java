@@ -81,11 +81,7 @@ public class EntityEquipment {
         }
         LootPool.Builder pool = LootPool.lootPool();
         for (Item item : items) {
-            if (item == ModItems.SCARF_OF_INVISIBILITY.value()) {
-                pool.add(LootTables.item(item, 1).apply(SetComponentsFunction.setComponent(ModDataComponents.HIDE_WHEN_INVISIBLE.get(), Value.of(false))));
-            } else {
-                pool.add(LootTables.item(item, 1));
-            }
+            pool.add(LootTables.item(item, 1));
         }
         addEquipment(entityType, pool);
     }
