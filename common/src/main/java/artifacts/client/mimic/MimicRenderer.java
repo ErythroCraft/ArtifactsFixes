@@ -27,7 +27,7 @@ public class MimicRenderer extends MobRenderer<MimicEntity, MimicRenderState, Mi
     public void extractRenderState(MimicEntity mimic, MimicRenderState renderState, float partialTicks) {
         super.extractRenderState(mimic, renderState, partialTicks);
         renderState.ticksInAir = mimic.ticksInAir > 0 ? mimic.ticksInAir - 1 + partialTicks : 0;
-        chestMaterials.setChestMaterial(mimic, renderState);
+        renderState.chestMaterial = chestMaterials.getChestSprite(mimic);
     }
 
     @Override
