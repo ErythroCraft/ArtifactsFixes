@@ -36,7 +36,7 @@ public class NaturalSpawnerMixin {
 
             lootTable.getRandomItems(lootParams, mob.getLootTableSeed(), stack -> {
                 if (!EquipmentSlotManager.tryEquipAccessory(mob, stack)) {
-                    Artifacts.LOGGER.warn("Could not equip item '{}' on spawned entity '{}'", stack, mob);
+                    Artifacts.LOGGER.warn("Could not equip item '{}' on spawned entity '{}', no appropriate empty slot found", stack, mob);
                 }
             });
         }

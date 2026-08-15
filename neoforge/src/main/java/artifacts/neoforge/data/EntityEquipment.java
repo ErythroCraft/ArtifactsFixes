@@ -17,7 +17,6 @@ public class EntityEquipment {
         this.lootTables = lootTables;
     }
 
-    // TODO: Add bogged & parched loot tables
     public void addLootTables() {
         addItems(EntityType.ZOMBIE,
                 ModItems.COWBOY_HAT.value(),
@@ -40,6 +39,14 @@ public class EntityEquipment {
         addItems(EntityType.STRAY,
                 ModItems.SNOWSHOES.value(),
                 ModItems.STEADFAST_SPIKES.value()
+        );
+        addItems(EntityType.BOGGED,
+                ModItems.ANTIDOTE_VESSEL.value(),
+                ModItems.ROOTED_BOOTS.value()
+        );
+        addItems(EntityType.PARCHED,
+                ModItems.PANIC_NECKLACE.value(),
+                ModItems.PICKAXE_HEATER.value()
         );
         addItems(EntityType.WITHER_SKELETON,
                 ModItems.FIRE_GAUNTLET.value(),
