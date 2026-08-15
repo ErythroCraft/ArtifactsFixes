@@ -34,6 +34,8 @@ public record DamageOnHurt(Value<Integer> itemDamage, Optional<TagKey<DamageType
     );
 
     public static void onLivingDamaged(LivingEntity entity, DamageSource damageSource) {
+        // TODO: artifacts not worn by players aren't damaged, is this consistent with other damage rules?
+        // I think I did it this way because the cross necklace only affects players, but this may not be the case with other items that use this rule
         if (entity instanceof Player player && !player.level().isClientSide()) {
             ModDataComponents.DAMAGE_ON_HURT.on(entity)
                     .filter(component -> component.tag().isEmpty() || damageSource.is(component.tag().get()))
