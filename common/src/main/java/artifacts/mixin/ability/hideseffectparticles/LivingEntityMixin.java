@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class LivingEntityMixin {
 
     @WrapWithCondition(method = "tickEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
-    private boolean shouldHideParticles(Level instance, ParticleOptions particle, double x, double y, double z, double xd, double yd, double zd) {
+    private boolean shouldShowEffectParticles(Level instance, ParticleOptions particle, double x, double y, double z, double xd, double yd, double zd) {
         LivingEntity self = (LivingEntity) (Object) this;
         return !ModDataComponents.HIDES_EFFECT_PARTICLES.on(self).filter(Value::get).findAny();
     }
