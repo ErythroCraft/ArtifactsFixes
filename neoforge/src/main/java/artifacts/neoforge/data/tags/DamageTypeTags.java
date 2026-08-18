@@ -16,14 +16,16 @@ public class DamageTypeTags extends DamageTypeTagsProvider {
         super(packOutput, lookupProvider, Artifacts.MOD_ID);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void addTags(HolderLookup.Provider arg) {
         tag(ModTags.IS_MELEE).addAll(List.of(
                 DamageTypes.MOB_ATTACK,
                 DamageTypes.MOB_ATTACK_NO_AGGRO,
-                DamageTypes.PLAYER_ATTACK,
-                DamageTypes.SPEAR,
-                DamageTypes.MACE_SMASH
-        ));
+                DamageTypes.SPEAR
+        )).addTags(
+                net.minecraft.tags.DamageTypeTags.IS_PLAYER_ATTACK,
+                net.minecraft.tags.DamageTypeTags.IS_MACE_SMASH
+        );
     }
 }
