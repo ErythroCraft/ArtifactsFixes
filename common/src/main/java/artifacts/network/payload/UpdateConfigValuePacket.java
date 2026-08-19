@@ -4,6 +4,7 @@ import artifacts.Artifacts;
 import artifacts.config.ConfigEntryKey;
 import artifacts.config.value.ConfigValue;
 import artifacts.config.value.type.ValueType;
+import artifacts.network.PayloadContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -42,10 +43,11 @@ public final class UpdateConfigValuePacket implements CustomPacketPayload {
         );
     }
 
-    public void apply() {
-        // TODO: probably shouldn't do this from the networking thread
-        Artifacts.LOGGER.debug("Received updated config value for {} from server", key);
-        Artifacts.CONFIG.configs.get(key.configManager()).getValues(type).get(key).set(type.cast(value));
+    public void apply(PayloadContext context) {
+        context.queue(() -> {
+            Artifacts.LOGGER.debug("Received updated config value for {} from server", key);
+            Artifacts.CONFIG.configs.get(key.configManager()).getValues(type).get(key).set(type.cast(value));
+        });
     }
 
     @Override

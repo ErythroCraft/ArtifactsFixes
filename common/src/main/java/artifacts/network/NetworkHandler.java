@@ -10,7 +10,6 @@ import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class NetworkHandler {
 
     public static void registerPayloads() {
         registerClientbound(PlaySoundAtPlayerPacket.TYPE, PlaySoundAtPlayerPacket.CODEC, PlaySoundAtPlayerPacket::apply);
-        registerClientbound(UpdateConfigValuePacket.TYPE, UpdateConfigValuePacket.CODEC, (p, _) -> p.apply());
+        registerClientbound(UpdateConfigValuePacket.TYPE, UpdateConfigValuePacket.CODEC, UpdateConfigValuePacket::apply);
         registerClientbound(UpdateSwimFlyingPacket.TYPE, UpdateSwimFlyingPacket.CODEC, UpdateSwimFlyingPacket::apply);
 
         registerServerbound(DoubleJumpPacket.TYPE, DoubleJumpPacket.CODEC, DoubleJumpPacket::apply);
@@ -64,13 +63,6 @@ public class NetworkHandler {
             StreamCodec<? super RegistryFriendlyByteBuf, T> codec,
             Receiver<T> receiver
     ) { }
-
-    public interface PayloadContext {
-
-        Player player();
-
-        void queue(Runnable runnable);
-    }
 
     @FunctionalInterface
     public interface Receiver<T extends CustomPacketPayload> {

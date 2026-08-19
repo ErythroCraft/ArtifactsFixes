@@ -2,12 +2,11 @@ package artifacts.neoforge.network;
 
 import artifacts.network.ConfigurationNetworkHandler;
 import artifacts.network.NetworkHandler;
+import artifacts.network.PayloadContext;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
@@ -47,21 +46,15 @@ public class NeoForgeNetworkHandler {
         StreamCodec<? super FriendlyByteBuf, T> codec = ((StreamCodec<? super FriendlyByteBuf, T>) payloadHandler.codec());
         registration.register(
                 payloadHandler.type(), codec,
-                (arg, context) -> payloadHandler.receiver().receive(arg, new PayloadContext(context.player(), context))
+                (arg, context) -> payloadHandler.receiver().receive(arg, PayloadContext.of(context.player(), context::enqueueWork))
         );
     }
 
     // Same thing but for configuration phase payloads
     private static <T extends CustomPacketPayload> void register(PayloadRegistration registration, ConfigurationNetworkHandler.PayloadHandler<T> payloadHandler) {
-        registration.register(payloadHandler.type(), payloadHandler.codec(), (arg, _) -> payloadHandler.receiver().receive(arg));
-    }
-
-    private record PayloadContext(Player player, IPayloadContext context) implements NetworkHandler.PayloadContext {
-
-        @Override
-        public void queue(Runnable runnable) {
-            context.enqueueWork(runnable);
-        }
+        registration.register(payloadHandler.type(), payloadHandler.codec(), (payload, context) ->
+                payloadHandler.receiver().receive(payload, PayloadContext.of(context::enqueueWork))
+        );
     }
 
     @FunctionalInterface

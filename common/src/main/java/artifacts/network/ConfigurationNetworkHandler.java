@@ -29,6 +29,6 @@ public class ConfigurationNetworkHandler {
 
     @FunctionalInterface
     public interface Receiver<T extends CustomPacketPayload> {
-        void receive(T value);
+        void receive(T value, PayloadContext context);
     }
 }

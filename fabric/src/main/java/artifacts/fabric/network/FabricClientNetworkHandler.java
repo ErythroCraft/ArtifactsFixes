@@ -2,10 +2,10 @@ package artifacts.fabric.network;
 
 import artifacts.network.ConfigurationNetworkHandler;
 import artifacts.network.NetworkHandler;
+import artifacts.network.PayloadContext;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.player.Player;
 
 public class FabricClientNetworkHandler {
 
@@ -22,21 +22,13 @@ public class FabricClientNetworkHandler {
 
     private static <T extends CustomPacketPayload> void registerClientboundReceiver(NetworkHandler.PayloadHandler<T> payloadHandler) {
         ClientPlayNetworking.registerGlobalReceiver(payloadHandler.type(), (payload, context) ->
-                payloadHandler.receiver().receive(payload, new PayloadContext(context.player(), context))
+                payloadHandler.receiver().receive(payload, PayloadContext.of(context.player(), context.client()::execute))
         );
     }
 
     private static <T extends CustomPacketPayload> void registerClientboundReceiver(ConfigurationNetworkHandler.PayloadHandler<T> payloadHandler) {
-        ClientConfigurationNetworking.registerGlobalReceiver(payloadHandler.type(), (payload, _) ->
-                payloadHandler.receiver().receive(payload)
+        ClientConfigurationNetworking.registerGlobalReceiver(payloadHandler.type(), (payload, context) ->
+                payloadHandler.receiver().receive(payload, PayloadContext.of(context.client()::execute))
         );
-    }
-
-    private record PayloadContext(Player player, ClientPlayNetworking.Context context) implements NetworkHandler.PayloadContext {
-
-        @Override
-        public void queue(Runnable runnable) {
-            context.client().execute(runnable);
-        }
     }
 }

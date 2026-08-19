@@ -2,10 +2,10 @@ package artifacts.fabric.network;
 
 import artifacts.network.ConfigurationNetworkHandler;
 import artifacts.network.NetworkHandler;
+import artifacts.network.PayloadContext;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.player.Player;
 
 public class FabricNetworkHandler {
 
@@ -42,15 +42,7 @@ public class FabricNetworkHandler {
 
     private static <T extends CustomPacketPayload> void registerServerboundReceiver(NetworkHandler.PayloadHandler<T> payloadHandler) {
         ServerPlayNetworking.registerGlobalReceiver(payloadHandler.type(), (payload, context) ->
-                payloadHandler.receiver().receive(payload, new PayloadContext(context.player(), context))
+                payloadHandler.receiver().receive(payload, PayloadContext.of(context.player(), context.server()::execute))
         );
-    }
-
-    private record PayloadContext(Player player, ServerPlayNetworking.Context context) implements NetworkHandler.PayloadContext {
-
-        @Override
-        public void queue(Runnable runnable) {
-            context.server().execute(runnable);
-        }
     }
 }
