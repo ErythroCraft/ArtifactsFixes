@@ -25,7 +25,7 @@ public class BeltModel extends HumanoidModel<HumanoidRenderState> {
     }
 
     public static List<BeltModel> create(ModelPart part, CharmPose charmPose) {
-        return create(part, RenderTypes::entityCutout, charmPose);
+        return create(part, RenderTypes::armorCutoutNoCull, charmPose);
     }
 
     public static List<BeltModel> create(ModelPart part, Function<Identifier, RenderType> renderType, CharmPose charmPose) {

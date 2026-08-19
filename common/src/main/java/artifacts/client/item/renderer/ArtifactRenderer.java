@@ -99,7 +99,6 @@ public abstract class ArtifactRenderer {
                 renderState.outlineColor,
                 null
         );
-        // TODO: enchantment glint rendering with the armorEntityGlint render type doesn't work for some reason
         if (hasFoil) {
             submitNodeCollector.order(1).submitModel(
                     model,

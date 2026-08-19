@@ -5,6 +5,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.PlayerModelType;
 
@@ -28,7 +29,7 @@ public record ArmsModelSet<M>(M leftArmWide, M rightArmWide, M leftArmSlim, M ri
     }
 
     public static ArmsModelSet<HumanoidModel<HumanoidRenderState>> bake(ArmsModelSet<ModelLayerLocation> layerLocations) {
-        return bake(layerLocations, HumanoidModel::new);
+        return bake(layerLocations, root -> new HumanoidModel<>(root, RenderTypes::armorCutoutNoCull));
     }
 
     public static <M> ArmsModelSet<M> bake(ArmsModelSet<ModelLayerLocation> layerLocations, Function<ModelPart, M> modelFactory) {

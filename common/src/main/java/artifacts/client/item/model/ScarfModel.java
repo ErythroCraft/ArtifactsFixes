@@ -15,7 +15,7 @@ public class ScarfModel extends HumanoidModel<HumanoidRenderState> {
     private final ModelPart cloak = body.getChild("cloak");
 
     public ScarfModel(ModelPart part) {
-        this(part, RenderTypes::entityCutout);
+        this(part, RenderTypes::armorCutoutNoCull);
     }
 
     public ScarfModel(ModelPart part, Function<Identifier, RenderType> renderType) {
