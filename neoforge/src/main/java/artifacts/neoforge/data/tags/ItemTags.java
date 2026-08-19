@@ -21,7 +21,7 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
 
     public static final TagKey<Item> ARTIFACTS = createTag("artifacts");
     public static final TagKey<Item> EQUIPPABLE = createTag("equippable");
-    // TODO: consider renaming to `equippable:slot_name`
+    // TODO: consider renaming to `equippable/slot_name`
     public static final TagKey<Item> HEAD_EQUIPPABLE = createTag("slot/head");
     public static final TagKey<Item> FACE_EQUIPPABLE = createTag("slot/face");
     public static final TagKey<Item> NECKLACE_EQUIPPABLE = createTag("slot/necklace");
@@ -141,7 +141,6 @@ public class ItemTags extends IntrinsicHolderTagsProvider<Item> {
     }
 
     private void addRepairMaterialTags() {
-        // TODO: localize these tags
         repairMaterials(ModItems.ANGLERS_HAT).addTag(Tags.Items.LEATHERS);
         repairMaterials(ModItems.ANTIDOTE_VESSEL).add(Items.GOLD_INGOT);
         repairMaterials(ModItems.AQUA_DASHERS).addTag(Tags.Items.LEATHERS);
