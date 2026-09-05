@@ -28,10 +28,16 @@ public class MimicRenderer extends MobRenderer<MimicEntity, MimicRenderState, Mi
         super.extractRenderState(mimic, renderState, partialTicks);
         renderState.ticksInAir = mimic.ticksInAir > 0 ? mimic.ticksInAir - 1 + partialTicks : 0;
         renderState.chestMaterial = chestMaterials.getChestSprite(mimic);
+
+        renderState.appearsInvisibleToPlayer = mimic.isInvisibleTo(net.minecraft.client.Minecraft.getInstance().player);
     }
 
     @Override
-    public Identifier getTextureLocation(MimicRenderState entity) {
+    public Identifier getTextureLocation(MimicRenderState renderState) {
+        if (renderState.chestMaterial != null) {
+            return renderState.chestMaterial.atlasLocation();
+        }
         return TEXTURE;
     }
+
 }

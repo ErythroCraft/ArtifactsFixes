@@ -1,20 +1,18 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "mixinextras": {
-    "minVersion": "0.5.0"
-  },
-  "package": "artifacts.neoforge.mixin",
-  "compatibilityLevel": "JAVA_25",
-  "plugin": "artifacts.ArtifactsMixinPlugin",
-  "mixins": [
-    "ability.sinking.PlayerMixin",
-    "ability.slipresistance.LivingEntityMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "overwrites": {
-    "requireAnnotations": true
-  }
+    "required": true,
+    "minVersion": "0.8",
+    "refmap": "artifacts.refmap.json",
+    "mixinextras": {
+        "minVersion": "0.5.0"
+    },
+    "package": "artifacts.neoforge.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "plugin": "artifacts.ArtifactsMixinPlugin",
+    "mixins": ["ability.sinking.PlayerMixin", "ability.slipresistance.LivingEntityMixin"],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "overwrites": {
+        "requireAnnotations": true
+    }
 }

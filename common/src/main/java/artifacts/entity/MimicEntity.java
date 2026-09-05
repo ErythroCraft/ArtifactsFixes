@@ -1,6 +1,11 @@
 package artifacts.entity;
 
+import java.util.EnumSet;
+import java.util.Locale;
+import java.util.Objects;
+
 import artifacts.registry.ModSoundEvents;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -23,10 +28,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-
-import java.util.EnumSet;
-import java.util.Locale;
-import java.util.Objects;
 
 public class MimicEntity extends Mob implements Enemy {
 
@@ -207,6 +208,10 @@ public class MimicEntity extends Mob implements Enemy {
 
     protected SoundEvent getLandingSound() {
         return ModSoundEvents.MIMIC_CLOSE.value();
+    }
+
+    public boolean isInvisibleTo(LocalPlayer player) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     protected static class AttackGoal extends Goal {

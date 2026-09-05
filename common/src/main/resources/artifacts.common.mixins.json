@@ -1,68 +1,56 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "mixinextras": {
-    "minVersion": "0.5.0"
-  },
-  "package": "artifacts.mixin",
-  "compatibilityLevel": "JAVA_25",
-  "plugin": "artifacts.ArtifactsMixinPlugin",
-  "mixins": [
-    "ability.LivingEntityMixin",
-    "ability.PlayerMixin",
-    "ability.damageimmunity.LivingEntityMixin",
-    "ability.enchantment.ApplyBonusCountMixin",
-    "ability.enchantment.EnchantedCountIncreaseFunctionMixin",
-    "ability.enchantment.EnchantmentHelperMixin",
-    "ability.enchantment.FishingHookMixin",
-    "ability.enchantment.LootItemRandomChanceWithEnchantedBonusConditionMixin",
-    "ability.enderpearldamageimmunity.ThrownEnderPearlMixin",
-    "ability.enderpearlhungercost.EnderPearlItemMixin",
-    "ability.equipabletotem.LivingEntityMixin",
-    "ability.fluidcollision.EntityMixin",
-    "ability.hideseffectparticles.LivingEntityMixin",
-    "ability.hurtsound.LivingEntityMixin",
-    "ability.infiniteconsumable.ConsumableMixin",
-    "ability.phantomrepellent.PhantomSweepAttackGoalMixin",
-    "ability.piglinloved.PiglinAiMixin",
-    "ability.posteatingeffects.FoodPropertiesMixin",
-    "ability.retaliation.EnchantmentHelperMixin",
-    "ability.walkonpowdersnow.PowderSnowBlockMixin",
-    "accessors.MobAccessor",
-    "attribute.LivingEntityMixin",
-    "attribute.PlayerMixin",
-    "attribute.eatingspeed.ConsumableMixin",
-    "attribute.flatulence.EntityMixin",
-    "attribute.invincibilityticks.LivingEntityMixin",
-    "attribute.villagerreputation.AbstractVillagerMixin",
-    "attribute.villagerreputation.VillagerMixin",
-    "compat.apoli.condition.type.entity.ExposedToSunEntityConditionTypeMixin",
-    "debug.TagLoaderMixin",
-    "item.ItemStackMixin",
-    "item.NaturalSpawnerMixin",
-    "item.umbrella.EntityMixin",
-    "mobeffect.magnetism.ItemEntityMixin",
-    "mobeffect.magnetism.LivingEntityMixin"
-  ],
-  "client": [
-    "ability.equipabletotem.client.ClientPacketListenerMixin",
-    "ability.hurtsound.client.LivingEntityMixin",
-    "ability.nightvision.client.GameRendererMixin",
-    "accessors.client.GuiAccessor",
-    "accessors.client.LivingEntityRendererAccessor",
-    "client.LivingEntityRendererMixin",
-    "client.LivingEntityRenderStateMixin",
-    "item.pocketpiston.client.LivingEntityMixin",
-    "item.umbrella.client.ItemInHandRendererMixin",
-    "item.umbrella.client.SpearAnimationsMixin"
-  ],
-  "server": [
-    "item.umbrella.server.ServerGamePacketListenerImplMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "overwrites": {
-    "requireAnnotations": true
-  }
+    "required": true,
+    "minVersion": "0.8",
+    "refmap": "artifacts.refmap.json",
+    "mixinextras": {
+        "minVersion": "0.5.0"
+    },
+    "package": "artifacts.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "plugin": "artifacts.ArtifactsMixinPlugin",
+    "mixins": [
+        "ability.LivingEntityMixin",
+        "ability.PlayerMixin",
+        "ability.damageimmunity.LivingEntityMixin",
+        "ability.enchantment.ApplyBonusCountMixin",
+        "ability.enchantment.EnchantedCountIncreaseFunctionMixin",
+        "ability.enchantment.EnchantmentHelperMixin",
+        "ability.enchantment.FishingHookMixin",
+        "ability.enchantment.LootItemRandomChanceWithEnchantedBonusConditionMixin",
+        "ability.enderpearldamageimmunity.ThrownEnderPearlMixin",
+        "ability.enderpearlhungercost.EnderPearlItemMixin",
+        "ability.equipabletotem.LivingEntityMixin",
+        "ability.fluidcollision.EntityMixin",
+        "ability.hideseffectparticles.LivingEntityMixin",
+        "ability.hurtsound.LivingEntityMixin",
+        "ability.infiniteconsumable.ConsumableMixin",
+        "ability.phantomrepellent.PhantomSweepAttackGoalMixin",
+        "ability.piglinloved.PiglinAiMixin",
+        "ability.posteatingeffects.FoodPropertiesMixin",
+        "ability.retaliation.EnchantmentHelperMixin",
+        "ability.walkonpowdersnow.PowderSnowBlockMixin",
+        "accessors.MobAccessor",
+        "attribute.LivingEntityMixin",
+        "attribute.PlayerMixin",
+        "attribute.eatingspeed.ConsumableMixin",
+        "attribute.flatulence.EntityMixin",
+        "attribute.invincibilityticks.LivingEntityMixin",
+        "attribute.villagerreputation.AbstractVillagerMixin",
+        "attribute.villagerreputation.VillagerMixin",
+        "compat.apoli.condition.type.entity.ExposedToSunEntityConditionTypeMixin",
+        "debug.TagLoaderMixin",
+        "item.ItemStackMixin",
+        "item.NaturalSpawnerMixin",
+        "item.umbrella.EntityMixin",
+        "mobeffect.magnetism.ItemEntityMixin",
+        "mobeffect.magnetism.LivingEntityMixin"
+    ],
+    "client": ["ability.equipabletotem.client.ClientPacketListenerMixin", "ability.hurtsound.client.LivingEntityMixin", "ability.nightvision.client.GameRendererMixin", "accessors.client.GuiAccessor", "accessors.client.LivingEntityRendererAccessor", "client.LivingEntityRendererMixin", "client.LivingEntityRenderStateMixin", "item.pocketpiston.client.LivingEntityMixin", "item.umbrella.client.ItemInHandRendererMixin", "item.umbrella.client.SpearAnimationsMixin"],
+    "server": ["item.umbrella.server.ServerGamePacketListenerImplMixin"],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "overwrites": {
+        "requireAnnotations": true
+    }
 }

@@ -1,33 +1,19 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "mixinextras": {
-    "minVersion": "0.5.0"
-  },
-  "package": "artifacts.fabric.mixin",
-  "compatibilityLevel": "JAVA_25",
-  "plugin": "artifacts.ArtifactsMixinPlugin",
-  "mixins": [
-    "ability.LivingEntityMixin",
-    "ability.autosmelt.LootTableMixin",
-    "ability.creeperrepellent.HurtByTargetGoalMixin",
-    "ability.creeperrepellent.NearestAttackableTargetGoalMixin",
-    "ability.sinking.PlayerMixin",
-    "ability.tooltierupgrade.PlayerMixin",
-    "attribute.eatingspeed.LivingEntityMixin",
-    "attribute.entityexperience.LivingEntityMixin",
-    "attribute.slipresistance.LivingEntityMixin",
-    "attribute.swimspeed.LivingEntityMixin"
-  ],
-  "client": [
-    "ability.swiminair.client.GuiMixin",
-    "client.AvatarRendererMixin",
-    "client.GuiMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "overwrites": {
-    "requireAnnotations": true
-  }
+    "required": true,
+    "minVersion": "0.8",
+    "refmap": "artifacts.refmap.json",
+    "mixinextras": {
+        "minVersion": "0.5.0"
+    },
+    "package": "artifacts.fabric.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "plugin": "artifacts.ArtifactsMixinPlugin",
+    "mixins": ["ability.LivingEntityMixin", "ability.autosmelt.LootTableMixin", "ability.creeperrepellent.HurtByTargetGoalMixin", "ability.creeperrepellent.NearestAttackableTargetGoalMixin", "ability.sinking.PlayerMixin", "ability.tooltierupgrade.PlayerMixin", "attribute.eatingspeed.LivingEntityMixin", "attribute.entityexperience.LivingEntityMixin", "attribute.slipresistance.LivingEntityMixin", "attribute.swimspeed.LivingEntityMixin"],
+    "client": ["ability.swiminair.client.GuiMixin", "client.AvatarRendererMixin", "client.GuiMixin"],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "overwrites": {
+        "requireAnnotations": true
+    }
 }
